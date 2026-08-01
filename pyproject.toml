@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "autotrader"
+version = "0.1.0"
+description = "Multi-region systematic trading research engine with long-term and short-term books"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [{ name = "Anchit Tandon" }]
+keywords = ["trading", "backtesting", "quantitative-finance", "portfolio", "risk"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business :: Financial :: Investment",
+]
+
+# Deliberately zero runtime dependencies. Everything — Decimal accounting,
+# indicators, the event loop, the dashboard server — is standard library, so the
+# test suite runs identically anywhere Python does.
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["ruff>=0.5"]
+
+[project.scripts]
+autotrader = "autotrader.cli:main"
+
+[project.urls]
+Repository = "https://github.com/anchittandon-create/markets-pro"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = [
+    "E741",  # ambiguous variable name `l` — used for `low` in OHLC code
+    "B008",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]
