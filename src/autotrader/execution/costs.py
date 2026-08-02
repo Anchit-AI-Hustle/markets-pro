@@ -46,7 +46,7 @@ class CostBreakdown:
     def total(self) -> Decimal:
         return self.commission + self.taxes + self.fees
 
-    def __add__(self, other: "CostBreakdown") -> "CostBreakdown":
+    def __add__(self, other: CostBreakdown) -> CostBreakdown:
         return CostBreakdown(
             commission=self.commission + other.commission,
             securities_tax=self.securities_tax + other.securities_tax,

@@ -8,9 +8,10 @@ equity chart is inline SVG generated from the data, not a charting library.
 from __future__ import annotations
 
 import html
+import json
+from collections.abc import Sequence
 from datetime import date
 from decimal import Decimal
-from typing import Sequence
 
 from ..engine.metrics import PerformanceReport, drawdown_series
 
@@ -149,7 +150,7 @@ def equity_chart_svg(
     x_positions = (pad_l, pad_l + plot_w / 2, pad_l + plot_w)
     x_labels = []
     for slot, (i, anchor, xpos) in enumerate(
-        zip((0, n // 2, n - 1), anchors, x_positions)
+        zip((0, n // 2, n - 1), anchors, x_positions, strict=False)
     ):
         x_labels.append(
             f'<text class="axis" data-xlabel="{slot}" x="{xpos:.2f}" '
@@ -339,6 +340,324 @@ def _trades_table(report: PerformanceReport, limit: int = 25) -> str:
   <tbody>{''.join(rows)}</tbody>
 </table>
 <p class="caption">{_esc(caption)}</p>"""
+
+
+# ---------------------------------------------------------------------------
+# Today's signals (live snapshot sections)
+# ---------------------------------------------------------------------------
+
+def _price(value: object) -> str:
+    return f"{float(str(value)):,.2f}"
+
+
+def _signal_row(index: int, order: dict, has_kite_key: bool) -> str:
+    side = order["side"]
+    side_class = "side-buy" if side == "BUY" else "side-sell"
+    stale = "" if order["fresh"] else " class=\"stale\""
+    stop = _price(order["stop_loss"]) if order.get("stop_loss") else "&mdash;"
+    target = _price(order["take_profit"]) if order.get("take_profit") else "&mdash;"
+    notional = _price(order["notional"]) if order.get("notional") else "?"
+    reason = _esc(order.get("reason") or order["horizon"].replace("_", " "))
+    fresh_note = "" if order["fresh"] else '<span class="tag">resting</span> '
+    region_code = "IN" if order["region"] == "india" else "US"
+    region_label = REGION_NAMES.get(region_code, order["region"])
+
+    if order["region"] == "india":
+        disabled = "" if has_kite_key else (
+            ' disabled title="Add your Kite Publisher api_key to'
+            ' config/live.json to enable one-tap handoff"'
+        )
+        action = (
+            f'<button type="button" class="exec" data-exec="kite:{index}"{disabled}>Kite</button>'
+        )
+    else:
+        action = (
+            f'<button type="button" class="exec" data-exec="us:{index}">Alpaca</button>'
+            f'<span class="execstatus" data-exec-status="{index}" aria-live="polite"></span>'
+        )
+
+    return f"""<tr{stale}>
+  <td><span class="tag {side_class}">{side}</span></td>
+  <td><span class="tag">{_esc(region_label)}</span>
+      <strong>{_esc(order['symbol'])}</strong>
+      <span class="muted-inline">{_esc(order['name'])}</span></td>
+  <td class="num">{_esc(order['quantity'])}</td>
+  <td class="num">{_price(order['reference_price'])}
+      <span class="ccy">{_esc(order['currency'])}</span></td>
+  <td class="num">{notional}</td>
+  <td class="num">{stop}</td>
+  <td class="num">{target}</td>
+  <td class="num live-cell" data-quote="{_esc(order['yahoo'])}"
+      data-ref="{_esc(order['reference_price'])}" data-side="{side}">&mdash;</td>
+  <td>{fresh_note}{reason}</td>
+  <td class="num">{action}</td>
+</tr>"""
+
+
+def _signals_section(signals: dict) -> str:
+    orders = signals.get("orders", [])
+    as_of = " &middot; ".join(
+        f"{REGION_NAMES.get('IN' if region == 'india' else 'US', region)} data through {_esc(day)}"
+        for region, day in signals.get("as_of", {}).items()
+    )
+    caps = " &middot; ".join(
+        f"daily cap {_price(amount)} {_esc(ccy)}"
+        for ccy, amount in signals.get("daily_cap", {}).items()
+    )
+    meta = (
+        f'<p class="sigmeta">{as_of} &middot; generated {_esc(signals.get("generated_at", ""))} '
+        f"&middot; {caps}</p>"
+    )
+
+    if not orders:
+        return meta + (
+            '<p class="empty">No new orders today. The strategies are either fully '
+            "positioned or waiting for a setup &mdash; no signal is itself a signal.</p>"
+        )
+
+    has_kite_key = bool(signals.get("kite_api_key"))
+    india_fresh = sum(1 for o in orders if o["region"] == "india" and o["fresh"])
+    basket_all = ""
+    if india_fresh >= 2 and has_kite_key:
+        basket_all = (
+            '<p><button type="button" class="exec" data-exec="kite:all">'
+            f"Send all {india_fresh} India orders to Kite as one basket</button></p>"
+        )
+
+    rows = "".join(_signal_row(i, order, has_kite_key) for i, order in enumerate(orders))
+    caption = (
+        "Orders the strategies would place at the next open, sized against the "
+        "simulated book. Execute buttons hand the order to YOUR broker — Kite opens "
+        "a pre-filled basket you must confirm; the US executor honours the daily cap "
+        "and stays in paper mode until you arm it. Live prices are delayed. "
+        "None of this is investment advice, and no outcome is guaranteed."
+    )
+    return f"""{meta}{basket_all}<table>
+  <thead><tr><th>Side</th><th>Instrument</th><th class="num">Qty</th>
+  <th class="num">Ref price</th><th class="num">Notional</th>
+  <th class="num">Stop</th><th class="num">Target</th><th class="num">Live</th>
+  <th>Why</th><th class="num">Execute</th></tr></thead>
+  <tbody>{rows}</tbody>
+</table>
+<p class="caption">{caption}</p>"""
+
+
+def _positions_section(signals: dict) -> str:
+    positions = signals.get("positions", [])
+    if not positions:
+        return '<p class="empty">No open positions in the simulated book.</p>'
+
+    rows = []
+    for position in positions:
+        stop = _price(position["stop"]) if position.get("stop") else "&mdash;"
+        target = _price(position["take_profit"]) if position.get("take_profit") else "&mdash;"
+        held = position.get("days_held")
+        limit = position.get("max_holding_days")
+        clock = f"{held}/{limit}d" if held is not None and limit else "&mdash;"
+        book = "Short-term" if position["horizon"] == "short_term" else "Long-term"
+        region_code = "IN" if position["region"] == "india" else "US"
+        region_label = REGION_NAMES.get(region_code, position["region"])
+        rows.append(
+            f"""<tr>
+  <td><span class="tag">{_esc(region_label)}</span>
+      <strong>{_esc(position['symbol'])}</strong>
+      <span class="muted-inline">{_esc(position['name'])}</span></td>
+  <td>{book}</td>
+  <td class="num">{_esc(position['quantity'])}</td>
+  <td class="num">{_price(position['average_cost'])}
+      <span class="ccy">{_esc(position['currency'])}</span></td>
+  <td class="num">{_price(position['last_price'])}</td>
+  <td class="num live-cell" data-quote="{_esc(position['yahoo'])}"
+      data-stop="{_esc(position.get('stop') or '')}"
+      data-target="{_esc(position.get('take_profit') or '')}">&mdash;</td>
+  <td class="num">{stop}</td>
+  <td class="num">{target}</td>
+  <td class="num">{clock}</td>
+  <td><span class="badge" data-badge="{_esc(position['yahoo'])}">&mdash;</span></td>
+</tr>"""
+        )
+    caption = (
+        "Live column polls delayed quotes (~15 min for NSE) during market hours and "
+        "flags a position the moment it trades through its stop or target, so you can "
+        "act before the nightly rebuild. Long-term holdings carry no stop by design."
+    )
+    return f"""<table>
+  <thead><tr><th>Instrument</th><th>Book</th><th class="num">Qty</th>
+  <th class="num">Avg cost</th><th class="num">Last close</th><th class="num">Live</th>
+  <th class="num">Stop</th><th class="num">Target</th><th class="num">Held</th>
+  <th>Status</th></tr></thead>
+  <tbody>{''.join(rows)}</tbody>
+</table>
+<p class="caption">{caption}</p>"""
+
+
+SIGNALS_CSS = """
+.sigmeta{color:var(--muted);font-size:12.5px;margin:0 0 12px}
+.muted-inline{color:var(--muted);font-size:12px}
+.side-buy{background:color-mix(in srgb,var(--pos) 18%,var(--tag));color:var(--pos)}
+.side-sell{background:color-mix(in srgb,var(--neg) 18%,var(--tag));color:var(--neg)}
+tr.stale{opacity:.55}
+button.exec{appearance:none;border:1px solid var(--line);background:var(--panel);
+  color:var(--accent);font:inherit;font-size:12.5px;font-weight:600;line-height:1;
+  padding:6px 10px;border-radius:6px;cursor:pointer}
+button.exec:hover:not(:disabled){background:var(--tag)}
+button.exec:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+button.exec:disabled{opacity:.45;cursor:not-allowed}
+button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(--accent)}
+.execstatus{display:block;font-size:11px;color:var(--muted);margin-top:4px;max-width:120px}
+.badge{display:inline-block;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:600;
+  background:var(--tag);color:var(--muted)}
+.badge.ok{color:var(--pos)}
+.badge.hit{background:color-mix(in srgb,var(--neg) 20%,var(--tag));color:var(--neg)}
+.badge.target{background:color-mix(in srgb,var(--pos) 20%,var(--tag));color:var(--pos)}
+.live-cell{color:var(--muted)}
+.live-cell.fresh{color:var(--ink)}
+"""
+
+#: Broker handoff + delayed-quote overlay for the signals sections.
+#:
+#: Execution is deliberately two-step everywhere: the first tap arms the button
+#: ("Confirm?"), the second fires. Kite orders leave as a pre-filled basket the
+#: user must still confirm inside their own broker login; US orders go to the
+#: capped serverless executor, which is paper-mode unless the owner armed it.
+#: This script never holds credentials and never fires on page load.
+SIGNALS_JS = """
+(function () {
+  var blob = document.getElementById('signals-data');
+  if (!blob) return;
+  var cfg;
+  try { cfg = JSON.parse(blob.textContent); } catch (e) { return; }
+  var API = cfg.api_base || '/markets-pro/api';
+
+  function kiteBasket(orders) {
+    if (!cfg.kite_api_key || !orders.length) return;
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'https://kite.zerodha.com/connect/basket';
+    form.target = '_blank';
+    var key = document.createElement('input');
+    key.type = 'hidden'; key.name = 'api_key'; key.value = cfg.kite_api_key;
+    var data = document.createElement('input');
+    data.type = 'hidden'; data.name = 'data'; data.value = JSON.stringify(orders);
+    form.appendChild(key); form.appendChild(data);
+    document.body.appendChild(form);
+    form.submit();
+    form.remove();
+  }
+
+  function usExecute(order, statusEl) {
+    if (statusEl) statusEl.textContent = 'sending…';
+    fetch(API + '/execute', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orders: [order.alpaca], notional: order.notional })
+    }).then(function (res) {
+      return res.json().then(function (body) { return { ok: res.ok, body: body }; });
+    }).then(function (res) {
+      if (statusEl) statusEl.textContent = res.body.message || (res.ok ? 'sent' : 'refused');
+    }).catch(function () {
+      if (statusEl) statusEl.textContent = 'executor unreachable';
+    });
+  }
+
+  var armed = null, armedTimer = null;
+  function disarm() {
+    if (!armed) return;
+    armed.textContent = armed.getAttribute('data-label');
+    armed.classList.remove('armed');
+    armed = null;
+    clearTimeout(armedTimer);
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('button[data-exec]'), function (btn) {
+    btn.setAttribute('data-label', btn.textContent);
+    btn.addEventListener('click', function () {
+      if (armed !== btn) {
+        disarm();
+        armed = btn;
+        btn.textContent = 'Confirm?';
+        btn.classList.add('armed');
+        armedTimer = setTimeout(disarm, 6000);
+        return;
+      }
+      var target = btn.getAttribute('data-exec');
+      disarm();
+      if (target === 'kite:all') {
+        var basket = [];
+        (cfg.orders || []).forEach(function (order) {
+          if (order.region === 'india' && order.fresh && order.kite) basket.push(order.kite);
+        });
+        kiteBasket(basket);
+        return;
+      }
+      var parts = target.split(':');
+      var order = (cfg.orders || [])[Number(parts[1])];
+      if (!order) return;
+      if (parts[0] === 'kite' && order.kite) kiteBasket([order.kite]);
+      if (parts[0] === 'us' && order.alpaca) {
+        usExecute(order, document.querySelector('[data-exec-status="' + parts[1] + '"]'));
+      }
+    });
+  });
+
+  // --- delayed quote overlay -------------------------------------------
+  var cells = document.querySelectorAll('[data-quote]');
+  if (!cells.length || typeof fetch !== 'function') return;
+  var symbols = [];
+  Array.prototype.forEach.call(cells, function (cell) {
+    var s = cell.getAttribute('data-quote');
+    if (s && symbols.indexOf(s) < 0) symbols.push(s);
+  });
+
+  function fmt(value) {
+    var opts = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
+    return Number(value).toLocaleString('en-US', opts);
+  }
+
+  function applyQuotes(quotes) {
+    Array.prototype.forEach.call(cells, function (cell) {
+      var quote = quotes[cell.getAttribute('data-quote')];
+      if (!quote || !quote.price) return;
+      var price = Number(quote.price);
+      var text = fmt(price);
+      var ref = Number(cell.getAttribute('data-ref'));
+      if (ref) {
+        var drift = (price - ref) / ref * 100;
+        text += ' (' + (drift >= 0 ? '+' : '') + drift.toFixed(1) + '%)';
+      }
+      cell.textContent = text;
+      cell.classList.add('fresh');
+      var badge = document.querySelector('[data-badge="' + cell.getAttribute('data-quote') + '"]');
+      if (badge) {
+        var stop = Number(cell.getAttribute('data-stop')) || null;
+        var target = Number(cell.getAttribute('data-target')) || null;
+        if (stop && price <= stop) {
+          badge.textContent = 'STOP HIT'; badge.className = 'badge hit';
+        } else if (target && price >= target) {
+          badge.textContent = 'TARGET HIT'; badge.className = 'badge target';
+        } else {
+          badge.textContent = 'holding'; badge.className = 'badge ok';
+        }
+      }
+    });
+  }
+
+  var timer = null;
+  function poll() {
+    if (document.hidden) return;
+    fetch(API + '/quotes?symbols=' + encodeURIComponent(symbols.join(',')))
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (body) { if (body && body.quotes) applyQuotes(body.quotes); })
+      .catch(function () { /* offline or proxy down: last close already shown */ });
+  }
+  poll();
+  timer = setInterval(poll, 60000);
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) poll();
+  });
+  window.addEventListener('pagehide', function () { clearInterval(timer); });
+})();
+"""
 
 
 #: Pinch/wheel/drag zoom for the equity chart.
@@ -615,8 +934,16 @@ def render_dashboard(
     subtitle: str = "",
     tests_passed: int = 0,
     tests_total: int = 0,
+    signals: dict | None = None,
 ) -> str:
-    """Return a complete, self-contained HTML document for ``report``."""
+    """Return a complete, self-contained HTML document for ``report``.
+
+    When ``signals`` (a snapshot from :mod:`autotrader.signals.live`) is given,
+    the page leads with today's orders and open-position triggers, embeds the
+    snapshot as JSON for the broker-handoff buttons, and polls the same-origin
+    quote proxy for a delayed intraday overlay. Without it the page is the
+    pure offline research dashboard, unchanged.
+    """
     period = f"{report.start_day} to {report.end_day}"
     sub = subtitle or (
         f"{period} &middot; base currency {report.base_currency} &middot; "
@@ -630,6 +957,28 @@ def render_dashboard(
             f"passed ({rate:.2f}%)</span> &middot; "
         )
 
+    signal_sections = ""
+    signal_blob = ""
+    signal_script = ""
+    if signals is not None:
+        signal_sections = f"""
+  <h2>Today's signals</h2>
+  <div class="panel">{_signals_section(signals)}</div>
+
+  <h2>Open positions &amp; live triggers</h2>
+  <div class="panel">{_positions_section(signals)}</div>
+"""
+        embedded = {
+            "api_base": "/markets-pro/api",
+            "kite_api_key": signals.get("kite_api_key", ""),
+            "daily_cap": signals.get("daily_cap", {}),
+            "orders": signals.get("orders", []),
+        }
+        # <-escape so no substring can terminate the script element early.
+        blob = json.dumps(embedded).replace("<", "\\u003c")
+        signal_blob = f'<script type="application/json" id="signals-data">{blob}</script>'
+        signal_script = f"<script>{SIGNALS_JS}</script>"
+
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -640,7 +989,7 @@ def render_dashboard(
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>{_esc(title)}</title>
-<style>{CSS}</style>
+<style>{CSS}{SIGNALS_CSS}</style>
 </head>
 <body>
 <div class="wrap">
@@ -656,7 +1005,7 @@ def render_dashboard(
     historical data does not predict future returns, and no strategy here
     guarantees a profit. Nothing on this page is investment advice.</p>
   </div>
-
+{signal_sections}
   <h2>Performance</h2>
   {_kpi_grid(report)}
 
@@ -693,6 +1042,8 @@ def render_dashboard(
     {_money(report.ending_equity, report.base_currency)}
   </footer>
 </div>
+{signal_blob}
 <script>{ZOOM_JS}</script>
+{signal_script}
 </body>
 </html>"""

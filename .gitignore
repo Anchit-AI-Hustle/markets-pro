@@ -29,3 +29,4 @@ data/raw/
 .vscode/
 .vercel
 public/
+data/executions/

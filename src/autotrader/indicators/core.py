@@ -13,8 +13,8 @@ arithmetic stays in ``Decimal`` (see :mod:`autotrader.core.money`).
 from __future__ import annotations
 
 import math
+from collections.abc import Sequence
 from decimal import Decimal
-from typing import Sequence
 
 Number = float | int | Decimal
 Series = Sequence[Number]
@@ -133,7 +133,7 @@ def bollinger(
     sd = rolling_std(values, period, ddof=0)
     upper: Result = [None] * len(mid)
     lower: Result = [None] * len(mid)
-    for i, (m, s) in enumerate(zip(mid, sd)):
+    for i, (m, s) in enumerate(zip(mid, sd, strict=False)):
         if m is None or s is None:
             continue
         upper[i] = m + num_std * s

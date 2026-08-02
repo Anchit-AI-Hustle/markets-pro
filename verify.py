@@ -38,6 +38,11 @@ MODULES = [
     ("tests.test_engine", "End-to-end engine invariants"),
     ("tests.test_persistence", "Database row mapping"),
     ("tests.test_web", "Dashboard rendering & routes"),
+    ("tests.test_universe", "Live universe identities"),
+    ("tests.test_yahoo", "Quote parsing & cache"),
+    ("tests.test_livefeed", "Live cache → engine adapter"),
+    ("tests.test_signals", "Signal snapshot contract"),
+    ("tests.test_broker", "Execution caps & journal"),
 ]
 
 BAR = "=" * 74

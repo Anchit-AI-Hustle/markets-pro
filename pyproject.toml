@@ -48,6 +48,8 @@ select = ["E", "F", "W", "I", "UP", "B"]
 ignore = [
     "E741",  # ambiguous variable name `l` — used for `low` in OHLC code
     "B008",
+    "UP042", # keeping (str, Enum): StrEnum changes str() output, which is serialized
+    "UP017", # timezone.utc, not datetime.UTC: deploy builds may run Python < 3.11
 ]
 
 [tool.ruff.lint.per-file-ignores]

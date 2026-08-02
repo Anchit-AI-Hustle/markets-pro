@@ -5,7 +5,7 @@ from datetime import date
 from decimal import Decimal
 
 from autotrader.core.instrument import AssetClass, Instrument
-from autotrader.core.money import FXRates, Money
+from autotrader.core.money import FXRates
 from autotrader.execution.orders import Fill, Horizon, Side
 from autotrader.portfolio.portfolio import InsufficientCash, Portfolio
 

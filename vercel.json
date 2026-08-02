@@ -1,8 +1,14 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "PYTHONPATH=src python3 -m autotrader.web.build --out public",
+  "buildCommand": "PYTHONPATH=src python3 -m autotrader.web.build --out public --live data/live",
   "outputDirectory": "public",
   "framework": null,
+  "rewrites": [
+    {
+      "source": "/markets-pro/api/:path*",
+      "destination": "/api/:path*"
+    }
+  ],
   "headers": [
     {
       "source": "/markets-pro/(.*)",
@@ -17,7 +23,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+          "value": "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; connect-src 'self'; base-uri 'none'; form-action https://kite.zerodha.com; frame-ancestors 'none'"
         }
       ]
     }

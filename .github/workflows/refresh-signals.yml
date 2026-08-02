@@ -1,0 +1,47 @@
+# Nightly signal refresh: fetch real EOD bars after each market's close and
+# commit the cache. The push triggers the Vercel deploy, whose build runs the
+# engine over the committed data — so the site's signals update themselves
+# every trading day with no server to keep alive.
+name: Refresh signals
+
+on:
+  schedule:
+    - cron: "15 13 * * 1-5" # 18:45 IST — after NSE close, EOD data settled
+    - cron: "45 21 * * 1-5" # after the US close (EDT and EST both covered)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-signals
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # A single failed symbol must not block the rest of the universe; the
+      # build degrades to that symbol's previous cache file.
+      - name: Fetch EOD bars and FX
+        run: |
+          PYTHONPATH=src python3 -m autotrader.data.fetch \
+            --regions india us --out data/live --range 2y \
+            || echo "::warning::some symbols failed; committing what succeeded"
+      - name: Preview today's signals in the job log
+        run: PYTHONPATH=src python3 -m autotrader.signals.live --data data/live --out /dev/null
+      - name: Commit refreshed cache
+        run: |
+          git config user.name "signals-refresh"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/live
+          if git diff --cached --quiet; then
+            echo "cache unchanged — no deploy needed"
+          else
+            git commit -m "Refresh live market data ($(date -u +%F))"
+            git push
+          fi

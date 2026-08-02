@@ -5,7 +5,6 @@ is not clean, the derivation is written out in the comment so the literal can be
 re-checked without rerunning the code.
 """
 
-import math
 import unittest
 from datetime import date
 from decimal import Decimal

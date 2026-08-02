@@ -7,7 +7,7 @@ from decimal import Decimal
 from autotrader.core.instrument import AssetClass, Instrument
 from autotrader.core.market import CHINA, INDIA, UNITED_STATES
 from autotrader.data.bars import Bar
-from autotrader.execution.costs import USCostModel, ZERO_SLIPPAGE, SlippageModel
+from autotrader.execution.costs import ZERO_SLIPPAGE, SlippageModel, USCostModel
 from autotrader.execution.orders import (
     Fill,
     Horizon,

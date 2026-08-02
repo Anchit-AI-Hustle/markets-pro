@@ -17,10 +17,10 @@ cannot be reproduced live. The ones modelled here:
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import date, time
 from decimal import Decimal
-from typing import Mapping
 
 from .money import to_decimal
 

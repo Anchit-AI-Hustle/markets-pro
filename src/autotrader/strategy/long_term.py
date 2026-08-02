@@ -32,7 +32,7 @@ from ..core.instrument import Instrument
 from ..core.money import to_decimal
 from ..data.bars import HistoryWindow
 from ..execution.orders import Horizon
-from ..indicators.core import adx, annualised_volatility, atr, rate_of_change, simple_returns, sma
+from ..indicators.core import adx, annualised_volatility, atr, simple_returns, sma
 from .base import Direction, Signal, Strategy, StrategyContext, is_month_boundary
 
 

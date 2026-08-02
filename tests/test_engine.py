@@ -13,7 +13,6 @@ from datetime import date
 from decimal import Decimal
 
 from autotrader.core.instrument import AssetClass, Instrument
-from autotrader.core.market import CHINA, INDIA, UNITED_STATES
 from autotrader.core.money import FXRates
 from autotrader.data.bars import MarketDataSet
 from autotrader.data.synthetic import (
@@ -222,7 +221,7 @@ class TestLookaheadCanary(unittest.TestCase):
         # The strategy may see today's close (it decides at the close); it must
         # never see anything later.
         by_day = {}
-        for decision, bar_day, key in self.spy.observations:
+        for decision, bar_day, _key in self.spy.observations:
             by_day[decision] = max(by_day.get(decision, bar_day), bar_day)
         for decision, latest in by_day.items():
             self.assertLessEqual(latest, decision)

@@ -9,10 +9,10 @@ and trade count is not a result — a 40% return from three trades is noise, and
 from __future__ import annotations
 
 import math
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from datetime import date
 from decimal import Decimal
-from typing import Sequence
 
 TRADING_DAYS = 252
 
@@ -125,7 +125,7 @@ def max_drawdown_duration(days: Sequence[date], equity: Sequence[Decimal]) -> in
     peak_day = days[0]
     worst = 0
     underwater = False
-    for day, value in zip(days, equity):
+    for day, value in zip(days, equity, strict=False):
         v = float(value)
         if v >= peak:
             if underwater:

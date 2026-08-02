@@ -10,10 +10,10 @@ is no accessor on that window which can reach a future bar.
 from __future__ import annotations
 
 from bisect import bisect_right
+from collections.abc import Iterator, Sequence
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from typing import Iterator, Sequence
 
 from ..core.money import to_decimal
 
@@ -66,7 +66,7 @@ class BarSeries:
 
     def __init__(self, key: str, bars: Sequence[Bar]) -> None:
         ordered = list(bars)
-        for prev, nxt in zip(ordered, ordered[1:]):
+        for prev, nxt in zip(ordered, ordered[1:], strict=False):
             if nxt.day <= prev.day:
                 raise ValueError(
                     f"{key}: bars must strictly increase in date; "
@@ -108,7 +108,7 @@ class BarSeries:
         """Index of the last bar at or before ``day``; ``-1`` when none exists."""
         return bisect_right(self._days, day) - 1
 
-    def window(self, as_of: date) -> "HistoryWindow":
+    def window(self, as_of: date) -> HistoryWindow:
         """History visible to a decision made *at the close of* ``as_of``."""
         return HistoryWindow(self, self.index_asof(as_of), as_of)
 

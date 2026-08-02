@@ -1,0 +1,86 @@
+# Signals, execution, and the daily cap
+
+The dashboard at `anchit-tandon.com/markets-pro` shows, every trading day, the
+orders the verified strategies would place at the next open — what to buy or
+sell, how much, at what reference price, with the stop and target attached.
+This document is about the step after that: getting those orders to a broker.
+
+**Read this first:** nothing here guarantees a profit. The dashboard shows the
+strategies' real backtested record on real data — including losing years —
+precisely so you never mistake a systematic signal for a sure thing. Signals
+are research output, not investment advice. Every execution path below either
+ends with you confirming inside your own broker, or is capped and off by
+default.
+
+---
+
+## Tier 1 — One-tap handoff to Zerodha (India) — free
+
+Each fresh India signal has a **Kite** button; with two or more, a basket
+button sends them all at once. Tapping opens Kite with the order(s) pre-filled;
+you review and confirm inside Zerodha. Nothing is placed until you do.
+
+Setup (once):
+
+1. Create a (free) **Kite Publisher** app at developers.kite.trade.
+2. Put its `api_key` into `config/live.json` → `"kite_api_key"`.
+3. Commit; the next deploy enables the buttons.
+
+## Tier 2 — Capped US auto-executor (Alpaca) — free, off by default
+
+The **Alpaca** button posts the order to `/markets-pro/api/execute`, which:
+
+- refuses everything until you add `ALPACA_KEY_ID` and `ALPACA_SECRET_KEY`
+  to the Vercel project's environment variables;
+- trades **paper by default**; real money additionally requires
+  `ALPACA_LIVE=true`;
+- enforces `DAILY_CAP_USD` **against Alpaca's own order log** — it sums what
+  you have already bought today at the broker before accepting a new buy, so
+  the cap holds even across devices and page reloads.
+
+## Tier 3 — Capped India auto-invest (Kite Connect) — paid, opt-in
+
+Fully automated NSE order placement needs **Kite Connect** (₹2,000/month), and
+Zerodha requires a fresh login token every morning by design, so "automated"
+means: log in once each trading morning, then run:
+
+```bash
+PYTHONPATH=src python3 -m autotrader.broker.kite --data data/live
+```
+
+That is a **dry run** — it prints the plan and the cap math. To execute:
+
+```bash
+KITE_API_KEY=... KITE_ACCESS_TOKEN=... \
+PYTHONPATH=src python3 -m autotrader.broker.kite --data data/live --live
+```
+
+- Only **fresh BUY signals from today's snapshot** are eligible.
+- `daily_cap.INR` from `config/live.json` is enforced, and every accepted
+  order is journalled to `data/executions/` so re-running cannot double-spend.
+- SEBI's algo-trading framework applies to API-driven retail orders; check
+  Zerodha's approval requirements before going live.
+
+## The daily cap
+
+`config/live.json`:
+
+```json
+{
+  "starting_cash": {"INR": "500000", "USD": "10000"},
+  "daily_cap": {"INR": "20000", "USD": "250"},
+  "kite_api_key": ""
+}
+```
+
+`starting_cash` is what the simulated book manages (signal sizes scale with
+it); `daily_cap` is the most any executor may deploy per day. The cap bounds
+your worst day — it does not, and cannot, "ensure" your best one.
+
+## How freshness works
+
+A GitHub Action fetches end-of-day bars after the NSE close (18:45 IST) and
+after the US close, commits the cache, and the push redeploys the site — so
+signals recompute every trading day without a server. In between, the page
+polls delayed quotes (~15 min for NSE) and flags any open position that trades
+through its stop or target.

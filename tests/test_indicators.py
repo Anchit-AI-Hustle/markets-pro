@@ -135,7 +135,7 @@ class TestBollinger(unittest.TestCase):
 
     def test_bands_are_symmetric_about_the_mean(self):
         mid, upper, lower = bollinger([3, 1, 4, 1, 5, 9, 2, 6], 4, 2.0)
-        for m, u, l in zip(mid, upper, lower):
+        for m, u, l in zip(mid, upper, lower, strict=False):
             if m is None:
                 continue
             self.assertAlmostEqual(u - m, m - l, places=12)

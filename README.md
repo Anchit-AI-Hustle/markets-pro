@@ -215,3 +215,18 @@ environment and are never written to disk or logged.
 ## Licence
 
 MIT. See [LICENSE](LICENSE).
+
+## Live signals & execution
+
+The deployed dashboard ([anchit-tandon.com/markets-pro](https://anchit-tandon.com/markets-pro))
+runs these same strategies over **real NSE + US end-of-day data** and leads with
+the orders they would place at the next open — quantity, reference price, stop
+and target attached. A GitHub Action refreshes the data after each market's
+close; between closes the page overlays delayed quotes and flags any position
+that trades through its stop or target.
+
+Execution is tiered and capped — one-tap Kite basket handoff (you confirm in
+your broker), an Alpaca relay that is paper-mode until armed, and an opt-in
+capped Kite Connect auto-invest CLI. See [docs/AUTO-INVEST.md](docs/AUTO-INVEST.md)
+for setup and the honest constraints. None of it guarantees a profit, and none
+of it is investment advice.

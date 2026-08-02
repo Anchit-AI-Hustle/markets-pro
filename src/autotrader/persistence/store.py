@@ -19,10 +19,11 @@ import os
 import urllib.error
 import urllib.request
 import uuid
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
 from decimal import Decimal
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any
 
 from ..engine.metrics import PerformanceReport
 
@@ -136,7 +137,7 @@ def report_to_rows(
             "day": _iso(day),
             "equity": _num(value),
         }
-        for day, value in zip(report.equity_days, report.equity_values)
+        for day, value in zip(report.equity_days, report.equity_values, strict=False)
     ]
 
     trade_rows = [

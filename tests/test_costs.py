@@ -10,6 +10,7 @@ from decimal import Decimal
 
 from autotrader.core.instrument import AssetClass, Instrument
 from autotrader.execution.costs import (
+    ZERO_SLIPPAGE,
     ChinaCostModel,
     CostBreakdown,
     FlatBpsCostModel,
@@ -17,7 +18,6 @@ from autotrader.execution.costs import (
     RussiaCostModel,
     SlippageModel,
     USCostModel,
-    ZERO_SLIPPAGE,
     get_cost_model,
     register_cost_model,
 )

@@ -8,9 +8,9 @@ property for a ledger.
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
-from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP, localcontext
-from typing import Iterable, Mapping
+from decimal import ROUND_DOWN, ROUND_HALF_UP, Decimal, localcontext
 
 # Number of minor units (decimal places) each currency is quoted in.
 CURRENCY_PRECISION: dict[str, int] = {
@@ -66,56 +66,56 @@ class Money:
 
     # -- construction ----------------------------------------------------
     @classmethod
-    def zero(cls, currency: str) -> "Money":
+    def zero(cls, currency: str) -> Money:
         return cls(Decimal("0"), currency)
 
     # -- guards ----------------------------------------------------------
-    def _check(self, other: "Money") -> None:
+    def _check(self, other: Money) -> None:
         if self.currency != other.currency:
             raise CurrencyMismatch(
                 f"cannot combine {self.currency} with {other.currency}"
             )
 
     # -- arithmetic ------------------------------------------------------
-    def __add__(self, other: "Money") -> "Money":
+    def __add__(self, other: Money) -> Money:
         self._check(other)
         return Money(self.amount + other.amount, self.currency)
 
-    def __sub__(self, other: "Money") -> "Money":
+    def __sub__(self, other: Money) -> Money:
         self._check(other)
         return Money(self.amount - other.amount, self.currency)
 
-    def __neg__(self) -> "Money":
+    def __neg__(self) -> Money:
         return Money(-self.amount, self.currency)
 
-    def __abs__(self) -> "Money":
+    def __abs__(self) -> Money:
         return Money(abs(self.amount), self.currency)
 
-    def __mul__(self, factor: object) -> "Money":
+    def __mul__(self, factor: object) -> Money:
         return Money(self.amount * to_decimal(factor), self.currency)
 
     __rmul__ = __mul__
 
-    def __truediv__(self, divisor: object) -> "Money":
+    def __truediv__(self, divisor: object) -> Money:
         d = to_decimal(divisor)
         if d == 0:
             raise ZeroDivisionError("division of Money by zero")
         return Money(self.amount / d, self.currency)
 
     # -- comparison ------------------------------------------------------
-    def __lt__(self, other: "Money") -> bool:
+    def __lt__(self, other: Money) -> bool:
         self._check(other)
         return self.amount < other.amount
 
-    def __le__(self, other: "Money") -> bool:
+    def __le__(self, other: Money) -> bool:
         self._check(other)
         return self.amount <= other.amount
 
-    def __gt__(self, other: "Money") -> bool:
+    def __gt__(self, other: Money) -> bool:
         self._check(other)
         return self.amount > other.amount
 
-    def __ge__(self, other: "Money") -> bool:
+    def __ge__(self, other: Money) -> bool:
         self._check(other)
         return self.amount >= other.amount
 
@@ -128,7 +128,7 @@ class Money:
     def is_negative(self) -> bool:
         return self.amount < 0
 
-    def quantized(self) -> "Money":
+    def quantized(self) -> Money:
         """Round to the currency's minor unit, half-up (the banking default)."""
         places = CURRENCY_PRECISION[self.currency]
         exp = Decimal(1).scaleb(-places)

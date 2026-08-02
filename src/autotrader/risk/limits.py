@@ -11,15 +11,14 @@ standing between a strategy with a bad day and a strategy with no capital.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import date
 from decimal import Decimal
-from typing import Mapping
 
-from ..core.instrument import Instrument
 from ..core.market import MarketSpec
 from ..core.money import FXRates, Money, to_decimal
-from ..execution.orders import Horizon, Order, Side
+from ..execution.orders import Order, Side
 from ..portfolio.portfolio import Portfolio
 
 
@@ -32,11 +31,11 @@ class RiskDecision:
     detail: str = ""
 
     @classmethod
-    def ok(cls) -> "RiskDecision":
+    def ok(cls) -> RiskDecision:
         return cls(True)
 
     @classmethod
-    def deny(cls, code: str, detail: str) -> "RiskDecision":
+    def deny(cls, code: str, detail: str) -> RiskDecision:
         return cls(False, code, detail)
 
 

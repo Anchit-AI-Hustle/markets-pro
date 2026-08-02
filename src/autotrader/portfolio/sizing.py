@@ -193,7 +193,8 @@ def apply_constraints(
             reason = "liquidity_capped"
 
     if qty <= 0:
-        return SizingResult(Decimal("0"), Decimal("0"), reason if reason != "ok" else "zero_quantity")
+        outcome = reason if reason != "ok" else "zero_quantity"
+        return SizingResult(Decimal("0"), Decimal("0"), outcome)
 
     notional = instrument.contract_value(px, qty)
 

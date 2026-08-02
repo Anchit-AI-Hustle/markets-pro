@@ -12,8 +12,6 @@ request limits. Do not expose it directly to the internet.
 from __future__ import annotations
 
 import argparse
-from datetime import date
-from decimal import Decimal
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -46,7 +44,9 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 f"<a href='{ROUTE}'>{ROUTE}</a>.</p>",
             )
 
-    def _send(self, status: int, body: str, *, content_type: str = "text/html; charset=utf-8") -> None:
+    def _send(
+        self, status: int, body: str, *, content_type: str = "text/html; charset=utf-8"
+    ) -> None:
         payload = body.encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", content_type)
@@ -85,7 +85,6 @@ def serve(html: str, host: str = DEFAULT_HOST, port: int = DEFAULT_PORT) -> None
 
 def _demo_html() -> str:
     """Render the bundled demo so `python -m autotrader.web.server` shows something."""
-    from ..data.synthetic import business_days, generate_trending_series
     from .build import run_demo_backtest
     from .render import render_dashboard
 

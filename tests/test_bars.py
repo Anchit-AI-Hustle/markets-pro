@@ -99,7 +99,7 @@ class TestLookaheadGuard(unittest.TestCase):
         self.days = [date(2024, 1, d) for d in (2, 3, 4, 5, 8)]
         self.closes = [100, 101, 102, 103, 104]
         self.series = BarSeries(
-            "US:TEST", [make_bar(d, c) for d, c in zip(self.days, self.closes)]
+            "US:TEST", [make_bar(d, c) for d, c in zip(self.days, self.closes, strict=False)]
         )
 
     def test_window_stops_at_the_decision_date(self):

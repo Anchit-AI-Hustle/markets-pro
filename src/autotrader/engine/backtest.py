@@ -18,10 +18,10 @@ trading rather than an artefact of the simulation.
 
 from __future__ import annotations
 
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import date
 from decimal import Decimal
-from typing import Callable, Mapping, Sequence
 
 from ..core.calendar import GlobalCalendar, TradingCalendar
 from ..core.instrument import Instrument

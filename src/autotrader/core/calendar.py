@@ -7,9 +7,9 @@ skip days (intersection) or trade venues that were closed (naive daily loop).
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass
 from datetime import date, timedelta
-from typing import Iterable, Iterator, Sequence
 
 from .market import MarketSpec
 
@@ -86,7 +86,7 @@ class GlobalCalendar:
     calendars: dict[str, TradingCalendar]
 
     @classmethod
-    def from_specs(cls, specs: Iterable[MarketSpec]) -> "GlobalCalendar":
+    def from_specs(cls, specs: Iterable[MarketSpec]) -> GlobalCalendar:
         return cls({s.code: TradingCalendar(s) for s in specs})
 
     def open_markets(self, day: date) -> list[str]:

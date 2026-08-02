@@ -1,0 +1,5 @@
+{
+  "starting_cash": {"INR": "500000", "USD": "10000"},
+  "daily_cap": {"INR": "20000", "USD": "250"},
+  "kite_api_key": ""
+}

@@ -155,6 +155,8 @@ def build_static(
     report: PerformanceReport | None = None,
     tests_passed: int = 0,
     tests_total: int = 0,
+    signals: dict | None = None,
+    subtitle: str | None = None,
 ) -> Path:
     """Write ``out_dir/markets-pro/index.html`` and return its path."""
     report = report or run_demo_backtest()
@@ -164,16 +166,36 @@ def build_static(
     html = render_dashboard(
         report,
         title="Markets Pro",
-        subtitle=(
+        subtitle=subtitle
+        or (
             f"{report.start_day} to {report.end_day} &middot; 4 markets &middot; "
             f"base {report.base_currency} &middot; "
             "<strong>synthetic demo data</strong>"
         ),
         tests_passed=tests_passed,
         tests_total=tests_total,
+        signals=signals,
     )
     target.write_text(html, encoding="utf-8")
     return target
+
+
+def _try_live(data_root: Path, config_path: Path) -> tuple[dict, PerformanceReport] | None:
+    """Live signals from the committed cache, or ``None`` to fall back to demo.
+
+    The deploy must never break because a fetch failed: any problem here means
+    the site ships the (clearly labelled) synthetic dashboard instead of no
+    site at all. The failure is printed so the deploy log shows what happened.
+    """
+    if not data_root.exists():
+        return None
+    try:
+        from ..signals.live import generate
+
+        return generate(data_root, config_path)
+    except Exception as error:  # noqa: BLE001 — degrade to demo, loudly
+        print(f"live signal build failed ({error!r}); falling back to demo data")
+        return None
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -182,12 +204,29 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--sessions", type=int, default=750)
     parser.add_argument("--tests-passed", type=int, default=0)
     parser.add_argument("--tests-total", type=int, default=0)
+    parser.add_argument("--live", type=Path, default=None,
+                        help="live cache root; renders real-data signals when present")
+    parser.add_argument("--live-config", type=Path, default=Path("config/live.json"))
     args = parser.parse_args(argv)
 
-    report = run_demo_backtest(sessions=args.sessions)
+    signals = None
+    subtitle = None
+    live = _try_live(args.live, args.live_config) if args.live else None
+    if live is not None:
+        signals, report = live
+        fresh = sum(1 for order in signals["orders"] if order["fresh"])
+        subtitle = (
+            f"{report.start_day} to {report.end_day} &middot; India + US &middot; "
+            f"base {report.base_currency} &middot; <strong>real market data</strong> "
+            f"&middot; {fresh} fresh signal(s)"
+        )
+    else:
+        report = run_demo_backtest(sessions=args.sessions)
+
     path = build_static(
         args.out, report=report,
         tests_passed=args.tests_passed, tests_total=args.tests_total,
+        signals=signals, subtitle=subtitle,
     )
     print(report.summary())
     print(f"\nwrote {path}")
