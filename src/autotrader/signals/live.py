@@ -382,6 +382,7 @@ def build_snapshot(
         "cash": {ccy: _s(money.amount) for ccy, money in sorted(engine.portfolio.cash.items())},
         "usdinr": _s(fx.rate("USD", "INR")),
         "daily_cap": dict(live_config["daily_cap"]),
+        "starting_cash": dict(live_config["starting_cash"]),
         "kite_api_key": live_config.get("kite_api_key", ""),
         "horizon_stats": stats,
         "totals": {

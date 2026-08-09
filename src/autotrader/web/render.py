@@ -388,22 +388,27 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
     history = order.get("history") or {}
     win_rate = history.get("win_rate")
 
+    # Paper leads deliberately: the reversible, no-credential action is the one
+    # that should be easiest to reach, and the real-money path sits behind it.
+    paper = (
+        f'<button type="button" class="exec big" data-paper-buy="{index}">Paper buy</button>'
+    )
     if order["region"] == "india":
         disabled = "" if has_kite_key else (
             ' disabled title="Add your Kite Publisher api_key to'
             ' config/live.json to enable one-tap handoff"'
         )
-        action = (
-            f'<button type="button" class="exec big" data-exec="kite:{index}"{disabled}>'
-            "Invest now &middot; Kite</button>"
+        real = (
+            f'<button type="button" class="exec ghost" data-exec="kite:{index}"{disabled}>'
+            "Real &middot; Kite</button>"
         )
-        status = ""
     else:
-        action = (
-            f'<button type="button" class="exec big" data-exec="us:{index}">'
-            "Invest now &middot; Alpaca</button>"
+        real = (
+            f'<button type="button" class="exec ghost" data-exec="us:{index}">'
+            "Real &middot; Alpaca</button>"
         )
-        status = f'<span class="execstatus" data-exec-status="{index}" aria-live="polite"></span>'
+    action = paper + real
+    status = f'<span class="execstatus" data-exec-status="{index}" aria-live="polite"></span>'
 
     hold = order.get("max_holding_days")
     typical = history.get("median_days_held")
@@ -677,6 +682,14 @@ def _setup_section(signals: dict) -> str:
     )
     return f"""<div class="tiers">
   <div class="tier">
+    <h3>Paper trading <span class="state on">ready now</span></h3>
+    <p>Press <strong>Paper buy</strong> on any signal &mdash; no account, no keys.
+    The trade is stored in this browser only and appears in the <strong>Paper</strong>
+    tab with live profit/loss and stop/target flags. The daily cap applies here too,
+    so you learn where it bites before real money is involved. Fills are assumed at
+    the price shown, which is kinder than a real market order.</p>
+  </div>
+  <div class="tier">
     <h3>One-tap Kite basket {kite_state}</h3>
     <p>Each fresh India signal opens pre-filled in Zerodha; you review and confirm inside
     your own broker login. Free. Enable it by putting a Kite Publisher <code>api_key</code>
@@ -766,6 +779,16 @@ button.exec.big{font-size:14.5px;padding:12px 18px;width:100%;border-radius:var(
 .tcell{display:flex;flex-direction:column;gap:3px;padding:12px 14px;
   background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
 
+button.exec.ghost{font-size:12px;font-weight:600;padding:7px 10px;color:var(--muted);
+  margin-top:6px;width:100%}
+button.exec.ghost:hover:not(:disabled){color:var(--accent)}
+button.exec.danger{color:var(--neg);border-color:var(--line)}
+button.exec.danger:hover{background:color-mix(in srgb,var(--neg) 12%,var(--tag))}
+.mcell.act{flex-direction:column;gap:0}
+.papersub{font-size:13px;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--muted);margin:26px 0 10px;font-weight:600}
+.papertop .caption{margin-top:12px}
+
 .tiers{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   margin-top:14px}
 .tier{background:var(--panel);border:1px solid var(--line);
@@ -827,6 +850,284 @@ TABS_JS = """
   show(location.hash.replace('#', ''));
 })();
 """
+
+def _paper_section() -> str:
+    """Shell for the paper portfolio; JS fills it from browser storage.
+
+    Rendered empty on purpose — the paper book is per-viewer state that lives
+    in ``localStorage``, so it cannot be baked into a static page shared by
+    everyone. The build stays deterministic; the portfolio stays private to
+    the browser that traded it.
+    """
+    return """<div class="papertop">
+  <div class="totals" data-paper-summary></div>
+  <p class="caption">Paper trades are simulated, stored only in this browser, and
+  never sent to a broker &mdash; the whole point is to see how the signals behave
+  before any money is involved. Fills are assumed at the price shown when you
+  press the button, which is kinder than reality: a real market order can slip,
+  and a real stop can gap straight through. Treat paper results as the optimistic
+  edge of what live trading would do.</p>
+</div>
+<h3 class="papersub">Holdings</h3>
+<div data-paper-positions></div>
+<h3 class="papersub">Trade log</h3>
+<div data-paper-log></div>
+<p><button type="button" class="exec danger" data-paper-reset>Reset paper portfolio</button></p>"""
+
+
+#: The paper broker: a full simulated portfolio in browser storage.
+#:
+#: No account, no keys, no server. Buying deducts cash and opens a position;
+#: selling realises the P&L; the same delayed-quote feed that drives the live
+#: overlay marks the book to market. The daily cap is enforced here too, so
+#: the cap logic itself gets exercised before it ever guards real money.
+PAPER_JS = """
+(function () {
+  var blob = document.getElementById('signals-data');
+  if (!blob) return;
+  var cfg;
+  try { cfg = JSON.parse(blob.textContent); } catch (e) { return; }
+
+  var KEY = 'markets-pro.paper.v1';
+  var summaryEl = document.querySelector('[data-paper-summary]');
+  if (!summaryEl) return;
+
+  function fresh() {
+    var cash = {};
+    Object.keys(cfg.starting_cash || {}).forEach(function (c) {
+      cash[c] = Number(cfg.starting_cash[c]);
+    });
+    return { v: 1, cash: cash, positions: {}, log: [] };
+  }
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return fresh();
+      var state = JSON.parse(raw);
+      if (!state || state.v !== 1 || !state.cash) return fresh();
+      return state;
+    } catch (e) { return fresh(); }
+  }
+
+  function save(state) {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* full or blocked */ }
+  }
+
+  function money(n) {
+    return Number(n).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+    });
+  }
+  function today() { return new Date().toISOString().slice(0, 10); }
+
+  // Cap check runs against this browser's own paper log for today, mirroring
+  // how the live executors check the broker's order log.
+  function spentToday(state, currency) {
+    var day = today(), total = 0;
+    state.log.forEach(function (row) {
+      if (row.action === 'buy' && row.currency === currency && row.ts.slice(0, 10) === day) {
+        total += row.qty * row.price;
+      }
+    });
+    return total;
+  }
+
+  function buy(order) {
+    var state = load();
+    var ccy = order.currency;
+    var price = Number(livePrice(order.yahoo) || order.reference_price);
+    var qty = Number(order.quantity);
+    var cost = price * qty;
+    var cap = Number((cfg.daily_cap || {})[ccy] || 0);
+
+    if (cap > 0 && spentToday(state, ccy) + cost > cap) {
+      return {ok: false, message: 'daily cap ' + money(cap) + ' ' + ccy + ' would be exceeded'};
+    }
+    if ((state.cash[ccy] || 0) < cost) {
+      return {ok: false, message: 'not enough paper cash in ' + ccy};
+    }
+
+    state.cash[ccy] -= cost;
+    var held = state.positions[order.key];
+    if (held) {
+      var total = held.qty + qty;
+      held.cost = (held.cost * held.qty + cost) / total;
+      held.qty = total;
+    } else {
+      state.positions[order.key] = {
+        key: order.key, symbol: order.symbol, name: order.name, yahoo: order.yahoo,
+        region: order.region, currency: ccy, qty: qty, cost: price,
+        stop: order.stop_loss, target: order.take_profit, opened: today()
+      };
+    }
+    state.log.push({ts: new Date().toISOString(), action: 'buy', key: order.key,
+                    symbol: order.symbol, qty: qty, price: price, currency: ccy});
+    save(state);
+    render();
+    return {ok: true, message: 'paper bought ' + qty + ' ' + order.symbol};
+  }
+
+  function sell(key) {
+    var state = load();
+    var pos = state.positions[key];
+    if (!pos) return;
+    var price = Number(livePrice(pos.yahoo) || pos.cost);
+    state.cash[pos.currency] = (state.cash[pos.currency] || 0) + price * pos.qty;
+    state.log.push({ts: new Date().toISOString(), action: 'sell', key: key, symbol: pos.symbol,
+                    qty: pos.qty, price: price, currency: pos.currency,
+                    pnl: (price - pos.cost) * pos.qty});
+    delete state.positions[key];
+    save(state);
+    render();
+  }
+
+  function livePrice(yahoo) {
+    var q = window.__mpQuotes && window.__mpQuotes[yahoo];
+    return q ? q.price : null;
+  }
+
+  function render() {
+    var state = load();
+    var keys = Object.keys(state.positions);
+    var usdinr = Number(cfg.usdinr) || 0;
+
+    function toUsd(amount, ccy) {
+      if (ccy === 'USD') return amount;
+      return usdinr ? amount / usdinr : 0;
+    }
+
+    var invested = 0, marketValue = 0, openPnl = 0, cashUsd = 0;
+    Object.keys(state.cash).forEach(function (c) { cashUsd += toUsd(state.cash[c], c); });
+    keys.forEach(function (k) {
+      var p = state.positions[k];
+      var price = Number(livePrice(p.yahoo) || p.cost);
+      invested += toUsd(p.cost * p.qty, p.currency);
+      marketValue += toUsd(price * p.qty, p.currency);
+      openPnl += toUsd((price - p.cost) * p.qty, p.currency);
+    });
+    var realised = 0;
+    state.log.forEach(function (row) {
+      if (row.action === 'sell') realised += toUsd(row.pnl || 0, row.currency);
+    });
+
+    function tcell(label, value, note, tone, signed) {
+      var shown;
+      if (value === null) { shown = '&mdash;'; }
+      else {
+        var pre = signed ? (value >= 0 ? '+' : '\\u2212') : '';
+        shown = pre + money(signed ? Math.abs(value) : value) + ' <span class="ccy">USD</span>';
+      }
+      return '<div class="tcell"><span class="mlabel">' + label + '</span>' +
+             '<span class="mvalue ' + (tone || '') + '">' + shown + '</span>' +
+             '<span class="mnote">' + note + '</span></div>';
+    }
+    function tone(n) { return n > 0 ? 'pos' : (n < 0 ? 'neg' : 'flat'); }
+
+    summaryEl.innerHTML =
+      tcell('Paper account value', cashUsd + marketValue, 'cash plus holdings', '') +
+      tcell('Cash available', cashUsd, Object.keys(state.cash).map(function (c) {
+        return money(state.cash[c]) + ' ' + c; }).join(' &middot; '), '') +
+      tcell('Holdings at market', marketValue, keys.length + ' position(s)', '') +
+      tcell('Open profit / loss', openPnl, 'unrealised', tone(openPnl), true) +
+      tcell('Realised profit / loss', realised, 'from closed paper trades', tone(realised), true);
+
+    var posEl = document.querySelector('[data-paper-positions]');
+    if (!keys.length) {
+      posEl.innerHTML = '<p class="empty">No paper positions yet. Press ' +
+        '<strong>Paper buy</strong> on a signal to open one.</p>';
+    } else {
+      var rows = keys.map(function (k) {
+        var p = state.positions[k];
+        var price = livePrice(p.yahoo);
+        var mark = Number(price || p.cost);
+        var pnl = (mark - p.cost) * p.qty;
+        var pct = p.cost ? (mark - p.cost) / p.cost * 100 : 0;
+        var flag = 'holding', cls = 'badge ok';
+        if (p.stop && mark <= Number(p.stop)) {
+          flag = 'STOP HIT'; cls = 'badge hit';
+        } else if (p.target && mark >= Number(p.target)) {
+          flag = 'TARGET HIT'; cls = 'badge target';
+        }
+        return '<tr><td><strong>' + esc(p.symbol) + '</strong> ' +
+          '<span class="muted-inline">' + esc(p.name) + '</span></td>' +
+          '<td class="num">' + p.qty + '</td>' +
+          '<td class="num">' + money(p.cost) +
+            ' <span class="ccy">' + esc(p.currency) + '</span></td>' +
+          '<td class="num live-cell" data-quote="' + esc(p.yahoo) + '">' +
+            (price ? money(price) : money(p.cost)) + '</td>' +
+          '<td class="num ' + tone(pnl) + '">' + (pnl >= 0 ? '+' : '\\u2212') +
+            money(Math.abs(pnl)) +
+            ' <span class="mnote">' + (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%</span></td>' +
+          '<td><span class="' + cls + '">' + flag + '</span></td>' +
+          '<td class="num"><button type="button" class="exec" data-paper-sell="' + esc(k) +
+            '">Sell</button></td></tr>';
+      }).join('');
+      posEl.innerHTML = '<table><thead><tr><th>Instrument</th><th class="num">Qty</th>' +
+        '<th class="num">Paper cost</th><th class="num">Live price</th>' +
+        '<th class="num">Profit / loss</th><th>Status</th><th class="num">Close</th>' +
+        '</tr></thead><tbody>' + rows + '</tbody></table>';
+    }
+
+    var logEl = document.querySelector('[data-paper-log]');
+    if (!state.log.length) {
+      logEl.innerHTML = '<p class="empty">No paper trades recorded yet.</p>';
+    } else {
+      var entries = state.log.slice().reverse().map(function (row) {
+        var pnl = row.action === 'sell'
+          ? '<span class="' + tone(row.pnl) + '">' + (row.pnl >= 0 ? '+' : '\\u2212') +
+            money(Math.abs(row.pnl)) + '</span>'
+          : '&mdash;';
+        return '<tr><td>' + esc(row.ts.replace('T', ' ').slice(0, 16)) + '</td>' +
+          '<td><span class="tag ' + (row.action === 'buy' ? 'side-buy' : 'side-sell') + '">' +
+            row.action.toUpperCase() + '</span></td>' +
+          '<td><strong>' + esc(row.symbol) + '</strong></td>' +
+          '<td class="num">' + row.qty + '</td>' +
+          '<td class="num">' + money(row.price) + ' <span class="ccy">' +
+            esc(row.currency) + '</span></td>' +
+          '<td class="num">' + pnl + '</td></tr>';
+      }).join('');
+      logEl.innerHTML = '<table><thead><tr><th>When</th><th>Action</th><th>Instrument</th>' +
+        '<th class="num">Qty</th><th class="num">Price</th><th class="num">Realised</th>' +
+        '</tr></thead><tbody>' + entries + '</tbody></table>';
+    }
+
+    var badge = document.querySelector('[data-paper-badge]');
+    if (badge) {
+      badge.textContent = keys.length ? String(keys.length) : '';
+      badge.style.display = keys.length ? '' : 'none';
+    }
+  }
+
+  document.addEventListener('click', function (event) {
+    var buyBtn = event.target.closest('[data-paper-buy]');
+    if (buyBtn) {
+      var order = (cfg.orders || [])[Number(buyBtn.getAttribute('data-paper-buy'))];
+      if (!order) return;
+      var result = buy(order);
+      var status = buyBtn.parentNode.querySelector('.execstatus');
+      if (status) status.textContent = result.message;
+      return;
+    }
+    var sellBtn = event.target.closest('[data-paper-sell]');
+    if (sellBtn) { sell(sellBtn.getAttribute('data-paper-sell')); return; }
+    var reset = event.target.closest('[data-paper-reset]');
+    if (reset) {
+      if (window.confirm('Clear the paper portfolio and start over?')) {
+        try { localStorage.removeItem(KEY); } catch (e) { /* ignore */ }
+        render();
+      }
+    }
+  });
+
+  window.__mpPaperRender = render;
+  render();
+})();
+"""
+
 
 #: Broker handoff + delayed-quote overlay for the signals sections.
 #:
@@ -915,13 +1216,19 @@ SIGNALS_JS = """
   });
 
   // --- delayed quote overlay -------------------------------------------
-  var cells = document.querySelectorAll('[data-quote]');
-  if (!cells.length || typeof fetch !== 'function') return;
-  var symbols = [];
-  Array.prototype.forEach.call(cells, function (cell) {
-    var s = cell.getAttribute('data-quote');
-    if (s && symbols.indexOf(s) < 0) symbols.push(s);
-  });
+  // Cells are queried at poll time, not once at startup: the paper portfolio
+  // renders its rows after load, and they must pick up quotes as well.
+  if (typeof fetch !== 'function') return;
+  function quoteCells() { return document.querySelectorAll('[data-quote]'); }
+  function symbolList() {
+    var out = [];
+    Array.prototype.forEach.call(quoteCells(), function (cell) {
+      var s = cell.getAttribute('data-quote');
+      if (s && out.indexOf(s) < 0) out.push(s);
+    });
+    return out;
+  }
+  if (!symbolList().length) return;
 
   function fmt(value) {
     var opts = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
@@ -929,7 +1236,9 @@ SIGNALS_JS = """
   }
 
   function applyQuotes(quotes) {
-    Array.prototype.forEach.call(cells, function (cell) {
+    // Shared so the paper book can mark its holdings to the same prices.
+    window.__mpQuotes = quotes;
+    Array.prototype.forEach.call(quoteCells(), function (cell) {
       var quote = quotes[cell.getAttribute('data-quote')];
       if (!quote || !quote.price) return;
       var price = Number(quote.price);
@@ -973,9 +1282,14 @@ SIGNALS_JS = """
   var timer = null;
   function poll() {
     if (document.hidden) return;
-    fetch(API + '/quotes?symbols=' + encodeURIComponent(symbols.join(',')))
+    fetch(API + '/quotes?symbols=' + encodeURIComponent(symbolList().join(',')))
       .then(function (res) { return res.ok ? res.json() : null; })
-      .then(function (body) { if (body && body.quotes) applyQuotes(body.quotes); })
+      .then(function (body) {
+        if (!body || !body.quotes) return;
+        applyQuotes(body.quotes);
+        // Re-render the paper book so its marks and stop flags use these prices.
+        if (window.__mpPaperRender) { window.__mpPaperRender(); applyQuotes(body.quotes); }
+      })
       .catch(function () { /* offline or proxy down: last close already shown */ });
   }
   poll();
@@ -1296,6 +1610,9 @@ def render_dashboard(
         invest_tab = (
             f'<button type="button" role="tab" data-tabbtn="invest" aria-selected="false" '
             f'aria-controls="panel-invest">Invest Now{badge}</button>'
+            '<button type="button" role="tab" data-tabbtn="paper" aria-selected="false" '
+            'aria-controls="panel-paper">Paper<span class="tabbadge" data-paper-badge '
+            'style="display:none"></span></button>'
         )
         glance = _glance(signals)
         invest_panel = f"""
@@ -1309,17 +1626,26 @@ def render_dashboard(
     <h2>Open positions &amp; live triggers</h2>
     <div class="panel">{_positions_section(signals)}</div>
   </section>
+
+  <section class="tabpanel" id="panel-paper" data-tab="paper" role="tabpanel" hidden>
+    <h2>Paper portfolio</h2>
+    <div class="panel">{_paper_section()}</div>
+  </section>
 """
         embedded = {
             "api_base": "/markets-pro/api",
             "kite_api_key": signals.get("kite_api_key", ""),
             "daily_cap": signals.get("daily_cap", {}),
+            "starting_cash": signals.get("starting_cash", {}),
+            "usdinr": signals.get("usdinr", ""),
             "orders": signals.get("orders", []),
         }
         # <-escape so no substring can terminate the script element early.
         blob = json.dumps(embedded).replace("<", "\\u003c")
         signal_blob = f'<script type="application/json" id="signals-data">{blob}</script>'
-        signal_script = f"<script>{SIGNALS_JS}</script>"
+        # Paper first: it defines window.__mpPaperRender before the quote
+        # overlay starts polling, so the first poll can already mark the book.
+        signal_script = f"<script>{PAPER_JS}</script>\n<script>{SIGNALS_JS}</script>"
 
     tab_bar = f"""<nav class="tabs" role="tablist" aria-label="Sections">
     <button type="button" role="tab" data-tabbtn="dashboard" aria-selected="true"

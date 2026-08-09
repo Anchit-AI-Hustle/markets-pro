@@ -14,6 +14,29 @@ default.
 
 ---
 
+## Tier 0 — Paper trading — free, no account, start here
+
+Every signal has a **Paper buy** button. It needs no broker, no API key and no
+signup: the trade is recorded in your browser's own storage, and the **Paper**
+tab tracks holdings, cash, live profit/loss, stop and target flags, and a full
+trade log. Sell any holding, or reset the book, at any time.
+
+The daily cap applies to paper exactly as it does to real money, so you find
+out that (say) a $250/day cap refuses a $1,566 Apple order *here*, not after
+wiring a broker.
+
+Two honest limits on paper results:
+
+- **Fills are optimistic.** Paper assumes you get the price shown at the moment
+  you press the button. Real market orders slip, and a real stop can gap
+  straight through its level, filling well below it.
+- **It lives in one browser.** Clearing site data clears the paper book. It is a
+  learning tool, not a record you should rely on.
+
+When you want broker-side realism — real fills, real rejections, real
+settlement — move to Alpaca paper in Tier 2, which is still free and still not
+real money.
+
 ## Tier 1 — One-tap handoff to Zerodha (India) — free
 
 Each fresh India signal has a **Kite** button; with two or more, a basket

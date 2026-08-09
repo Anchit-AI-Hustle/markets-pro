@@ -339,6 +339,34 @@ class TestRenderWithSignals(unittest.TestCase):
         self.assertNotIn("+0 <span", html)
         self.assertNotIn("&amp;amp;", html)  # labels must not be double-escaped
 
+    def test_paper_trading_is_the_primary_action(self):
+        """Paper must lead: it is the reversible, no-credential path."""
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn('data-paper-buy="0"', html)
+        self.assertIn("Paper buy", html)
+        self.assertIn("Paper portfolio", html)
+        self.assertIn('data-tabbtn="paper"', html)
+        # Real-broker buttons remain, visually secondary.
+        self.assertIn("exec ghost", html)
+        self.assertIn('data-exec="kite:0"', html)
+
+    def test_paper_book_gets_the_config_it_needs(self):
+        """The paper broker cannot open a book without starting cash and FX."""
+        self.signals["starting_cash"] = {"INR": "500000", "USD": "10000"}
+        self.signals["usdinr"] = "95.198"
+        html = render_dashboard(self.report, signals=self.signals)
+        blob_start = html.index('id="signals-data"')
+        blob = html[blob_start:html.index("</script>", blob_start)]
+        self.assertIn("starting_cash", blob)
+        self.assertIn("usdinr", blob)
+        self.assertIn("daily_cap", blob)
+
+    def test_paper_state_is_never_baked_into_the_shared_page(self):
+        """Paper holdings are per-browser; a static page must not carry them."""
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("data-paper-positions", html)
+        self.assertIn("No paper positions yet", html)
+
     def test_negative_amounts_use_a_typographic_minus(self):
         self.signals["positions"][0]["unrealized"] = "-42.50"
         html = render_dashboard(self.report, signals=self.signals)
