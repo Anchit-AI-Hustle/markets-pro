@@ -350,17 +350,29 @@ def _price(value: object) -> str:
     return f"{float(str(value)):,.2f}"
 
 
-def _signal_row(index: int, order: dict, has_kite_key: bool) -> str:
+def _pct_str(value: object, places: int = 1) -> str:
+    """Format a snapshot percentage string (a ratio) for display."""
+    return f"{float(str(value)) * 100:+.{places}f}%"
+
+
+def _money_line(amount: object, currency: str, *, signed: bool = False) -> str:
+    if amount is None:
+        return "&mdash;"
+    value = float(str(amount))
+    sign = "+" if signed and value > 0 else ""
+    return f'{sign}{value:,.0f} <span class="ccy">{_esc(currency)}</span>'
+
+
+def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
+    """One signal as a money-first card: invest, upside, downside, horizon."""
     side = order["side"]
     side_class = "side-buy" if side == "BUY" else "side-sell"
-    stale = "" if order["fresh"] else " class=\"stale\""
-    stop = _price(order["stop_loss"]) if order.get("stop_loss") else "&mdash;"
-    target = _price(order["take_profit"]) if order.get("take_profit") else "&mdash;"
-    notional = _price(order["notional"]) if order.get("notional") else "?"
-    reason = _esc(order.get("reason") or order["horizon"].replace("_", " "))
-    fresh_note = "" if order["fresh"] else '<span class="tag">resting</span> '
+    ccy = order["currency"]
+    stale = "" if order["fresh"] else " stale"
     region_code = "IN" if order["region"] == "india" else "US"
     region_label = REGION_NAMES.get(region_code, order["region"])
+    history = order.get("history") or {}
+    win_rate = history.get("win_rate")
 
     if order["region"] == "india":
         disabled = "" if has_kite_key else (
@@ -368,30 +380,117 @@ def _signal_row(index: int, order: dict, has_kite_key: bool) -> str:
             ' config/live.json to enable one-tap handoff"'
         )
         action = (
-            f'<button type="button" class="exec" data-exec="kite:{index}"{disabled}>Kite</button>'
+            f'<button type="button" class="exec big" data-exec="kite:{index}"{disabled}>'
+            "Invest now &middot; Kite</button>"
         )
+        status = ""
     else:
         action = (
-            f'<button type="button" class="exec" data-exec="us:{index}">Alpaca</button>'
-            f'<span class="execstatus" data-exec-status="{index}" aria-live="polite"></span>'
+            f'<button type="button" class="exec big" data-exec="us:{index}">'
+            "Invest now &middot; Alpaca</button>"
+        )
+        status = f'<span class="execstatus" data-exec-status="{index}" aria-live="polite"></span>'
+
+    hold = order.get("max_holding_days")
+    typical = history.get("median_days_held")
+    window = f"within {hold} trading days" if hold else "held until the exit signal"
+    typical_note = f", typically closed in {typical}" if typical else ""
+    rate_note = (
+        f"{float(win_rate) * 100:.0f}% of {history.get('trades', 0)} past trades in this book "
+        "finished profitable"
+        if win_rate is not None
+        else "no closed trades in this book yet — hit rate unknown"
+    )
+    reward_risk = order.get("reward_risk")
+    rr_note = f"{float(str(reward_risk)):.1f}:1 reward-to-risk" if reward_risk else ""
+
+    return f"""<article class="sigcard{stale}">
+  <div class="sighead">
+    <span class="tag {side_class}">{side}</span>
+    <strong class="signame">{_esc(order['symbol'])}</strong>
+    <span class="muted-inline">{_esc(order['name'])}</span>
+    <span class="tag">{_esc(region_label)}</span>
+    {'' if order['fresh'] else '<span class="tag">resting</span>'}
+  </div>
+  <div class="sigmoney">
+    <div class="mcell">
+      <span class="mlabel">You invest</span>
+      <span class="mvalue">{_money_line(order.get('invested'), ccy)}</span>
+      <span class="mnote">{_esc(order['quantity'])} shares @
+        ~{_price(order['reference_price'])}</span>
+    </div>
+    <div class="mcell win">
+      <span class="mlabel">If target hits</span>
+      <span class="mvalue">{_money_line(order.get('profit_at_target'), ccy, signed=True)}</span>
+      <span class="mnote">{_pct_str(order['profit_at_target_pct'])
+        if order.get('profit_at_target_pct') else '&mdash;'} &middot; sell at
+        {_price(order['take_profit']) if order.get('take_profit') else '&mdash;'}</span>
+    </div>
+    <div class="mcell lose">
+      <span class="mlabel">If stop hits</span>
+      <span class="mvalue">&minus;{_money_line(order.get('loss_at_stop'), ccy)}</span>
+      <span class="mnote">{'-' + _pct_str(order['loss_at_stop_pct'], 1).lstrip('+')
+        if order.get('loss_at_stop_pct') else '&mdash;'} &middot; exit at
+        {_price(order['stop_loss']) if order.get('stop_loss') else '&mdash;'}</span>
+    </div>
+    <div class="mcell">
+      <span class="mlabel">Live price</span>
+      <span class="mvalue live-cell" data-quote="{_esc(order['yahoo'])}"
+            data-ref="{_esc(order['reference_price'])}">&mdash;</span>
+      <span class="mnote">delayed quote</span>
+    </div>
+    <div class="mcell act">{action}{status}</div>
+  </div>
+  <p class="sigwhy"><strong>Why:</strong> {_esc(order.get('reason') or '')} &middot;
+  <strong>Time:</strong> {window}{typical_note} &middot;
+  <strong>Odds:</strong> {rate_note}{' &middot; ' + rr_note if rr_note else ''}</p>
+</article>"""
+
+
+def _totals_bar(totals: dict, base: str) -> str:
+    """Portfolio-level answer to "what does all of this add up to?"."""
+    signals = totals.get("signals", {})
+    positions = totals.get("positions", {})
+    open_pnl = totals.get("open_unrealized_base")
+
+    def cell(label: str, value: object, note: str, tone: str = "", sign: str = "") -> str:
+        """``sign`` is explicit rather than derived from colour: a gain and a
+        loss must be distinguishable without seeing the red and the green."""
+        if value is None:
+            shown = "&mdash;"
+        else:
+            number = float(str(value))
+            prefix = sign
+            if sign == "auto":
+                prefix = "+" if number >= 0 else "&minus;"
+                number = abs(number)
+            shown = f"{prefix}{number:,.0f}"
+        return (
+            f'<div class="tcell"><span class="mlabel">{label}</span>'
+            f'<span class="mvalue {tone}">{shown} <span class="ccy">{_esc(base)}</span></span>'
+            f'<span class="mnote">{note}</span></div>'
         )
 
-    return f"""<tr{stale}>
-  <td><span class="tag {side_class}">{side}</span></td>
-  <td><span class="tag">{_esc(region_label)}</span>
-      <strong>{_esc(order['symbol'])}</strong>
-      <span class="muted-inline">{_esc(order['name'])}</span></td>
-  <td class="num">{_esc(order['quantity'])}</td>
-  <td class="num">{_price(order['reference_price'])}
-      <span class="ccy">{_esc(order['currency'])}</span></td>
-  <td class="num">{notional}</td>
-  <td class="num">{stop}</td>
-  <td class="num">{target}</td>
-  <td class="num live-cell" data-quote="{_esc(order['yahoo'])}"
-      data-ref="{_esc(order['reference_price'])}" data-side="{side}">&mdash;</td>
-  <td>{fresh_note}{reason}</td>
-  <td class="num">{action}</td>
-</tr>"""
+    pnl_tone = ""
+    if open_pnl is not None:
+        pnl_tone = _tone(float(str(open_pnl)))
+    return f"""<div class="totals">
+  {cell("Total to invest today", signals.get("invested_base"),
+        f"{signals.get('count', 0)} fresh signal(s), converted to {_esc(base)}")}
+  {cell("Total if every target hits", signals.get("profit_at_target_base"),
+        _pct_str(signals["profit_at_target_pct"]) + " on the amount invested"
+        if signals.get("profit_at_target_pct") else "&mdash;", "pos", "+")}
+  {cell("Total if every stop hits", signals.get("loss_at_stop_base"),
+        "-" + _pct_str(signals["loss_at_stop_pct"]).lstrip("+") + " on the amount invested"
+        if signals.get("loss_at_stop_pct") else "&mdash;", "neg", "&minus;")}
+  {cell("Open positions", positions.get("invested_base"),
+        f"{positions.get('count', 0)} held at current prices")}
+  {cell("Open profit / loss", open_pnl, "unrealised, at last close", pnl_tone, "auto")}
+</div>
+<p class="caption">Both outcomes are what the strategy's own stop and target
+define &mdash; not a forecast. Real trades also end early on a trailing stop or the
+time limit, so actual results land between these two numbers more often than on them.
+Nothing here is a guaranteed or expected return.</p>"""
 
 
 def _signals_section(signals: dict) -> str:
@@ -424,21 +523,15 @@ def _signals_section(signals: dict) -> str:
             f"Send all {india_fresh} India orders to Kite as one basket</button></p>"
         )
 
-    rows = "".join(_signal_row(i, order, has_kite_key) for i, order in enumerate(orders))
+    cards = "".join(_signal_card(i, order, has_kite_key) for i, order in enumerate(orders))
     caption = (
         "Orders the strategies would place at the next open, sized against the "
-        "simulated book. Execute buttons hand the order to YOUR broker — Kite opens "
+        "simulated book. Invest-now buttons hand the order to YOUR broker — Kite opens "
         "a pre-filled basket you must confirm; the US executor honours the daily cap "
         "and stays in paper mode until you arm it. Live prices are delayed. "
         "None of this is investment advice, and no outcome is guaranteed."
     )
-    return f"""{meta}{basket_all}<table>
-  <thead><tr><th>Side</th><th>Instrument</th><th class="num">Qty</th>
-  <th class="num">Ref price</th><th class="num">Notional</th>
-  <th class="num">Stop</th><th class="num">Target</th><th class="num">Live</th>
-  <th>Why</th><th class="num">Execute</th></tr></thead>
-  <tbody>{rows}</tbody>
-</table>
+    return f"""{meta}{basket_all}{cards}
 <p class="caption">{caption}</p>"""
 
 
@@ -457,6 +550,15 @@ def _positions_section(signals: dict) -> str:
         book = "Short-term" if position["horizon"] == "short_term" else "Long-term"
         region_code = "IN" if position["region"] == "india" else "US"
         region_label = REGION_NAMES.get(region_code, position["region"])
+        pnl = position.get("unrealized")
+        pnl_tone = ""
+        if pnl is not None:
+            pnl_tone = "pos" if float(str(pnl)) >= 0 else "neg"
+        pnl_pct = (
+            _pct_str(position["unrealized_pct"]) if position.get("unrealized_pct") else ""
+        )
+        upside = position.get("profit_at_target")
+        downside = position.get("loss_at_stop")
         rows.append(
             f"""<tr>
   <td><span class="tag">{_esc(region_label)}</span>
@@ -466,29 +568,112 @@ def _positions_section(signals: dict) -> str:
   <td class="num">{_esc(position['quantity'])}</td>
   <td class="num">{_price(position['average_cost'])}
       <span class="ccy">{_esc(position['currency'])}</span></td>
-  <td class="num">{_price(position['last_price'])}</td>
   <td class="num live-cell" data-quote="{_esc(position['yahoo'])}"
+      data-ref="{_esc(position['last_price'])}"
+      data-qty="{_esc(position['quantity'])}"
+      data-cost="{_esc(position['average_cost'])}"
       data-stop="{_esc(position.get('stop') or '')}"
-      data-target="{_esc(position.get('take_profit') or '')}">&mdash;</td>
-  <td class="num">{stop}</td>
-  <td class="num">{target}</td>
+      data-target="{_esc(position.get('take_profit') or '')}">{_price(position['last_price'])}</td>
+  <td class="num {pnl_tone}" data-pnl="{_esc(position['yahoo'])}">{
+      _money_line(pnl, position['currency'], signed=True)}
+      <span class="mnote">{pnl_pct}</span></td>
+  <td class="num pos">{_money_line(upside, position['currency'], signed=True)
+      if upside else '&mdash;'}<span class="mnote">at {target}</span></td>
+  <td class="num neg">{'&minus;' + _money_line(downside, position['currency'])
+      if downside else '&mdash;'}<span class="mnote">at {stop}</span></td>
   <td class="num">{clock}</td>
   <td><span class="badge" data-badge="{_esc(position['yahoo'])}">&mdash;</span></td>
 </tr>"""
         )
     caption = (
-        "Live column polls delayed quotes (~15 min for NSE) during market hours and "
-        "flags a position the moment it trades through its stop or target, so you can "
-        "act before the nightly rebuild. Long-term holdings carry no stop by design."
+        "Profit/loss updates with the delayed quote (~15 min for NSE) during market "
+        "hours, and a position is flagged the moment it trades through its stop or "
+        "target — so you can act before the nightly rebuild. The two right-hand "
+        "columns are what is still on the table from here, not from your entry. "
+        "Long-term holdings carry no stop by design."
     )
     return f"""<table>
   <thead><tr><th>Instrument</th><th>Book</th><th class="num">Qty</th>
-  <th class="num">Avg cost</th><th class="num">Last close</th><th class="num">Live</th>
-  <th class="num">Stop</th><th class="num">Target</th><th class="num">Held</th>
-  <th>Status</th></tr></thead>
+  <th class="num">Avg cost</th><th class="num">Live price</th>
+  <th class="num">Profit / loss now</th>
+  <th class="num">If target hits</th><th class="num">If stop hits</th>
+  <th class="num">Held</th><th>Status</th></tr></thead>
   <tbody>{''.join(rows)}</tbody>
 </table>
 <p class="caption">{caption}</p>"""
+
+
+def _glance(signals: dict) -> str:
+    """The dashboard's at-a-glance strip: state of the book, one tap to act."""
+    orders = signals.get("orders", [])
+    fresh = sum(1 for order in orders if order["fresh"])
+    totals = signals.get("totals", {})
+    signal_totals = totals.get("signals", {})
+    open_pnl = totals.get("open_unrealized_base")
+    pnl_value = float(str(open_pnl)) if open_pnl is not None else 0.0
+    cards = [
+        _kpi("Fresh signals", str(fresh), tone="pos" if fresh else "flat",
+             note="orders ready for the next open"),
+        _kpi("To invest today", _price(signal_totals.get("invested_base", "0")),
+             note="USD across both markets"),
+        _kpi("If every target hits",
+             "+" + _price(signal_totals.get("profit_at_target_base", "0")),
+             tone="pos",
+             note=_pct_str(signal_totals["profit_at_target_pct"])
+             if signal_totals.get("profit_at_target_pct") else "on the amount invested"),
+        _kpi("If every stop hits",
+             "&minus;" + _price(signal_totals.get("loss_at_stop_base", "0")),
+             tone="neg",
+             note="the most these signals risk"),
+        _kpi("Open positions P&amp;L",
+             ("+" if pnl_value >= 0 else "&minus;") + f"{abs(pnl_value):,.2f}",
+             tone=_tone(pnl_value), note="unrealised, USD"),
+    ]
+    cta = (
+        '<div class="kpi cta"><button type="button" class="exec big" data-tabgo="invest">'
+        "Invest now &rarr;</button></div>"
+    )
+    return f'<div class="glance">{"".join(cards)}{cta}</div>'
+
+
+def _setup_section(signals: dict) -> str:
+    """The Setup tab: what each execution tier is, and whether it is armed."""
+    kite_on = bool(signals.get("kite_api_key"))
+    caps = signals.get("daily_cap", {})
+    cap_line = (
+        " &middot; ".join(f"{_price(value)} {_esc(ccy)}" for ccy, value in sorted(caps.items()))
+        or "not configured"
+    )
+    kite_state = (
+        '<span class="state on">enabled</span>'
+        if kite_on
+        else '<span class="state off">needs api_key</span>'
+    )
+    return f"""<div class="tiers">
+  <div class="tier">
+    <h3>One-tap Kite basket {kite_state}</h3>
+    <p>Each fresh India signal opens pre-filled in Zerodha; you review and confirm inside
+    your own broker login. Free. Enable it by putting a Kite Publisher <code>api_key</code>
+    into <code>config/live.json</code> and redeploying.</p>
+  </div>
+  <div class="tier">
+    <h3>US executor via Alpaca <span class="state off">armed in Vercel env</span></h3>
+    <p>The Alpaca button relays through <code>/markets-pro/api/execute</code>, which refuses
+    every order until <code>ALPACA_KEY_ID</code> and <code>ALPACA_SECRET_KEY</code> are set,
+    trades paper unless <code>ALPACA_LIVE=true</code>, and enforces
+    <code>DAILY_CAP_USD</code> against the broker's own order log &mdash; never against
+    what the page claims.</p>
+  </div>
+  <div class="tier">
+    <h3>Capped auto-invest CLI <span class="state off">opt-in</span></h3>
+    <p>Places today's fresh India BUY signals within the daily cap &mdash; dry-run by
+    default, journalled so re-runs cannot double-spend. Needs Zerodha's paid Kite Connect
+    API and a fresh login token each morning, by their design.</p>
+  </div>
+</div>
+<p class="caption">Daily caps: {cap_line}. A cap bounds the worst day &mdash; nothing here
+guarantees the best one. Signals are systematic research output, not investment advice,
+and past performance does not predict future returns.</p>"""
 
 
 SIGNALS_CSS = """
@@ -512,6 +697,109 @@ button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(-
 .badge.target{background:color-mix(in srgb,var(--pos) 20%,var(--tag));color:var(--pos)}
 .live-cell{color:var(--muted)}
 .live-cell.fresh{color:var(--ink)}
+
+.tabs{position:sticky;top:0;z-index:20;display:flex;gap:2px;margin:18px -4px 6px;
+  padding:6px 4px;background:var(--bg);border-bottom:1px solid var(--line);
+  overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs button{appearance:none;border:0;background:transparent;color:var(--muted);
+  font:inherit;font-size:14px;font-weight:600;padding:9px 14px;border-radius:8px;
+  cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:7px}
+.tabs button:hover{background:var(--tag);color:var(--ink)}
+.tabs button.active{color:var(--accent);background:var(--tag)}
+.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.tabbadge{display:inline-block;min-width:18px;text-align:center;background:var(--accent);
+  color:var(--panel);border-radius:999px;font-size:11px;font-weight:700;padding:1px 6px}
+.tabpanel[hidden]{display:none}
+
+.glance{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));
+  margin:18px 0 4px}
+.glance .cta{display:flex;align-items:stretch;justify-content:stretch;padding:0}
+button.exec.big{font-size:14.5px;padding:12px 18px;width:100%;border-radius:var(--radius)}
+
+.sigcard{border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;
+  margin-bottom:12px;background:var(--bg)}
+.sigcard.stale{opacity:.6}
+.sighead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.signame{font-size:17px;letter-spacing:-0.01em}
+.sigmoney{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  align-items:stretch}
+.mcell{display:flex;flex-direction:column;gap:3px;padding:10px 12px;
+  background:var(--panel);border:1px solid var(--line);border-radius:8px}
+.mcell.win .mvalue{color:var(--pos)}
+.mcell.lose .mvalue{color:var(--neg)}
+.mcell.act{justify-content:center;background:transparent;border:0;padding:0}
+.mlabel{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.mvalue{font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;
+  letter-spacing:-0.01em}
+.mnote{display:block;font-size:11px;color:var(--muted);font-weight:400}
+.sigwhy{margin:12px 0 0;font-size:12.5px;color:var(--muted);line-height:1.6}
+.sigwhy strong{color:var(--ink);font-weight:600}
+
+.totals{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  margin:14px 0 4px}
+.tcell{display:flex;flex-direction:column;gap:3px;padding:12px 14px;
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
+
+.tiers{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  margin-top:14px}
+.tier{background:var(--panel);border:1px solid var(--line);
+  border-radius:var(--radius);padding:14px 16px}
+.tier h3{margin:0 0 8px;font-size:14px;display:flex;align-items:center;gap:8px;
+  flex-wrap:wrap}
+.tier p{margin:0;font-size:13px;color:var(--muted);line-height:1.55}
+.tier code{background:var(--tag);padding:1px 5px;border-radius:4px;font-size:11.5px}
+.state{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.state.on{color:var(--pos)} .state.off{color:var(--muted)}
+"""
+
+#: Tab switching with hash routing. `hidden` drives visibility, aria-selected
+#: drives assistive tech, and location.hash makes every tab linkable — so
+#: "#invest" can be bookmarked or sent as a link straight to the action.
+TABS_JS = """
+(function () {
+  var buttons = document.querySelectorAll('[data-tabbtn]');
+  if (!buttons.length) return;
+  var panels = document.querySelectorAll('[data-tab]');
+  var names = [];
+  Array.prototype.forEach.call(buttons, function (b) {
+    names.push(b.getAttribute('data-tabbtn'));
+  });
+
+  function show(name) {
+    if (names.indexOf(name) < 0) name = names[0];
+    Array.prototype.forEach.call(panels, function (panel) {
+      panel.hidden = panel.getAttribute('data-tab') !== name;
+    });
+    Array.prototype.forEach.call(buttons, function (b) {
+      var active = b.getAttribute('data-tabbtn') === name;
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+      b.classList.toggle('active', active);
+    });
+  }
+
+  function go(name, fromClick) {
+    if (fromClick && history.replaceState) {
+      history.replaceState(null, '', '#' + name);
+    }
+    show(name);
+  }
+
+  Array.prototype.forEach.call(buttons, function (b) {
+    b.addEventListener('click', function () {
+      go(b.getAttribute('data-tabbtn'), true);
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-tabgo]'), function (el) {
+    el.addEventListener('click', function () {
+      go(el.getAttribute('data-tabgo'), true);
+      window.scrollTo(0, 0);
+    });
+  });
+  window.addEventListener('hashchange', function () {
+    show(location.hash.replace('#', ''));
+  });
+  show(location.hash.replace('#', ''));
+})();
 """
 
 #: Broker handoff + delayed-quote overlay for the signals sections.
@@ -627,6 +915,20 @@ SIGNALS_JS = """
       }
       cell.textContent = text;
       cell.classList.add('fresh');
+
+      // Recompute this position's profit/loss from the live price.
+      var qty = Number(cell.getAttribute('data-qty'));
+      var cost = Number(cell.getAttribute('data-cost'));
+      var pnlCell = document.querySelector('[data-pnl="' + cell.getAttribute('data-quote') + '"]');
+      if (pnlCell && qty && cost) {
+        var pnl = (price - cost) * qty;
+        var pct = (price - cost) / cost * 100;
+        pnlCell.textContent = (pnl >= 0 ? '+' : '\\u2212') + fmt(Math.abs(pnl))
+          + ' (' + (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%)';
+        pnlCell.classList.remove('pos', 'neg');
+        pnlCell.classList.add(pnl >= 0 ? 'pos' : 'neg');
+      }
+
       var badge = document.querySelector('[data-badge="' + cell.getAttribute('data-quote') + '"]');
       if (badge) {
         var stop = Number(cell.getAttribute('data-stop')) || null;
@@ -957,16 +1259,30 @@ def render_dashboard(
             f"passed ({rate:.2f}%)</span> &middot; "
         )
 
-    signal_sections = ""
     signal_blob = ""
     signal_script = ""
+    glance = ""
+    invest_panel = ""
+    invest_tab = ""
     if signals is not None:
-        signal_sections = f"""
-  <h2>Today's signals</h2>
-  <div class="panel">{_signals_section(signals)}</div>
+        fresh_count = sum(1 for order in signals.get("orders", []) if order["fresh"])
+        badge = f'<span class="tabbadge">{fresh_count}</span>' if fresh_count else ""
+        invest_tab = (
+            f'<button type="button" role="tab" data-tabbtn="invest" aria-selected="false" '
+            f'aria-controls="panel-invest">Invest Now{badge}</button>'
+        )
+        glance = _glance(signals)
+        invest_panel = f"""
+  <section class="tabpanel" id="panel-invest" data-tab="invest" role="tabpanel" hidden>
+    <h2>What today's signals add up to</h2>
+    <div class="panel">{_totals_bar(signals.get("totals", {}), report.base_currency)}</div>
 
-  <h2>Open positions &amp; live triggers</h2>
-  <div class="panel">{_positions_section(signals)}</div>
+    <h2>Today's signals</h2>
+    <div class="panel">{_signals_section(signals)}</div>
+
+    <h2>Open positions &amp; live triggers</h2>
+    <div class="panel">{_positions_section(signals)}</div>
+  </section>
 """
         embedded = {
             "api_base": "/markets-pro/api",
@@ -978,6 +1294,16 @@ def render_dashboard(
         blob = json.dumps(embedded).replace("<", "\\u003c")
         signal_blob = f'<script type="application/json" id="signals-data">{blob}</script>'
         signal_script = f"<script>{SIGNALS_JS}</script>"
+
+    tab_bar = f"""<nav class="tabs" role="tablist" aria-label="Sections">
+    <button type="button" role="tab" data-tabbtn="dashboard" aria-selected="true"
+            aria-controls="panel-dashboard" class="active">Dashboard</button>
+    {invest_tab}
+    <button type="button" role="tab" data-tabbtn="performance" aria-selected="false"
+            aria-controls="panel-performance">Performance</button>
+    <button type="button" role="tab" data-tabbtn="setup" aria-selected="false"
+            aria-controls="panel-setup">Setup</button>
+  </nav>"""
 
     return f"""<!doctype html>
 <html lang="en">
@@ -998,43 +1324,54 @@ def render_dashboard(
     <p class="sub">{sub}</p>
   </header>
 
-  <div class="notice">
-    <p><strong>Simulated results.</strong> These figures come from a backtest, not
-    from live trading. Costs, taxes, slippage and venue rules are modelled, and
-    the engine is verified free of lookahead &mdash; but past performance on
-    historical data does not predict future returns, and no strategy here
-    guarantees a profit. Nothing on this page is investment advice.</p>
-  </div>
-{signal_sections}
-  <h2>Performance</h2>
-  {_kpi_grid(report)}
+  {tab_bar}
 
-  <h2>Equity &amp; drawdown</h2>
-  <div class="panel">
-    <div class="zoomwrap" data-zoom>
-      {equity_chart_svg(report.equity_days, report.equity_values)}
-      <div class="zoomctl" role="group" aria-label="Chart zoom">
-        <button type="button" data-zoom-out aria-label="Zoom out">&minus;</button>
-        <button type="button" data-zoom-reset aria-label="Reset zoom">Reset</button>
-        <button type="button" data-zoom-in aria-label="Zoom in">+</button>
-        <span class="zoomlevel" data-zoom-level aria-live="polite">1.0&times;</span>
-      </div>
+  <section class="tabpanel" id="panel-dashboard" data-tab="dashboard" role="tabpanel">
+    <div class="notice">
+      <p><strong>Simulated results.</strong> These figures come from a backtest, not
+      from live trading. Costs, taxes, slippage and venue rules are modelled, and
+      the engine is verified free of lookahead &mdash; but past performance on
+      historical data does not predict future returns, and no strategy here
+      guarantees a profit. Nothing on this page is investment advice.</p>
     </div>
-    <p class="caption">Pinch to zoom, drag to pan. On a trackpad or mouse use
-    ctrl/&#8984; + scroll. Double-tap or press Reset to fit.</p>
-  </div>
+    {glance}
+    <h2>Performance</h2>
+    {_kpi_grid(report)}
 
-  <h2>By market</h2>
-  <div class="panel">{_region_table(report)}</div>
+    <h2>Equity &amp; drawdown</h2>
+    <div class="panel">
+      <div class="zoomwrap" data-zoom>
+        {equity_chart_svg(report.equity_days, report.equity_values)}
+        <div class="zoomctl" role="group" aria-label="Chart zoom">
+          <button type="button" data-zoom-out aria-label="Zoom out">&minus;</button>
+          <button type="button" data-zoom-reset aria-label="Reset zoom">Reset</button>
+          <button type="button" data-zoom-in aria-label="Zoom in">+</button>
+          <span class="zoomlevel" data-zoom-level aria-live="polite">1.0&times;</span>
+        </div>
+      </div>
+      <p class="caption">Pinch to zoom, drag to pan. On a trackpad or mouse use
+      ctrl/&#8984; + scroll. Double-tap or press Reset to fit.</p>
+    </div>
+  </section>
+{invest_panel}
+  <section class="tabpanel" id="panel-performance" data-tab="performance" role="tabpanel" hidden>
+    <h2>By market</h2>
+    <div class="panel">{_region_table(report)}</div>
 
-  <h2>By book</h2>
-  <div class="panel">{_horizon_table(report)}</div>
+    <h2>By book</h2>
+    <div class="panel">{_horizon_table(report)}</div>
 
-  <h2>How trades ended</h2>
-  <div class="panel">{_exit_breakdown(report)}</div>
+    <h2>How trades ended</h2>
+    <div class="panel">{_exit_breakdown(report)}</div>
 
-  <h2>Recent round trips</h2>
-  <div class="panel">{_trades_table(report)}</div>
+    <h2>Recent round trips</h2>
+    <div class="panel">{_trades_table(report)}</div>
+  </section>
+
+  <section class="tabpanel" id="panel-setup" data-tab="setup" role="tabpanel" hidden>
+    <h2>Execution setup</h2>
+    {_setup_section(signals or {})}
+  </section>
 
   <footer>
     {verified}generated by <code>autotrader</code> &middot;
@@ -1043,6 +1380,7 @@ def render_dashboard(
   </footer>
 </div>
 {signal_blob}
+<script>{TABS_JS}</script>
 <script>{ZOOM_JS}</script>
 {signal_script}
 </body>

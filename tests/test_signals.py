@@ -7,12 +7,16 @@ from datetime import date, timedelta
 from decimal import Decimal
 from pathlib import Path
 
+from autotrader.core.money import FXRates
 from autotrader.data.universe import universe
 from autotrader.data.yahoo import DailyRow, write_cache
 from autotrader.engine.metrics import build_report
 from autotrader.signals.live import (
     DEFAULT_LIVE_CONFIG,
+    _economics,
+    _totals,
     generate,
+    horizon_stats,
     load_live_config,
 )
 from autotrader.web.render import render_dashboard
@@ -81,6 +85,113 @@ class TestGenerate(unittest.TestCase):
     def test_default_config_used_when_path_missing(self):
         config = load_live_config(Path("/nonexistent/live.json"))
         self.assertEqual(config["daily_cap"], DEFAULT_LIVE_CONFIG["daily_cap"])
+
+
+class TestEconomics(unittest.TestCase):
+    """The money math shown to the user, checked against hand-computed values."""
+
+    def setUp(self):
+        self.fx = FXRates("USD", {"INR": Decimal("80"), "USD": Decimal("1")})
+
+    def test_long_trade_profit_loss_and_ratio(self):
+        # 10 shares at 100: target 130 → +300; stop 90 → -100; ratio 3:1.
+        econ = _economics(
+            side="BUY", quantity=Decimal("10"), price=Decimal("100"),
+            stop=Decimal("90"), target=Decimal("130"), currency="INR", fx=self.fx,
+        )
+        self.assertEqual(Decimal(econ["invested"]), Decimal("1000"))
+        self.assertEqual(Decimal(econ["profit_at_target"]), Decimal("300"))
+        self.assertEqual(Decimal(econ["loss_at_stop"]), Decimal("100"))
+        self.assertEqual(Decimal(econ["reward_risk"]), Decimal("3"))
+        self.assertEqual(Decimal(econ["profit_at_target_pct"]), Decimal("0.3"))
+        self.assertEqual(Decimal(econ["loss_at_stop_pct"]), Decimal("0.1"))
+
+    def test_amounts_convert_to_base_currency(self):
+        econ = _economics(
+            side="BUY", quantity=Decimal("10"), price=Decimal("100"),
+            stop=Decimal("90"), target=Decimal("130"), currency="INR", fx=self.fx,
+        )
+        # 1000 INR at 80 INR per USD is 12.50 USD.
+        self.assertEqual(Decimal(econ["invested_base"]), Decimal("12.5"))
+        self.assertEqual(Decimal(econ["profit_at_target_base"]), Decimal("3.75"))
+        self.assertEqual(Decimal(econ["loss_at_stop_base"]), Decimal("1.25"))
+
+    def test_short_trade_inverts_direction(self):
+        # Short at 100: target 80 is a 20/share GAIN, stop 110 a 10/share LOSS.
+        econ = _economics(
+            side="SELL", quantity=Decimal("10"), price=Decimal("100"),
+            stop=Decimal("110"), target=Decimal("80"), currency="USD", fx=self.fx,
+        )
+        self.assertEqual(Decimal(econ["profit_at_target"]), Decimal("200"))
+        self.assertEqual(Decimal(econ["loss_at_stop"]), Decimal("100"))
+
+    def test_missing_levels_yield_no_fabricated_numbers(self):
+        econ = _economics(
+            side="BUY", quantity=Decimal("10"), price=Decimal("100"),
+            stop=None, target=None, currency="USD", fx=self.fx,
+        )
+        self.assertIsNone(econ["profit_at_target"])
+        self.assertIsNone(econ["loss_at_stop"])
+        self.assertIsNone(econ["reward_risk"])
+        self.assertEqual(Decimal(econ["invested"]), Decimal("1000"))
+
+    def test_no_price_means_no_economics_at_all(self):
+        self.assertEqual(
+            _economics(side="BUY", quantity=Decimal("10"), price=None,
+                       stop=Decimal("90"), target=Decimal("130"),
+                       currency="USD", fx=self.fx),
+            {},
+        )
+
+
+class TestTotals(unittest.TestCase):
+    def rows(self):
+        return [
+            {"fresh": True, "invested_base": "100", "profit_at_target_base": "30",
+             "loss_at_stop_base": "10"},
+            {"fresh": True, "invested_base": "300", "profit_at_target_base": "60",
+             "loss_at_stop_base": "30"},
+            {"fresh": False, "invested_base": "999", "profit_at_target_base": "999",
+             "loss_at_stop_base": "999"},
+        ]
+
+    def test_only_fresh_rows_are_summed_when_requested(self):
+        totals = _totals(self.rows(), only_fresh=True)
+        self.assertEqual(totals["count"], 2)
+        self.assertEqual(Decimal(totals["invested_base"]), Decimal("400"))
+        self.assertEqual(Decimal(totals["profit_at_target_base"]), Decimal("90"))
+        self.assertEqual(Decimal(totals["loss_at_stop_base"]), Decimal("40"))
+        self.assertEqual(Decimal(totals["profit_at_target_pct"]), Decimal("0.225"))
+
+    def test_all_rows_summed_when_not_filtering(self):
+        totals = _totals(self.rows(), only_fresh=False)
+        self.assertEqual(totals["count"], 3)
+        self.assertEqual(Decimal(totals["invested_base"]), Decimal("1399"))
+
+    def test_empty_rows_do_not_divide_by_zero(self):
+        totals = _totals([], only_fresh=True)
+        self.assertEqual(totals["count"], 0)
+        self.assertIsNone(totals["profit_at_target_pct"])
+
+    def test_missing_fields_are_skipped_not_zeroed(self):
+        rows = [{"fresh": True, "invested_base": "100"}]
+        totals = _totals(rows, only_fresh=True)
+        self.assertEqual(Decimal(totals["profit_at_target_base"]), Decimal("0"))
+        self.assertEqual(Decimal(totals["invested_base"]), Decimal("100"))
+
+
+class TestHorizonStats(unittest.TestCase):
+    def test_reports_none_rather_than_a_flattering_default(self):
+        report = build_report(
+            days=[date(2026, 7, 1), date(2026, 7, 2)],
+            equity=[Decimal("1000"), Decimal("1000")],
+            trades=[],
+            base_currency="USD",
+            total_costs=Decimal("0"),
+            total_fills=0,
+            rejections=0,
+        )
+        self.assertEqual(horizon_stats(report), {})
 
 
 class TestRenderWithSignals(unittest.TestCase):
