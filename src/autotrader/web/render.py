@@ -1019,6 +1019,44 @@ button.exec:not(:disabled):active{
 .kpi{transform-style:preserve-3d}
 .kpi:hover{transform:perspective(800px) translateY(-2px) rotateX(3deg)}
 
+/* Touch devices get their 3D from scrolling instead of hovering.
+   A card leans back as it rises into view, comes flat as it passes the middle
+   of the screen, and leans away as it leaves — so the depth is driven by the
+   reader's own thumb rather than by a gyroscope. That matters: the device
+   orientation API needs an explicit permission prompt on iOS, and a card that
+   moves whenever the phone does is nausea. Scroll position is the one input
+   the reader is already deliberately controlling.
+
+   Pure CSS via a view timeline: no scroll listener, so it cannot jank the
+   thread that the price feed and the paper book run on. Browsers without
+   support simply keep the flat layout. */
+@media (hover: none), (pointer: coarse){
+  @supports (animation-timeline: view()){
+    .tilt{
+      animation:cardturn linear both;
+      animation-timeline:view();
+      animation-range:entry 12% exit 88%;
+      transition:none;
+    }
+    @keyframes cardturn{
+      from{transform:perspective(1000px) rotateX(7deg) scale(.965);opacity:.7}
+      42%,58%{transform:perspective(1000px) rotateX(0) scale(1);opacity:1}
+      to{transform:perspective(1000px) rotateX(-7deg) scale(.965);opacity:.7}
+    }
+    /* Gentler on the stat tiles: several sit on screen at once, so a strong
+       angle on each turns the grid into noise. */
+    .kpi{
+      animation:tileturn linear both;
+      animation-timeline:view();
+      animation-range:entry 5% entry 95%;
+    }
+    @keyframes tileturn{
+      from{transform:perspective(900px) rotateX(5deg) translateY(10px);opacity:.55}
+      to{transform:perspective(900px) rotateX(0) translateY(0);opacity:1}
+    }
+  }
+}
+
 /* --- split-flap odometer --------------------------------------------------
    Each digit is a strip of numerals on a shallow cylinder. The wrapper owns
    the perspective; the strip translates in 3D so the roll is composited. */

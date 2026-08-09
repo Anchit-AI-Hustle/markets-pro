@@ -493,6 +493,18 @@ class TestRenderWithSignals(unittest.TestCase):
         self.assertIn("wrap.setAttribute('aria-hidden', 'true')", html)
         self.assertIn("node.setAttribute('aria-label', text)", html)
 
+    def test_touch_devices_get_scroll_driven_3d(self):
+        """Phones cannot hover, so their depth comes from scroll position."""
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("@media (hover: none), (pointer: coarse)", html)
+        self.assertIn("@supports (animation-timeline: view())", html)
+        self.assertIn("animation-timeline:view()", html)
+        self.assertIn("@keyframes cardturn", html)
+        self.assertIn("@keyframes tileturn", html)
+        # The rotation must be real 3D, not a fade.
+        self.assertIn("rotateX(7deg)", html)
+        self.assertIn("rotateX(-7deg)", html)
+
     def test_3d_collapses_flat_under_reduced_motion(self):
         html = render_dashboard(self.report, signals=self.signals)
         reduced = html[html.index("@media (prefers-reduced-motion:reduce)"):]
