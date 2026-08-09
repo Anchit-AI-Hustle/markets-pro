@@ -561,7 +561,7 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
     <span>stop {stop_txt} &middot; target {target_txt}</span>
   </div>"""
 
-    return f"""<article class="sigcard{stale}" data-sigcard="{index}">
+    return f"""<article class="sigcard tilt{stale}" data-sigcard="{index}">
   <div class="sighead">
     <span class="tag {side_class}">{side}</span>
     <strong class="signame">{_esc(order['symbol'])}</strong>
@@ -649,7 +649,11 @@ def _signals_section(signals: dict) -> str:
             f"Send all {india_fresh} India orders to Kite as one basket</button></p>"
         )
 
-    cards = "".join(_signal_card(i, order, has_kite_key) for i, order in enumerate(orders))
+    # The scene owns the perspective so every card tilts in the same 3D space
+    # rather than each establishing its own vanishing point.
+    cards = '<div class="scene">' + "".join(
+        _signal_card(i, order, has_kite_key) for i, order in enumerate(orders)
+    ) + "</div>"
     caption = (
         "These are the trades the strategies would place at the next market open, "
         "sized to the amount you entered. Paper buy costs nothing and reaches no "
@@ -958,9 +962,91 @@ button.exec{transition:transform .16s var(--ease),background .16s var(--ease),
 button.exec:not(:disabled):hover{transform:translateY(-1px);box-shadow:var(--elev-2)}
 button.exec:not(:disabled):active{transform:translateY(0) scale(.985)}
 
+/* ---------------------------------------------------------------------------
+   3D layer.
+
+   Real perspective transforms, not shadows pretending to be depth. Three
+   things earn it: cards tilt toward the pointer with their contents on
+   separate z-planes, panels swing in around the x-axis, and live prices roll
+   on a digit cylinder the way a market board does.
+
+   Rules that keep it from becoming a toy: the tilt is capped at 6 degrees so
+   text never distorts enough to hurt legibility, it only engages for a fine
+   pointer (a finger has no hover, and a phone tilting under your thumb is
+   nausea rather than delight), and every transform is composited — no layout
+   property is animated. All of it collapses to flat under reduced motion.
+--------------------------------------------------------------------------- */
+/* A tilted card reaches outside its own box, so the panel holding a scene must
+   not clip. The padding/margin pair gives the rotation room to breathe without
+   changing where the content sits. */
+.scene{perspective:1100px;perspective-origin:50% 30%;
+  padding:18px;margin:-18px}
+.panel:has(.scene){overflow:visible}
+
+.tilt{transform-style:preserve-3d;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease);
+  will-change:transform}
+.tilt.tilting{transition:transform .08s linear}
+/* Contents ride at different depths, so tilting produces genuine parallax
+   rather than a flat plane rotating. */
+.tilt .sighead{transform:translateZ(26px)}
+.tilt .sparkwrap{transform:translateZ(38px)}
+.tilt .sigmoney{transform:translateZ(18px)}
+.tilt .sigwhy,.tilt .sigtech{transform:translateZ(8px)}
+.tilt .mcell.act{transform:translateZ(42px)}
+
+/* A specular sheen that tracks the pointer sells the surface as physical. */
+.tilt::after{content:"";position:absolute;inset:0;border-radius:inherit;
+  pointer-events:none;opacity:0;transition:opacity .4s var(--ease);
+  background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),
+    color-mix(in srgb,var(--accent) 16%,transparent),transparent 45%)}
+.tilt.tilting::after{opacity:1}
+
+/* Panels swing up into place around their own bottom edge. */
+.tabpanel:not([hidden]) > *{animation:swing .52s var(--ease) both}
+@keyframes swing{
+  from{opacity:0;transform:perspective(1000px) rotateX(-9deg) translateY(16px)}
+  to{opacity:1;transform:perspective(1000px) rotateX(0) translateY(0)}
+}
+
+/* Buttons depress into the page rather than just changing colour. */
+button.exec{transform-style:preserve-3d}
+button.exec:not(:disabled):hover{
+  transform:perspective(600px) translateY(-1px) translateZ(6px)}
+button.exec:not(:disabled):active{
+  transform:perspective(600px) rotateX(9deg) translateZ(0) scale(.99)}
+
+.kpi{transform-style:preserve-3d}
+.kpi:hover{transform:perspective(800px) translateY(-2px) rotateX(3deg)}
+
+/* --- split-flap odometer --------------------------------------------------
+   Each digit is a strip of numerals on a shallow cylinder. The wrapper owns
+   the perspective; the strip translates in 3D so the roll is composited. */
+.odo{display:inline-flex;align-items:center;gap:1px;
+  perspective:220px;vertical-align:baseline}
+.odo-digit{position:relative;width:.62em;height:1.15em;overflow:hidden;
+  transform-style:preserve-3d;
+  background:linear-gradient(180deg,
+    color-mix(in srgb,var(--ink) 7%,transparent) 0%,
+    transparent 28%,transparent 72%,
+    color-mix(in srgb,var(--ink) 7%,transparent) 100%);
+  border-radius:3px}
+.odo-strip{position:absolute;top:0;left:0;right:0;
+  display:flex;flex-direction:column;align-items:center;
+  transition:transform .58s cubic-bezier(.16,.84,.3,1);
+  will-change:transform}
+.odo-strip span{height:1.15em;line-height:1.15em;display:block;
+  font-variant-numeric:tabular-nums}
+/* Separators sit outside the cylinders so commas never roll. */
+.odo-sep{padding:0 .02em}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none !important;transition:none !important}
-  .kpi:hover,.sigcard:hover,button.exec:hover{transform:none}
+  .kpi:hover,.sigcard:hover,button.exec:hover,button.exec:active{transform:none}
+  .tilt,.tilt .sighead,.tilt .sparkwrap,.tilt .sigmoney,
+  .tilt .sigwhy,.tilt .sigtech,.tilt .mcell.act{transform:none !important}
+  .tilt::after{display:none}
+  .scene{perspective:none}
 }
 
 .sigmeta{color:var(--muted);font-size:12.5px;margin:0 0 12px}
@@ -1019,7 +1105,8 @@ button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(-
 .glance .cta button{height:100%}
 button.exec.big{font-size:14.5px;padding:12px 18px;width:100%;border-radius:var(--radius)}
 
-.sigcard{border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;
+.sigcard{position:relative;border:1px solid var(--line);
+  border-radius:var(--radius);padding:14px 16px;
   margin-bottom:12px;background:var(--bg)}
 .sigcard.stale{opacity:.6}
 .sighead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:12px}
@@ -1737,6 +1824,164 @@ PAPER_JS = """
 """
 
 
+#: Split-flap odometer for live prices.
+#:
+#: Ownership is the whole design here. An earlier count-up animation captured
+#: an element's text on start and wrote it back on end, which stranded a stale
+#: figure whenever application code updated the same cell mid-flight — wrong
+#: money left on screen. So the odometer never reads the DOM to decide what to
+#: show: the caller passes the value, the digits are rebuilt from that value
+#: alone, and the accessible text is set from it in the same call. There is
+#: exactly one writer.
+ODOMETER_JS = """
+(function () {
+  var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+  var animate = !(still && still.matches);
+
+  function buildDigit() {
+    var digit = document.createElement('span');
+    digit.className = 'odo-digit';
+    var strip = document.createElement('span');
+    strip.className = 'odo-strip';
+    for (var n = 0; n <= 9; n++) {
+      var face = document.createElement('span');
+      face.textContent = String(n);
+      strip.appendChild(face);
+    }
+    digit.appendChild(strip);
+    return digit;
+  }
+
+  // `text` is the already-formatted string; we only decide how to display it.
+  function render(node, text) {
+    var wrap = node.querySelector('.odo');
+    if (!wrap || wrap.getAttribute('data-shape') !== shapeOf(text)) {
+      node.textContent = '';
+      wrap = document.createElement('span');
+      wrap.className = 'odo';
+      wrap.setAttribute('data-shape', shapeOf(text));
+      // Every digit carries all ten numerals; only one is visible through the
+      // clip. Assistive tech would otherwise read "0123456789" per digit, so
+      // the strip is hidden from it and the cell's aria-label carries the
+      // real value instead.
+      wrap.setAttribute('aria-hidden', 'true');
+      for (var i = 0; i < text.length; i++) {
+        var ch = text[i];
+        if (ch >= '0' && ch <= '9') {
+          wrap.appendChild(buildDigit());
+        } else {
+          var sep = document.createElement('span');
+          sep.className = 'odo-sep';
+          sep.textContent = ch;
+          wrap.appendChild(sep);
+        }
+      }
+      node.appendChild(wrap);
+    }
+
+    var slots = wrap.childNodes, index = 0;
+    for (var j = 0; j < text.length; j++) {
+      var c = text[j];
+      var slot = slots[j];
+      if (!slot) break;
+      if (c >= '0' && c <= '9') {
+        var strip = slot.firstChild;
+        var offset = -Number(c) * 1.15;
+        if (!animate) strip.style.transition = 'none';
+        // Stagger by position: the board settles left to right.
+        strip.style.transitionDelay = animate ? (index * 45) + 'ms' : '0ms';
+        strip.style.transform = 'translate3d(0,' + offset + 'em,0)';
+        index++;
+      } else if (slot.textContent !== c) {
+        slot.textContent = c;
+      }
+    }
+    node.setAttribute('aria-label', text);
+    node.setAttribute('role', 'text');
+  }
+
+  function shapeOf(text) {
+    return text.replace(/[0-9]/g, '#');
+  }
+
+  window.__mpOdometer = render;
+})();
+"""
+
+
+#: Pointer-tracked 3D tilt.
+#:
+#: Engages only for a fine pointer with hover: on a touch screen there is no
+#: hover to track, and a card that tilts under a thumb is motion sickness, not
+#: delight. Reads are batched into one rAF frame and only ever write transform
+#: and two custom properties, so nothing here triggers layout.
+TILT_JS = """
+(function () {
+  var fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)');
+  var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!fine || !fine.matches || (still && still.matches)) return;
+
+  var MAX = 6;           // degrees; beyond this, text starts to smear
+
+  function bind(card) {
+    // Per-card frame handle. A shared one would let the first card to schedule
+    // block every other card until its callback ran.
+    var frame = null;
+    var pending = null;
+
+    function apply() {
+      frame = null;
+      if (!pending) return;
+      var rect = pending.rect, x = pending.x, y = pending.y;
+      var px = (x - rect.left) / rect.width;
+      var py = (y - rect.top) / rect.height;
+      var rotY = (px - 0.5) * 2 * MAX;
+      var rotX = (0.5 - py) * 2 * MAX;
+      card.style.transform =
+        'rotateX(' + rotX.toFixed(2) + 'deg) rotateY(' + rotY.toFixed(2) + 'deg) ' +
+        'translateZ(6px)';
+      card.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
+      card.style.setProperty('--my', (py * 100).toFixed(1) + '%');
+    }
+
+    card.addEventListener('pointermove', function (event) {
+      if (event.pointerType !== 'mouse') return;
+      pending = {rect: card.getBoundingClientRect(), x: event.clientX, y: event.clientY};
+      card.classList.add('tilting');
+      if (frame === null) frame = requestAnimationFrame(apply);
+    });
+
+    card.addEventListener('pointerleave', function () {
+      // Clearing the handle matters: while the page is hidden the browser
+      // never runs the callback, so a handle left set would make the guard
+      // below reject every future move and the card would stop tilting for
+      // the rest of the session.
+      if (frame !== null) { cancelAnimationFrame(frame); frame = null; }
+      pending = null;
+      card.classList.remove('tilting');
+      card.style.transform = '';
+      card.style.removeProperty('--mx');
+      card.style.removeProperty('--my');
+    });
+
+    // Same reasoning on returning to the tab: drop any handle whose callback
+    // was never delivered.
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden && frame !== null) {
+        cancelAnimationFrame(frame);
+        frame = null;
+      }
+    });
+  }
+
+  document.querySelectorAll('.tilt').forEach(bind);
+  window.__mpBindTilt = function (root) {
+    (root || document).querySelectorAll('.tilt').forEach(bind);
+  };
+})();
+"""
+
+
 #: The live layer: market clock, counting numbers, and a flash on every tick.
 #:
 #: Session times are computed in the viewer's browser from UTC, so the status
@@ -1998,7 +2243,13 @@ SIGNALS_JS = """
         cell.classList.add(price > prev ? 'flash' : 'flash-down');
       }
       cell.setAttribute('data-last', String(price));
-      cell.textContent = text;
+      // The odometer is the single writer for this cell's contents; it is
+      // handed the finished string rather than reading anything back.
+      if (window.__mpOdometer && cell.classList.contains('mvalue')) {
+        window.__mpOdometer(cell, text);
+      } else {
+        cell.textContent = text;
+      }
       cell.classList.add('fresh');
 
       // Recompute this position's profit/loss from the live price.
@@ -2429,7 +2680,9 @@ def render_dashboard(
             f"<script>{PAPER_JS}</script>\n"
             f"<script>{SIGNALS_JS}</script>\n"
             f"<script>{MARKET_JS}</script>\n"
-            f"<script>{COUNTER_JS}</script>"
+            f"<script>{COUNTER_JS}</script>\n"
+            f"<script>{ODOMETER_JS}</script>\n"
+            f"<script>{TILT_JS}</script>"
         )
 
     dash_label = _tab_label("Today", "Dashboard")

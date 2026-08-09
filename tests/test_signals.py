@@ -466,6 +466,40 @@ class TestRenderWithSignals(unittest.TestCase):
         self.assertIn("Asia/Kolkata", html)
         self.assertIn("America/New_York", html)
 
+    def test_cards_sit_in_a_shared_3d_scene(self):
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn('<div class="scene">', html)
+        self.assertIn('class="sigcard tilt"', html)
+        self.assertIn("perspective:1100px", html)
+        self.assertIn("transform-style:preserve-3d", html)
+        # Contents ride at different depths, which is what makes it parallax.
+        self.assertIn("translateZ(38px)", html)
+
+    def test_tilt_is_limited_to_pointers_that_can_hover(self):
+        """A card tilting under a thumb is motion sickness, not delight."""
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("(hover: hover) and (pointer: fine)", html)
+        self.assertIn("event.pointerType !== 'mouse'", html)
+
+    def test_tilt_releases_its_frame_handle(self):
+        """A handle left set while the page is hidden would kill the tilt for
+        the rest of the session."""
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("cancelAnimationFrame(frame)", html)
+
+    def test_odometer_hides_its_digit_strip_from_assistive_tech(self):
+        """Each digit carries all ten numerals behind a clip."""
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("wrap.setAttribute('aria-hidden', 'true')", html)
+        self.assertIn("node.setAttribute('aria-label', text)", html)
+
+    def test_3d_collapses_flat_under_reduced_motion(self):
+        html = render_dashboard(self.report, signals=self.signals)
+        reduced = html[html.index("@media (prefers-reduced-motion:reduce)"):]
+        block = reduced[:reduced.index("}\n", reduced.index(".scene"))]
+        self.assertIn("perspective:none", block)
+        self.assertIn("transform:none !important", block)
+
     def test_motion_is_disabled_for_reduced_motion_readers(self):
         html = render_dashboard(self.report, signals=self.signals)
         self.assertIn("prefers-reduced-motion:reduce", html)
