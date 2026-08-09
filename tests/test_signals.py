@@ -221,6 +221,13 @@ class TestRenderWithSignals(unittest.TestCase):
                     "reason": "breakout above 20d high", "stop_loss": "1350.00",
                     "take_profit": "1500.00", "max_holding_days": 10,
                     "trailing_stop_pct": None,
+                    # 10 @ 1400: target 1500 → +1,000; stop 1350 → -500; 2:1.
+                    "invested": "14000.00", "invested_base": "168.67",
+                    "profit_at_target": "1000.00", "profit_at_target_base": "12.05",
+                    "profit_at_target_pct": "0.0714",
+                    "loss_at_stop": "500.00", "loss_at_stop_base": "6.02",
+                    "loss_at_stop_pct": "0.0357", "reward_risk": "2.0",
+                    "history": {"trades": 154, "win_rate": 0.44, "median_days_held": 8},
                     "kite": {"exchange": "NSE", "tradingsymbol": "RELIANCE",
                              "transaction_type": "BUY", "quantity": 10,
                              "order_type": "MARKET", "product": "CNC", "readonly": False},
@@ -233,6 +240,12 @@ class TestRenderWithSignals(unittest.TestCase):
                     "horizon": "short_term", "created_on": "2026-07-31", "fresh": False,
                     "reason": "pullback", "stop_loss": "285.00", "take_profit": "330.00",
                     "max_holding_days": 10, "trailing_stop_pct": "0.08",
+                    "invested": "1500.00", "invested_base": "1500.00",
+                    "profit_at_target": "150.00", "profit_at_target_base": "150.00",
+                    "profit_at_target_pct": "0.10",
+                    "loss_at_stop": "75.00", "loss_at_stop_base": "75.00",
+                    "loss_at_stop_pct": "0.05", "reward_risk": "2.0",
+                    "history": {"trades": 154, "win_rate": 0.44, "median_days_held": 8},
                     "alpaca": {"symbol": "AAPL", "qty": "5", "side": "buy",
                                "type": "market", "time_in_force": "day"},
                 },
@@ -245,8 +258,20 @@ class TestRenderWithSignals(unittest.TestCase):
                     "unrealized": "28.55", "opened_on": "2026-07-20",
                     "horizon": "short_term", "stop": "181.14", "take_profit": "233.00",
                     "days_held": 8, "max_holding_days": 15,
+                    "unrealized_base": "28.55", "unrealized_pct": "0.0293",
+                    "profit_at_target": "161.25", "loss_at_stop": "98.05",
+                    "fresh": True,
                 },
             ],
+            "totals": {
+                "signals": {
+                    "count": 2, "invested_base": "1668.67",
+                    "profit_at_target_base": "162.05", "loss_at_stop_base": "81.02",
+                    "profit_at_target_pct": "0.0971", "loss_at_stop_pct": "0.0485",
+                },
+                "positions": {"count": 1, "invested_base": "1003.75"},
+                "open_unrealized_base": "28.55",
+            },
         }
 
     def test_signal_sections_render(self):
@@ -288,6 +313,36 @@ class TestRenderWithSignals(unittest.TestCase):
         self.signals["orders"] = []
         html = render_dashboard(self.report, signals=self.signals)
         self.assertIn("No new orders today", html)
+
+    def test_money_outcomes_render_per_signal(self):
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("You invest", html)
+        self.assertIn("If target hits", html)
+        self.assertIn("If stop hits", html)
+        self.assertIn("14,000", html)      # invested
+        self.assertIn("+1,000", html)      # profit at target
+        self.assertIn("500", html)         # loss at stop
+        self.assertIn("2.0:1 reward-to-risk", html)
+        self.assertIn("within 10 trading days", html)
+        self.assertIn("44% of 154 past trades", html)
+
+    def test_zero_signals_show_no_outcome_rather_than_zero(self):
+        """A day with no signals must not read as a computed +0 / -0 result."""
+        self.signals["orders"] = []
+        self.signals["totals"] = {
+            "signals": {"count": 0, "invested_base": "0"},
+            "positions": {"count": 0, "invested_base": "0"},
+            "open_unrealized_base": "0",
+        }
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("nothing at risk today", html)
+        self.assertNotIn("+0 <span", html)
+        self.assertNotIn("&amp;amp;", html)  # labels must not be double-escaped
+
+    def test_negative_amounts_use_a_typographic_minus(self):
+        self.signals["positions"][0]["unrealized"] = "-42.50"
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("&minus;42", html)
 
 
 if __name__ == "__main__":

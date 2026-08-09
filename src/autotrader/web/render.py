@@ -350,6 +350,16 @@ def _price(value: object) -> str:
     return f"{float(str(value)):,.2f}"
 
 
+def _measured(source: dict, key: str, count: int) -> object | None:
+    """A value only when something was actually measured.
+
+    Returns ``None`` — which every caller renders as an em dash — when the
+    field is absent or nothing was counted, so an empty day never renders as
+    a computed zero the reader could mistake for a real result.
+    """
+    return source.get(key) if count else None
+
+
 def _pct_str(value: object, places: int = 1) -> str:
     """Format a snapshot percentage string (a ratio) for display."""
     return f"{float(str(value)) * 100:+.{places}f}%"
@@ -359,7 +369,11 @@ def _money_line(amount: object, currency: str, *, signed: bool = False) -> str:
     if amount is None:
         return "&mdash;"
     value = float(str(amount))
-    sign = "+" if signed and value > 0 else ""
+    sign = ""
+    if value < 0:
+        sign, value = "&minus;", abs(value)  # typographic minus, not a hyphen
+    elif signed:
+        sign = "+"
     return f'{sign}{value:,.0f} <span class="ccy">{_esc(currency)}</span>'
 
 
@@ -451,12 +465,12 @@ def _totals_bar(totals: dict, base: str) -> str:
     """Portfolio-level answer to "what does all of this add up to?"."""
     signals = totals.get("signals", {})
     positions = totals.get("positions", {})
-    open_pnl = totals.get("open_unrealized_base")
 
     def cell(label: str, value: object, note: str, tone: str = "", sign: str = "") -> str:
         """``sign`` is explicit rather than derived from colour: a gain and a
         loss must be distinguishable without seeing the red and the green."""
         if value is None:
+            # No trailing currency: "— USD" implies a USD amount was measured.
             shown = "&mdash;"
         else:
             number = float(str(value))
@@ -464,25 +478,29 @@ def _totals_bar(totals: dict, base: str) -> str:
             if sign == "auto":
                 prefix = "+" if number >= 0 else "&minus;"
                 number = abs(number)
-            shown = f"{prefix}{number:,.0f}"
+            shown = f'{prefix}{number:,.0f} <span class="ccy">{_esc(base)}</span>'
         return (
             f'<div class="tcell"><span class="mlabel">{label}</span>'
-            f'<span class="mvalue {tone}">{shown} <span class="ccy">{_esc(base)}</span></span>'
+            f'<span class="mvalue {tone}">{shown}</span>'
             f'<span class="mnote">{note}</span></div>'
         )
 
-    pnl_tone = ""
-    if open_pnl is not None:
-        pnl_tone = _tone(float(str(open_pnl)))
+    # With nothing to sum there is no outcome to state: "—" is the honest cell,
+    # where "+0 / -0" would read as a computed result that happens to be zero.
+    count = signals.get("count", 0)
+    upside = _measured(signals, "profit_at_target_base", count)
+    downside = _measured(signals, "loss_at_stop_base", count)
+    open_pnl = _measured(totals, "open_unrealized_base", positions.get("count", 0))
+    pnl_tone = "" if open_pnl is None else _tone(float(str(open_pnl)))
     return f"""<div class="totals">
   {cell("Total to invest today", signals.get("invested_base"),
-        f"{signals.get('count', 0)} fresh signal(s), converted to {_esc(base)}")}
-  {cell("Total if every target hits", signals.get("profit_at_target_base"),
+        f"{count} fresh signal(s), converted to {_esc(base)}")}
+  {cell("Total if every target hits", upside,
         _pct_str(signals["profit_at_target_pct"]) + " on the amount invested"
-        if signals.get("profit_at_target_pct") else "&mdash;", "pos", "+")}
-  {cell("Total if every stop hits", signals.get("loss_at_stop_base"),
+        if signals.get("profit_at_target_pct") else "nothing to invest today", "pos", "+")}
+  {cell("Total if every stop hits", downside,
         "-" + _pct_str(signals["loss_at_stop_pct"]).lstrip("+") + " on the amount invested"
-        if signals.get("loss_at_stop_pct") else "&mdash;", "neg", "&minus;")}
+        if signals.get("loss_at_stop_pct") else "nothing at risk today", "neg", "&minus;")}
   {cell("Open positions", positions.get("invested_base"),
         f"{positions.get('count', 0)} held at current prices")}
   {cell("Open profit / loss", open_pnl, "unrealised, at last close", pnl_tone, "auto")}
@@ -609,25 +627,33 @@ def _glance(signals: dict) -> str:
     fresh = sum(1 for order in orders if order["fresh"])
     totals = signals.get("totals", {})
     signal_totals = totals.get("signals", {})
-    open_pnl = totals.get("open_unrealized_base")
-    pnl_value = float(str(open_pnl)) if open_pnl is not None else 0.0
+    counted = signal_totals.get("count", 0)
+    upside = _measured(signal_totals, "profit_at_target_base", counted)
+    downside = _measured(signal_totals, "loss_at_stop_base", counted)
+    open_pnl = _measured(
+        totals, "open_unrealized_base", totals.get("positions", {}).get("count", 0)
+    )
+    pnl_value = float(str(open_pnl)) if open_pnl is not None else None
     cards = [
         _kpi("Fresh signals", str(fresh), tone="pos" if fresh else "flat",
              note="orders ready for the next open"),
         _kpi("To invest today", _price(signal_totals.get("invested_base", "0")),
              note="USD across both markets"),
         _kpi("If every target hits",
-             "+" + _price(signal_totals.get("profit_at_target_base", "0")),
-             tone="pos",
+             "&mdash;" if upside is None else "+" + _price(upside),
+             tone="pos" if upside is not None else "flat",
              note=_pct_str(signal_totals["profit_at_target_pct"])
-             if signal_totals.get("profit_at_target_pct") else "on the amount invested"),
+             if signal_totals.get("profit_at_target_pct") else "no signals today"),
         _kpi("If every stop hits",
-             "&minus;" + _price(signal_totals.get("loss_at_stop_base", "0")),
-             tone="neg",
-             note="the most these signals risk"),
-        _kpi("Open positions P&amp;L",
-             ("+" if pnl_value >= 0 else "&minus;") + f"{abs(pnl_value):,.2f}",
-             tone=_tone(pnl_value), note="unrealised, USD"),
+             "&mdash;" if downside is None else "&minus;" + _price(downside),
+             tone="neg" if downside is not None else "flat",
+             note="the most these signals risk" if downside is not None
+             else "nothing at risk today"),
+        _kpi("Open positions P&L",  # _kpi escapes the label; pass it raw
+             "&mdash;" if pnl_value is None
+             else ("+" if pnl_value >= 0 else "&minus;") + f"{abs(pnl_value):,.2f}",
+             tone="flat" if pnl_value is None else _tone(pnl_value),
+             note="unrealised, USD"),
     ]
     cta = (
         '<div class="kpi cta"><button type="button" class="exec big" data-tabgo="invest">'
