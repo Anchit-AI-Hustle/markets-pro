@@ -7,11 +7,15 @@
     {
       "source": "/markets-pro/api/:path*",
       "destination": "/api/:path*"
+    },
+    {
+      "source": "/",
+      "destination": "/markets-pro/index.html"
     }
   ],
   "headers": [
     {
-      "source": "/markets-pro/(.*)",
+      "source": "/(.*)",
       "headers": [
         {
           "key": "X-Content-Type-Options",

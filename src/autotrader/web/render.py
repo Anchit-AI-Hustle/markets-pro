@@ -206,6 +206,10 @@ def _kpi(label: str, value: str, *, tone: str = "", note: str = "", cell: str = 
     note_hook = f' data-cell="{_esc(cell)}-note"' if cell else ""
     if note_html and cell:
         note_html = f'<span class="kpi-note"{note_hook}>{_esc(note)}</span>'
+    # Only figures with no `cell` hook are static; a hooked cell is rewritten by
+    # script and must not be animated (see COUNTER_JS).
+    if not cell:
+        hook = " data-count"
     return (
         f'<div class="kpi"><span class="kpi-label">{_esc(label)}</span>'
         f'<span class="kpi-value {tone}"{hook}>{value}</span>{note_html}</div>'
@@ -354,6 +358,79 @@ def _price(value: object) -> str:
     return f"{float(str(value)):,.2f}"
 
 
+#: Defined once per document and referenced by every sparkline: repeating the
+#: gradient inside each SVG would duplicate the id across the page.
+SPARK_DEFS = """<svg width="0" height="0" aria-hidden="true"
+     style="position:absolute"><defs>
+  <linearGradient id="sparkfill" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="currentColor" stop-opacity="0.28"/>
+    <stop offset="100%" stop-color="currentColor" stop-opacity="0"/>
+  </linearGradient>
+</defs></svg>"""
+
+
+def sparkline_svg(
+    values: Sequence[float],
+    *,
+    stop: object = None,
+    target: object = None,
+    width: int = 240,
+    height: int = 56,
+) -> str:
+    """Recent price as inline SVG, with the trade's own levels drawn in.
+
+    A sparkline that is only a squiggle is decoration. Plotting the stop and
+    the target on the same scale turns it into the one picture that answers
+    "how far is this from going wrong, and how far from paying off" — which is
+    the question the numbers beside it are already trying to answer.
+
+    The y-range spans the price history *and* both levels, so the gaps you see
+    are the real ones rather than an artefact of clipping.
+    """
+    points = [float(v) for v in values if v is not None]
+    if len(points) < 2:
+        return ""
+
+    levels = [float(str(v)) for v in (stop, target) if v not in (None, "")]
+    lo, hi = min(points + levels), max(points + levels)
+    if hi == lo:
+        hi = lo + 1.0
+    pad = (hi - lo) * 0.08
+    lo, hi = lo - pad, hi + pad
+    span = hi - lo
+    n = len(points)
+
+    def x_at(i: int) -> float:
+        return i * width / (n - 1)
+
+    def y_at(v: float) -> float:
+        return height - ((v - lo) / span * height)
+
+    line = " ".join(f"{x_at(i):.1f},{y_at(v):.1f}" for i, v in enumerate(points))
+    area = f"0,{height:.1f} {line} {width:.1f},{height:.1f}"
+    rising = points[-1] >= points[0]
+    tone = "up" if rising else "down"
+
+    bands = []
+    for value, cls in ((stop, "sparkstop"), (target, "sparktarget")):
+        if value in (None, ""):
+            continue
+        y = y_at(float(str(value)))
+        if 0 <= y <= height:
+            bands.append(
+                f'<line class="{cls}" x1="0" y1="{y:.1f}" x2="{width}" y2="{y:.1f}"/>'
+            )
+
+    last_x, last_y = x_at(n - 1), y_at(points[-1])
+    return f"""<svg class="spark spark-{tone}" viewBox="0 0 {width} {height}"
+     preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  {''.join(bands)}
+  <polygon class="sparkarea" points="{area}" fill="url(#sparkfill)"/>
+  <polyline class="sparkline" points="{line}" vector-effect="non-scaling-stroke"/>
+  <circle class="sparkdot" cx="{last_x:.1f}" cy="{last_y:.1f}" r="2.6"/>
+</svg>"""
+
+
 def plain_reason(reason: str) -> str:
     """Say why a trade fired in words a non-trader can act on.
 
@@ -467,6 +544,23 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
         if weight
         else "strategy allocation"
     )
+    spark = sparkline_svg(
+        order.get("spark") or [],
+        stop=order.get("stop_loss"),
+        target=order.get("take_profit"),
+    )
+    spark_block = ""
+    if spark:
+        series = order.get("spark") or []
+        move = (series[-1] - series[0]) / series[0] * 100 if series and series[0] else 0.0
+        stop_txt = _price(order["stop_loss"]) if order.get("stop_loss") else "&mdash;"
+        target_txt = _price(order["take_profit"]) if order.get("take_profit") else "&mdash;"
+        spark_block = f"""<div class="sparkwrap">{spark}</div>
+  <div class="sparkscale">
+    <span>{len(series)} sessions &middot; {move:+.1f}%</span>
+    <span>stop {stop_txt} &middot; target {target_txt}</span>
+  </div>"""
+
     return f"""<article class="sigcard{stale}" data-sigcard="{index}">
   <div class="sighead">
     <span class="tag {side_class}">{side}</span>
@@ -475,6 +569,7 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
     <span class="tag">{_esc(region_label)}</span>
     {'' if order['fresh'] else '<span class="tag">resting</span>'}
   </div>
+  {spark_block}
   <div class="sigmoney">
     <div class="mcell">
       <span class="mlabel" data-cell="invest-label">Strategy size</span>
@@ -522,7 +617,13 @@ def _signals_section(signals: dict) -> str:
     # Deliberately no daily cap here: the cap that matters is the reader's own,
     # which lives in Settings. Printing the build's default would be quoting a
     # limit that does not apply to them.
-    meta = f'<p class="sigmeta">{as_of}</p>'
+    meta = f"""<div class="marketbar">
+  <span class="mkt" data-market="india"><span class="mktdot"></span>
+    <span data-market-label>NSE</span></span>
+  <span class="mkt" data-market="us"><span class="mktdot"></span>
+    <span data-market-label>US markets</span></span>
+  <span>{as_of}</span>
+</div>"""
 
     if not orders:
         # The commonest state by far: these strategies are meant to sit still.
@@ -588,7 +689,10 @@ def _positions_section(signals: dict) -> str:
             f"""<tr>
   <td><span class="tag">{_esc(region_label)}</span>
       <strong>{_esc(position['symbol'])}</strong>
-      <span class="muted-inline">{_esc(position['name'])}</span></td>
+      <span class="muted-inline">{_esc(position['name'])}</span>
+      <span class="cellspark">{sparkline_svg(
+          position.get('spark') or [], stop=position.get('stop'),
+          target=position.get('take_profit'), width=120, height=26)}</span></td>
   <td>{book}</td>
   <td class="num">{_esc(position['quantity'])}</td>
   <td class="num">{_price(position['average_cost'])}
@@ -735,6 +839,130 @@ and past performance does not predict future returns.</p>"""
 
 
 SIGNALS_CSS = """
+/* ---------------------------------------------------------------------------
+   Trading-surface layer: depth, sparklines and motion.
+
+   Two rules hold this together. Colour carries direction and nothing else —
+   green and red are reserved for up and down, so no button or heading may use
+   them decoratively. And motion only ever confirms something that actually
+   happened (a price ticked, a panel opened); nothing loops or drifts on its
+   own, because ambient movement next to live numbers reads as data changing
+   when it has not. Every animation here is disabled under
+   prefers-reduced-motion.
+--------------------------------------------------------------------------- */
+:root{
+  --elev-1:0 1px 2px rgba(16,18,22,.06), 0 1px 1px rgba(16,18,22,.04);
+  --elev-2:0 4px 14px rgba(16,18,22,.09), 0 1px 3px rgba(16,18,22,.05);
+  --elev-3:0 18px 44px rgba(16,18,22,.16), 0 3px 10px rgba(16,18,22,.08);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --grid:rgba(120,130,145,.09);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --elev-1:0 1px 2px rgba(0,0,0,.5);
+    --elev-2:0 6px 18px rgba(0,0,0,.55), 0 1px 3px rgba(0,0,0,.4);
+    --elev-3:0 22px 50px rgba(0,0,0,.62), 0 4px 12px rgba(0,0,0,.45);
+    --grid:rgba(150,160,175,.07);
+  }
+}
+:root[data-theme="dark"]{
+  --elev-1:0 1px 2px rgba(0,0,0,.5);
+  --elev-2:0 6px 18px rgba(0,0,0,.55), 0 1px 3px rgba(0,0,0,.4);
+  --elev-3:0 22px 50px rgba(0,0,0,.62), 0 4px 12px rgba(0,0,0,.45);
+  --grid:rgba(150,160,175,.07);
+}
+
+/* A faint grid behind the page, like a chart backdrop. Fixed so it reads as
+   a surface the content sits on rather than something that scrolls with it. */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:46px 46px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 40%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 40%,transparent 100%);
+}
+
+.panel{box-shadow:var(--elev-1)}
+.kpi{box-shadow:var(--elev-1);transition:transform .22s var(--ease),
+  box-shadow .22s var(--ease)}
+.kpi:hover{transform:translateY(-2px);box-shadow:var(--elev-2)}
+
+/* Sticky bar becomes a frosted surface once content slides under it. */
+.tabs{backdrop-filter:saturate(1.6) blur(12px);
+  -webkit-backdrop-filter:saturate(1.6) blur(12px);
+  background:color-mix(in srgb,var(--bg) 78%,transparent)}
+.tabs button{transition:color .18s var(--ease),background .18s var(--ease)}
+.tabs button.active{box-shadow:var(--elev-1)}
+
+/* --- sparklines --- */
+.spark{width:100%;height:56px;display:block;overflow:visible}
+.spark-up{color:var(--pos)}
+.spark-down{color:var(--neg)}
+.sparkline{fill:none;stroke:currentColor;stroke-width:1.8;
+  stroke-linejoin:round;stroke-linecap:round}
+.sparkarea{stroke:none}
+.sparkdot{fill:currentColor;stroke:var(--panel);stroke-width:1.5}
+.sparkstop{stroke:var(--neg);stroke-width:1;stroke-dasharray:3 3;opacity:.55}
+.sparktarget{stroke:var(--pos);stroke-width:1;stroke-dasharray:3 3;opacity:.55}
+.sparkwrap{position:relative;margin:2px 0 14px;
+  border-radius:8px;overflow:hidden}
+.sparkscale{display:flex;justify-content:space-between;font-size:10.5px;
+  color:var(--muted);margin-top:5px;font-variant-numeric:tabular-nums}
+.cellspark{display:block;width:120px;margin-top:4px;opacity:.9}
+.cellspark .spark{height:26px}
+
+/* --- market status --- */
+.marketbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  margin:14px 0 2px;font-size:12px;color:var(--muted)}
+.mkt{display:inline-flex;align-items:center;gap:6px;
+  padding:4px 10px;border:1px solid var(--line);border-radius:999px;
+  background:var(--panel);box-shadow:var(--elev-1)}
+.mktdot{width:7px;height:7px;border-radius:50%;background:var(--muted);
+  flex:0 0 auto}
+.mkt.open .mktdot{background:var(--pos);animation:pulse 2.4s var(--ease) infinite}
+.mkt.open{color:var(--ink)}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--pos) 60%,transparent)}
+  70%{box-shadow:0 0 0 6px transparent}
+}
+
+/* --- value motion: a tick should be felt, not just read --- */
+.flash{animation:flashup .7s var(--ease)}
+.flash-down{animation:flashdown .7s var(--ease)}
+@keyframes flashup{
+  0%{background:color-mix(in srgb,var(--pos) 28%,transparent);
+     border-radius:4px}
+  100%{background:transparent}
+}
+@keyframes flashdown{
+  0%{background:color-mix(in srgb,var(--neg) 28%,transparent);
+     border-radius:4px}
+  100%{background:transparent}
+}
+
+/* Panels enter once, staggered, so the page assembles rather than snapping. */
+.tabpanel:not([hidden]) > *{animation:rise .42s var(--ease) both}
+.tabpanel:not([hidden]) > *:nth-child(1){animation-delay:.02s}
+.tabpanel:not([hidden]) > *:nth-child(2){animation-delay:.06s}
+.tabpanel:not([hidden]) > *:nth-child(3){animation-delay:.10s}
+.tabpanel:not([hidden]) > *:nth-child(n+4){animation-delay:.14s}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:none}}
+
+.sigcard{box-shadow:var(--elev-1);
+  transition:transform .24s var(--ease),box-shadow .24s var(--ease)}
+.sigcard:hover{transform:translateY(-3px);box-shadow:var(--elev-3)}
+button.exec{transition:transform .16s var(--ease),background .16s var(--ease),
+  color .16s var(--ease),box-shadow .16s var(--ease)}
+button.exec:not(:disabled):hover{transform:translateY(-1px);box-shadow:var(--elev-2)}
+button.exec:not(:disabled):active{transform:translateY(0) scale(.985)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+  .kpi:hover,.sigcard:hover,button.exec:hover{transform:none}
+}
+
 .sigmeta{color:var(--muted);font-size:12.5px;margin:0 0 12px}
 .muted-inline{color:var(--muted);font-size:12px}
 .side-buy{background:color-mix(in srgb,var(--pos) 18%,var(--tag));color:var(--pos)}
@@ -1509,6 +1737,137 @@ PAPER_JS = """
 """
 
 
+#: The live layer: market clock, counting numbers, and a flash on every tick.
+#:
+#: Session times are computed in the viewer's browser from UTC, so the status
+#: stays correct between nightly rebuilds — a market that opened an hour ago
+#: must not still say "closed" because the page was generated last night.
+#: Holidays are not modelled, so this answers "are we inside trading hours",
+#: which is what the label claims and no more.
+MARKET_JS = """
+(function () {
+  // Local exchange times, resolved through the venue's own timezone so US
+  // daylight saving is handled by the platform rather than hardcoded — a
+  // fixed UTC offset would read an hour wrong for half the year.
+  var SESSIONS = {
+    india: {label: 'NSE', zone: 'Asia/Kolkata', open: 9 * 60 + 15, close: 15 * 60 + 30},
+    us: {label: 'US markets', zone: 'America/New_York', open: 9 * 60 + 30, close: 16 * 60}
+  };
+
+  function localParts(zone) {
+    try {
+      var fmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: zone, weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false
+      });
+      var parts = {};
+      fmt.formatToParts(new Date()).forEach(function (p) { parts[p.type] = p.value; });
+      return {
+        minutes: Number(parts.hour) * 60 + Number(parts.minute),
+        weekday: parts.weekday
+      };
+    } catch (e) {
+      return null;                    // no Intl: fall back to "closed"
+    }
+  }
+
+  function refresh() {
+    Object.keys(SESSIONS).forEach(function (region) {
+      var node = document.querySelector('[data-market="' + region + '"]');
+      if (!node) return;
+      var spec = SESSIONS[region];
+      var now = localParts(spec.zone);
+      var weekday = now && ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].indexOf(now.weekday) >= 0;
+      var open = !!now && weekday && now.minutes >= spec.open && now.minutes < spec.close;
+      node.classList.toggle('open', open);
+      var label = node.querySelector('[data-market-label]');
+      if (label) label.textContent = spec.label + (open ? ' open' : ' closed');
+      node.title = (open ? spec.label + ' is in its trading session'
+                         : spec.label + ' is outside trading hours')
+        + ' — public holidays are not accounted for';
+    });
+  }
+
+  refresh();
+  setInterval(refresh, 30000);
+})();
+"""
+
+#: Counts a number up to its value on first sight.
+#:
+#: Scoped strictly to elements marked ``data-count`` — figures the page renders
+#: once and never rewrites. It must never touch a value that application code
+#: updates: the animation captures the text when it starts and restores it when
+#: it ends, so a write landing mid-flight would be overwritten by the stale
+#: string, leaving a wrong number on screen permanently. The live cells get
+#: their motion from the tick flash instead, which only ever adds a class.
+#:
+#: Purely presentational either way: the correct figure is already in the
+#: markup, so reduced-motion and no-script readers see it immediately.
+COUNTER_JS = """
+(function () {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (typeof IntersectionObserver !== 'function') return;
+
+  // Animate the number's own text node only. Rewriting the element's
+  // textContent would flatten the currency <span> that sits beside it.
+  function animate(node) {
+    var textNode = null;
+    for (var i = 0; i < node.childNodes.length; i++) {
+      var child = node.childNodes[i];
+      if (child.nodeType === 3 && child.nodeValue.trim()) { textNode = child; break; }
+    }
+    if (!textNode) return;
+
+    var original = textNode.nodeValue;
+    // Keep the surrounding whitespace: the gap before a trailing currency
+    // span is part of the layout, and dropping it makes the value jump.
+    var edges = original.match(/^(\\s*)([\\s\\S]*?)(\\s*)$/);
+    var lead = edges[1], core = edges[2], trail = edges[3];
+    var match = core.match(/^([+\\u2212-]?)([\\d,]+(?:\\.\\d+)?)$/);
+    if (!match) return;
+    var sign = match[1], target = Number(match[2].replace(/,/g, ''));
+    if (!isFinite(target) || target === 0) return;
+    // Counting a small integer up from zero just makes "1 trade" flicker
+    // through "0", which is the one value that must never be shown wrongly.
+    if (Math.abs(target) < 10) return;
+    var decimals = (match[2].split('.')[1] || '').length;
+    var started = null, duration = 750;
+
+    function frame(now) {
+      if (started === null) started = now;
+      var t = Math.min((now - started) / duration, 1);
+      var eased = 1 - Math.pow(1 - t, 3);
+      if (t < 1) {
+        textNode.nodeValue = lead + sign + (target * eased).toLocaleString('en-US', {
+          minimumFractionDigits: decimals, maximumFractionDigits: decimals}) + trail;
+        requestAnimationFrame(frame);
+      } else {
+        textNode.nodeValue = original;   // exact original string, never a re-format
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  var seen = new WeakSet();
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting || seen.has(entry.target)) return;
+      seen.add(entry.target);
+      animate(entry.target);
+    });
+  }, {threshold: 0.6});
+
+  function watch() {
+    document.querySelectorAll('[data-count]').forEach(function (n) {
+      if (!seen.has(n)) io.observe(n);
+    });
+  }
+  watch();
+  window.__mpWatchCounters = watch;
+})();
+"""
+
+
 #: Broker handoff + delayed-quote overlay for the signals sections.
 #:
 #: Execution is deliberately two-step everywhere: the first tap arms the button
@@ -1631,6 +1990,14 @@ SIGNALS_JS = """
         var drift = (price - ref) / ref * 100;
         text += ' (' + (drift >= 0 ? '+' : '') + drift.toFixed(1) + '%)';
       }
+      // Flash the direction of the change, the way a trading screen does.
+      var prev = Number(cell.getAttribute('data-last'));
+      if (prev && prev !== price) {
+        cell.classList.remove('flash', 'flash-down');
+        void cell.offsetWidth;                       // restart the animation
+        cell.classList.add(price > prev ? 'flash' : 'flash-down');
+      }
+      cell.setAttribute('data-last', String(price));
       cell.textContent = text;
       cell.classList.add('fresh');
 
@@ -2060,7 +2427,9 @@ def render_dashboard(
         signal_script = (
             f"<script>{SETTINGS_JS}</script>\n"
             f"<script>{PAPER_JS}</script>\n"
-            f"<script>{SIGNALS_JS}</script>"
+            f"<script>{SIGNALS_JS}</script>\n"
+            f"<script>{MARKET_JS}</script>\n"
+            f"<script>{COUNTER_JS}</script>"
         )
 
     dash_label = _tab_label("Today", "Dashboard")
@@ -2089,6 +2458,7 @@ def render_dashboard(
 <style>{CSS}{SIGNALS_CSS}</style>
 </head>
 <body>
+{SPARK_DEFS}
 <div class="wrap">
   <header>
     <h1>{_esc(title)}</h1>

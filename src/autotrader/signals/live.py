@@ -112,6 +112,21 @@ def run_live(feed: LiveFeed, live_config: dict) -> tuple[BacktestEngine, Perform
 # --- snapshot ---------------------------------------------------------------
 
 
+#: Sessions of price history drawn behind each instrument. Roughly a quarter,
+#: which is long enough to show the setup the strategy reacted to and short
+#: enough that the current move is still legible.
+SPARK_SESSIONS = 60
+
+
+def _spark(feed: LiveFeed, key: str) -> list[float]:
+    """Recent closes for a sparkline, oldest first."""
+    series = feed.data.get(key)
+    if series is None or not len(series):
+        return []
+    bars = list(series)[-SPARK_SESSIONS:]
+    return [round(float(bar.close), 4) for bar in bars]
+
+
 def _s(value: object) -> str | None:
     """Decimal/date → JSON-safe string; None passes through."""
     if value is None:
@@ -256,6 +271,7 @@ def _order_row(
         "max_holding_days": order.max_holding_days,
         "trailing_stop_pct": _s(trailing),
         "history": stats.get(order.horizon.value, {}),
+        "spark": _spark(feed, key),
     }
     row.update(
         _economics(
@@ -372,6 +388,7 @@ def build_snapshot(
             "max_holding_days": max_days,
             "days_left": None if max_days is None or days_held is None else max_days - days_held,
             "fresh": True,  # every open position counts toward portfolio totals
+            "spark": _spark(feed, key),
         }
         # Remaining upside/downside from HERE, not from the original entry.
         row.update(

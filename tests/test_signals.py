@@ -431,6 +431,46 @@ class TestRenderWithSignals(unittest.TestCase):
         self.assertIn("data-paper-positions", html)
         self.assertIn("No paper positions yet", html)
 
+    def test_script_written_values_are_never_animated(self):
+        """The count-up restores the text it captured when it started, so
+        animating a cell that script rewrites can strand a wrong number."""
+        html = render_dashboard(self.report, signals=self.signals)
+        for dynamic in ("today-invest", "today-upside", "today-downside", "today-paper"):
+            marker = f'data-cell="{dynamic}"'
+            self.assertIn(marker, html)
+            start = html.index(marker)
+            element = html[html.rindex("<span", 0, start):html.index(">", start) + 1]
+            self.assertNotIn("data-count", element, f"{dynamic} must not be animated")
+        # Static figures still get the animation.
+        self.assertIn("data-count", html)
+
+    def test_sparkline_plots_the_trades_own_levels(self):
+        self.signals["orders"][0]["spark"] = [1360, 1380, 1370, 1395, 1400]
+        html = render_dashboard(self.report, signals=self.signals)
+        # Assert on markup, not class names — those also appear in the CSS.
+        self.assertIn('<div class="sparkwrap">', html)
+        self.assertIn('class="sparkline"', html)
+        self.assertIn('<line class="sparkstop"', html)
+        self.assertIn('<line class="sparktarget"', html)
+        self.assertIn("5 sessions", html)
+
+    def test_sparkline_needs_at_least_two_points(self):
+        self.signals["orders"][0]["spark"] = [100]
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertNotIn('<div class="sparkwrap">', html)
+
+    def test_market_status_is_present_for_both_venues(self):
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn('data-market="india"', html)
+        self.assertIn('data-market="us"', html)
+        self.assertIn("Asia/Kolkata", html)
+        self.assertIn("America/New_York", html)
+
+    def test_motion_is_disabled_for_reduced_motion_readers(self):
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("prefers-reduced-motion:reduce", html)
+        self.assertIn("prefers-reduced-motion: reduce", html)  # the script guard
+
     def test_negative_amounts_use_a_typographic_minus(self):
         self.signals["positions"][0]["unrealized"] = "-42.50"
         html = render_dashboard(self.report, signals=self.signals)
