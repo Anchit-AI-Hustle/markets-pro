@@ -19,7 +19,7 @@ from autotrader.signals.live import (
     horizon_stats,
     load_live_config,
 )
-from autotrader.web.render import render_dashboard
+from autotrader.web.render import plain_reason, render_dashboard
 
 
 def seed_cache(root: Path, *, sessions: int = 90) -> date:
@@ -142,6 +142,34 @@ class TestEconomics(unittest.TestCase):
                        currency="USD", fx=self.fx),
             {},
         )
+
+
+class TestPlainReason(unittest.TestCase):
+    """Signals must be explainable to someone who does not trade for a living."""
+
+    def test_each_strategy_reason_gets_a_plain_sentence(self):
+        cases = {
+            "breakout above 20d high, ADX 32, volume 4.1x": "broken above",
+            "pullback: RSI(2) 7.5 above SMA200": "buying the dip",
+            "momentum +12.3%, ADX 28, vol 24.5%": "steadiest risers",
+            "dropped out of momentum ranking or trend filter": "stepping out",
+            "mean reversion complete: RSI 65.2": "taking the gain",
+        }
+        for raw, expected in cases.items():
+            plain = plain_reason(raw)
+            self.assertIn(expected, plain, f"{raw!r} produced {plain!r}")
+            # No indicator jargon may survive into the plain sentence.
+            for jargon in ("RSI", "ADX", "SMA", "d high"):
+                self.assertNotIn(jargon, plain)
+
+    def test_exit_codes_map_to_their_labels(self):
+        self.assertEqual(plain_reason("exit:stop_loss"), "Stop loss")
+        self.assertEqual(plain_reason("exit:take_profit"), "Target")
+
+    def test_unknown_reason_passes_through_unchanged(self):
+        """Never dress an unrecognised reason up into a claim."""
+        self.assertEqual(plain_reason("something new"), "something new")
+        self.assertEqual(plain_reason(""), "")
 
 
 class TestTotals(unittest.TestCase):
@@ -276,8 +304,8 @@ class TestRenderWithSignals(unittest.TestCase):
 
     def test_signal_sections_render(self):
         html = render_dashboard(self.report, signals=self.signals)
-        self.assertIn("Today's signals", html)
-        self.assertIn("Open positions", html)
+        self.assertIn("Today's suggested trades", html)
+        self.assertIn("Your paper portfolio", html)
         self.assertIn("RELIANCE", html)
         self.assertIn('data-exec="kite:0"', html)
         self.assertIn('data-exec="us:1"', html)
@@ -312,7 +340,34 @@ class TestRenderWithSignals(unittest.TestCase):
     def test_empty_orders_render_the_no_signal_state(self):
         self.signals["orders"] = []
         html = render_dashboard(self.report, signals=self.signals)
-        self.assertIn("No new orders today", html)
+        self.assertIn("Nothing to buy today", html)
+        self.assertIn("What to do now", html)
+
+    def test_onboarding_asks_for_the_users_own_amount(self):
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("Start here", html)
+        self.assertIn("data-needs-setup", html)
+        self.assertIn('data-setting="capital.INR"', html)
+        self.assertIn('data-setting="cap.USD"', html)
+        self.assertIn("data-settings-save", html)
+
+    def test_quantities_are_labelled_as_the_strategys_until_user_sets_amount(self):
+        """Server-rendered sizes belong to the engine and must say so."""
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("Strategy size", html)
+        self.assertNotIn(">You invest<", html)
+
+    def test_orders_carry_the_weight_needed_to_resize_them(self):
+        self.signals["orders"][0]["weight"] = "0.0965"
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("9.7% of the book", html)
+        self.assertIn('data-sigcard="0"', html)
+
+    def test_setup_tab_no_longer_requires_editing_files_for_money(self):
+        html = render_dashboard(self.report, signals=self.signals)
+        panel = html[html.index('id="panel-setup"'):]
+        self.assertIn("Your money", panel)
+        self.assertIn('data-setting="capital.INR"', panel)
 
     def test_money_outcomes_render_per_signal(self):
         html = render_dashboard(self.report, signals=self.signals)
@@ -324,27 +379,36 @@ class TestRenderWithSignals(unittest.TestCase):
         self.assertIn("500", html)         # loss at stop
         self.assertIn("2.0:1 reward-to-risk", html)
         self.assertIn("within 10 trading days", html)
-        self.assertIn("44% of 154 past trades", html)
+        self.assertIn("44% of its last 154 trades", html)
 
-    def test_zero_signals_show_no_outcome_rather_than_zero(self):
-        """A day with no signals must not read as a computed +0 / -0 result."""
-        self.signals["orders"] = []
-        self.signals["totals"] = {
-            "signals": {"count": 0, "invested_base": "0"},
-            "positions": {"count": 0, "invested_base": "0"},
-            "open_unrealized_base": "0",
-        }
+    def test_dashboard_money_starts_blank_not_at_the_engines_numbers(self):
+        """Headline money is the reader's, filled in by script once they say
+        what they have. It must never ship pre-filled with the test book."""
         html = render_dashboard(self.report, signals=self.signals)
-        self.assertIn("nothing at risk today", html)
-        self.assertNotIn("+0 <span", html)
+        glance = html[html.index('class="glance"'):html.index('class="notice"')]
+        self.assertIn('data-cell="today-invest"', glance)
+        self.assertIn('data-cell="today-paper"', glance)
+        self.assertIn("set your amount to see this", glance)
+        # The engine's own equity/cash figures must not appear as the reader's.
+        self.assertNotIn("15,2", glance)
         self.assertNotIn("&amp;amp;", html)  # labels must not be double-escaped
+
+    def test_engine_book_is_not_shown_as_the_users_holdings(self):
+        """The strategy's test positions belong under the track record."""
+        html = render_dashboard(self.report, signals=self.signals)
+        invest = html[html.index('id="panel-invest"'):html.index('id="panel-paper"')]
+        self.assertNotIn("NVDA", invest)
+        self.assertIn("Today's suggested trades", invest)
+        performance = html[html.index('id="panel-performance"'):]
+        self.assertIn("its own test book", performance)
+        self.assertIn("NVDA", performance)
 
     def test_paper_trading_is_the_primary_action(self):
         """Paper must lead: it is the reversible, no-credential path."""
         html = render_dashboard(self.report, signals=self.signals)
         self.assertIn('data-paper-buy="0"', html)
         self.assertIn("Paper buy", html)
-        self.assertIn("Paper portfolio", html)
+        self.assertIn("Your paper portfolio", html)
         self.assertIn('data-tabbtn="paper"', html)
         # Real-broker buttons remain, visually secondary.
         self.assertIn("exec ghost", html)

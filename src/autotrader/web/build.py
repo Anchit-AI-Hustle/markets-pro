@@ -215,10 +215,15 @@ def main(argv: list[str] | None = None) -> int:
     if live is not None:
         signals, report = live
         fresh = sum(1 for order in signals["orders"] if order["fresh"])
+        headline = (
+            f"<strong>{fresh} trade{'' if fresh == 1 else 's'} suggested today</strong>"
+            if fresh
+            else "<strong>No trades suggested today</strong>"
+        )
+        latest = max(signals["as_of"].values()) if signals.get("as_of") else report.end_day
         subtitle = (
-            f"{report.start_day} to {report.end_day} &middot; India + US &middot; "
-            f"base {report.base_currency} &middot; <strong>real market data</strong> "
-            f"&middot; {fresh} fresh signal(s)"
+            f"{headline} &middot; Indian and US stocks &middot; "
+            f"prices through {latest}, refreshed after each market close"
         )
     else:
         report = run_demo_backtest(sessions=args.sessions)

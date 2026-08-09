@@ -217,7 +217,13 @@ def _broker_payloads(entry: UniverseEntry, side: str, quantity: Decimal) -> dict
     }
 
 
-def _order_row(order: Order, engine: BacktestEngine, feed: LiveFeed, stats: dict) -> dict:
+def _order_row(
+    order: Order,
+    engine: BacktestEngine,
+    feed: LiveFeed,
+    stats: dict,
+    equity_base: Decimal,
+) -> dict:
     key = order.instrument.key
     entry = entry_for_key(key)
     last_price = engine.last_prices.get(key)
@@ -262,6 +268,12 @@ def _order_row(order: Order, engine: BacktestEngine, feed: LiveFeed, stats: dict
             fx=feed.fx,
         )
     )
+    # The share count above is sized for THIS run's book, which is not the
+    # reader's money. Carrying the intended allocation as a fraction lets the
+    # page restate every quantity and outcome in terms of the capital the user
+    # actually has, instead of quoting them someone else's position size.
+    if row.get("invested_base") is not None and equity_base > 0:
+        row["weight"] = _s(Decimal(row["invested_base"]) / equity_base)
     row.update(_broker_payloads(entry, side, quantity))
     return row
 
@@ -306,8 +318,11 @@ def build_snapshot(
     stamp = generated_at or datetime.now(timezone.utc)
     fx = feed.fx
     stats = horizon_stats(report) if report is not None else {}
+    equity_base = engine.portfolio.total_equity(engine.last_prices, fx).amount
 
-    orders = [_order_row(o, engine, feed, stats) for o in engine.pending_orders]
+    orders = [
+        _order_row(o, engine, feed, stats, equity_base) for o in engine.pending_orders
+    ]
     orders.sort(key=lambda r: (not r["fresh"], r["region"], r["symbol"]))
 
     positions = []
@@ -372,13 +387,12 @@ def build_snapshot(
         )
         positions.append(row)
 
-    equity = engine.portfolio.total_equity(engine.last_prices, fx)
     return {
         "version": SNAPSHOT_VERSION,
         "generated_at": stamp.isoformat(timespec="seconds"),
         "as_of": {region: day.isoformat() for region, day in sorted(feed.as_of.items())},
         "base_currency": "USD",
-        "equity": _s(equity.amount),
+        "equity": _s(equity_base),
         "cash": {ccy: _s(money.amount) for ccy, money in sorted(engine.portfolio.cash.items())},
         "usdinr": _s(fx.rate("USD", "INR")),
         "daily_cap": dict(live_config["daily_cap"]),

@@ -200,11 +200,15 @@ def equity_chart_svg(
 # Page sections
 # ---------------------------------------------------------------------------
 
-def _kpi(label: str, value: str, *, tone: str = "", note: str = "") -> str:
+def _kpi(label: str, value: str, *, tone: str = "", note: str = "", cell: str = "") -> str:
     note_html = f'<span class="kpi-note">{_esc(note)}</span>' if note else ""
+    hook = f' data-cell="{_esc(cell)}"' if cell else ""
+    note_hook = f' data-cell="{_esc(cell)}-note"' if cell else ""
+    if note_html and cell:
+        note_html = f'<span class="kpi-note"{note_hook}>{_esc(note)}</span>'
     return (
         f'<div class="kpi"><span class="kpi-label">{_esc(label)}</span>'
-        f'<span class="kpi-value {tone}">{value}</span>{note_html}</div>'
+        f'<span class="kpi-value {tone}"{hook}>{value}</span>{note_html}</div>'
     )
 
 
@@ -350,6 +354,40 @@ def _price(value: object) -> str:
     return f"{float(str(value)):,.2f}"
 
 
+def plain_reason(reason: str) -> str:
+    """Say why a trade fired in words a non-trader can act on.
+
+    The engine's own strings are precise and unreadable ("pullback: RSI(2) 7.5
+    above SMA200"). They stay on the page as the supporting detail; this is
+    what leads. Anything unrecognised falls through unchanged rather than being
+    dressed up into a claim the strategy did not make.
+    """
+    text = (reason or "").strip()
+    lowered = text.lower()
+    if lowered.startswith("breakout"):
+        return (
+            "Price has broken above its highest level in weeks on unusually heavy "
+            "trading. The strategy is buying strength, betting the move continues"
+        )
+    if lowered.startswith("pullback"):
+        return (
+            "Price dropped sharply but is still above its long-term average. The "
+            "strategy is buying the dip inside what it reads as an uptrend"
+        )
+    if lowered.startswith("momentum"):
+        return (
+            "One of the steadiest risers in the list right now. The strategy holds "
+            "these for the longer run and rebalances as the ranking changes"
+        )
+    if lowered.startswith("dropped out"):
+        return "No longer one of the strongest risers, so the strategy is stepping out"
+    if lowered.startswith("mean reversion complete"):
+        return "The bounce the strategy was waiting for has happened, so it is taking the gain"
+    if lowered.startswith("exit:"):
+        return EXIT_LABELS.get(text.split(":", 1)[1], "The strategy's exit rule has triggered")
+    return text
+
+
 def _measured(source: dict, key: str, count: int) -> object | None:
     """A value only when something was actually measured.
 
@@ -415,15 +453,21 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
     window = f"within {hold} trading days" if hold else "held until the exit signal"
     typical_note = f", typically closed in {typical}" if typical else ""
     rate_note = (
-        f"{float(win_rate) * 100:.0f}% of {history.get('trades', 0)} past trades in this book "
-        "finished profitable"
+        f"this strategy finished ahead on {float(win_rate) * 100:.0f}% of its last "
+        f"{history.get('trades', 0)} trades"
         if win_rate is not None
-        else "no closed trades in this book yet — hit rate unknown"
+        else "not enough finished trades yet to quote a hit rate"
     )
     reward_risk = order.get("reward_risk")
     rr_note = f"{float(str(reward_risk)):.1f}:1 reward-to-risk" if reward_risk else ""
 
-    return f"""<article class="sigcard{stale}">
+    weight = order.get("weight")
+    weight_note = (
+        f"{float(str(weight)) * 100:.1f}% of the book"
+        if weight
+        else "strategy allocation"
+    )
+    return f"""<article class="sigcard{stale}" data-sigcard="{index}">
   <div class="sighead">
     <span class="tag {side_class}">{side}</span>
     <strong class="signame">{_esc(order['symbol'])}</strong>
@@ -433,21 +477,23 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
   </div>
   <div class="sigmoney">
     <div class="mcell">
-      <span class="mlabel">You invest</span>
-      <span class="mvalue">{_money_line(order.get('invested'), ccy)}</span>
-      <span class="mnote">{_esc(order['quantity'])} shares @
-        ~{_price(order['reference_price'])}</span>
+      <span class="mlabel" data-cell="invest-label">Strategy size</span>
+      <span class="mvalue" data-cell="invested">{_money_line(order.get('invested'), ccy)}</span>
+      <span class="mnote" data-cell="qty">{_esc(order['quantity'])} shares @
+        ~{_price(order['reference_price'])} &middot; {weight_note}</span>
     </div>
     <div class="mcell win">
       <span class="mlabel">If target hits</span>
-      <span class="mvalue">{_money_line(order.get('profit_at_target'), ccy, signed=True)}</span>
+      <span class="mvalue" data-cell="profit">{
+        _money_line(order.get('profit_at_target'), ccy, signed=True)}</span>
       <span class="mnote">{_pct_str(order['profit_at_target_pct'])
         if order.get('profit_at_target_pct') else '&mdash;'} &middot; sell at
         {_price(order['take_profit']) if order.get('take_profit') else '&mdash;'}</span>
     </div>
     <div class="mcell lose">
       <span class="mlabel">If stop hits</span>
-      <span class="mvalue">&minus;{_money_line(order.get('loss_at_stop'), ccy)}</span>
+      <span class="mvalue" data-cell="loss">&minus;{
+        _money_line(order.get('loss_at_stop'), ccy)}</span>
       <span class="mnote">{'-' + _pct_str(order['loss_at_stop_pct'], 1).lstrip('+')
         if order.get('loss_at_stop_pct') else '&mdash;'} &middot; exit at
         {_price(order['stop_loss']) if order.get('stop_loss') else '&mdash;'}</span>
@@ -460,60 +506,11 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
     </div>
     <div class="mcell act">{action}{status}</div>
   </div>
-  <p class="sigwhy"><strong>Why:</strong> {_esc(order.get('reason') or '')} &middot;
-  <strong>Time:</strong> {window}{typical_note} &middot;
-  <strong>Odds:</strong> {rate_note}{' &middot; ' + rr_note if rr_note else ''}</p>
+  <p class="sigwhy"><strong>Why:</strong> {_esc(plain_reason(order.get('reason') or ''))}.
+  <strong>How long:</strong> {window}{typical_note}.
+  <strong>Track record:</strong> {rate_note}{', ' + rr_note if rr_note else ''}.</p>
+  <p class="sigtech">Signal detail: {_esc(order.get('reason') or '')}</p>
 </article>"""
-
-
-def _totals_bar(totals: dict, base: str) -> str:
-    """Portfolio-level answer to "what does all of this add up to?"."""
-    signals = totals.get("signals", {})
-    positions = totals.get("positions", {})
-
-    def cell(label: str, value: object, note: str, tone: str = "", sign: str = "") -> str:
-        """``sign`` is explicit rather than derived from colour: a gain and a
-        loss must be distinguishable without seeing the red and the green."""
-        if value is None:
-            # No trailing currency: "— USD" implies a USD amount was measured.
-            shown = "&mdash;"
-        else:
-            number = float(str(value))
-            prefix = sign
-            if sign == "auto":
-                prefix = "+" if number >= 0 else "&minus;"
-                number = abs(number)
-            shown = f'{prefix}{number:,.0f} <span class="ccy">{_esc(base)}</span>'
-        return (
-            f'<div class="tcell"><span class="mlabel">{label}</span>'
-            f'<span class="mvalue {tone}">{shown}</span>'
-            f'<span class="mnote">{note}</span></div>'
-        )
-
-    # With nothing to sum there is no outcome to state: "—" is the honest cell,
-    # where "+0 / -0" would read as a computed result that happens to be zero.
-    count = signals.get("count", 0)
-    upside = _measured(signals, "profit_at_target_base", count)
-    downside = _measured(signals, "loss_at_stop_base", count)
-    open_pnl = _measured(totals, "open_unrealized_base", positions.get("count", 0))
-    pnl_tone = "" if open_pnl is None else _tone(float(str(open_pnl)))
-    return f"""<div class="totals">
-  {cell("Total to invest today", signals.get("invested_base"),
-        f"{count} fresh signal(s), converted to {_esc(base)}")}
-  {cell("Total if every target hits", upside,
-        _pct_str(signals["profit_at_target_pct"]) + " on the amount invested"
-        if signals.get("profit_at_target_pct") else "nothing to invest today", "pos", "+")}
-  {cell("Total if every stop hits", downside,
-        "-" + _pct_str(signals["loss_at_stop_pct"]).lstrip("+") + " on the amount invested"
-        if signals.get("loss_at_stop_pct") else "nothing at risk today", "neg", "&minus;")}
-  {cell("Open positions", positions.get("invested_base"),
-        f"{positions.get('count', 0)} held at current prices")}
-  {cell("Open profit / loss", open_pnl, "unrealised, at last close", pnl_tone, "auto")}
-</div>
-<p class="caption">Both outcomes are what the strategy's own stop and target
-define &mdash; not a forecast. Real trades also end early on a trailing stop or the
-time limit, so actual results land between these two numbers more often than on them.
-Nothing here is a guaranteed or expected return.</p>"""
 
 
 def _signals_section(signals: dict) -> str:
@@ -532,10 +529,19 @@ def _signals_section(signals: dict) -> str:
     )
 
     if not orders:
-        return meta + (
-            '<p class="empty">No new orders today. The strategies are either fully '
-            "positioned or waiting for a setup &mdash; no signal is itself a signal.</p>"
-        )
+        # The commonest state by far: these strategies are meant to sit still.
+        # It should read as the system working, with something to do next.
+        return meta + """<div class="quietday">
+  <h3>Nothing to buy today</h3>
+  <p>This is the normal state, not a fault. These strategies wait for specific
+  setups &mdash; a breakout on heavy volume, or a sharp dip inside an uptrend &mdash;
+  and on most days no stock in the list qualifies. Trading anyway is how people
+  lose money on good strategies.</p>
+  <p><strong>What to do now:</strong> check your open positions below for any
+  flagged <span class="badge hit">STOP HIT</span> or
+  <span class="badge target">TARGET HIT</span>, then come back after the next
+  market close. The list refreshes automatically each evening.</p>
+</div>"""
 
     has_kite_key = bool(signals.get("kite_api_key"))
     india_fresh = sum(1 for o in orders if o["region"] == "india" and o["fresh"])
@@ -626,43 +632,56 @@ def _positions_section(signals: dict) -> str:
 <p class="caption">{caption}</p>"""
 
 
+def _onboarding(signals: dict) -> str:
+    """Shown until the reader has told the app what they are working with.
+
+    Hidden by script the moment settings exist, so a returning user never sees
+    it. It is placed above everything else because until it is answered, every
+    number further down the page belongs to somebody else.
+    """
+    fresh = sum(1 for order in signals.get("orders", []) if order["fresh"])
+    today = (
+        f"There {'is' if fresh == 1 else 'are'} <strong>{fresh}</strong> "
+        f"suggested trade{'' if fresh == 1 else 's'} today."
+        if fresh
+        else "There are no suggested trades today &mdash; that is normal."
+    )
+    return f"""<div class="onboard" data-needs-setup>
+  <h2 class="onboardtitle">Start here</h2>
+  <p>This app watches Indian and US stocks each day and tells you which ones its
+  strategies would buy, at what price, with a target to sell at and a stop to
+  limit the damage if it goes wrong. {today}</p>
+  <p><strong>First, tell it how much you invest with.</strong> Until you do, the
+  amounts on this page are the strategy's own test figures &mdash; not yours, and
+  not a suggestion for you.</p>
+  {_settings_form()}
+  <p class="onboardnote">Then press <strong>Paper buy</strong> on any trade to try
+  it with pretend money. Nothing reaches a broker, and nothing costs anything,
+  until you deliberately connect one.</p>
+</div>"""
+
+
 def _glance(signals: dict) -> str:
     """The dashboard's at-a-glance strip: state of the book, one tap to act."""
     orders = signals.get("orders", [])
     fresh = sum(1 for order in orders if order["fresh"])
-    totals = signals.get("totals", {})
-    signal_totals = totals.get("signals", {})
-    counted = signal_totals.get("count", 0)
-    upside = _measured(signal_totals, "profit_at_target_base", counted)
-    downside = _measured(signal_totals, "loss_at_stop_base", counted)
-    open_pnl = _measured(
-        totals, "open_unrealized_base", totals.get("positions", {}).get("count", 0)
-    )
-    pnl_value = float(str(open_pnl)) if open_pnl is not None else None
+    # Values are placeholders until the settings module restates them in the
+    # reader's own money; the labels stay honest in the meantime.
     cards = [
-        _kpi("Fresh signals", str(fresh), tone="pos" if fresh else "flat",
-             note="orders ready for the next open"),
-        _kpi("To invest today", _price(signal_totals.get("invested_base", "0")),
-             note="USD across both markets"),
-        _kpi("If every target hits",
-             "&mdash;" if upside is None else "+" + _price(upside),
-             tone="pos" if upside is not None else "flat",
-             note=_pct_str(signal_totals["profit_at_target_pct"])
-             if signal_totals.get("profit_at_target_pct") else "no signals today"),
-        _kpi("If every stop hits",
-             "&mdash;" if downside is None else "&minus;" + _price(downside),
-             tone="neg" if downside is not None else "flat",
-             note="the most these signals risk" if downside is not None
-             else "nothing at risk today"),
-        _kpi("Open positions P&L",  # _kpi escapes the label; pass it raw
-             "&mdash;" if pnl_value is None
-             else ("+" if pnl_value >= 0 else "&minus;") + f"{abs(pnl_value):,.2f}",
-             tone="flat" if pnl_value is None else _tone(pnl_value),
-             note="unrealised, USD"),
+        _kpi("Suggested today", str(fresh), tone="pos" if fresh else "flat",
+             note="trades the strategies would take"),
+        _kpi("You would invest", "&mdash;", note="set your amount to see this",
+             cell="today-invest"),
+        _kpi("If every target hits", "&mdash;", tone="pos",
+             note="best case on these trades", cell="today-upside"),
+        _kpi("If every stop hits", "&mdash;", tone="neg",
+             note="worst case on these trades", cell="today-downside"),
+        _kpi("Your paper profit / loss", "&mdash;", note="across your paper trades",
+             cell="today-paper"),
     ]
     cta = (
         '<div class="kpi cta"><button type="button" class="exec big" data-tabgo="invest">'
-        "Invest now &rarr;</button></div>"
+        "See today's trades &rarr;</button></div>"
     )
     return f'<div class="glance">{"".join(cards)}{cta}</div>'
 
@@ -680,7 +699,9 @@ def _setup_section(signals: dict) -> str:
         if kite_on
         else '<span class="state off">needs api_key</span>'
     )
-    return f"""<div class="tiers">
+    return f"""{_settings_form()}
+<h3 class="papersub">How you can place trades</h3>
+<div class="tiers">
   <div class="tier">
     <h3>Paper trading <span class="state on">ready now</span></h3>
     <p>Press <strong>Paper buy</strong> on any signal &mdash; no account, no keys.
@@ -749,6 +770,14 @@ button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(-
 .tabbadge{display:inline-block;min-width:18px;text-align:center;background:var(--accent);
   color:var(--panel);border-radius:999px;font-size:11px;font-weight:700;padding:1px 6px}
 .tabpanel[hidden]{display:none}
+/* Both label variants live here, in this order: SIGNALS_CSS is concatenated
+   after the base sheet, so a mobile override written in the base sheet's media
+   query would be overruled by the default below it. */
+.tabshort{display:none}
+@media (max-width:640px){
+  .tabshort{display:inline}
+  .tablong{display:none}
+}
 
 .glance{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));
   margin:18px 0 4px}
@@ -771,8 +800,13 @@ button.exec.big{font-size:14.5px;padding:12px 18px;width:100%;border-radius:var(
 .mvalue{font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;
   letter-spacing:-0.01em}
 .mnote{display:block;font-size:11px;color:var(--muted);font-weight:400}
-.sigwhy{margin:12px 0 0;font-size:12.5px;color:var(--muted);line-height:1.6}
+.sigwhy{margin:12px 0 0;font-size:13px;color:var(--muted);line-height:1.65}
 .sigwhy strong{color:var(--ink);font-weight:600}
+.sigtech{margin:6px 0 0;font-size:11.5px;color:var(--muted);opacity:.7;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.quietday h3{margin:0 0 10px;font-size:16px;color:var(--ink)}
+.quietday p{margin:0 0 10px;font-size:13.5px;color:var(--muted);line-height:1.65}
+.quietday strong{color:var(--ink)}
 
 .totals{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
   margin:14px 0 4px}
@@ -782,12 +816,37 @@ button.exec.big{font-size:14.5px;padding:12px 18px;width:100%;border-radius:var(
 button.exec.ghost{font-size:12px;font-weight:600;padding:7px 10px;color:var(--muted);
   margin-top:6px;width:100%}
 button.exec.ghost:hover:not(:disabled){color:var(--accent)}
+button.linkish{appearance:none;border:0;background:none;padding:0;font:inherit;
+  color:var(--accent);font-weight:600;cursor:pointer;text-decoration:underline}
 button.exec.danger{color:var(--neg);border-color:var(--line)}
 button.exec.danger:hover{background:color-mix(in srgb,var(--neg) 12%,var(--tag))}
 .mcell.act{flex-direction:column;gap:0}
 .papersub{font-size:13px;text-transform:uppercase;letter-spacing:.06em;
   color:var(--muted);margin:26px 0 10px;font-weight:600}
 .papertop .caption{margin-top:12px}
+
+.onboard{border:1px solid var(--accent);border-radius:var(--radius);
+  background:var(--panel);padding:18px 20px;margin:18px 0 22px}
+.onboardtitle{margin:0 0 10px;font-size:18px;letter-spacing:-0.01em;
+  text-transform:none;color:var(--ink)}
+.onboard p{margin:0 0 12px;font-size:14px;line-height:1.6;color:var(--muted)}
+.onboard strong{color:var(--ink)}
+.onboardnote{margin-top:14px !important;font-size:13px !important}
+
+.setupbox{margin-bottom:8px}
+.setuphelp{color:var(--muted);font-size:13px;margin:0 0 14px;line-height:1.6}
+.fields{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.field{display:flex;flex-direction:column;gap:5px}
+.flabel{font-size:12.5px;font-weight:600;color:var(--ink)}
+.field input{appearance:none;font:inherit;font-size:16px;padding:10px 12px;
+  border:1px solid var(--line);border-radius:8px;background:var(--bg);
+  color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
+.field input:focus{outline:2px solid var(--accent);outline-offset:1px;
+  border-color:var(--accent)}
+.fnote{font-size:11.5px;color:var(--muted)}
+.setupactions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 0 0}
+.setupactions .execstatus{margin-top:0;max-width:none}
+.setupactions button{width:auto;min-width:120px}
 
 .tiers{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   margin-top:14px}
@@ -851,6 +910,289 @@ TABS_JS = """
 })();
 """
 
+def _settings_form() -> str:
+    """The money controls, in the app.
+
+    Position sizes are meaningless until the app knows what the reader is
+    actually working with, and asking them to edit a JSON file and redeploy is
+    not a product. These two numbers live in the browser and drive every share
+    count, every rupee figure and every cap check on the page.
+    """
+    return """<div class="setupbox">
+  <h3 class="papersub">Your money</h3>
+  <p class="setuphelp">Nothing here leaves your browser. It is used to size the
+  suggested trades to what you actually have, and to cap what you can commit in
+  a single day.</p>
+  <div class="fields">
+    <label class="field">
+      <span class="flabel">Amount you invest with &mdash; India (&#8377;)</span>
+      <input type="number" inputmode="decimal" min="0" step="1000"
+             data-setting="capital.INR" placeholder="e.g. 100000">
+      <span class="fnote">Leave blank if you do not trade Indian stocks.</span>
+    </label>
+    <label class="field">
+      <span class="flabel">Amount you invest with &mdash; US ($)</span>
+      <input type="number" inputmode="decimal" min="0" step="100"
+             data-setting="capital.USD" placeholder="e.g. 2000">
+      <span class="fnote">Leave blank if you do not trade US stocks.</span>
+    </label>
+    <label class="field">
+      <span class="flabel">Most you will commit in one day &mdash; India (&#8377;)</span>
+      <input type="number" inputmode="decimal" min="0" step="1000"
+             data-setting="cap.INR" placeholder="auto: 30% of your amount">
+      <span class="fnote">Blank uses 30% of your amount.</span>
+    </label>
+    <label class="field">
+      <span class="flabel">Most you will commit in one day &mdash; US ($)</span>
+      <input type="number" inputmode="decimal" min="0" step="50"
+             data-setting="cap.USD" placeholder="auto: 30% of your amount">
+      <span class="fnote">Blank uses 30% of your amount.</span>
+    </label>
+  </div>
+  <p class="setupactions">
+    <button type="button" class="exec big" data-settings-save>Save</button>
+    <span class="execstatus" data-settings-status aria-live="polite"></span>
+  </p>
+</div>"""
+
+
+#: Per-user money settings, and the re-sizing of every signal to match them.
+#:
+#: The engine sizes positions against its own simulated book. Showing those
+#: share counts to a reader with different capital is worse than showing
+#: nothing: it reads as instruction. So each signal carries the allocation it
+#: represents as a fraction, and this module restates quantity, cost, upside
+#: and downside in the reader's own money before anything is presented as
+#: theirs.
+SETTINGS_JS = """
+(function () {
+  var blob = document.getElementById('signals-data');
+  if (!blob) return;
+  var cfg = window.__mpCfg;
+  if (!cfg) {
+    try { cfg = JSON.parse(blob.textContent); } catch (e) { return; }
+    window.__mpCfg = cfg;
+  }
+  // Shared parse (see __mpCfg above): the per-order sizing written here must
+  // be the same object the paper broker later spends against.
+  var KEY = 'markets-pro.settings.v1';
+  var CAP_FRACTION = 0.30;
+
+  function read() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return null;
+      var s = JSON.parse(raw);
+      return (s && s.capital) ? s : null;
+    } catch (e) { return null; }
+  }
+  function write(s) {
+    try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) { /* blocked */ }
+  }
+  function total(settings) {
+    if (!settings) return 0;
+    var rate = Number(cfg.usdinr) || 0;
+    var inr = Number(settings.capital.INR || 0);
+    var usd = Number(settings.capital.USD || 0);
+    return usd + (rate ? inr / rate : 0);
+  }
+  function capFor(settings, ccy) {
+    if (!settings) return 0;
+    var explicit = Number((settings.cap || {})[ccy] || 0);
+    if (explicit > 0) return explicit;
+    return Number(settings.capital[ccy] || 0) * CAP_FRACTION;
+  }
+  function money(n, digits) {
+    return Number(n).toLocaleString('en-US',
+      {minimumFractionDigits: digits === undefined ? 0 : digits,
+       maximumFractionDigits: digits === undefined ? 0 : digits});
+  }
+
+  // How many shares the reader's own capital buys at this signal's allocation.
+  function sizeFor(order, settings) {
+    var weight = Number(order.weight || 0);
+    var price = Number(order.reference_price || 0);
+    if (!weight || !price || !settings) return null;
+    var rate = Number(cfg.usdinr) || 0;
+    var allocationBase = total(settings) * weight;
+    var allocation = order.currency === 'INR' ? allocationBase * rate : allocationBase;
+    var pocket = Number(settings.capital[order.currency] || 0);
+    if (pocket <= 0) return {qty: 0, reason: 'no ' + order.currency + ' set'};
+    if (allocation > pocket) allocation = pocket;
+    var qty = Math.floor(allocation / price);
+    return {qty: qty, allocation: allocation, price: price,
+            reason: qty < 1 ? 'needs at least ' + money(Math.ceil(price)) + ' ' +
+                              order.currency + ' for one share' : ''};
+  }
+
+  function applySizing() {
+    var settings = read();
+    (cfg.orders || []).forEach(function (order, i) {
+      var card = document.querySelector('[data-sigcard="' + i + '"]');
+      if (!card) return;
+      var label = card.querySelector('[data-cell="invest-label"]');
+      var invested = card.querySelector('[data-cell="invested"]');
+      var qtyNote = card.querySelector('[data-cell="qty"]');
+      var profit = card.querySelector('[data-cell="profit"]');
+      var loss = card.querySelector('[data-cell="loss"]');
+      var button = card.querySelector('[data-paper-buy]');
+      var ccy = '<span class="ccy">' + order.currency + '</span>';
+
+      if (!settings) {
+        label.textContent = 'Strategy size';
+        return;
+      }
+      var sized = sizeFor(order, settings);
+      order.user = sized;                      // paper buys use the reader's size
+      label.textContent = 'You invest';
+      if (!sized || sized.qty < 1) {
+        invested.innerHTML = '&mdash;';
+        qtyNote.textContent = sized ? sized.reason : 'set your amount in Settings';
+        profit.innerHTML = '&mdash;';
+        loss.innerHTML = '&mdash;';
+        if (button) { button.disabled = true; button.textContent = 'Too small to buy'; }
+        return;
+      }
+      if (button) { button.disabled = false; button.textContent = 'Paper buy'; }
+      var cost = sized.qty * sized.price;
+      invested.innerHTML = money(cost) + ' ' + ccy;
+      qtyNote.textContent = sized.qty + ' share' + (sized.qty === 1 ? '' : 's') +
+        ' @ ~' + money(sized.price, 2);
+      if (order.take_profit) {
+        var up = (Number(order.take_profit) - sized.price) * sized.qty;
+        profit.innerHTML = '+' + money(up) + ' ' + ccy;
+      }
+      if (order.stop_loss) {
+        var down = (sized.price - Number(order.stop_loss)) * sized.qty;
+        loss.innerHTML = '\\u2212' + money(down) + ' ' + ccy;
+      }
+    });
+    renderToday(settings);
+  }
+
+  // The dashboard headline: the reader's own exposure today, never the
+  // engine's. Left blank rather than filled with the book's figures.
+  function renderToday(settings) {
+    function put(name, text, tone) {
+      var el = document.querySelector('[data-cell="' + name + '"]');
+      if (!el) return;
+      el.innerHTML = text;
+      if (tone !== undefined) {
+        el.classList.remove('pos', 'neg', 'flat');
+        if (tone) el.classList.add(tone);
+      }
+    }
+    var rate = Number(cfg.usdinr) || 0;
+    function toBase(amount, ccy) {
+      return ccy === 'INR' ? (rate ? amount / rate : 0) : amount;
+    }
+
+    if (!settings) {
+      put('today-invest', '&mdash;');
+      put('today-upside', '&mdash;');
+      put('today-downside', '&mdash;');
+      put('today-paper', '&mdash;');
+      return;
+    }
+
+    var invest = 0, up = 0, down = 0, taken = 0;
+    (cfg.orders || []).forEach(function (order) {
+      if (!order.fresh) return;
+      var sized = order.user;
+      if (!sized || sized.qty < 1) return;
+      taken += 1;
+      invest += toBase(sized.qty * sized.price, order.currency);
+      if (order.take_profit) {
+        up += toBase((Number(order.take_profit) - sized.price) * sized.qty, order.currency);
+      }
+      if (order.stop_loss) {
+        down += toBase((sized.price - Number(order.stop_loss)) * sized.qty, order.currency);
+      }
+    });
+
+    if (!taken) {
+      put('today-invest', '&mdash;');
+      put('today-upside', '&mdash;');
+      put('today-downside', '&mdash;');
+      var note = document.querySelector('[data-cell="today-invest-note"]');
+      if (note) note.textContent = 'nothing to buy today';
+    } else {
+      put('today-invest', money(invest, 2) + ' <span class="ccy">USD</span>');
+      put('today-upside', '+' + money(up, 2) + ' <span class="ccy">USD</span>', 'pos');
+      put('today-downside', '\\u2212' + money(down, 2) + ' <span class="ccy">USD</span>', 'neg');
+      var n = document.querySelector('[data-cell="today-invest-note"]');
+      if (n) n.textContent = 'across ' + taken + ' trade' + (taken === 1 ? '' : 's') +
+        ', in your money';
+    }
+
+    // Paper profit/loss, marked with whatever quotes have arrived.
+    var paper = null;
+    try { paper = JSON.parse(localStorage.getItem('markets-pro.paper.v1')); } catch (e) { /* */ }
+    if (!paper || !paper.positions) { put('today-paper', '&mdash;'); return; }
+    var pnl = 0, held = 0;
+    Object.keys(paper.positions).forEach(function (k) {
+      var p = paper.positions[k];
+      held += 1;
+      var q = window.__mpQuotes && window.__mpQuotes[p.yahoo];
+      var mark = q ? Number(q.price) : Number(p.cost);
+      pnl += toBase((mark - p.cost) * p.qty, p.currency);
+    });
+    (paper.log || []).forEach(function (row) {
+      if (row.action === 'sell') pnl += toBase(row.pnl || 0, row.currency);
+    });
+    if (!held && !(paper.log || []).length) { put('today-paper', '&mdash;'); return; }
+    put('today-paper', (pnl >= 0 ? '+' : '\\u2212') + money(Math.abs(pnl), 2) +
+      ' <span class="ccy">USD</span>', pnl > 0 ? 'pos' : (pnl < 0 ? 'neg' : 'flat'));
+  }
+  window.__mpRenderToday = function () { renderToday(read()); };
+
+  function fillForm() {
+    var settings = read() || {capital: {}, cap: {}};
+    document.querySelectorAll('[data-setting]').forEach(function (input) {
+      var parts = input.getAttribute('data-setting').split('.');
+      var value = (settings[parts[0]] || {})[parts[1]];
+      input.value = (value === undefined || value === null || value === 0) ? '' : value;
+    });
+  }
+
+  function save() {
+    var settings = {capital: {}, cap: {}};
+    document.querySelectorAll('[data-setting]').forEach(function (input) {
+      var parts = input.getAttribute('data-setting').split('.');
+      var value = Number(input.value);
+      if (input.value !== '' && isFinite(value) && value >= 0) settings[parts[0]][parts[1]] = value;
+    });
+    var status = document.querySelector('[data-settings-status]');
+    if (!Number(settings.capital.INR || 0) && !Number(settings.capital.USD || 0)) {
+      if (status) status.textContent = 'Enter how much you invest with, in at least one market.';
+      return;
+    }
+    write(settings);
+    if (status) status.textContent = 'Saved. Every signal is now sized to your amount.';
+    applySizing();
+    document.querySelectorAll('[data-needs-setup]').forEach(function (el) {
+      el.hidden = true;
+    });
+  }
+
+  document.addEventListener('click', function (event) {
+    if (event.target.closest('[data-settings-save]')) save();
+    if (event.target.closest('[data-goto-settings]')) {
+      var tab = document.querySelector('[data-tabbtn="setup"]');
+      if (tab) { tab.click(); window.scrollTo(0, 0); }
+    }
+  });
+
+  window.__mpSettings = {read: read, capFor: capFor, apply: applySizing, total: total};
+  fillForm();
+  applySizing();
+  if (read()) {
+    document.querySelectorAll('[data-needs-setup]').forEach(function (el) { el.hidden = true; });
+  }
+})();
+"""
+
+
 def _paper_section() -> str:
     """Shell for the paper portfolio; JS fills it from browser storage.
 
@@ -885,18 +1227,22 @@ PAPER_JS = """
 (function () {
   var blob = document.getElementById('signals-data');
   if (!blob) return;
-  var cfg;
-  try { cfg = JSON.parse(blob.textContent); } catch (e) { return; }
+  var cfg = window.__mpCfg;
+  if (!cfg) {
+    try { cfg = JSON.parse(blob.textContent); } catch (e) { return; }
+    window.__mpCfg = cfg;
+  }
 
   var KEY = 'markets-pro.paper.v1';
   var summaryEl = document.querySelector('[data-paper-summary]');
   if (!summaryEl) return;
 
+  // The paper book opens with the reader's own capital, not the engine's.
   function fresh() {
+    var settings = window.__mpSettings && window.__mpSettings.read();
+    var source = (settings && settings.capital) || cfg.starting_cash || {};
     var cash = {};
-    Object.keys(cfg.starting_cash || {}).forEach(function (c) {
-      cash[c] = Number(cfg.starting_cash[c]);
-    });
+    Object.keys(source).forEach(function (c) { cash[c] = Number(source[c]) || 0; });
     return { v: 1, cash: cash, positions: {}, log: [] };
   }
 
@@ -937,15 +1283,24 @@ PAPER_JS = """
   }
 
   function buy(order) {
+    var settings = window.__mpSettings && window.__mpSettings.read();
+    if (!settings) {
+      return {ok: false, message: 'set how much you invest with first'};
+    }
     var state = load();
     var ccy = order.currency;
     var price = Number(livePrice(order.yahoo) || order.reference_price);
-    var qty = Number(order.quantity);
+    // order.user is the reader-sized quantity written by the settings module.
+    var qty = order.user ? Number(order.user.qty) : Number(order.quantity);
+    if (!qty || qty < 1) {
+      return {ok: false, message: 'your amount is too small for one share'};
+    }
     var cost = price * qty;
-    var cap = Number((cfg.daily_cap || {})[ccy] || 0);
+    var cap = window.__mpSettings.capFor(settings, ccy);
 
     if (cap > 0 && spentToday(state, ccy) + cost > cap) {
-      return {ok: false, message: 'daily cap ' + money(cap) + ' ' + ccy + ' would be exceeded'};
+      return {ok: false, message: 'that is ' + money(cost) + ' ' + ccy +
+        ', over your ' + money(cap) + ' daily limit — raise it in Settings if you mean to'};
     }
     if ((state.cash[ccy] || 0) < cost) {
       return {ok: false, message: 'not enough paper cash in ' + ccy};
@@ -1100,6 +1455,9 @@ PAPER_JS = """
       badge.textContent = keys.length ? String(keys.length) : '';
       badge.style.display = keys.length ? '' : 'none';
     }
+    // The dashboard headline reports this book, so it has to hear about
+    // every buy, sell and reset — not only about new quotes.
+    if (window.__mpRenderToday) window.__mpRenderToday();
   }
 
   document.addEventListener('click', function (event) {
@@ -1140,8 +1498,11 @@ SIGNALS_JS = """
 (function () {
   var blob = document.getElementById('signals-data');
   if (!blob) return;
-  var cfg;
-  try { cfg = JSON.parse(blob.textContent); } catch (e) { return; }
+  var cfg = window.__mpCfg;
+  if (!cfg) {
+    try { cfg = JSON.parse(blob.textContent); } catch (e) { return; }
+    window.__mpCfg = cfg;
+  }
   var API = cfg.api_base || '/markets-pro/api';
 
   function kiteBasket(orders) {
@@ -1565,8 +1926,25 @@ footer code{background:var(--tag);padding:1px 5px;border-radius:4px;font-size:11
 @media (max-width:640px){
   .wrap{padding:20px 14px 48px} h1{font-size:21px}
   .kpi-value{font-size:18px}
+  /* Fit all five tabs on a phone rather than hiding the last one behind a
+     scroll most people never discover. */
+  /* Share the width equally so every tab is reachable without a sideways
+     scroll people do not know is there. */
+  .tabs{gap:0;overflow-x:visible}
+  .tabs button{flex:1 1 0;min-width:0;justify-content:center;
+    font-size:12.5px;padding:9px 4px;gap:4px}
+  .tabbadge{min-width:16px;font-size:10px;padding:1px 5px}
+  .onboard{padding:16px 15px}
+  .onboardtitle{font-size:17px}
+  .sigcard{padding:13px 13px}
+  .mvalue{font-size:17px}
 }
 """
+
+
+def _tab_label(short: str, full: str) -> str:
+    """Short label on phones, full label with room to spare."""
+    return f'<span class="tabshort">{short}</span><span class="tablong">{full}</span>'
 
 
 def render_dashboard(
@@ -1604,34 +1982,40 @@ def render_dashboard(
     glance = ""
     invest_panel = ""
     invest_tab = ""
+    strategy_book = ""
     if signals is not None:
         fresh_count = sum(1 for order in signals.get("orders", []) if order["fresh"])
         badge = f'<span class="tabbadge">{fresh_count}</span>' if fresh_count else ""
+        invest_label = _tab_label("Invest", "Invest Now")
+        paper_label = _tab_label("Paper", "Paper")
         invest_tab = (
-            f'<button type="button" role="tab" data-tabbtn="invest" aria-selected="false" '
-            f'aria-controls="panel-invest">Invest Now{badge}</button>'
+            '<button type="button" role="tab" data-tabbtn="invest" aria-selected="false" '
+            f'aria-controls="panel-invest">{invest_label}{badge}</button>'
             '<button type="button" role="tab" data-tabbtn="paper" aria-selected="false" '
-            'aria-controls="panel-paper">Paper<span class="tabbadge" data-paper-badge '
+            f'aria-controls="panel-paper">{paper_label}'
+            '<span class="tabbadge" data-paper-badge '
             'style="display:none"></span></button>'
         )
-        glance = _glance(signals)
+        glance = _onboarding(signals) + _glance(signals)
+        # The engine's own book is deliberately NOT on this tab. A reader with
+        # one paper trade seeing the strategy's three test positions reads them
+        # as holdings of theirs; it lives under the track record instead.
         invest_panel = f"""
   <section class="tabpanel" id="panel-invest" data-tab="invest" role="tabpanel" hidden>
-    <h2>What today's signals add up to</h2>
-    <div class="panel">{_totals_bar(signals.get("totals", {}), report.base_currency)}</div>
-
-    <h2>Today's signals</h2>
+    <h2>Today's suggested trades</h2>
     <div class="panel">{_signals_section(signals)}</div>
-
-    <h2>Open positions &amp; live triggers</h2>
-    <div class="panel">{_positions_section(signals)}</div>
+    <p class="caption">Your own holdings and profit/loss are under
+    <button type="button" class="linkish" data-tabgo="paper">Paper</button>.</p>
   </section>
 
   <section class="tabpanel" id="panel-paper" data-tab="paper" role="tabpanel" hidden>
-    <h2>Paper portfolio</h2>
+    <h2>Your paper portfolio</h2>
     <div class="panel">{_paper_section()}</div>
   </section>
 """
+        strategy_book = f"""
+    <h2>What the strategy holds in its own test book</h2>
+    <div class="panel">{_positions_section(signals)}</div>"""
         embedded = {
             "api_base": "/markets-pro/api",
             "kite_api_key": signals.get("kite_api_key", ""),
@@ -1645,16 +2029,25 @@ def render_dashboard(
         signal_blob = f'<script type="application/json" id="signals-data">{blob}</script>'
         # Paper first: it defines window.__mpPaperRender before the quote
         # overlay starts polling, so the first poll can already mark the book.
-        signal_script = f"<script>{PAPER_JS}</script>\n<script>{SIGNALS_JS}</script>"
+        # Order matters: settings defines the sizing the paper book spends
+        # against, and both must exist before the quote poll starts marking.
+        signal_script = (
+            f"<script>{SETTINGS_JS}</script>\n"
+            f"<script>{PAPER_JS}</script>\n"
+            f"<script>{SIGNALS_JS}</script>"
+        )
 
+    dash_label = _tab_label("Today", "Dashboard")
+    record_label = _tab_label("Record", "Track record")
+    setup_label = _tab_label("Setup", "Settings")
     tab_bar = f"""<nav class="tabs" role="tablist" aria-label="Sections">
     <button type="button" role="tab" data-tabbtn="dashboard" aria-selected="true"
-            aria-controls="panel-dashboard" class="active">Dashboard</button>
+            aria-controls="panel-dashboard" class="active">{dash_label}</button>
     {invest_tab}
     <button type="button" role="tab" data-tabbtn="performance" aria-selected="false"
-            aria-controls="panel-performance">Performance</button>
+            aria-controls="panel-performance">{record_label}</button>
     <button type="button" role="tab" data-tabbtn="setup" aria-selected="false"
-            aria-controls="panel-setup">Setup</button>
+            aria-controls="panel-setup">{setup_label}</button>
   </nav>"""
 
     return f"""<!doctype html>
@@ -1679,14 +2072,14 @@ def render_dashboard(
   {tab_bar}
 
   <section class="tabpanel" id="panel-dashboard" data-tab="dashboard" role="tabpanel">
-    <div class="notice">
-      <p><strong>Simulated results.</strong> These figures come from a backtest, not
-      from live trading. Costs, taxes, slippage and venue rules are modelled, and
-      the engine is verified free of lookahead &mdash; but past performance on
-      historical data does not predict future returns, and no strategy here
-      guarantees a profit. Nothing on this page is investment advice.</p>
-    </div>
     {glance}
+    <div class="notice">
+      <p><strong>No profit is promised here.</strong> These are rule-based
+      suggestions, not advice, and the strategies lose on plenty of individual
+      trades &mdash; see the track record for exactly how often. Past results
+      come from a backtest and do not predict future returns. Decide every
+      trade yourself.</p>
+    </div>
     <h2>Performance</h2>
     {_kpi_grid(report)}
 
@@ -1707,6 +2100,7 @@ def render_dashboard(
   </section>
 {invest_panel}
   <section class="tabpanel" id="panel-performance" data-tab="performance" role="tabpanel" hidden>
+{strategy_book}
     <h2>By market</h2>
     <div class="panel">{_region_table(report)}</div>
 

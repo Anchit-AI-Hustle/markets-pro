@@ -68,9 +68,12 @@ class TestDashboardRendering(unittest.TestCase):
         self.assertIn('data-theme="dark"', self.html)
         self.assertIn('data-theme="light"', self.html)
 
-    def test_shows_the_simulated_results_disclaimer(self):
-        self.assertIn("Simulated results", self.html)
-        self.assertIn("Nothing on this page is investment advice", self.html)
+    def test_shows_the_risk_disclaimer(self):
+        """Assert the substance, not the wording, so copy can be improved
+        without the guarantee quietly disappearing with it."""
+        self.assertIn("No profit is promised", self.html)
+        self.assertIn("not advice", self.html)
+        self.assertIn("do not predict future returns", self.html)
 
     def test_reports_drawdown_as_prominently_as_return(self):
         self.assertIn("Max drawdown", self.html)
