@@ -516,17 +516,13 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
 def _signals_section(signals: dict) -> str:
     orders = signals.get("orders", [])
     as_of = " &middot; ".join(
-        f"{REGION_NAMES.get('IN' if region == 'india' else 'US', region)} data through {_esc(day)}"
+        f"{REGION_NAMES.get('IN' if region == 'india' else 'US', region)} prices to {_esc(day)}"
         for region, day in signals.get("as_of", {}).items()
     )
-    caps = " &middot; ".join(
-        f"daily cap {_price(amount)} {_esc(ccy)}"
-        for ccy, amount in signals.get("daily_cap", {}).items()
-    )
-    meta = (
-        f'<p class="sigmeta">{as_of} &middot; generated {_esc(signals.get("generated_at", ""))} '
-        f"&middot; {caps}</p>"
-    )
+    # Deliberately no daily cap here: the cap that matters is the reader's own,
+    # which lives in Settings. Printing the build's default would be quoting a
+    # limit that does not apply to them.
+    meta = f'<p class="sigmeta">{as_of}</p>'
 
     if not orders:
         # The commonest state by far: these strategies are meant to sit still.
@@ -554,11 +550,11 @@ def _signals_section(signals: dict) -> str:
 
     cards = "".join(_signal_card(i, order, has_kite_key) for i, order in enumerate(orders))
     caption = (
-        "Orders the strategies would place at the next open, sized against the "
-        "simulated book. Invest-now buttons hand the order to YOUR broker — Kite opens "
-        "a pre-filled basket you must confirm; the US executor honours the daily cap "
-        "and stays in paper mode until you arm it. Live prices are delayed. "
-        "None of this is investment advice, and no outcome is guaranteed."
+        "These are the trades the strategies would place at the next market open, "
+        "sized to the amount you entered. Paper buy costs nothing and reaches no "
+        "broker. The Real buttons hand the order to your own broker, where you "
+        "still confirm it yourself. Live prices are delayed. Nothing here is "
+        "advice, and no outcome is guaranteed."
     )
     return f"""{meta}{basket_all}{cards}
 <p class="caption">{caption}</p>"""
@@ -668,13 +664,15 @@ def _glance(signals: dict) -> str:
     # Values are placeholders until the settings module restates them in the
     # reader's own money; the labels stay honest in the meantime.
     cards = [
+        # No tone on the placeholders: a green or red dash reads as a broken
+        # number rather than an absent one. Colour arrives with the value.
         _kpi("Suggested today", str(fresh), tone="pos" if fresh else "flat",
              note="trades the strategies would take"),
         _kpi("You would invest", "&mdash;", note="set your amount to see this",
              cell="today-invest"),
-        _kpi("If every target hits", "&mdash;", tone="pos",
+        _kpi("If every target hits", "&mdash;",
              note="best case on these trades", cell="today-upside"),
-        _kpi("If every stop hits", "&mdash;", tone="neg",
+        _kpi("If every stop hits", "&mdash;",
              note="worst case on these trades", cell="today-downside"),
         _kpi("Your paper profit / loss", "&mdash;", note="across your paper trades",
              cell="today-paper"),
@@ -747,7 +745,10 @@ button.exec{appearance:none;border:1px solid var(--line);background:var(--panel)
   padding:6px 10px;border-radius:6px;cursor:pointer}
 button.exec:hover:not(:disabled){background:var(--tag)}
 button.exec:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-button.exec:disabled{opacity:.45;cursor:not-allowed}
+/* .45 opacity on an already-muted colour fell below readable contrast in the
+   light theme; keep it visibly disabled but still legible. */
+button.exec:disabled{opacity:.75;cursor:not-allowed;color:var(--muted);
+  background:var(--tag);border-style:dashed}
 button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(--accent)}
 .execstatus{display:block;font-size:11px;color:var(--muted);margin-top:4px;max-width:120px}
 .badge{display:inline-block;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:600;
@@ -780,8 +781,14 @@ button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(-
 }
 
 .glance{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));
-  margin:18px 0 4px}
-.glance .cta{display:flex;align-items:stretch;justify-content:stretch;padding:0}
+  margin:18px 0 4px;align-items:stretch}
+.glance .kpi{justify-content:flex-start}
+/* The label can wrap to two lines; reserving the space keeps the row of
+   numbers on one baseline instead of stepping up and down. */
+.glance .kpi-label{min-height:3.1em;display:flex;align-items:flex-start}
+.glance .cta{display:flex;align-items:center;justify-content:center;padding:0;
+  border-style:dashed}
+.glance .cta button{height:100%}
 button.exec.big{font-size:14.5px;padding:12px 18px;width:100%;border-radius:var(--radius)}
 
 .sigcard{border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;
@@ -795,7 +802,10 @@ button.exec.big{font-size:14.5px;padding:12px 18px;width:100%;border-radius:var(
   background:var(--panel);border:1px solid var(--line);border-radius:8px}
 .mcell.win .mvalue{color:var(--pos)}
 .mcell.lose .mvalue{color:var(--neg)}
-.mcell.act{justify-content:center;background:transparent;border:0;padding:0}
+/* Buttons sit level with the numbers beside them rather than floating in the
+   middle of a taller cell. */
+.mcell.act{justify-content:flex-start;background:transparent;border:0;
+  padding:10px 0 0}
 .mlabel{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
 .mvalue{font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;
   letter-spacing:-0.01em}
@@ -834,10 +844,19 @@ button.exec.danger:hover{background:color-mix(in srgb,var(--neg) 12%,var(--tag))
 .onboardnote{margin-top:14px !important;font-size:13px !important}
 
 .setupbox{margin-bottom:8px}
+/* Sentence case at body weight: inside "Start here" this is a sub-step, not a
+   second page section competing with the heading above it. */
+.fieldsetlabel{margin:0 0 6px;font-size:14px;font-weight:600;color:var(--ink);
+  text-transform:none;letter-spacing:0}
 .setuphelp{color:var(--muted);font-size:13px;margin:0 0 14px;line-height:1.6}
-.fields{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
-.field{display:flex;flex-direction:column;gap:5px}
-.flabel{font-size:12.5px;font-weight:600;color:var(--ink)}
+/* Subgrid rows keep every input on one baseline even when a label wraps to
+   two lines, which is what made this form look broken. */
+.fields{display:grid;gap:14px 16px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.field{display:grid;grid-template-rows:auto auto auto;gap:5px;align-content:start}
+/* min-height reserves a second line so a label that wraps in a narrow column
+   cannot drag its input out of line with its neighbours. */
+.flabel{font-size:12.5px;font-weight:600;color:var(--ink);align-self:end;
+  min-height:1.5em}
 .field input{appearance:none;font:inherit;font-size:16px;padding:10px 12px;
   border:1px solid var(--line);border-radius:8px;background:var(--bg);
   color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
@@ -846,7 +865,9 @@ button.exec.danger:hover{background:color-mix(in srgb,var(--neg) 12%,var(--tag))
 .fnote{font-size:11.5px;color:var(--muted)}
 .setupactions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 0 0}
 .setupactions .execstatus{margin-top:0;max-width:none}
-.setupactions button{width:auto;min-width:120px}
+/* Outranks button.exec.big's full-width rule; a Save button should be the
+   size of its label, not the width of the form. */
+.setupactions button.exec.big{width:auto;min-width:140px;flex:0 0 auto}
 
 .tiers{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   margin-top:14px}
@@ -919,34 +940,34 @@ def _settings_form() -> str:
     count, every rupee figure and every cap check on the page.
     """
     return """<div class="setupbox">
-  <h3 class="papersub">Your money</h3>
+  <h3 class="fieldsetlabel">Your money</h3>
   <p class="setuphelp">Nothing here leaves your browser. It is used to size the
   suggested trades to what you actually have, and to cap what you can commit in
   a single day.</p>
   <div class="fields">
     <label class="field">
-      <span class="flabel">Amount you invest with &mdash; India (&#8377;)</span>
+      <span class="flabel">Your amount &middot; India (&#8377;)</span>
       <input type="number" inputmode="decimal" min="0" step="1000"
              data-setting="capital.INR" placeholder="e.g. 100000">
-      <span class="fnote">Leave blank if you do not trade Indian stocks.</span>
+      <span class="fnote">Blank if you do not trade Indian stocks.</span>
     </label>
     <label class="field">
-      <span class="flabel">Amount you invest with &mdash; US ($)</span>
+      <span class="flabel">Your amount &middot; US ($)</span>
       <input type="number" inputmode="decimal" min="0" step="100"
              data-setting="capital.USD" placeholder="e.g. 2000">
-      <span class="fnote">Leave blank if you do not trade US stocks.</span>
+      <span class="fnote">Blank if you do not trade US stocks.</span>
     </label>
     <label class="field">
-      <span class="flabel">Most you will commit in one day &mdash; India (&#8377;)</span>
+      <span class="flabel">Daily limit &middot; India (&#8377;)</span>
       <input type="number" inputmode="decimal" min="0" step="1000"
              data-setting="cap.INR" placeholder="auto: 30% of your amount">
-      <span class="fnote">Blank uses 30% of your amount.</span>
+      <span class="fnote">Most you will commit in one day.</span>
     </label>
     <label class="field">
-      <span class="flabel">Most you will commit in one day &mdash; US ($)</span>
+      <span class="flabel">Daily limit &middot; US ($)</span>
       <input type="number" inputmode="decimal" min="0" step="50"
              data-setting="cap.USD" placeholder="auto: 30% of your amount">
-      <span class="fnote">Blank uses 30% of your amount.</span>
+      <span class="fnote">Most you will commit in one day.</span>
     </label>
   </div>
   <p class="setupactions">
@@ -1088,10 +1109,10 @@ SETTINGS_JS = """
     }
 
     if (!settings) {
-      put('today-invest', '&mdash;');
-      put('today-upside', '&mdash;');
-      put('today-downside', '&mdash;');
-      put('today-paper', '&mdash;');
+      put('today-invest', '&mdash;', '');
+      put('today-upside', '&mdash;', '');
+      put('today-downside', '&mdash;', '');
+      put('today-paper', '&mdash;', '');
       return;
     }
 
@@ -1111,9 +1132,9 @@ SETTINGS_JS = """
     });
 
     if (!taken) {
-      put('today-invest', '&mdash;');
-      put('today-upside', '&mdash;');
-      put('today-downside', '&mdash;');
+      put('today-invest', '&mdash;', '');
+      put('today-upside', '&mdash;', '');
+      put('today-downside', '&mdash;', '');
       var note = document.querySelector('[data-cell="today-invest-note"]');
       if (note) note.textContent = 'nothing to buy today';
     } else {
@@ -1128,7 +1149,7 @@ SETTINGS_JS = """
     // Paper profit/loss, marked with whatever quotes have arrived.
     var paper = null;
     try { paper = JSON.parse(localStorage.getItem('markets-pro.paper.v1')); } catch (e) { /* */ }
-    if (!paper || !paper.positions) { put('today-paper', '&mdash;'); return; }
+    if (!paper || !paper.positions) { put('today-paper', '&mdash;', ''); return; }
     var pnl = 0, held = 0;
     Object.keys(paper.positions).forEach(function (k) {
       var p = paper.positions[k];
@@ -1140,7 +1161,7 @@ SETTINGS_JS = """
     (paper.log || []).forEach(function (row) {
       if (row.action === 'sell') pnl += toBase(row.pnl || 0, row.currency);
     });
-    if (!held && !(paper.log || []).length) { put('today-paper', '&mdash;'); return; }
+    if (!held && !(paper.log || []).length) { put('today-paper', '&mdash;', ''); return; }
     put('today-paper', (pnl >= 0 ? '+' : '\\u2212') + money(Math.abs(pnl), 2) +
       ' <span class="ccy">USD</span>', pnl > 0 ? 'pos' : (pnl < 0 ? 'neg' : 'flat'));
   }
@@ -1386,7 +1407,8 @@ PAPER_JS = """
       tcell('Paper account value', cashUsd + marketValue, 'cash plus holdings', '') +
       tcell('Cash available', cashUsd, Object.keys(state.cash).map(function (c) {
         return money(state.cash[c]) + ' ' + c; }).join(' &middot; '), '') +
-      tcell('Holdings at market', marketValue, keys.length + ' position(s)', '') +
+      tcell('Holdings at market', marketValue,
+            keys.length + (keys.length === 1 ? ' position' : ' positions'), '') +
       tcell('Open profit / loss', openPnl, 'unrealised', tone(openPnl), true) +
       tcell('Realised profit / loss', realised, 'from closed paper trades', tone(realised), true);
 
@@ -1913,6 +1935,10 @@ th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
 th{font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;
   color:var(--muted);font-weight:600}
 td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+/* A right-aligned number butting against a left-aligned badge in the next
+   column reads as one run-on value; give the pair breathing room. */
+td.num + td:not(.num),th.num + th:not(.num){padding-left:18px}
+td.num .mnote{display:block;line-height:1.35}
 tbody tr:last-child td{border-bottom:none}
 .tag{display:inline-block;background:var(--tag);border-radius:4px;
   padding:1px 6px;font-size:11px;font-weight:600;margin-right:6px}
@@ -2120,9 +2146,8 @@ def render_dashboard(
   </section>
 
   <footer>
-    {verified}generated by <code>autotrader</code> &middot;
-    equity {_money(report.starting_equity)} &rarr;
-    {_money(report.ending_equity, report.base_currency)}
+    {verified}Prices refresh automatically after each market close.
+    Your amounts and paper trades are stored only in this browser.
   </footer>
 </div>
 {signal_blob}
