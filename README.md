@@ -18,7 +18,7 @@ make serve                                         # dashboard at /markets-pro
 ## What is claimed
 
 **Every implemented behaviour is verified correct against hand-computed expected
-values, at a 100% pass rate.** `python verify.py` runs 587 checks and exits
+values, at a 100% pass rate.** `python verify.py` runs 682 checks and exits
 non-zero if a single one fails. Specifically:
 
 | Area | What is verified |
@@ -136,7 +136,7 @@ src/autotrader/
   engine/        the backtest event loop and performance metrics
   persistence/   Postgres/Supabase row mapping and writer
   web/           dashboard rendering and the /markets-pro route
-tests/           587 checks
+tests/           682 checks
 verify.py        the accuracy gate
 ```
 
@@ -174,6 +174,37 @@ worth interpreting.
 `make dashboard` writes a self-contained page to `out/markets-pro/index.html` —
 no external scripts, styles, fonts or images, so it serves under a strict CSP
 and renders offline. `make serve` hosts it at `http://localhost:8000/markets-pro`.
+
+### The walkthrough
+
+When the page has live signals it opens with a seven-step, self-playing
+walkthrough of what actually happens between a market close and a decision you
+have to make: your amount, the re-scan, the filter, the sizing, the trade with
+its exit already attached, the paper-first action, and the track record
+including the parts that do not flatter it.
+
+It exists because a dashboard that opens on finished statistics answers a
+question a first-time reader has not asked yet. Three constraints keep it from
+being an advert:
+
+- **Every figure is read from the run.** The names in the scan are the real
+  watchlist, the funnel counts are today's counts, the chart is the live
+  signal's own price history with its real stop and target, and the closing
+  stats are the real ones — win rate, worst drawdown, longest losing streak and
+  the period return, whichever way they point. The snapshot carries a
+  `mechanics` block for exactly this, so retuning the engine cannot leave the
+  explanation describing a system that no longer exists.
+- **It plays once and stops.** The page's motion rule is that nothing loops on
+  its own beside live numbers; the tour runs a single pass, rests on the last
+  step, and folds itself away once you have saved an amount.
+- **It never blocks the app.** The steps ship as ordinary visible content, so
+  with no JavaScript they read as a list. Under `prefers-reduced-motion` that
+  same static list is exactly what renders — no autoplay, no transitions, no
+  controls for a thing that is not moving.
+
+Autoplay waits for the section to be on screen, stops on a hidden tab, and
+pauses the moment you steer it. Steps are a keyboard-navigable tablist
+(`←`/`→`/`↑`/`↓`, `Home`, `End`).
 
 The equity chart supports **pinch to zoom**:
 

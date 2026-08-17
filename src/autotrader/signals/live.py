@@ -322,6 +322,28 @@ def _totals(rows: list[dict], *, only_fresh: bool) -> dict:
     }
 
 
+def _mechanics(engine: BacktestEngine, feed: LiveFeed) -> dict:
+    """The constants the run actually used, for the page to quote back.
+
+    The walkthrough on the dashboard explains how a suggestion is produced, and
+    every number it states is read from here rather than typed into the copy —
+    so retuning the engine cannot leave the explanation describing a system
+    that no longer exists.
+    """
+    config = engine.config
+    return {
+        "names": len(feed.entries),
+        "regions": len(feed.as_of),
+        "sessions": len(feed.data.all_days()),
+        "risk_per_trade": _s(config.sizing.risk_per_trade),
+        "max_position_weight": _s(config.sizing.max_position_weight),
+        "max_cash_utilisation": _s(config.sizing.max_cash_utilisation),
+        "max_open_positions": config.risk.max_open_positions,
+        "max_drawdown_halt": _s(config.risk.max_drawdown_halt),
+        "daily_loss_limit": _s(config.risk.daily_loss_limit),
+    }
+
+
 def build_snapshot(
     engine: BacktestEngine,
     feed: LiveFeed,
@@ -416,6 +438,16 @@ def build_snapshot(
         "starting_cash": dict(live_config["starting_cash"]),
         "kite_api_key": live_config.get("kite_api_key", ""),
         "horizon_stats": stats,
+        "watchlist": [
+            {
+                "symbol": entry.symbol,
+                "name": entry.name,
+                "region": entry.region,
+                "sector": entry.sector,
+            }
+            for entry in feed.entries
+        ],
+        "mechanics": _mechanics(engine, feed),
         "totals": {
             "signals": _totals(orders, only_fresh=True),
             "positions": _totals(positions, only_fresh=False),

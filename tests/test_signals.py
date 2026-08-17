@@ -67,6 +67,27 @@ class TestGenerate(unittest.TestCase):
         self.assertEqual(self.snapshot["as_of"]["india"], self.last_day.isoformat())
         self.assertEqual(self.snapshot["usdinr"], "88.0")
 
+    def test_snapshot_carries_the_watchlist_it_scanned(self):
+        watchlist = self.snapshot["watchlist"]
+        self.assertEqual(len(watchlist), len(universe("india")) + len(universe("us")))
+        symbols = {row["symbol"] for row in watchlist}
+        self.assertIn("RELIANCE", symbols)
+        self.assertIn("AAPL", symbols)
+        for row in watchlist:
+            self.assertEqual(set(row), {"symbol", "name", "region", "sector"})
+
+    def test_mechanics_report_the_constants_the_run_actually_used(self):
+        # The dashboard's walkthrough quotes these back as fact, so they have to
+        # be read off the run rather than restated in the copy.
+        mechanics = self.snapshot["mechanics"]
+        self.assertEqual(mechanics["names"], len(self.snapshot["watchlist"]))
+        self.assertEqual(mechanics["regions"], len(self.snapshot["as_of"]))
+        self.assertEqual(mechanics["risk_per_trade"], "0.0075")
+        self.assertEqual(mechanics["max_position_weight"], "0.12")
+        self.assertEqual(mechanics["max_open_positions"], 10)
+        self.assertEqual(mechanics["daily_loss_limit"], "0.06")
+        self.assertGreater(mechanics["sessions"], 0)
+
     def test_orders_carry_broker_payloads_for_their_region(self):
         for order in self.snapshot["orders"]:
             self.assertIn(order["side"], ("BUY", "SELL"))

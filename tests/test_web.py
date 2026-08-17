@@ -6,7 +6,14 @@ from datetime import date
 from decimal import Decimal
 
 from autotrader.engine.metrics import RoundTrip, build_report
-from autotrader.web.render import equity_chart_svg, render_dashboard
+from autotrader.web.render import (
+    JOURNEY_HOLDS,
+    JOURNEY_JS,
+    JOURNEY_STEPS,
+    _pct,
+    equity_chart_svg,
+    render_dashboard,
+)
 from autotrader.web.server import ROUTE, DashboardHandler
 
 
@@ -252,6 +259,238 @@ class TestEquityChart(unittest.TestCase):
         svg = equity_chart_svg(days, [Decimal("100"), Decimal("110"), Decimal("120")])
         self.assertIn("2024-01-01", svg)
         self.assertIn("2024-12-31", svg)
+
+
+def make_signals(**overrides):
+    """A snapshot shaped like the live one, with the fields the tour reads."""
+    signals = {
+        "as_of": {"india": "2026-08-17", "us": "2026-08-17"},
+        "usdinr": "88.0",
+        "kite_api_key": "",
+        "daily_cap": {"INR": "20000", "USD": "250"},
+        "starting_cash": {"INR": "500000", "USD": "10000"},
+        "watchlist": [
+            {"symbol": "RELIANCE", "name": "Reliance Industries",
+             "region": "india", "sector": "energy"},
+            {"symbol": "TCS", "name": "TCS", "region": "india", "sector": "tech"},
+            {"symbol": "AAPL", "name": "Apple", "region": "us", "sector": "tech"},
+            {"symbol": "NVDA", "name": "NVIDIA", "region": "us", "sector": "tech"},
+        ],
+        "mechanics": {
+            "names": 4, "regions": 2, "sessions": 518,
+            "risk_per_trade": "0.0075", "max_position_weight": "0.12",
+            "max_cash_utilisation": "0.90", "max_open_positions": 10,
+            "max_drawdown_halt": "0.25", "daily_loss_limit": "0.06",
+        },
+        "orders": [
+            {
+                "key": "US:AAPL", "symbol": "AAPL", "name": "Apple", "yahoo": "AAPL",
+                "region": "us", "exchange": "NASDAQ", "currency": "USD",
+                "side": "BUY", "quantity": "5", "reference_price": "300.00",
+                "horizon": "short_term", "created_on": "2026-08-17", "fresh": True,
+                "reason": "pullback: RSI(2) 5.9 above SMA200",
+                "stop_loss": "285.00", "take_profit": "330.00",
+                "max_holding_days": 10, "trailing_stop_pct": None,
+                "invested": "1500.00", "profit_at_target": "150.00",
+                "profit_at_target_pct": "0.10", "loss_at_stop": "75.00",
+                "loss_at_stop_pct": "0.05", "reward_risk": "2.0",
+                "spark": [290.0, 296.0, 288.0, 302.0, 300.0],
+                "history": {"trades": 154, "win_rate": 0.44, "median_days_held": 8},
+                "alpaca": {"symbol": "AAPL", "qty": "5", "side": "buy",
+                           "type": "market", "time_in_force": "day"},
+            },
+            {
+                "key": "IN:TCS", "symbol": "TCS", "name": "TCS", "yahoo": "TCS.NS",
+                "region": "india", "exchange": "NSE", "currency": "INR",
+                "side": "BUY", "quantity": "3", "reference_price": "3600.00",
+                "horizon": "long_term", "created_on": "2026-08-14", "fresh": False,
+                "reason": "momentum rank 2", "stop_loss": "3400.00",
+                "take_profit": "4000.00", "max_holding_days": None,
+                "trailing_stop_pct": None, "invested": "10800.00",
+                "profit_at_target": "1200.00", "loss_at_stop": "600.00",
+                "spark": [], "history": {},
+                "kite": {"exchange": "NSE", "tradingsymbol": "TCS",
+                         "transaction_type": "BUY", "quantity": 3,
+                         "order_type": "MARKET", "product": "CNC", "readonly": False},
+            },
+        ],
+        "positions": [],
+        "totals": {"signals": {"count": 1}, "positions": {"count": 0}},
+    }
+    signals.update(overrides)
+    return signals
+
+
+def journey_of(html):
+    """Just the walkthrough section, so assertions cannot match its stylesheet."""
+    start = html.index('<section class="journey"')
+    return html[start:html.index("</section>", start)]
+
+
+class TestJourney(unittest.TestCase):
+    """The self-playing walkthrough that opens the dashboard.
+
+    Its job is to answer "what is this and where do I come into it" before the
+    page asks for money, so the checks here are mostly about honesty: the
+    figures it states have to be the run's own, and it has to degrade to plain
+    readable content when there is no script or no appetite for motion.
+    """
+
+    def setUp(self):
+        self.report = make_report()
+        self.signals = make_signals()
+        self.html = render_dashboard(self.report, signals=self.signals)
+
+    def test_renders_seven_steps_wired_as_a_tablist(self):
+        self.assertIn('<section class="journey" data-journey', self.html)
+        self.assertEqual(self.html.count('role="tabpanel" id="jpanel-'), 7)
+        self.assertEqual(self.html.count('data-jgo="'), 7)
+        for i in range(7):
+            self.assertIn(f'id="jtab-{i}"', self.html)
+            self.assertIn(f'aria-controls="jpanel-{i}"', self.html)
+            self.assertIn(f'aria-labelledby="jtab-{i}"', self.html)
+        self.assertIn('role="tablist" aria-label="Walkthrough steps"', self.html)
+
+    def test_only_the_first_step_starts_selected(self):
+        self.assertEqual(self._journey().count('aria-selected="true"'), 1)
+        self.assertIn('id="jtab-0" data-jgo="0" aria-controls="jpanel-0" '
+                      'aria-selected="true" tabindex="0"', self.html)
+
+    def test_steps_are_readable_without_javascript(self):
+        # Panels ship visible; the player is what hides them. A reader with no
+        # script gets the whole explanation as an ordinary list.
+        panels = re.findall(r'<div class="jpanel"[^>]*>', self._journey())
+        self.assertEqual(len(panels), 7)
+        for panel in panels:
+            self.assertNotIn("hidden", panel)
+
+    def test_each_panel_carries_its_own_hold_duration(self):
+        # The script reads pacing off the DOM, so copy and timing cannot drift.
+        for hold in JOURNEY_HOLDS:
+            self.assertIn(f'data-jhold="{hold}"', self.html)
+        self.assertEqual(len(JOURNEY_HOLDS), len(JOURNEY_STEPS))
+
+    def test_the_scan_step_names_the_real_watchlist(self):
+        journey = self._journey()
+        for i, row in enumerate(self.signals["watchlist"]):
+            self.assertIn(f'<span class="jtick" style="--i:{i}">{row["symbol"]}</span>',
+                          journey)
+        self.assertIn("<strong>4</strong> names", self._journey())
+        self.assertIn("<strong>518</strong>", self.html)
+
+    def test_the_funnel_counts_are_todays_real_counts(self):
+        journey = self._journey()
+        # 4 watched, 2 pending on the book, 1 of them fresh.
+        self.assertIn(">4</span>", journey)
+        self.assertIn(">2</span>", journey)
+        self.assertIn(">1</span>", journey)
+        self.assertIn("Worth acting on today", journey)
+
+    def test_the_sizing_step_quotes_the_engines_own_limits(self):
+        journey = self._journey()
+        self.assertIn("<strong>0.75%</strong>", journey)   # risk_per_trade
+        self.assertIn("<strong>12%</strong>", journey)     # max_position_weight
+        self.assertIn("<strong>10</strong>", journey)      # max_open_positions
+        self.assertIn("<strong>6%</strong>", journey)      # daily_loss_limit
+
+    def test_the_trade_step_uses_the_live_signal_with_both_exits(self):
+        journey = self._journey()
+        self.assertIn("AAPL", journey)
+        self.assertIn("target 330.00", journey)
+        self.assertIn("stop 285.00", journey)
+        self.assertIn("entry 300.00", journey)
+        self.assertIn("If the target hits", journey)
+        self.assertIn("If the stop hits", journey)
+
+    def test_the_trade_step_prefers_a_fresh_signal_over_a_resting_one(self):
+        # TCS is on the book but resting; showing it as "today's trade" would
+        # be presenting stale intent as new.
+        card = self._journey()
+        card = card[card.index("jtradehead"):card.index("joutcomes")]
+        self.assertIn("AAPL", card)
+        self.assertNotIn("TCS", card)
+
+    def test_a_quiet_day_says_so_instead_of_inventing_a_trade(self):
+        journey = journey_of(
+            render_dashboard(self.report, signals=make_signals(orders=[]))
+        )
+        self.assertIn("no live suggestion right now", journey)
+        self.assertNotIn("jtradehead", journey)
+        self.assertIn("Worth acting on today", journey)   # the funnel still says 0
+
+    def test_the_closing_step_leads_with_the_unflattering_numbers(self):
+        journey = self._journey()
+        self.assertIn("of trades finished ahead", journey)
+        self.assertIn("worst peak-to-trough fall", journey)
+        self.assertIn("losses in a row, at worst", journey)
+        self.assertIn(f"-{_pct(self.report.max_drawdown)}", journey)
+        self.assertIn(f"{_pct(self.report.win_rate, 1)}", journey)
+
+    def test_the_closing_step_promises_nothing(self):
+        self.assertIn("Nothing here is a promise", self._journey())
+
+    def test_it_comes_before_the_page_asks_for_money(self):
+        self.assertLess(self.html.index("data-journey"),
+                        self.html.index("data-needs-setup"))
+
+    def test_it_plays_once_and_does_not_loop(self):
+        # The page's motion rule: nothing moves on its own beside live numbers.
+        # A tour that restarted forever would be exactly that.
+        self.assertNotIn("setInterval", JOURNEY_JS)
+        self.assertIn("finished = true", JOURNEY_JS)
+
+    def test_it_can_be_paused_and_jumped(self):
+        self.assertIn("data-journey-toggle", self.html)
+        self.assertIn('aria-label="Pause the walkthrough"', self.html)
+        self.assertIn("ArrowRight", self.html)
+        self.assertIn("Home", self.html)
+
+    def test_it_waits_until_it_is_on_screen_and_stops_on_a_hidden_tab(self):
+        self.assertIn("IntersectionObserver", self.html)
+        self.assertIn("visibilitychange", self.html)
+
+    def test_reduced_motion_gets_the_whole_thing_as_a_document(self):
+        self.assertIn("root.classList.add('static')", self.html)
+        self.assertIn(".journey.static .jpanel[hidden]{display:flex}", self.html)
+        # ...and the stage must reclaim the rail's grid column, not sit in it.
+        self.assertIn(".journey.static .jbody{grid-template-columns:1fr}", self.html)
+
+    def test_hidden_panels_are_actually_hidden(self):
+        # .jpanel sets `display`, which outranks the user-agent [hidden] rule.
+        self.assertIn(".jpanel[hidden]{display:none}", self.html)
+
+    def test_hostile_watchlist_and_signal_text_is_escaped(self):
+        signals = make_signals()
+        signals["watchlist"][0]["symbol"] = "<script>alert(1)</script>"
+        signals["orders"][0]["name"] = "<img src=x onerror=alert(1)>"
+        signals["orders"][0]["reason"] = "</style><script>alert(1)</script>"
+        html = render_dashboard(self.report, signals=signals)
+        self.assertNotIn("<script>alert(1)</script>", html)
+        self.assertNotIn("<img src=x", html)
+        self.assertIn("&lt;script&gt;", html)
+
+    def test_a_snapshot_without_the_new_fields_still_renders(self):
+        # Older cached snapshots predate `watchlist` and `mechanics`; the tour
+        # must degrade rather than take the whole page down with it.
+        signals = make_signals()
+        del signals["watchlist"]
+        del signals["mechanics"]
+        html = render_dashboard(self.report, signals=signals)
+        self.assertIn("data-journey", html)
+        self.assertIn("watchlist unavailable", html)
+
+    def test_the_offline_research_dashboard_has_no_tour(self):
+        html = render_dashboard(self.report)
+        self.assertNotIn('<section class="journey"', html)
+        self.assertNotIn("data-jpanel", html)
+
+    def test_it_hands_the_reader_to_the_amount_field(self):
+        self.assertIn("data-journey-start", self.html)
+        self.assertIn("[data-needs-setup]", JOURNEY_JS)
+        self.assertIn("input.focus({preventScroll: true})", JOURNEY_JS)
+
+    def _journey(self):
+        return journey_of(self.html)
 
 
 class TestRouting(unittest.TestCase):
