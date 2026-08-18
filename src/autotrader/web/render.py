@@ -23,6 +23,9 @@ REGION_NAMES = {
     "HK": "Hong Kong",
 }
 
+#: Snapshot region spelling -> the code :data:`REGION_NAMES` is keyed by.
+REGION_CODE_BY_NAME = {"india": "IN", "us": "US"}
+
 EXIT_LABELS = {
     "stop_loss": "Stop loss",
     "gap_through_stop": "Gapped through stop",
@@ -2624,6 +2627,922 @@ footer code{background:var(--tag);padding:1px 5px;border-radius:4px;font-size:11
 """
 
 
+JOURNEY_CSS = """
+/* ---------------------------------------------------------------------------
+   The walkthrough.
+
+   Everything animated here is scoped to `.jpanel.on`, so a step's motion runs
+   exactly when that step becomes the active one and never before. Removing the
+   class and re-adding it restarts the whole set, which is what replay does.
+
+   The last block disables all of it under prefers-reduced-motion and opens
+   every panel at once, because a reader who has asked for no motion should get
+   the same content as a document, not a slideshow they have to drive.
+--------------------------------------------------------------------------- */
+.journey{border:1px solid var(--line);border-radius:14px;background:var(--panel);
+  box-shadow:var(--elev-2);overflow:hidden;margin:0 0 20px}
+.jbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+  padding:15px 18px;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 6%,var(--panel)),
+    var(--panel))}
+.jtitle{font-size:15.5px;margin:0;text-transform:none;letter-spacing:-0.01em;
+  color:var(--ink);font-weight:650}
+.jlede{margin:3px 0 0;font-size:12.5px;color:var(--muted)}
+.jctl{display:flex;gap:6px;flex:0 0 auto}
+.jbtnctl{appearance:none;font:inherit;font-size:12.5px;display:inline-flex;
+  align-items:center;gap:6px;padding:5px 11px;border:1px solid var(--line);
+  border-radius:999px;background:var(--panel);color:var(--ink);cursor:pointer;
+  transition:background .18s var(--ease),border-color .18s var(--ease)}
+.jbtnctl:hover{background:var(--tag)}
+.jbtnctl:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* Two bars, squeezed to a triangle when playing is the thing on offer. */
+.jicon{width:9px;height:11px;flex:0 0 auto;background:currentColor;
+  clip-path:polygon(0 0,3.5px 0,3.5px 11px,0 11px,0 0,5.5px 0,9px 0,9px 11px,
+    5.5px 11px);transition:clip-path .2s var(--ease)}
+.journey.paused .jicon{clip-path:polygon(0 0,9px 5.5px,0 11px)}
+
+.jbody{display:grid;grid-template-columns:210px 1fr;align-items:stretch}
+.jrail{list-style:none;margin:0;padding:10px;display:flex;flex-direction:column;
+  gap:2px;border-right:1px solid var(--line);
+  background:color-mix(in srgb,var(--tag) 45%,transparent)}
+.jrail button{appearance:none;width:100%;text-align:left;font:inherit;
+  font-size:13px;display:flex;align-items:center;gap:9px;padding:8px 10px;
+  border:0;border-radius:8px;background:transparent;color:var(--muted);
+  cursor:pointer;position:relative;
+  transition:background .2s var(--ease),color .2s var(--ease)}
+.jrail button:hover{background:var(--panel);color:var(--ink)}
+.jrail button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.jrail button[aria-selected="true"]{background:var(--panel);color:var(--ink);
+  font-weight:600;box-shadow:var(--elev-1)}
+.jnum{flex:0 0 auto;width:21px;height:21px;border-radius:50%;display:grid;
+  place-items:center;font-size:11px;font-weight:600;background:var(--tag);
+  color:var(--muted);font-variant-numeric:tabular-nums;
+  transition:background .2s var(--ease),color .2s var(--ease)}
+.jrail button[aria-selected="true"] .jnum{background:var(--accent);color:#fff}
+.jrail button.done .jnum{background:color-mix(in srgb,var(--accent) 22%,transparent);
+  color:var(--accent)}
+.jrail-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.jstage{position:relative;padding:20px 22px 22px;min-height:340px}
+.jpanel{display:flex;flex-direction:column;gap:9px}
+/* An explicit `display` on .jpanel beats the user-agent rule for [hidden], so
+   the attribute has to be honoured here or every step renders at once. */
+.jpanel[hidden]{display:none}
+.jpanel:focus-visible{outline:2px solid var(--accent);outline-offset:4px;
+  border-radius:8px}
+.jpanel.on{animation:jfade .34s var(--ease) both}
+@keyframes jfade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.jkicker{margin:0;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--accent);font-weight:600}
+.jhead{margin:0;font-size:19px;line-height:1.25;letter-spacing:-0.015em;
+  font-weight:650}
+.jsay{margin:0;font-size:13.5px;color:var(--muted);max-width:62ch}
+.jart{margin-top:6px}
+.jmeta{margin:11px 0 0;font-size:12px;color:var(--muted);max-width:70ch}
+.jmeta strong{color:var(--ink);font-variant-numeric:tabular-nums}
+.jempty{margin:0;font-size:13.5px;color:var(--muted);max-width:62ch}
+
+/* step 1 — the amount being typed in */
+.jfield{display:flex;flex-direction:column;gap:5px;width:fit-content}
+.jflabel{font-size:11.5px;color:var(--muted)}
+.jfbox{display:inline-flex;align-items:center;min-width:230px;height:44px;
+  padding:0 13px;border:1px solid var(--line);border-radius:8px;
+  background:var(--bg);font-size:19px;font-weight:600;
+  font-variant-numeric:tabular-nums;box-shadow:var(--elev-1)}
+.jpanel.on .jfbox{animation:jfocus .5s var(--ease) .1s both}
+@keyframes jfocus{
+  from{border-color:var(--line)}
+  60%{border-color:var(--accent);
+      box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}
+  to{border-color:var(--accent);
+     box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent)}}
+.jkey{opacity:0}
+.jpanel.on .jkey{animation:jkeyin .01s linear both;animation-delay:calc(.45s + var(--i) * .11s)}
+@keyframes jkeyin{to{opacity:1}}
+.jcaret{width:2px;height:21px;margin-left:2px;background:var(--accent);opacity:0}
+.jpanel.on .jcaret{animation:jblink .8s steps(2,jump-none) .35s 3 both}
+@keyframes jblink{0%{opacity:1}50%{opacity:0}100%{opacity:1}}
+.jreceipt{display:flex;width:fit-content;align-items:center;gap:8px;margin-top:13px;
+  padding:8px 13px;border-radius:999px;font-size:12.5px;
+  border:1px solid color-mix(in srgb,var(--pos) 34%,var(--line));
+  background:color-mix(in srgb,var(--pos) 9%,transparent);color:var(--ink);
+  opacity:0}
+.jpanel.on .jreceipt{animation:jrise .42s var(--ease) 1.6s both}
+.jpanel.on .jreceipt.delayed{animation-delay:2.1s}
+@keyframes jrise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.jdot{width:7px;height:7px;border-radius:50%;background:var(--pos);flex:0 0 auto}
+
+/* step 2 — the watchlist under a scan */
+.jscan{position:relative;overflow:hidden;border:1px solid var(--line);
+  border-radius:10px;padding:11px;background:var(--bg)}
+.jgrid{display:flex;flex-wrap:wrap;gap:5px}
+.jtick{font-size:11px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  padding:3px 7px;border-radius:5px;background:var(--tag);color:var(--muted);
+  border:1px solid transparent;opacity:.35}
+.jpanel.on .jtick{animation:jlight .9s var(--ease) both;
+  animation-delay:calc(var(--i) * .045s)}
+@keyframes jlight{
+  0%{opacity:.35;transform:scale(.94)}
+  35%{opacity:1;transform:scale(1);border-color:color-mix(in srgb,var(--accent) 45%,transparent);
+      color:var(--ink)}
+  100%{opacity:.82;transform:scale(1);border-color:transparent;color:var(--ink)}}
+.jsweep{position:absolute;inset:0 auto 0 0;width:120px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,
+    color-mix(in srgb,var(--accent) 15%,transparent),transparent);opacity:0}
+.jpanel.on .jsweep{animation:jsweep 1.9s var(--ease) .1s both}
+@keyframes jsweep{0%{opacity:1;transform:translateX(-130px)}
+  100%{opacity:0;transform:translateX(calc(100% + 100vw))}}
+
+/* step 3 — the funnel */
+.jfunnel{display:grid;grid-template-columns:1fr 46px;
+  grid-template-areas:"label n" "track n" "note note";gap:3px 12px;
+  align-items:center;margin-bottom:13px;opacity:0}
+.jpanel.on .jfunnel{animation:jrise .45s var(--ease) both;
+  animation-delay:calc(.15s + var(--i) * .3s)}
+.jfl{grid-area:label;font-size:12.5px;color:var(--ink)}
+.jftrack{grid-area:track;height:12px;border-radius:6px;background:var(--tag);
+  overflow:hidden}
+.jffill{display:block;height:100%;width:var(--w);border-radius:6px;
+  background:linear-gradient(90deg,var(--accent),
+    color-mix(in srgb,var(--accent) 62%,var(--pos)));transform-origin:left}
+.jpanel.on .jffill{animation:jgrow .7s var(--ease) both;
+  animation-delay:calc(.3s + var(--i) * .3s)}
+@keyframes jgrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.jfn{grid-area:n;font-size:22px;font-weight:650;text-align:right;
+  font-variant-numeric:tabular-nums}
+.jfnote{grid-area:note;font-size:11.5px;color:var(--muted)}
+
+/* step 4 — the caps */
+.jstack{position:relative;height:38px;border-radius:8px;background:var(--tag);
+  overflow:hidden;margin-bottom:14px}
+.jstackfill{position:absolute;inset:0;transform-origin:left;
+  background:linear-gradient(90deg,
+    color-mix(in srgb,var(--accent) 20%,transparent),
+    color-mix(in srgb,var(--accent) 9%,transparent))}
+.jpanel.on .jstackfill{animation:jgrow .6s var(--ease) .1s both}
+.jstackslice{position:absolute;top:0;bottom:0;left:0;width:var(--w);
+  background:var(--accent);border-radius:8px 0 0 8px;display:grid;
+  place-items:center;transform-origin:left;opacity:0}
+.jstackslice i{font-style:normal;font-size:11px;font-weight:650;color:#fff;
+  white-space:nowrap}
+.jpanel.on .jstackslice{animation:jslice .6s var(--ease) .55s both}
+@keyframes jslice{from{opacity:0;transform:scaleX(0)}
+  to{opacity:1;transform:scaleX(1)}}
+.jlimits{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.jlimits li{font-size:12.5px;color:var(--muted);opacity:0;
+  padding-left:15px;position:relative}
+.jlimits li::before{content:"";position:absolute;left:0;top:7px;width:6px;
+  height:6px;border-radius:50%;background:var(--accent);opacity:.55}
+.jlimits strong{color:var(--ink);font-variant-numeric:tabular-nums}
+.jpanel.on .jlimits li{animation:jrise .4s var(--ease) both;
+  animation-delay:calc(.8s + var(--i) * .22s)}
+
+/* step 5 — the real trade */
+.jtrade{border:1px solid var(--line);border-radius:10px;padding:13px;
+  background:var(--bg)}
+.jtradehead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
+  margin-bottom:9px;font-size:15px}
+.jchart{width:100%;height:auto;max-width:640px;display:block;overflow:visible}
+.jzone{opacity:0}
+.jzone.win{fill:var(--pos)}
+.jzone.lose{fill:var(--neg)}
+.jpanel.on .jzone{animation:jzone .6s var(--ease) 1.15s both}
+@keyframes jzone{to{opacity:.09}}
+.jchartarea{fill:color-mix(in srgb,var(--accent) 14%,transparent);stroke:none;
+  opacity:0}
+.jpanel.on .jchartarea{animation:jzone2 .5s var(--ease) .95s both}
+@keyframes jzone2{to{opacity:1}}
+.jchartline{fill:none;stroke:var(--accent);stroke-width:1.9;
+  stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1;
+  stroke-dashoffset:1}
+.jpanel.on .jchartline{animation:jdraw 1.15s var(--ease) .15s both}
+@keyframes jdraw{to{stroke-dashoffset:0}}
+.jrule{stroke-width:1;stroke-dasharray:3 4;opacity:0}
+.jrule.win{stroke:var(--pos)} .jrule.lose{stroke:var(--neg)}
+.jrule.now{stroke:var(--muted);stroke-dasharray:2 3}
+.jtag{font-size:9.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  opacity:0}
+.jtag.win{fill:var(--pos)} .jtag.lose{fill:var(--neg)} .jtag.now{fill:var(--muted)}
+.jpanel.on .jrule,.jpanel.on .jtag{animation:jzone2 .45s var(--ease) 1.3s both}
+.jchartdot{fill:var(--accent);stroke:var(--bg);stroke-width:1.6;opacity:0}
+.jpanel.on .jchartdot{animation:jpop .4s var(--ease) 1.25s both}
+@keyframes jpop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
+.joutcomes{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.jout{flex:1 1 150px;display:flex;flex-direction:column;gap:2px;padding:9px 12px;
+  border-radius:8px;opacity:0}
+.jout i{font-style:normal;font-size:11px;font-weight:500;color:var(--muted)}
+.jout b{font-size:19px;font-weight:650;font-variant-numeric:tabular-nums}
+.jout.win{background:color-mix(in srgb,var(--pos) 10%,transparent);color:var(--pos)}
+.jout.lose{background:color-mix(in srgb,var(--neg) 10%,transparent);color:var(--neg)}
+.jpanel.on .jout{animation:jrise .45s var(--ease) both}
+.jpanel.on .jout.win{animation-delay:1.6s}
+.jpanel.on .jout.lose{animation-delay:1.78s}
+
+/* step 6 — the press */
+.jact{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.jbtn{position:relative;display:inline-flex;align-items:center;
+  justify-content:center;padding:11px 20px;border-radius:8px;font-size:13.5px;
+  font-weight:600;border:1px solid var(--line)}
+.jbtn.primary{background:var(--accent);color:#fff;border-color:transparent}
+.jbtn.ghost{background:transparent;color:var(--muted)}
+.jpanel.on .jbtn.primary{animation:jpress 1.5s var(--ease) .55s both}
+@keyframes jpress{0%,44%{transform:none;box-shadow:var(--elev-1)}
+  52%{transform:scale(.965);box-shadow:var(--elev-1)}
+  62%,100%{transform:none;box-shadow:var(--elev-2)}}
+.jtap{position:absolute;left:50%;top:50%;width:14px;height:14px;
+  margin:-7px 0 0 -7px;border-radius:50%;border:2px solid #fff;opacity:0}
+.jpanel.on .jtap{animation:jtap 1s var(--ease) .95s both}
+@keyframes jtap{0%{opacity:.85;transform:scale(.3)}100%{opacity:0;transform:scale(4.2)}}
+
+/* step 7 — the record, unflattering side first */
+.jstats{display:grid;gap:9px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.jstat{border:1px solid var(--line);border-radius:9px;padding:11px 13px;
+  background:var(--bg);display:flex;flex-direction:column;gap:2px;opacity:0}
+.jpanel.on .jstat{animation:jrise .45s var(--ease) both;
+  animation-delay:calc(.15s + var(--i) * .16s)}
+.jsv{font-size:23px;font-weight:650;letter-spacing:-0.02em;
+  font-variant-numeric:tabular-nums}
+.jsl{font-size:12px;color:var(--ink)}
+.jsn{font-size:11px;color:var(--muted)}
+
+/* progress + the way out */
+.jfootbar{border-top:1px solid var(--line);padding:0}
+.jprogress{height:3px;background:var(--tag)}
+.jprogress span{display:block;height:100%;width:0;background:var(--accent);
+  border-radius:0 3px 3px 0}
+.jcta{display:flex;gap:9px;flex-wrap:wrap;align-items:center;padding:13px 18px;
+  background:color-mix(in srgb,var(--tag) 40%,transparent)}
+/* Outranks button.exec.big's full-width rule: these two sit side by side. */
+.jcta button.exec{width:auto;flex:0 0 auto}
+.jcta button.exec.big{padding:11px 18px;font-size:13.5px}
+
+.journey.collapsed .jbody,.journey.collapsed .jfootbar{display:none}
+
+@media (max-width:760px){
+  .jbody{grid-template-columns:1fr}
+  .jrail{flex-direction:row;overflow-x:auto;border-right:0;
+    border-bottom:1px solid var(--line);padding:8px;
+    scrollbar-width:none}
+  .jrail::-webkit-scrollbar{display:none}
+  .jrail li{flex:0 0 auto}
+  .jrail button{padding:6px 10px}
+  .jrail-label{display:none}
+  .jrail button[aria-selected="true"] .jrail-label{display:inline}
+  .jstage{padding:16px 15px 18px;min-height:0}
+  .jhead{font-size:17px}
+  .jbar{flex-direction:column;gap:10px}
+  .jctl{align-self:stretch}
+  .jbtnctl{flex:1 1 0;justify-content:center}
+}
+
+/* A reader who has asked for no motion gets the whole thing as a document:
+   every step open, nothing playing, no controls that only make sense for a
+   thing that moves. */
+@media (prefers-reduced-motion:reduce){
+  .journey *,.journey *::before,.journey *::after{
+    animation:none !important;transition:none !important}
+  .jpanel .jkey,.jpanel .jreceipt,.jpanel .jfunnel,.jpanel .jlimits li,
+  .jpanel .jstat,.jpanel .jout,.jpanel .jtick,.jpanel .jzone,
+  .jpanel .jchartarea,.jpanel .jrule,.jpanel .jtag,.jpanel .jchartdot,
+  .jpanel .jstackslice{opacity:1}
+  .jpanel .jzone{opacity:.09}
+  .jpanel .jchartline{stroke-dashoffset:0}
+  .jcaret,.jsweep,.jtap{display:none}
+}
+.journey.static .jpanel[hidden]{display:flex}
+.journey.static .jpanel{border-top:1px solid var(--line);padding-top:16px;
+  margin-top:16px}
+.journey.static .jpanel:first-child{border-top:0;padding-top:0;margin-top:0}
+.journey.static .jrail,.journey.static .jprogress,
+.journey.static [data-journey-toggle]{display:none}
+/* The rail is the first grid column; dropping it must give the stage the full
+   width back rather than leaving it in a 210px lane. */
+.journey.static .jbody{grid-template-columns:1fr}
+"""
+
+
+# ---------------------------------------------------------------------------
+# The walkthrough.
+#
+# A dashboard that opens on a wall of finished numbers answers a question the
+# first-time reader has not asked yet. Before "how did it do" comes "what does
+# this thing do for me, and where do I come into it" — and that is a sequence,
+# not a statistic, so it is shown as one: seven steps from the reader's own
+# amount through to an honest report of what the strategy actually did.
+#
+# Three rules keep it from being an advert.
+#
+# 1. Every number in it is read from the snapshot and the report. The names in
+#    the scan are the real watchlist, the funnel counts are today's real
+#    counts, the chart is the real signal's real price history, and the closing
+#    stats are the real ones — including the losing ones.
+# 2. It plays once and stops. The page's motion rule is that nothing loops on
+#    its own beside live numbers; a walkthrough that restarts forever would be
+#    exactly that. It runs a single pass and rests on the last step.
+# 3. It never blocks the app. Without JavaScript every step is on the page as
+#    plain readable content; under prefers-reduced-motion it renders as that
+#    same static list with no autoplay at all.
+# ---------------------------------------------------------------------------
+
+#: (rail label, step heading) — the rail label is what a returning reader scans.
+JOURNEY_STEPS: tuple[tuple[str, str], ...] = (
+    ("Your amount", "First, it needs to know what you are working with"),
+    ("The close", "Every market close, it re-reads the whole list"),
+    ("The filter", "Rules cut the list down to what actually qualifies"),
+    ("The size", "Risk decides the size before you get a say"),
+    ("The trade", "The exit is written at the same moment as the entry"),
+    ("Your call", "Nothing happens until you press something"),
+    ("The truth", "Then it shows you what it really did, losses included"),
+)
+
+#: Milliseconds each step holds before the walkthrough advances. Longer where
+#: there is more to read; the JS reads these off the DOM so copy and pacing
+#: cannot drift apart.
+JOURNEY_HOLDS: tuple[int, ...] = (5200, 5600, 6000, 6400, 7000, 5800, 6400)
+
+
+def _journey_chart(order: dict, *, width: int = 460, height: int = 150) -> str:
+    """The signal's real price history with its stop and target drawn on it.
+
+    The gutter on the right is reserved for the three price labels, so the
+    plot is narrower than the SVG. Levels outside the plotted range are still
+    included in the y-scale, which is the point: if the target is far away,
+    the picture has to show it as far away.
+    """
+    points = [float(v) for v in (order.get("spark") or []) if v is not None]
+    if len(points) < 2:
+        return ""
+
+    def level(key: str) -> float | None:
+        raw = order.get(key)
+        return None if raw in (None, "") else float(str(raw))
+
+    stop, target = level("stop_loss"), level("take_profit")
+    entry = level("reference_price") or points[-1]
+    marks = [v for v in (stop, target, entry) if v is not None]
+    lo, hi = min(points + marks), max(points + marks)
+    if hi == lo:
+        hi = lo + 1.0
+    pad = (hi - lo) * 0.10
+    lo, hi = lo - pad, hi + pad
+    span, plot, n = hi - lo, width - 92, len(points)
+
+    def x_at(i: int) -> float:
+        return i * plot / (n - 1)
+
+    def y_at(value: float) -> float:
+        return height - ((value - lo) / span * height)
+
+    line = " ".join(f"{x_at(i):.1f},{y_at(v):.1f}" for i, v in enumerate(points))
+    area = f"0,{height:.1f} {line} {plot:.1f},{height:.1f}"
+
+    zones, rules = [], []
+    if target is not None:
+        y = y_at(target)
+        zones.append(f'<rect class="jzone win" x="0" y="0" width="{plot:.1f}" '
+                     f'height="{max(y, 0):.1f}"/>')
+        rules.append((y, "win", "target", target))
+    if stop is not None:
+        y = y_at(stop)
+        zones.append(f'<rect class="jzone lose" x="0" y="{y:.1f}" width="{plot:.1f}" '
+                     f'height="{max(height - y, 0):.1f}"/>')
+        rules.append((y, "lose", "stop", stop))
+    rules.append((y_at(entry), "now", "entry", entry))
+
+    marks_svg = []
+    for y, cls, label, value in rules:
+        marks_svg.append(
+            f'<line class="jrule {cls}" x1="0" y1="{y:.1f}" x2="{plot:.1f}" y2="{y:.1f}"/>'
+            f'<text class="jtag {cls}" x="{plot + 7:.1f}" y="{y + 3.4:.1f}">'
+            f"{_esc(label)} {_price(value)}</text>"
+        )
+
+    dot_x, dot_y = x_at(n - 1), y_at(points[-1])
+    return f"""<svg class="jchart" viewBox="0 0 {width} {height}" role="img"
+     aria-label="{_esc(order['symbol'])} closing prices, with the stop and target
+     the strategy set for this trade">
+  {''.join(zones)}
+  <polygon class="jchartarea" points="{area}"/>
+  <polyline class="jchartline" points="{line}" pathLength="1"
+            vector-effect="non-scaling-stroke"/>
+  {''.join(marks_svg)}
+  <circle class="jchartdot" cx="{dot_x:.1f}" cy="{dot_y:.1f}" r="3.4"/>
+</svg>"""
+
+
+def _journey_amount(signals: dict) -> str:
+    """Step 1: the amount being typed into the field the reader will use."""
+    digits = "".join(
+        f'<span class="jkey" style="--i:{i}">{ch}</span>'
+        for i, ch in enumerate("1,00,000")
+    )
+    return f"""<div class="jfield">
+  <span class="jflabel">Your amount &middot; India (&#8377;)</span>
+  <span class="jfbox">{digits}<span class="jcaret"></span></span>
+</div>
+<div class="jreceipt">
+  <span class="jdot ok"></span>Saved. Every figure on the page is now yours.
+</div>
+<p class="jmeta">It never leaves this browser &mdash; there is no account and
+nowhere for it to go.</p>"""
+
+
+def _journey_scan(signals: dict) -> str:
+    """Step 2: the real watchlist lighting up under a scan."""
+    watchlist = signals.get("watchlist") or []
+    mech = signals.get("mechanics") or {}
+    chips = "".join(
+        f'<span class="jtick" style="--i:{i}">{_esc(row["symbol"])}</span>'
+        for i, row in enumerate(watchlist)
+    ) or '<span class="jtick" style="--i:0">watchlist unavailable</span>'
+    as_of = " &middot; ".join(
+        f"{REGION_NAMES.get(REGION_CODE_BY_NAME.get(region, ''), region.title())} "
+        f"through {_esc(day)}"
+        for region, day in sorted((signals.get("as_of") or {}).items())
+    )
+    return f"""<div class="jscan"><span class="jsweep"></span>
+  <div class="jgrid">{chips}</div>
+</div>
+<p class="jmeta"><strong>{mech.get('names', len(watchlist))}</strong> names
+&middot; <strong>{mech.get('regions', 0)}</strong> markets &middot;
+<strong>{mech.get('sessions', 0)}</strong> sessions of history re-scored from
+scratch, every close.{' ' + as_of if as_of else ''}</p>"""
+
+
+def _journey_filter(signals: dict) -> str:
+    """Step 3: how many survive, as bars in proportion to each other."""
+    orders = signals.get("orders", [])
+    mech = signals.get("mechanics") or {}
+    names = int(mech.get("names") or 0) or 1
+    tracked, fresh = len(orders), sum(1 for o in orders if o["fresh"])
+    stages = (
+        ("Names read", names, "everything on the watchlist"),
+        ("Setups the strategies are holding", tracked, "including yesterday's, still resting"),
+        ("Worth acting on today", fresh, "what reaches you"),
+    )
+    bars = "".join(
+        f"""<div class="jfunnel" style="--i:{i}">
+  <span class="jfl">{_esc(label)}</span>
+  <span class="jftrack"><span class="jffill"
+        style="--w:{max(count / names * 100, 2.5):.1f}%"></span></span>
+  <span class="jfn">{count}</span>
+  <span class="jfnote">{_esc(note)}</span>
+</div>"""
+        for i, (label, count, note) in enumerate(stages)
+    )
+    return f"""{bars}
+<p class="jmeta">Most days the last number is small, and plenty of days it is
+zero. A list that always has something on it is a list that stopped
+filtering.</p>"""
+
+
+def _journey_size(signals: dict) -> str:
+    """Step 4: the caps that decide the quantity, quoted from the live run."""
+    mech = signals.get("mechanics") or {}
+
+    def frac(key: str, places: int = 2) -> str:
+        raw = mech.get(key)
+        return "&mdash;" if raw in (None, "") else f"{float(str(raw)) * 100:.{places}f}%"
+
+    weight = mech.get("max_position_weight")
+    slice_pct = f"{float(str(weight)) * 100:.0f}" if weight else "12"
+    limits = (
+        (frac("risk_per_trade"), "of the book is risked on any one trade &mdash; "
+                                 "the distance to the stop sets the quantity"),
+        (frac("max_position_weight", 0), "is the most that can sit in a single name"),
+        (str(mech.get("max_open_positions") or "&mdash;"), "open positions at once, "
+                                                           "no more"),
+        (frac("daily_loss_limit", 0), "lost in a day and it stops trading until "
+                                      "tomorrow"),
+    )
+    rows = "".join(
+        f'<li style="--i:{i}"><strong>{value}</strong> {note}</li>'
+        for i, (value, note) in enumerate(limits)
+    )
+    return f"""<div class="jstack" aria-hidden="true">
+  <span class="jstackfill"></span>
+  <span class="jstackslice" style="--w:{slice_pct}%"><i>{slice_pct}%</i></span>
+</div>
+<ul class="jlimits">{rows}</ul>
+<p class="jmeta">You cannot talk the sizing into a bigger position. It is the
+same code that sized every trade in the track record below.</p>"""
+
+
+def _journey_trade(signals: dict) -> str:
+    """Step 5: a real signal, with the exit levels it was born with."""
+    orders = signals.get("orders", [])
+    order = next((o for o in orders if o["fresh"]), orders[0] if orders else None)
+    if order is None:
+        return """<p class="jempty">There is no live suggestion right now, which
+is the ordinary case. When one appears it arrives with its exit already
+attached: a price to take the gain at, a price to cut the loss at, and a
+deadline after which it is closed either way.</p>"""
+
+    ccy = order["currency"]
+    chart = _journey_chart(order)
+    hold = order.get("max_holding_days")
+    window = f"closed within {hold} trading days either way" if hold else \
+        "closed when the exit signal fires"
+    return f"""<div class="jtrade">
+  <div class="jtradehead">
+    <span class="tag {'side-buy' if order['side'] == 'BUY' else 'side-sell'}"
+      >{_esc(order['side'])}</span>
+    <strong>{_esc(order['symbol'])}</strong>
+    <span class="muted-inline">{_esc(order['name'])}</span>
+  </div>
+  {chart}
+  <div class="joutcomes">
+    <span class="jout win"><i>If the target hits</i><b>{
+      _money_line(order.get('profit_at_target'), ccy, signed=True)}</b></span>
+    <span class="jout lose"><i>If the stop hits</i><b>&minus;{
+      _money_line(order.get('loss_at_stop'), ccy)}</b></span>
+  </div>
+</div>
+<p class="jmeta"><strong>Why this one:</strong>
+{_esc(plain_reason(order.get('reason') or ''))}. It is
+{window}. Both figures above are the strategy's own size &mdash; enter your
+amount and they are restated in your money.</p>"""
+
+
+def _journey_act(signals: dict) -> str:
+    """Step 6: the two-step, reversible-first action model, acted out."""
+    return """<div class="jact">
+  <span class="jbtn primary">Paper buy<span class="jtap"></span></span>
+  <span class="jbtn ghost">Real &middot; broker</span>
+</div>
+<div class="jreceipt delayed">
+  <span class="jdot ok"></span>Added to your paper book. Nothing was sent
+  anywhere, and nothing was spent.
+</div>
+<p class="jmeta">Paper is the default because it is the reversible one. The real
+button needs a broker you connect yourself, asks a second time before it fires,
+and is capped by the daily limit you set in step one. This page never holds a
+credential.</p>"""
+
+
+def _journey_truth(report: PerformanceReport) -> str:
+    """Step 7: the closing stats, chosen so the unflattering ones lead."""
+    stats = (
+        (f"{_pct(report.win_rate, 1)}", "of trades finished ahead",
+         "so most of them did not"),
+        (f"-{_pct(report.max_drawdown)}", "worst peak-to-trough fall",
+         f"{report.max_drawdown_days} days to get back"),
+        (f"{report.max_consecutive_losses}", "losses in a row, at worst",
+         "this is what you would have had to sit through"),
+        (_signed_pct(report.total_return), "over the period on test",
+         "before you decide anything"),
+    )
+    tiles = "".join(
+        f"""<div class="jstat" style="--i:{i}">
+  <span class="jsv {'neg' if value.startswith(('-', '&minus;')) else ''}">{value}</span>
+  <span class="jsl">{_esc(label)}</span>
+  <span class="jsn">{_esc(note)}</span>
+</div>"""
+        for i, (value, label, note) in enumerate(stats)
+    )
+    return f"""<div class="jstats">{tiles}</div>
+<p class="jmeta">Nothing here is a promise. The full record &mdash; every
+market, every book, and how each trade ended &mdash; is under
+<button type="button" class="linkish" data-tabgo="performance">Track
+record</button>.</p>"""
+
+
+def _journey_section(report: PerformanceReport, signals: dict) -> str:
+    """The whole walkthrough: rail, stage, progress and the way out of it."""
+    fresh = sum(1 for order in signals.get("orders", []) if order["fresh"])
+    arts = (
+        _journey_amount(signals),
+        _journey_scan(signals),
+        _journey_filter(signals),
+        _journey_size(signals),
+        _journey_trade(signals),
+        _journey_act(signals),
+        _journey_truth(report),
+    )
+    says = (
+        "Two numbers, kept in this browser: what you invest with in India, and "
+        "what you invest with in the US. Everything downstream is sized from "
+        "them, so until they exist the page is showing you somebody else's "
+        "money.",
+        "After each close it reloads every name on the list, recomputes every "
+        "indicator from the raw bars, and re-runs both strategies over the "
+        "whole history. No name gets a pass because it was interesting "
+        "yesterday.",
+        "A trend filter, a momentum ranking, a pullback rule and a breakout "
+        "rule each get a vote, and the risk limits get a veto. What survives "
+        "all of that is what you see.",
+        "The stop distance and the caps below decide the quantity between "
+        "them. This is the part that keeps one bad day from being the last "
+        "one, and it is not negotiable from the interface.",
+        "You are handed the entry, the target, the stop and the deadline "
+        "together, before anything is bought. Knowing what you lose if it goes "
+        "wrong is the whole point of the exercise.",
+        "Paper buy simulates the fill in this browser. The real handoff is a "
+        "separate, deliberate, twice-confirmed action into your own broker. "
+        "You are the one who decides; the app never trades for you.",
+        "Win rate, worst drawdown, longest losing streak, and the return on "
+        "the period tested — the numbers a system with something to hide "
+        "would bury.",
+    )
+    panels = []
+    tabs = []
+    steps = zip(JOURNEY_STEPS, says, arts, strict=True)
+    for i, ((rail, head), say, art) in enumerate(steps):
+        selected = "true" if i == 0 else "false"
+        tabs.append(
+            f'<li><button type="button" role="tab" id="jtab-{i}" data-jgo="{i}" '
+            f'aria-controls="jpanel-{i}" aria-selected="{selected}" '
+            f'tabindex="{0 if i == 0 else -1}">'
+            f'<span class="jnum">{i + 1}</span>'
+            f'<span class="jrail-label">{_esc(rail)}</span></button></li>'
+        )
+        panels.append(
+            f'<div class="jpanel" role="tabpanel" id="jpanel-{i}" '
+            f'aria-labelledby="jtab-{i}" data-jpanel="{i}" '
+            f'data-jhold="{JOURNEY_HOLDS[i]}" tabindex="0">'
+            f'<p class="jkicker">Step {i + 1} of {len(JOURNEY_STEPS)}</p>'
+            f"<h3 class=\"jhead\">{_esc(head)}</h3>"
+            f'<p class="jsay">{_esc(say)}</p>'
+            f'<div class="jart">{art}</div></div>'
+        )
+    cta_trades = (
+        f'<button type="button" class="exec ghost" data-tabgo="invest">'
+        f"See today&rsquo;s {fresh} suggestion{'' if fresh == 1 else 's'}</button>"
+        if fresh
+        else '<button type="button" class="exec ghost" data-tabgo="invest">'
+             "See the pending list</button>"
+    )
+    return f"""<section class="journey" data-journey aria-labelledby="jtitle">
+  <div class="jbar">
+    <div>
+      <h2 class="jtitle" id="jtitle">How a suggestion reaches you</h2>
+      <p class="jlede" data-journey-lede>Seven steps, about forty seconds. It
+      plays itself &mdash; pause it, or jump to any step.</p>
+    </div>
+    <div class="jctl">
+      <button type="button" class="jbtnctl" data-journey-toggle
+              aria-label="Pause the walkthrough">
+        <span class="jicon" data-journey-icon aria-hidden="true"></span>
+        <span data-journey-toggle-label>Pause</span>
+      </button>
+      <button type="button" class="jbtnctl" data-journey-collapse
+              aria-expanded="true" aria-controls="jbody">Hide</button>
+    </div>
+  </div>
+  <div class="jbody" id="jbody">
+    <ol class="jrail" role="tablist" aria-label="Walkthrough steps"
+        aria-orientation="vertical">{''.join(tabs)}</ol>
+    <div class="jstage">{''.join(panels)}</div>
+  </div>
+  <div class="jfootbar">
+    <div class="jprogress" data-journey-progress aria-hidden="true">
+      <span data-journey-bar></span>
+    </div>
+    <div class="jcta">
+      <button type="button" class="exec big" data-journey-start>Start with my
+      amount</button>
+      {cta_trades}
+    </div>
+  </div>
+</section>"""
+
+
+#: Drives the walkthrough: one pass, pausable, jumpable, and entirely optional.
+#:
+#: The panels ship visible so the steps are readable with no JavaScript at all;
+#: this script is what turns that list into a player. It refuses to start under
+#: prefers-reduced-motion, refuses to run while off-screen or on a hidden tab,
+#: and stops for good at the last step rather than looping.
+JOURNEY_JS = """
+(function () {
+  var root = document.querySelector('[data-journey]');
+  if (!root) return;
+
+  var panels = [].slice.call(root.querySelectorAll('[data-jpanel]'));
+  var tabs = [].slice.call(root.querySelectorAll('[data-jgo]'));
+  if (!panels.length || panels.length !== tabs.length) return;
+
+  var bar = root.querySelector('[data-journey-bar]');
+  var toggle = root.querySelector('[data-journey-toggle]');
+  var toggleLabel = root.querySelector('[data-journey-toggle-label]');
+  var collapse = root.querySelector('[data-journey-collapse]');
+  var body = root.querySelector('.jbody');
+  var reduced = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SEEN = 'markets-pro.journey.v1';
+
+  // Static mode: every step open, no player. Chosen for readers who asked for
+  // no motion, and it is also what the page falls back to if anything below
+  // throws, because a readable list beats a broken carousel.
+  if (reduced) {
+    root.classList.add('static');
+    return;
+  }
+
+  var index = 0, timer = null, playing = false, finished = false;
+  var startedAt = 0, remaining = 0;
+
+  function holdOf(i) {
+    return Number(panels[i].getAttribute('data-jhold')) || 5000;
+  }
+
+  function paint(width, ms) {
+    if (!bar) return;
+    bar.style.transition = 'none';
+    bar.style.width = width;
+    if (ms) {
+      void bar.offsetWidth;                 // commit the reset before easing
+      bar.style.transition = 'width ' + ms + 'ms linear';
+      bar.style.width = '100%';
+    }
+  }
+
+  function show(i) {
+    index = i;
+    panels.forEach(function (panel, n) {
+      var active = n === i;
+      panel.hidden = !active;
+      panel.classList.remove('on');
+      if (active) {
+        void panel.offsetWidth;             // restart this step's animations
+        panel.classList.add('on');
+      }
+    });
+    tabs.forEach(function (tab, n) {
+      tab.setAttribute('aria-selected', n === i ? 'true' : 'false');
+      tab.setAttribute('tabindex', n === i ? '0' : '-1');
+      tab.classList.toggle('done', n < i);
+    });
+    keepRailInView();
+  }
+
+  // On a phone the rail is a horizontal strip that overflows. Nudging its own
+  // scroll (rather than calling scrollIntoView, which would drag the page)
+  // keeps the step you are on visible without moving anything else.
+  function keepRailInView() {
+    var rail = root.querySelector('.jrail');
+    if (!rail || rail.scrollWidth <= rail.clientWidth + 1) return;
+    var tab = tabs[index];
+    rail.scrollTo({
+      left: tab.offsetLeft - (rail.clientWidth - tab.offsetWidth) / 2,
+      behavior: 'smooth'
+    });
+  }
+
+  function clear() {
+    if (timer) { clearTimeout(timer); timer = null; }
+  }
+
+  function schedule(ms) {
+    clear();
+    startedAt = Date.now();
+    remaining = ms;
+    paint('0%', ms);
+    timer = setTimeout(function () {
+      if (index + 1 < panels.length) {
+        show(index + 1);
+        schedule(holdOf(index));
+      } else {
+        // One pass, then it rests. Nothing on this page loops on its own.
+        finished = true;
+        playing = false;
+        paint('100%', 0);
+        setToggle();
+      }
+    }, ms);
+  }
+
+  function setToggle() {
+    if (!toggle) return;
+    root.classList.toggle('paused', !playing);
+    var label = finished ? 'Replay' : (playing ? 'Pause' : 'Play');
+    if (toggleLabel) toggleLabel.textContent = label;
+    toggle.setAttribute('aria-label', label + ' the walkthrough');
+  }
+
+  function play() {
+    if (finished) { finished = false; show(0); }
+    playing = true;
+    setToggle();
+    schedule(remaining && !finished && remaining < holdOf(index)
+      ? remaining : holdOf(index));
+  }
+
+  function pause() {
+    if (playing && timer) {
+      remaining = Math.max(holdOf(index) - (Date.now() - startedAt), 400);
+      paint(bar ? getComputedStyle(bar).width : '0px', 0);
+    }
+    playing = false;
+    clear();
+    setToggle();
+  }
+
+  function jump(i) {
+    pause();                                 // a reader who steers wants to read
+    remaining = 0;
+    finished = false;
+    show(i);
+    paint(String(Math.round(i / (panels.length - 1) * 100)) + '%', 0);
+    setToggle();
+  }
+
+  show(0);
+  paint('0%', 0);
+  setToggle();
+
+  tabs.forEach(function (tab, n) {
+    tab.addEventListener('click', function () { jump(n); });
+  });
+
+  // Roving focus across the rail, as the tablist pattern expects.
+  root.querySelector('.jrail').addEventListener('keydown', function (event) {
+    var delta = {ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1}[event.key];
+    var next = null;
+    if (delta) next = Math.min(Math.max(index + delta, 0), panels.length - 1);
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = panels.length - 1;
+    if (next === null) return;
+    event.preventDefault();
+    jump(next);
+    tabs[next].focus();
+  });
+
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      if (playing) pause(); else play();
+    });
+  }
+
+  if (collapse && body) {
+    var setCollapsed = function (on) {
+      root.classList.toggle('collapsed', on);
+      collapse.textContent = on ? 'Show me' : 'Hide';
+      collapse.setAttribute('aria-expanded', on ? 'false' : 'true');
+      if (on) pause();
+    };
+    collapse.addEventListener('click', function () {
+      var next = !root.classList.contains('collapsed');
+      setCollapsed(next);
+      try { localStorage.setItem(SEEN, next ? 'collapsed' : 'open'); } catch (e) { /* */ }
+      if (!next) play();
+    });
+    var stored = null;
+    try { stored = localStorage.getItem(SEEN); } catch (e) { /* blocked */ }
+    // Someone who has already set their amount has been through this once;
+    // the tour folds itself away rather than making them close it every visit.
+    var settled = false;
+    try { settled = !!localStorage.getItem('markets-pro.settings.v1'); } catch (e) { /* */ }
+    if (stored === 'collapsed' || (stored === null && settled)) setCollapsed(true);
+  }
+
+  // Autoplay is opt-out, but only once the thing is actually on screen: a tour
+  // that ran itself out while the reader was further down the page is a tour
+  // nobody watched.
+  var started = false;
+  function maybeStart() {
+    if (started || root.classList.contains('collapsed')) return;
+    started = true;
+    play();
+  }
+  if (typeof IntersectionObserver === 'function') {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { maybeStart(); io.disconnect(); }
+      });
+    }, {threshold: 0.35});
+    io.observe(root);
+  } else {
+    maybeStart();
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) pause();
+  });
+
+  var start = root.querySelector('[data-journey-start]');
+  if (start) {
+    start.addEventListener('click', function () {
+      pause();
+      var form = document.querySelector('[data-needs-setup]');
+      var input = form && !form.hidden
+        ? form.querySelector('[data-setting]')
+        : null;
+      if (!input) {
+        var setup = document.querySelector('[data-tabbtn="setup"]');
+        if (setup) { setup.click(); window.scrollTo(0, 0); }
+        input = document.querySelector('#panel-setup [data-setting]');
+      }
+      if (input) {
+        input.scrollIntoView({block: 'center', behavior: 'smooth'});
+        input.focus({preventScroll: true});
+      }
+    });
+  }
+})();
+"""
+
+
 def _tab_label(short: str, full: str) -> str:
     """Short label on phones, full label with room to spare."""
     return f'<span class="tabshort">{short}</span><span class="tablong">{full}</span>'
@@ -2678,7 +3597,10 @@ def render_dashboard(
             '<span class="tabbadge" data-paper-badge '
             'style="display:none"></span></button>'
         )
-        glance = _onboarding(signals) + _glance(signals)
+        # Order matters: the walkthrough answers "what is this and where do I
+        # come into it", which is the question the reader has before the form
+        # asking for their money makes any sense.
+        glance = _journey_section(report, signals) + _onboarding(signals) + _glance(signals)
         # The engine's own book is deliberately NOT on this tab. A reader with
         # one paper trade seeing the strategy's three test positions reads them
         # as holdings of theirs; it lives under the track record instead.
@@ -2720,7 +3642,8 @@ def render_dashboard(
             f"<script>{MARKET_JS}</script>\n"
             f"<script>{COUNTER_JS}</script>\n"
             f"<script>{ODOMETER_JS}</script>\n"
-            f"<script>{TILT_JS}</script>"
+            f"<script>{TILT_JS}</script>\n"
+            f"<script>{JOURNEY_JS}</script>"
         )
 
     dash_label = _tab_label("Today", "Dashboard")
@@ -2746,7 +3669,7 @@ def render_dashboard(
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>{_esc(title)}</title>
-<style>{CSS}{SIGNALS_CSS}</style>
+<style>{CSS}{SIGNALS_CSS}{JOURNEY_CSS}</style>
 </head>
 <body>
 {SPARK_DEFS}
