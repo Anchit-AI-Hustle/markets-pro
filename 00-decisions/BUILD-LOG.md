@@ -5,6 +5,53 @@ Days elapsed is measured against the month-2 first-revenue target set in CHARTER
 
 ---
 
+## Entry 3 — 2026-08-19 (Day 1)
+
+**Shipped:** `01-strategy/MARKET.md`, `ICP.md`, `COMPETITORS.md`, `RISKS.md`
+— MARKET ANALYST module, adversarial, scoped to Candidate A (productized
+async growth-diagnostic reports).
+
+**Key finding — flagged, not buried:** Bottom-up sizing (real Shopify
+Plus/Klaviyo install data crossed with cited B2B cold-outbound benchmarks)
+shows the venture clears the charter's Rs 1L/month bar **only in the
+optimistic case** (top-decile cold-outbound close rates): Rs 1,05,000–
+1,60,000/month optimistic vs. Rs 15,000–40,000 base case vs. Rs 0–20,000
+pessimistic. The 5–7-sales/month framing in VENTURE-SELECTION.md read as
+"a low absolute number, therefore achievable" — real benchmarks say the
+base case lands at 15–40% of the bar, not comfortably above it.
+COMPETITORS.md independently found this is **not white space**: 6,000+
+Klaviyo agencies already sell audits (many as a free lead-magnet into
+retainers — the dominant, proven model this venture is charter-barred from
+using), plus two AI-automated point tools (FlowAudit at $75, AuditRoger)
+already do the "AI-generated audit" mechanic this venture treats as its
+build edge. Differentiation narrows to "combine 3 audit types, no call at
+a mid-price point" — real, but narrow, and untested against a skeptical
+buyer who can find a $75 alternative in one search.
+
+**Deliberately skipped:** CFO module (`02-finance/`) — not yet dispatched,
+pending operator direction given the market-sizing finding above (continue
+to CFO to build the full runway model on these numbers, or reconsider the
+pick first).
+
+**Blockers:** None technical. Decision blocker: whether to proceed to CFO
+on Candidate A as-is, or revisit given MARKET.md's finding that the base
+case falls well short of the Rs 1L/month bar. All 5 of RISKS.md's tests can
+run concurrently in one ~30-day, sub-Rs-10,000 outbound campaign (~Rs
+3,000–5,000 total) — recommended as the next real-world action regardless
+of which way the CFO/GATE decision goes, since it's cheaper and faster than
+either a full build or a full pivot.
+
+**Next module:** Operator decision, then either Phase 0 — CFO
+(`02-finance/UNIT-ECONOMICS.md`, `PRICING.md`, `RUNWAY-MODEL.xlsx`,
+`KILL-CRITERIA.md`) on Candidate A, or a return to FOUNDER-OPERATOR to
+weigh Candidate C (consumer digital product, next-closest score) given the
+new market data.
+
+**Days elapsed vs. month-2 target (~60 days):** Day 1 of ~60. Kill-date
+clock unchanged: 19 Nov 2026.
+
+---
+
 ## Entry 2 — 2026-08-19 (Day 0-1)
 
 **Shipped:**
