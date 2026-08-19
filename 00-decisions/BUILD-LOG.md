@@ -5,6 +5,43 @@ Days elapsed is measured against the month-2 first-revenue target set in CHARTER
 
 ---
 
+## Entry 2 — 2026-08-19 (Day 0-1)
+
+**Shipped:**
+- Operator answers collected for the 4 Phase-0 questions the charter requires
+  before a venture pick: other income (6+ months covered — bar unchanged,
+  survival pressure low), distribution (none owned, cold-start assumed),
+  buyer (open, both B2B and consumer scored), existing assets (none).
+- `00-decisions/VENTURE-SELECTION.md` — FOUNDER-OPERATOR module. 2 candidates
+  disqualified pre-scoring (physical tea/wellness brand — cash + fulfillment;
+  synchronous consulting retainer — explicitly charter-banned). 4 candidates
+  scored (distribution weighted 30%, highest). **Pick: Candidate A —
+  productized async growth-diagnostic reports for D2C brand founders**
+  (Klaviyo/Meta/Google/CRO audit, sold via cold outbound, <60 min operator QA
+  per report, no calls). Weighted score 6.25/10 vs. runner-up 4.95/10.
+  Adversarial steelman against the pick included in full, plus a Provisional
+  kill number (≥5 paid reports/month by 19 Nov 2026, or any live-call
+  dependency) pending finalization in `02-finance/` and `PHASE-0-GATE.md`.
+
+**Deliberately skipped:** MARKET.md, ICP.md, COMPETITORS.md, RISKS.md
+(MARKET ANALYST module) and the CFO module (UNIT-ECONOMICS.md, PRICING.md,
+RUNWAY-MODEL.xlsx, KILL-CRITERIA.md) — not yet dispatched. One module per
+response; these are next, still inside Phase 0, before the PHASE-0-GATE.
+
+**Blockers:** None currently. Flag carried forward: the pick's own steelman
+(§5 in VENTURE-SELECTION.md) identifies cold B2B outbound conversion as the
+single biggest open risk — MARKET ANALYST's RISKS.md should treat this as
+risk #1, not rediscover it from scratch.
+
+**Next module:** Phase 0 — MARKET ANALYST (adversarial): `01-strategy/MARKET.md`,
+`ICP.md`, `COMPETITORS.md`, `RISKS.md`, scoped to Candidate A.
+
+**Days elapsed vs. month-2 target (~60 days):** Day 0-1 of ~60. Kill-date
+clock (month-3 absolute latest, per VENTURE-SELECTION.md) points to
+19 Nov 2026.
+
+---
+
 ## Entry 1 — 2026-08-18 (Day 0)
 
 **Shipped:**
