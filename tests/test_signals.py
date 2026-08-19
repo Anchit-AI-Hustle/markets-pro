@@ -73,8 +73,25 @@ class TestGenerate(unittest.TestCase):
         symbols = {row["symbol"] for row in watchlist}
         self.assertIn("RELIANCE", symbols)
         self.assertIn("AAPL", symbols)
+        # The names alone answer nothing; each row carries what it has done
+        # and whether the book is in it.
         for row in watchlist:
-            self.assertEqual(set(row), {"symbol", "name", "region", "sector"})
+            for field in ("symbol", "name", "region", "sector", "currency",
+                          "yahoo", "last", "status", "status_note", "spark",
+                          "change_1d", "change_1w", "change_1m", "change_3m"):
+                self.assertIn(field, row, f"{row['symbol']} missing {field}")
+            self.assertIn(row["status"],
+                          {"held", "signal", "resting", "watching"})
+
+    def test_watchlist_reports_unknown_moves_as_unknown(self):
+        """A window longer than the history must be absent, not zero."""
+        short = [row for row in self.snapshot["watchlist"] if row["sessions"] <= 63]
+        for row in short:
+            self.assertIsNone(row["change_3m"])
+
+    def test_watchlist_leads_with_the_biggest_movers(self):
+        moves = [abs(float(row["change_1d"] or 0)) for row in self.snapshot["watchlist"]]
+        self.assertEqual(moves, sorted(moves, reverse=True))
 
     def test_mechanics_report_the_constants_the_run_actually_used(self):
         # The dashboard's walkthrough quotes these back as fact, so they have to
