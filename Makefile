@@ -1,4 +1,4 @@
-.PHONY: test verify lint demo serve clean
+.PHONY: test verify lint demo serve screen quality clean
 
 PY ?= python3
 
@@ -10,6 +10,12 @@ verify:              ## Run the suite and print the accuracy report
 
 lint:
 	ruff check src tests
+
+quality:             ## Verify live cache freshness & sanity
+	PYTHONPATH=src $(PY) -m autotrader.data.quality --data data/live
+
+screen:              ## Screen the live universe, print snapshot to stdout
+	PYTHONPATH=src $(PY) -m autotrader.screener.core --data data/live
 
 demo:                ## Run the multi-region backtest demo
 	PYTHONPATH=src $(PY) examples/demo.py

@@ -32,8 +32,22 @@ jobs:
           PYTHONPATH=src python3 -m autotrader.data.fetch \
             --regions india us --out data/live --range 2y \
             || echo "::warning::some symbols failed; committing what succeeded"
+      # Cross-checks the cache against each market's own trading calendar and
+      # flags implausible sessions; a stale or corrupt symbol here degrades
+      # the screener and signals silently unless something says so out loud.
+      - name: Verify cache freshness and sanity
+        run: |
+          PYTHONPATH=src python3 -m autotrader.data.quality --data data/live --regions india us \
+            || echo "::warning::data quality check found hard failures — see job log"
       - name: Preview today's signals in the job log
         run: PYTHONPATH=src python3 -m autotrader.signals.live --data data/live --out /dev/null
+      # Re-screens the whole universe on every refresh, same cadence as
+      # signals — a screener that only ran on demand would silently drift out
+      # of date with the cache it reports on.
+      - name: Screen the universe
+        run: |
+          PYTHONPATH=src python3 -m autotrader.screener.core --data data/live \
+            --regions india us --out data/live/screener.json
       - name: Commit refreshed cache
         run: |
           git config user.name "signals-refresh"
