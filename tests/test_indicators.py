@@ -24,6 +24,7 @@ from autotrader.indicators.core import (
     rsi,
     simple_returns,
     sma,
+    supertrend,
     true_range,
     wilder_rma,
     zscore,
@@ -283,6 +284,60 @@ class TestDonchian(unittest.TestCase):
         upper, lower = donchian([1, 2, 3], [0, 1, 2], 3)
         self.assertEqual(upper[:2], [None, None])
         self.assertEqual(lower[:2], [None, None])
+
+
+class TestSupertrend(unittest.TestCase):
+    """Traced by hand with ``period=1`` so ATR equals True Range exactly
+    (Wilder smoothing with period 1 reduces to the identity), which makes the
+    recursive final-band and flip logic checkable step by step.
+
+    Bars (H, L, C): (10,8,9), (11,9,10), (9,6,7), (20,18,19).
+    TR = [2, 2, 4, 13] -> ATR(1) = [2, 2, 4, 13] (identity).
+
+    Day 0: mid=9,  upper=9+3*2=15,  lower=9-3*2=3.  seed: close 9 <= 15 -> down,
+           line = final_upper = 15.
+    Day 1: mid=10, upper=16, lower=4. final_upper unchanged (16 not < 15, and
+           prior close 9 not > 15) -> stays 15. final_lower tightens to 4
+           (4 > 3). Trend stays down (close 10 not > 15). line = 15.
+    Day 2: mid=7.5, upper=19.5, lower=-4.5. Both finals unchanged (prior close
+           10 doesn't break either band). Trend stays down (close 7 not > 15).
+           line = 15.
+    Day 3: mid=19, upper=58, lower=-20. Both finals still unchanged. Trend
+           flips: close 19 > final_upper 15 -> up. line = final_lower = 4.
+    """
+
+    HIGHS = [10, 11, 9, 20]
+    LOWS = [8, 9, 6, 18]
+    CLOSES = [9, 10, 7, 19]
+
+    def test_hand_traced_line_and_direction(self):
+        line, direction = supertrend(self.HIGHS, self.LOWS, self.CLOSES, period=1, multiplier=3.0)
+        for value, expected in zip(line, [15.0, 15.0, 15.0, 4.0], strict=True):
+            self.assertAlmostEqual(value, expected, places=12)
+        self.assertEqual(direction, [-1, -1, -1, 1])
+
+    def test_warmup_is_none_and_length_preserved(self):
+        # ATR (Wilder RMA) first defines at index period-1, matching sma/ema's
+        # own warm-up convention — so period=3 leaves indices 0-1 undefined.
+        line, direction = supertrend(self.HIGHS, self.LOWS, self.CLOSES, period=3, multiplier=3.0)
+        self.assertEqual(len(line), 4)
+        self.assertEqual(len(direction), 4)
+        self.assertEqual(line[:2], [None, None])
+        self.assertEqual(direction[:2], [None, None])
+        self.assertIsNotNone(line[2])
+        self.assertIn(direction[2], (1, -1))
+
+    def test_mismatched_lengths_raise(self):
+        with self.assertRaises(ValueError):
+            supertrend([1, 2], [1], [1, 2], period=1)
+
+    def test_invalid_multiplier_raises(self):
+        with self.assertRaises(ValueError):
+            supertrend(self.HIGHS, self.LOWS, self.CLOSES, period=1, multiplier=0)
+
+    def test_invalid_period_raises(self):
+        with self.assertRaises(ValueError):
+            supertrend(self.HIGHS, self.LOWS, self.CLOSES, period=0)
 
 
 class TestReturns(unittest.TestCase):

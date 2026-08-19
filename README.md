@@ -18,13 +18,13 @@ make serve                                         # dashboard at /markets-pro
 ## What is claimed
 
 **Every implemented behaviour is verified correct against hand-computed expected
-values, at a 100% pass rate.** `python verify.py` runs 682 checks and exits
+values, at a 100% pass rate.** `python verify.py` runs 715 checks and exits
 non-zero if a single one fails. Specifically:
 
 | Area | What is verified |
 |---|---|
 | Money & FX | Exact `Decimal` arithmetic, currency-mismatch rejection, cross-rate derivation, tick/lot rounding |
-| Indicators | SMA, EMA, Wilder RMA, RSI, ATR, ADX, MACD, Bollinger, Donchian, z-score, returns — each against values derived from its definition |
+| Indicators | SMA, EMA, Wilder RMA, RSI, ATR, ADX, MACD, Bollinger, Donchian, Supertrend, z-score, returns — each against values derived from its definition |
 | Lookahead | No strategy ever observes a bar dated after its decision date, audited across a full run |
 | Accounting | `equity == initial cash + realized + unrealized − costs`, exactly, at every point |
 | Costs | India STT/stamp/GST split by delivery vs intraday, US SEC + FINRA sell-side fees with cap, China sell-side stamp duty and CNY 5 commission floor, MOEX both-sided fees |
@@ -33,6 +33,8 @@ non-zero if a single one fails. Specifically:
 | Risk | Position/region/sector/leverage caps, drawdown and daily-loss kill-switches |
 | Exits | Stops, targets, gaps, trailing stops, time limits, and pessimistic ambiguity resolution |
 | Determinism | Identical inputs produce identical equity curves |
+| Data quality | Live cache staleness checked against each market's own trading calendar; single-session outlier moves and zero-volume sessions flagged |
+| Screener | Regime-appropriate indicator weighting (trend vs. mean-reversion), sector-relative momentum ranking |
 
 ## What is **not** claimed
 
@@ -127,16 +129,19 @@ today, and a stop triggered on the entry session simply waits for the next one.
 ```
 src/autotrader/
   core/          money & FX, instruments, market specs, trading calendars
-  data/          bars, the lookahead-guarded history window, synthetic generators
+  data/          bars, the lookahead-guarded history window, synthetic generators,
+                 the live-cache fetcher/adapter and its freshness/sanity checks
   indicators/    technical indicators (full-length output, explicit None warmup)
   strategy/      base interface, long-term momentum, short-term swing
+  screener/      cross-universe ranking: regime-selected indicators, sector-
+                 relative momentum, independent of either trading book
   portfolio/     FIFO positions, multi-currency ledger, position sizing
   risk/          pre-trade limits, kill-switches, exit engine
   execution/     orders, regional cost models, slippage, fill simulator
   engine/        the backtest event loop and performance metrics
   persistence/   Postgres/Supabase row mapping and writer
   web/           dashboard rendering and the /markets-pro route
-tests/           682 checks
+tests/           715 checks
 verify.py        the accuracy gate
 ```
 
@@ -261,3 +266,27 @@ your broker), an Alpaca relay that is paper-mode until armed, and an opt-in
 capped Kite Connect auto-invest CLI. See [docs/AUTO-INVEST.md](docs/AUTO-INVEST.md)
 for setup and the honest constraints. None of it guarantees a profit, and none
 of it is investment advice.
+
+## Screener
+
+Independent of either trading book's own entry logic, `autotrader.screener`
+ranks the *entire* loaded universe on the same cache the strategies read:
+
+```bash
+PYTHONPATH=src python3 -m autotrader.data.quality --data data/live   # freshness + sanity, exit 1 on hard failure
+PYTHONPATH=src python3 -m autotrader.screener.core --data data/live --out data/live/screener.json
+```
+
+For each instrument it classifies the regime from ADX — **trending** (ADX ≥ 25)
+weights Supertrend, MACD and a 50/200-day SMA cross; **ranging** weights RSI and
+Bollinger %B instead, since trend-following tools whipsaw in a range and
+mean-reversion oscillators overshoot in a real trend. That regime-appropriate
+signal is then blended with the stock's momentum *relative to its own sector's
+average* — a mediocre stock in a hot sector does not borrow the sector's score,
+and a strong stock in a weak sector is not buried under sector-wide malaise.
+`sector_performance()` aggregates the same run into a top-industries ranking.
+
+The nightly `refresh-signals` workflow verifies cache freshness against each
+market's own trading calendar, re-runs the screener, and commits its snapshot
+alongside the price cache — the screener is never more than one trading day
+stale, same as the signals it sits next to.

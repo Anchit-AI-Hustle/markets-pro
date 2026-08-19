@@ -332,6 +332,77 @@ def donchian(
 
 
 # ---------------------------------------------------------------------------
+# Trend following
+# ---------------------------------------------------------------------------
+
+def supertrend(
+    highs: Series, lows: Series, closes: Series, period: int = 10, multiplier: float = 3.0
+) -> tuple[Result, list[int | None]]:
+    """Supertrend as ``(line, direction)``.
+
+    ``direction`` is ``1`` while the line trails *below* price (uptrend), ``-1``
+    while it trails *above* (downtrend), and ``None`` during ATR's warm-up.
+
+    The seed bar (the first with a defined ATR) picks its side by comparing
+    close against that bar's own upper band. Every bar after that follows the
+    standard flip rule: each band only ever tightens toward price, never widens
+    away from it, while the trend holds, and the trend itself only switches
+    when price closes through the band on the *opposite* side.
+    """
+    _check_period(period, "supertrend")
+    if multiplier <= 0:
+        raise ValueError(f"supertrend multiplier must be > 0, got {multiplier}")
+    h, l, c = _f(highs), _f(lows), _f(closes)
+    n = len(h)
+    if not (len(l) == n and len(c) == n):
+        raise ValueError("high/low/close series must be the same length")
+
+    atr_s = atr(h, l, c, period)
+    line: Result = [None] * n
+    direction: list[int | None] = [None] * n
+
+    final_upper = final_lower = 0.0
+    seeded = False
+    for i in range(n):
+        a = atr_s[i]
+        if a is None:
+            continue
+        mid = (h[i] + l[i]) / 2.0
+        basic_upper = mid + multiplier * a
+        basic_lower = mid - multiplier * a
+
+        if not seeded:
+            final_upper, final_lower = basic_upper, basic_lower
+            direction[i] = -1 if c[i] <= final_upper else 1
+            line[i] = final_lower if direction[i] == 1 else final_upper
+            seeded = True
+            continue
+
+        prev_close = c[i - 1]
+        final_upper = (
+            basic_upper
+            if (basic_upper < final_upper or prev_close > final_upper)
+            else final_upper
+        )
+        final_lower = (
+            basic_lower
+            if (basic_lower > final_lower or prev_close < final_lower)
+            else final_lower
+        )
+
+        prev_dir = direction[i - 1]
+        if prev_dir == -1 and c[i] > final_upper:
+            direction[i] = 1
+        elif prev_dir == 1 and c[i] < final_lower:
+            direction[i] = -1
+        else:
+            direction[i] = prev_dir
+        line[i] = final_lower if direction[i] == 1 else final_upper
+
+    return line, direction
+
+
+# ---------------------------------------------------------------------------
 # Returns
 # ---------------------------------------------------------------------------
 

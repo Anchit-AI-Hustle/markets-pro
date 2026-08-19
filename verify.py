@@ -41,7 +41,9 @@ MODULES = [
     ("tests.test_universe", "Live universe identities"),
     ("tests.test_yahoo", "Quote parsing & cache"),
     ("tests.test_livefeed", "Live cache → engine adapter"),
+    ("tests.test_data_quality", "Live cache freshness & sanity"),
     ("tests.test_signals", "Signal snapshot contract"),
+    ("tests.test_screener", "Universe screener ranking"),
     ("tests.test_broker", "Execution caps & journal"),
 ]
 
