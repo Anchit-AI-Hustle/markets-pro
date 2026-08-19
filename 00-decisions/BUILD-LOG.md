@@ -5,6 +5,67 @@ Days elapsed is measured against the month-2 first-revenue target set in CHARTER
 
 ---
 
+## Entry 4 — 2026-08-19 (Day 1)
+
+**Shipped:** `02-finance/UNIT-ECONOMICS.md`, `PRICING.md`, `RUNWAY-MODEL.xlsx`,
+`KILL-CRITERIA.md` — CFO module, closing out Phase 0's three agent modules
+(FOUNDER-OPERATOR, MARKET ANALYST, CFO). Every formula shown; every number
+labeled Final/Provisional/Blocked; nothing re-derives MARKET.md's revenue
+scenarios, only builds cost/pricing/runway on top of them, per instruction.
+
+**Key outputs:**
+- **Cost structure is not the binding constraint.** Cash cost per report
+  ≈Rs 920 (AI/LLM ≈Rs 250, payment processing ≈Rs 620, apportioned hosting
+  ≈Rs 50) against a recommended Rs 17,500 ticket → ~95% gross margin. LTV:CAC
+  stays healthy (1.1:1 to 27.6:1) even in the pessimistic case — the real
+  constraint is sales *volume* inside the 7-hour/week ceiling, confirming
+  MARKET.md/RISKS.md's conclusion from the finance side independently.
+- **Recommended price: Rs 17,500/report** (of 3 points: Rs 9,900 / 17,500 /
+  48,000) — no WTP evidence exists for any of the three yet (labeled
+  Blocked); this is exactly the price RISKS.md's already-designed 30-day
+  landing-page test is built around, so it's the one that gets tested first
+  rather than the venture inventing a second test.
+- **Precision correction:** at Rs 17,500, Rs 1L/month needs exactly **6**
+  paid reports (not VENTURE-SELECTION.md's rounded "5–7") — tightened now
+  that price is fixed.
+- **New finding — flagged, not buried:** the cold-outbound tool itself is a
+  *fixed* monthly cost, so the CAC-to-revenue ratio only comfortably clears
+  the charter's <30% bar in MARKET.md's optimistic scenario; it's marginal-
+  to-breaching in the base/pessimistic cases — the same scenario dependency
+  MARKET.md already found, now confirmed from the cost side too.
+- **RUNWAY-MODEL.xlsx**: Assumptions sheet holds every input as its own
+  cell; Base/Slow/Dead scenario sheets (renamed from MARKET.md's optimistic/
+  base/pessimistic per charter's requested labels) are ~85% formula cells,
+  all referencing Assumptions, zero hardcoded results; a linked Summary
+  sheet finds each scenario's revenue/insolvency crossing points via
+  INDEX/MATCH — verified by inspection, not just by claim.
+- **KILL-CRITERIA.md**: Day 30 (2026-09-18, restates RISKS.md's outbound
+  test as the formal checkpoint, with a defined Amber/remediation state),
+  Day 60 (2026-10-18, tied to MARKET.md's own base-case bounds), Day 90 /
+  absolute (2026-11-19, binary, no Amber — matches the charter's "absolute
+  latest" language). Explicitly lists what does *not* extend the kill date,
+  including the operator's own other-income runway.
+
+**Deliberately skipped:** Nothing further in Phase 0 — all three agent
+modules (FOUNDER-OPERATOR, MARKET ANALYST, CFO) are now complete.
+
+**Blockers:** None technical. The CFO's own output flags that every
+Provisional number in `02-finance/` converges on the same unblocking
+mechanism: `RISKS.md`'s single 30-day, ~Rs 3,000–5,000 outbound-and-price
+test (Day 30 in `KILL-CRITERIA.md`) — recommended as the next real action
+before Phase 1.
+
+**Next module:** `00-decisions/PHASE-0-GATE.md` — the chosen venture, the
+single core assumption, the cheapest experiment that falsifies it, and a
+GO or PIVOT call. This is a GATE: stop and wait for operator sign-off
+after it ships.
+
+**Days elapsed vs. month-2 target (~60 days):** Day 1 of ~60. Kill-date
+clock unchanged: 19 Nov 2026 (now precisely calendared at Day 30/60/90 in
+`KILL-CRITERIA.md`).
+
+---
+
 ## Entry 3 — 2026-08-19 (Day 1)
 
 **Shipped:** `01-strategy/MARKET.md`, `ICP.md`, `COMPETITORS.md`, `RISKS.md`
