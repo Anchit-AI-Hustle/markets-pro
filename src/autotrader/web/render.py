@@ -2699,6 +2699,75 @@ JOURNEY_CSS = """
 .jsay{margin:0;font-size:13.5px;color:var(--muted);max-width:62ch}
 .jart{margin-top:6px}
 .jmeta{margin:11px 0 0;font-size:12px;color:var(--muted);max-width:70ch}
+
+/* --- the detail blocks -----------------------------------------------------
+   Each step used to assert a thing ("rules cut the list down") without saying
+   which. These carry the specifics. They are dense on purpose: this is the
+   part a sceptical reader came for, and it should reward being read closely
+   rather than restating the headline. */
+.jnotes{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:8px;
+  max-width:72ch}
+.jnotes li{position:relative;padding-left:16px;font-size:12.5px;
+  line-height:1.6;color:var(--muted)}
+.jnotes li::before{content:"";position:absolute;left:0;top:.55em;
+  width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.7}
+.jnotes strong{color:var(--ink);font-weight:600}
+
+.jrules{display:grid;gap:10px;margin:14px 0 0;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.jrule-card{border:1px solid var(--line);border-radius:9px;padding:11px 13px;
+  background:color-mix(in srgb,var(--panel) 70%,transparent);
+  animation:jfade .5s var(--ease) both;animation-delay:calc(var(--i) * .12s + .2s)}
+.jrule-book{display:inline-block;font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--accent);
+  margin-bottom:3px}
+.jrule-name{display:block;font-size:13.5px;margin-bottom:7px;color:var(--ink)}
+.jrule-lead{margin:0 0 5px;font-size:11px;color:var(--muted)}
+.jrule-tests{margin:0;padding-left:15px;display:grid;gap:4px}
+.jrule-tests li{font-size:12px;line-height:1.5;color:var(--muted)}
+.jrule-exit{margin:8px 0 0;font-size:11.5px;color:var(--muted);
+  padding-top:7px;border-top:1px solid var(--line)}
+.jrule-exitlabel{font-weight:700;text-transform:uppercase;font-size:9.5px;
+  letter-spacing:.06em;color:var(--ink);margin-right:5px}
+
+.jworked{margin:14px 0 0;padding:12px 14px;border-radius:9px;
+  border:1px dashed var(--line);
+  background:color-mix(in srgb,var(--panel) 55%,transparent)}
+.jworkedlabel{display:block;font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--accent);
+  margin-bottom:8px}
+.jsteps{margin:0;padding-left:17px;display:grid;gap:6px}
+.jsteps li{font-size:12.5px;line-height:1.55;color:var(--muted)}
+.jsteps strong{color:var(--ink)}
+.jworkednote{margin:10px 0 0;font-size:12px;color:var(--muted);
+  padding-top:8px;border-top:1px solid var(--line)}
+.jworkednote em{color:var(--ink);font-style:normal;font-weight:600}
+
+.jtiers{display:grid;gap:9px;margin:14px 0 0;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.jtier{border:1px solid var(--line);border-radius:9px;padding:10px 12px;
+  animation:jfade .5s var(--ease) both;animation-delay:calc(var(--i) * .1s + .3s)}
+.jtierhead{display:flex;align-items:center;gap:6px;font-size:12.5px;
+  font-weight:600;color:var(--ink);margin-bottom:5px}
+.jtier p{margin:0;font-size:11.5px;line-height:1.55;color:var(--muted)}
+
+.jpastgrid{display:grid;gap:8px;margin:10px 0 0;
+  grid-template-columns:repeat(auto-fit,minmax(96px,1fr))}
+.jpast{display:flex;flex-direction:column;gap:1px;padding:8px 10px;
+  border:1px solid var(--line);border-radius:8px}
+.jpast i{font-style:normal;font-size:10px;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--muted)}
+.jpast b{font-size:16px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.jpast u{text-decoration:none;font-size:10.5px;color:var(--muted)}
+.jpast.win b{color:var(--pos)} .jpast.lose b{color:var(--neg)}
+.jpastend{margin:10px 0 0;font-size:12px;color:var(--muted);
+  display:flex;align-items:center;gap:6px}
+.jdot.bad{background:var(--neg)}
+
+@media (max-width:640px){
+  .jrules,.jtiers{grid-template-columns:1fr}
+  .jpastgrid{grid-template-columns:repeat(2,1fr)}
+}
 .jmeta strong{color:var(--ink);font-variant-numeric:tabular-nums}
 .jempty{margin:0;font-size:13.5px;color:var(--muted);max-width:62ch}
 
@@ -3043,8 +3112,19 @@ def _journey_amount(signals: dict) -> str:
 <div class="jreceipt">
   <span class="jdot ok"></span>Saved. Every figure on the page is now yours.
 </div>
+<ul class="jnotes">
+  <li><strong>Two amounts, one per market.</strong> India in rupees, the US in
+    dollars. Leave either blank and that market simply stops suggesting.</li>
+  <li><strong>A daily limit, set beside it.</strong> The most you are willing to
+    commit in a single day. Left blank it defaults to 30% of your amount, and
+    it is enforced on paper trades exactly as on real ones &mdash; so you find
+    out where it bites before money is involved.</li>
+  <li><strong>Everything downstream is a percentage of this.</strong> Change the
+    amount and every share count, cost and outcome on the page is recomputed
+    from it.</li>
+</ul>
 <p class="jmeta">It never leaves this browser &mdash; there is no account and
-nowhere for it to go.</p>"""
+nowhere for it to go. Clearing site data clears it.</p>"""
 
 
 def _journey_scan(signals: dict) -> str:
@@ -3066,7 +3146,19 @@ def _journey_scan(signals: dict) -> str:
 <p class="jmeta"><strong>{mech.get('names', len(watchlist))}</strong> names
 &middot; <strong>{mech.get('regions', 0)}</strong> markets &middot;
 <strong>{mech.get('sessions', 0)}</strong> sessions of history re-scored from
-scratch, every close.{' ' + as_of if as_of else ''}</p>"""
+scratch, every close.{' ' + as_of if as_of else ''}</p>
+<ul class="jnotes">
+  <li><strong>What runs:</strong> a scheduled job fetches every name's closing
+    prices after the Indian close and again after the US close, commits them,
+    and that commit rebuilds this page. There is no server kept alive between
+    times.</li>
+  <li><strong>What is recomputed:</strong> moving averages, RSI, ADX, ATR and
+    volume averages &mdash; from the raw bars each time, never carried over
+    from yesterday's answer.</li>
+  <li><strong>What it cannot see:</strong> only completed sessions are used. A
+    bar still forming is dropped, so no rule is ever evaluated against a price
+    that had not settled.</li>
+</ul>"""
 
 
 def _journey_filter(signals: dict) -> str:
@@ -3090,10 +3182,29 @@ def _journey_filter(signals: dict) -> str:
 </div>"""
         for i, (label, count, note) in enumerate(stages)
     )
+    # The rules themselves, quoted from the running strategies. "Rules cut the
+    # list down" is not an explanation unless it says which rules.
+    cards = ""
+    for i, rule in enumerate(mech.get("rules") or []):
+        tests = "".join(
+            f"<li>{_esc(test)}</li>" for test in rule.get("tests", [])
+        )
+        cards += f"""<div class="jrule-card" style="--i:{i}">
+  <span class="jrule-book">{_esc(rule.get('book', ''))}</span>
+  <strong class="jrule-name">{_esc(rule.get('name', ''))}</strong>
+  <p class="jrule-lead">All of these must be true on the same day:</p>
+  <ul class="jrule-tests">{tests}</ul>
+  <p class="jrule-exit"><span class="jrule-exitlabel">Exit</span>
+    {_esc(rule.get('exit', ''))}</p>
+</div>"""
+    rules_block = f'<div class="jrules">{cards}</div>' if cards else ""
+
     return f"""{bars}
-<p class="jmeta">Most days the last number is small, and plenty of days it is
-zero. A list that always has something on it is a list that stopped
-filtering.</p>"""
+{rules_block}
+<p class="jmeta">Every test is measured on closing prices only, so a name either
+qualified at the close or it did not &mdash; there is no discretion left in it.
+Most days the last number is small, and plenty of days it is zero. A list that
+always has something on it is a list that stopped filtering.</p>"""
 
 
 def _journey_size(signals: dict) -> str:
@@ -3124,19 +3235,84 @@ def _journey_size(signals: dict) -> str:
   <span class="jstackslice" style="--w:{slice_pct}%"><i>{slice_pct}%</i></span>
 </div>
 <ul class="jlimits">{rows}</ul>
+<div class="jworked">
+  <span class="jworkedlabel">How that becomes a share count</span>
+  <ol class="jsteps">
+    <li>Take the risk budget: <strong>{frac('risk_per_trade')}</strong> of the
+      book is what this trade may lose.</li>
+    <li>Measure the distance from the entry price down to the stop &mdash; set
+      by recent volatility, not by preference.</li>
+    <li>Divide one by the other. That is the quantity, and it is the whole
+      calculation.</li>
+    <li>Then clip it: never more than <strong>{frac('max_position_weight', 0)}</strong>
+      in one name, never past your daily limit, never more of a day's volume
+      than the book could realistically buy.</li>
+  </ol>
+  <p class="jworkednote">A wider stop therefore buys <em>fewer</em> shares, not
+  more. Two trades that look different on the chart put the same amount at
+  risk.</p>
+</div>
 <p class="jmeta">You cannot talk the sizing into a bigger position. It is the
 same code that sized every trade in the track record below.</p>"""
 
 
-def _journey_trade(signals: dict) -> str:
-    """Step 5: a real signal, with the exit levels it was born with."""
-    orders = signals.get("orders", [])
-    order = next((o for o in orders if o["fresh"]), orders[0] if orders else None)
-    if order is None:
+def _journey_past_trade(report: PerformanceReport | None) -> str:
+    """A finished trade, shown when there is nothing live to show.
+
+    Deliberately picks the most recent completed trade rather than the best
+    one. A walkthrough that reaches for its winner on a quiet day is selling,
+    and the whole point of the last step is that it does not.
+    """
+    trades = list(getattr(report, "trades", []) or []) if report else []
+    if not trades:
         return """<p class="jempty">There is no live suggestion right now, which
 is the ordinary case. When one appears it arrives with its exit already
 attached: a price to take the gain at, a price to cut the loss at, and a
 deadline after which it is closed either way.</p>"""
+
+    trade = max(trades, key=lambda t: t.exit_day)
+    won = trade.net_pnl >= 0
+    held = (trade.exit_day - trade.entry_day).days
+    ending = EXIT_LABELS.get(trade.exit_reason, trade.exit_reason)
+    symbol = trade.key.split(":")[-1]
+    return f"""<div class="jtrade past">
+  <div class="jtradehead">
+    <span class="tag">Closed</span>
+    <strong>{_esc(symbol)}</strong>
+    <span class="muted-inline">most recent completed trade</span>
+  </div>
+  <div class="jpastgrid">
+    <span class="jpast"><i>Bought</i><b>{_price(trade.entry_price)}</b>
+      <u>{_esc(trade.entry_day)}</u></span>
+    <span class="jpast"><i>Sold</i><b>{_price(trade.exit_price)}</b>
+      <u>{_esc(trade.exit_day)}</u></span>
+    <span class="jpast"><i>Held</i><b>{held}</b><u>days</u></span>
+    <span class="jpast {'win' if won else 'lose'}"><i>Result</i>
+      <b>{'+' if won else '&minus;'}{_money(abs(trade.net_pnl))}</b>
+      <u>{_esc(trade.currency)}</u></span>
+  </div>
+  <p class="jpastend"><span class="jdot {'ok' if won else 'bad'}"></span>
+    Ended on: {_esc(ending)}</p>
+</div>
+<p class="jmeta">No suggestion is live at the moment, so this is a real trade
+the strategies already finished &mdash; the most recent one, win or lose, not
+the best one. A live suggestion looks the same, except the exit prices are
+still ahead of it instead of behind.</p>"""
+
+
+def _journey_trade(signals: dict, report: PerformanceReport | None = None) -> str:
+    """Step 5: a real trade, with the exit levels it was born with.
+
+    Most days there is no live suggestion — that is the ordinary case, and the
+    step used to degrade to a paragraph on exactly those days. It now falls
+    back to a real completed trade from the track record, so the reader always
+    sees an actual entry, its stop, its target and how it ended rather than a
+    description of one.
+    """
+    orders = signals.get("orders", [])
+    order = next((o for o in orders if o["fresh"]), orders[0] if orders else None)
+    if order is None:
+        return _journey_past_trade(report)
 
     ccy = order["currency"]
     chart = _journey_chart(order)
@@ -3174,10 +3350,28 @@ def _journey_act(signals: dict) -> str:
   <span class="jdot ok"></span>Added to your paper book. Nothing was sent
   anywhere, and nothing was spent.
 </div>
-<p class="jmeta">Paper is the default because it is the reversible one. The real
-button needs a broker you connect yourself, asks a second time before it fires,
-and is capped by the daily limit you set in step one. This page never holds a
-credential.</p>"""
+<div class="jtiers">
+  <div class="jtier" style="--i:0">
+    <span class="jtierhead"><span class="jdot ok"></span>Paper</span>
+    <p>Costs nothing, reaches no broker, needs no account. Recorded in this
+    browser and reversible &mdash; sell it back or reset the book.</p>
+  </div>
+  <div class="jtier" style="--i:1">
+    <span class="jtierhead"><span class="jdot"></span>Hand off to your broker</span>
+    <p>Opens your own broker with the order pre-filled. You review it and
+    confirm it there. Nothing is placed by this page.</p>
+  </div>
+  <div class="jtier" style="--i:2">
+    <span class="jtierhead"><span class="jdot"></span>Capped auto-execute</span>
+    <p>Off unless you add your own broker keys, and paper-only until you
+    explicitly arm it. The daily limit is checked against the broker's own
+    order log, not against what this page believes.</p>
+  </div>
+</div>
+<p class="jmeta">Paper is the default because it is the reversible one. Every
+route past it asks twice, is capped by the daily limit you set in step one, and
+stops at a confirmation you give. This page never holds a credential &mdash;
+keys live in the deployment environment and are never readable from here.</p>"""
 
 
 def _journey_truth(report: PerformanceReport) -> str:
@@ -3215,7 +3409,7 @@ def _journey_section(report: PerformanceReport, signals: dict) -> str:
         _journey_scan(signals),
         _journey_filter(signals),
         _journey_size(signals),
-        _journey_trade(signals),
+        _journey_trade(signals, report),
         _journey_act(signals),
         _journey_truth(report),
     )
@@ -3471,6 +3665,42 @@ JOURNEY_JS = """
   if (toggle) {
     toggle.addEventListener('click', function () {
       if (playing) pause(); else play();
+    });
+  }
+
+  // Reading is not idling. The steps carry real detail — rules, worked sizing,
+  // a finished trade — and being advanced mid-sentence loses the reader's
+  // place. Resting a pointer on the stage holds the step; moving away resumes,
+  // but only if the walkthrough paused itself. A deliberate pause stays paused.
+  var stage = root.querySelector('.jstage');
+  if (stage) {
+    var heldByReader = false;
+
+    stage.addEventListener('pointerenter', function (event) {
+      if (event.pointerType === 'touch') return;   // a tap already steers
+      if (!playing) return;
+      heldByReader = true;
+      pause();
+    });
+
+    stage.addEventListener('pointerleave', function (event) {
+      if (event.pointerType === 'touch') return;
+      if (!heldByReader) return;
+      heldByReader = false;
+      play();
+    });
+
+    // Keyboard and screen-reader users get the same courtesy, without the
+    // auto-resume: focus moving on is not a signal they finished reading.
+    stage.addEventListener('focusin', function () {
+      heldByReader = false;
+      if (playing) pause();
+    });
+
+    // Selecting text is unambiguous intent to read.
+    stage.addEventListener('mousedown', function () {
+      heldByReader = false;
+      if (playing) pause();
     });
   }
 

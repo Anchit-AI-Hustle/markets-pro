@@ -331,10 +331,68 @@ def _mechanics(engine: BacktestEngine, feed: LiveFeed) -> dict:
     that no longer exists.
     """
     config = engine.config
+    # The two strategies describe their own entry tests, so the walkthrough can
+    # state the actual rules rather than a paraphrase that rots when they are
+    # retuned. Each is read off the live strategy config, not typed into copy.
+    rules = []
+    for strategy in engine.strategies:
+        cfg = getattr(strategy, "config", None)
+        if cfg is None:
+            continue
+        if hasattr(cfg, "breakout_period"):
+            if getattr(cfg, "enable_pullback", False):
+                rules.append({
+                    "book": "Short-term",
+                    "name": "Buy the dip inside an uptrend",
+                    "tests": [
+                        f"price above its {cfg.trend_ma}-day average "
+                        "(only buys dips in things already trending up)",
+                        f"{cfg.rsi_period}-day RSI below {cfg.rsi_entry:.0f} "
+                        "(a sharp, short drop rather than a slow bleed)",
+                    ],
+                    "exit": f"sold when RSI recovers past {cfg.rsi_exit:.0f}, "
+                            f"or at the stop, or after {cfg.max_holding_days} days",
+                })
+            if getattr(cfg, "enable_breakout", False):
+                rules.append({
+                    "book": "Short-term",
+                    "name": "Buy a breakout that volume confirms",
+                    "tests": [
+                        f"closes above its highest price in {cfg.breakout_period} days",
+                        f"ADX above {cfg.breakout_min_adx:.0f} "
+                        "(the move has real direction, not chop)",
+                        f"volume at least {cfg.min_volume_ratio:.1f}x its "
+                        f"{cfg.volume_ma}-day average",
+                    ],
+                    "exit": f"stop {cfg.stop_atr_multiple} ATR away, target "
+                            f"{cfg.reward_risk_ratio}x that distance, closed after "
+                            f"{cfg.max_holding_days} days either way",
+                })
+        elif hasattr(cfg, "momentum_lookback"):
+            months = round(cfg.momentum_lookback / 21)
+            skip = round(cfg.momentum_skip / 21)
+            rules.append({
+                "book": "Long-term",
+                "name": "Hold the strongest steady risers",
+                "tests": [
+                    f"ranked on {months}-month gain, ignoring the last "
+                    f"{skip} month (recent noise is skipped deliberately)",
+                    f"{cfg.fast_ma}-day average above the {cfg.slow_ma}-day",
+                    f"ADX above {cfg.min_adx:.0f}, and the gain must be positive",
+                ],
+                "exit": f"dropped once it falls {cfg.exit_rank_buffer} places below "
+                        f"the top {cfg.max_holdings}",
+            })
+
     return {
         "names": len(feed.entries),
         "regions": len(feed.as_of),
         "sessions": len(feed.data.all_days()),
+        "rules": rules,
+        "stop_atr_multiple": _s(getattr(
+            next((getattr(s, "config", None) for s in engine.strategies
+                  if hasattr(getattr(s, "config", None), "stop_atr_multiple")), None),
+            "stop_atr_multiple", None)),
         "risk_per_trade": _s(config.sizing.risk_per_trade),
         "max_position_weight": _s(config.sizing.max_position_weight),
         "max_cash_utilisation": _s(config.sizing.max_cash_utilisation),

@@ -411,12 +411,87 @@ class TestJourney(unittest.TestCase):
         self.assertNotIn("TCS", card)
 
     def test_a_quiet_day_says_so_instead_of_inventing_a_trade(self):
+        """A quiet day may illustrate itself with a trade that already
+        finished, but must never present one as actionable."""
         journey = journey_of(
             render_dashboard(self.report, signals=make_signals(orders=[]))
         )
-        self.assertIn("no live suggestion right now", journey)
-        self.assertNotIn("jtradehead", journey)
+        self.assertIn("No suggestion is live at the moment", journey)
         self.assertIn("Worth acting on today", journey)   # the funnel still says 0
+        # Anything shown must be unmistakably in the past.
+        self.assertIn("most recent completed trade", journey)
+        self.assertIn(">Closed<", journey)
+        self.assertIn("win or lose, not\nthe best one", journey)
+        # And nothing in that step may look like something to press.
+        step = journey[journey.index("jpastgrid"):journey.index("jpastend")]
+        self.assertNotIn("data-paper-buy", step)
+        self.assertNotIn("data-exec", step)
+
+    def test_a_quiet_day_with_no_history_falls_back_to_prose(self):
+        """With no completed trades either, it says so plainly."""
+        empty = build_report(
+            days=[date(2024, 1, 2), date(2024, 6, 28)],
+            equity=[Decimal("100000"), Decimal("101000")],
+            trades=[], base_currency="USD",
+            total_costs=Decimal("0"), total_fills=0, rejections=0,
+        )
+        journey = journey_of(
+            render_dashboard(empty, signals=make_signals(orders=[]))
+        )
+        self.assertIn("no live suggestion right now", journey)
+        self.assertNotIn("jpastgrid", journey)
+
+    def test_the_quiet_day_trade_is_the_latest_not_the_best(self):
+        """Reaching for the winner on a quiet day would be selling."""
+        journey = journey_of(
+            render_dashboard(self.report, signals=make_signals(orders=[]))
+        )
+        latest = max(self.report.trades, key=lambda t: t.exit_day)
+        self.assertIn(str(latest.exit_day), journey)
+        self.assertIn(latest.key.split(":")[-1], journey)
+
+    def test_each_step_states_its_specifics_not_just_its_claim(self):
+        """"Rules cut the list down" is not an explanation unless it says
+        which rules; every step must carry its own detail."""
+        journey = self._journey()
+        # Step 1: both amounts and the limit that gates them.
+        self.assertIn("Two amounts, one per market", journey)
+        self.assertIn("A daily limit, set beside it", journey)
+        # Step 2: what is recomputed, and what it refuses to look at.
+        self.assertIn("What is recomputed", journey)
+        self.assertIn("only completed sessions are used", journey)
+        # Step 4: the sizing arithmetic, spelled out.
+        self.assertIn("How that becomes a share count", journey)
+        self.assertIn("buys <em>fewer</em> shares", journey)
+        # Step 6: the routes named, not gestured at.
+        self.assertIn("Capped auto-execute", journey)
+        self.assertIn("Hand off to your broker", journey)
+
+    def test_the_rules_step_quotes_the_running_strategies(self):
+        """Retuning a strategy must not leave the copy describing a system
+        that no longer exists, so the tests come from mechanics."""
+        signals = make_signals()
+        signals["mechanics"] = dict(signals.get("mechanics") or {}, rules=[{
+            "book": "Short-term",
+            "name": "Buy the dip inside an uptrend",
+            "tests": ["price above its 200-day average", "2-day RSI below 10"],
+            "exit": "sold when RSI recovers past 60",
+        }])
+        journey = journey_of(render_dashboard(self.report, signals=signals))
+        self.assertIn("Buy the dip inside an uptrend", journey)
+        self.assertIn("2-day RSI below 10", journey)
+        self.assertIn("sold when RSI recovers past 60", journey)
+        self.assertIn("All of these must be true on the same day", journey)
+
+    def test_reading_holds_the_walkthrough(self):
+        """Denser steps must not advance out from under a reader. The player
+        lives in the page script, not the section markup."""
+        html = render_dashboard(self.report, signals=make_signals())
+        self.assertIn("pointerenter", html)
+        self.assertIn("heldByReader", html)
+        self.assertIn("focusin", html)
+        # A deliberate pause must not be undone by the pointer wandering off.
+        self.assertIn("if (!heldByReader) return;", html)
 
     def test_the_closing_step_leads_with_the_unflattering_numbers(self):
         journey = self._journey()
