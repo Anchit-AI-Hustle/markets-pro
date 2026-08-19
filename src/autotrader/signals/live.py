@@ -322,6 +322,79 @@ def _totals(rows: list[dict], *, only_fresh: bool) -> dict:
     }
 
 
+def _watchlist(
+    engine: BacktestEngine, feed: LiveFeed, orders: list[dict], positions: list[dict]
+) -> list[dict]:
+    """Every name the strategies watch, priced and with its recent record.
+
+    The list of names alone answers nothing a reader would ask of it. This adds
+    what each one has actually done — last close, moves over a day, a week, a
+    month and a quarter — plus whether the book is currently in it, so the
+    watchlist explains why a name is or is not on today's list rather than
+    merely asserting that it is watched.
+    """
+    held = {p["key"] for p in positions}
+    signalled = {o["key"] for o in orders if o["fresh"]}
+    resting = {o["key"] for o in orders} - signalled
+
+    rows = []
+    for entry in feed.entries:
+        series = feed.data.get(entry.key)
+        closes = [bar.close for bar in series] if series is not None else []
+        if not closes:
+            continue
+        last = closes[-1]
+
+        def move(sessions: int, closes=closes, last=last) -> str | None:
+            """Percentage change over N completed sessions.
+
+            The series is bound at definition rather than captured, so this
+            cannot silently read the last instrument's prices if it is ever
+            called outside the iteration that made it. Returns None when the
+            history is too short — an unknown move is never shown as zero.
+            """
+            if len(closes) <= sessions:
+                return None
+            earlier = closes[-1 - sessions]
+            if earlier <= 0:
+                return None
+            return _s((last - earlier) / earlier)
+
+        if entry.key in held:
+            status, status_note = "held", "in the book"
+        elif entry.key in signalled:
+            status, status_note = "signal", "suggested today"
+        elif entry.key in resting:
+            status, status_note = "resting", "order still open"
+        else:
+            status, status_note = "watching", "no setup"
+
+        rows.append({
+            "key": entry.key,
+            "symbol": entry.symbol,
+            "name": entry.name,
+            "region": entry.region,
+            "sector": entry.sector,
+            "currency": entry.currency,
+            "yahoo": entry.yahoo,
+            "exchange": entry.exchange,
+            "last": _s(last),
+            "change_1d": move(1),
+            "change_1w": move(5),
+            "change_1m": move(21),
+            "change_3m": move(63),
+            "sessions": len(closes),
+            "status": status,
+            "status_note": status_note,
+            "spark": _spark(feed, entry.key),
+        })
+
+    # Biggest movers first: on a list this long, the ones that did something
+    # are the ones worth the top of the screen.
+    rows.sort(key=lambda r: abs(float(r["change_1d"] or 0)), reverse=True)
+    return rows
+
+
 def _mechanics(engine: BacktestEngine, feed: LiveFeed) -> dict:
     """The constants the run actually used, for the page to quote back.
 
@@ -496,15 +569,7 @@ def build_snapshot(
         "starting_cash": dict(live_config["starting_cash"]),
         "kite_api_key": live_config.get("kite_api_key", ""),
         "horizon_stats": stats,
-        "watchlist": [
-            {
-                "symbol": entry.symbol,
-                "name": entry.name,
-                "region": entry.region,
-                "sector": entry.sector,
-            }
-            for entry in feed.entries
-        ],
+        "watchlist": _watchlist(engine, feed, orders, positions),
         "mechanics": _mechanics(engine, feed),
         "totals": {
             "signals": _totals(orders, only_fresh=True),
