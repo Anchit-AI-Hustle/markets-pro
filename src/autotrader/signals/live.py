@@ -501,6 +501,38 @@ def _market(watchlist: list[dict], data_root: Path) -> dict:
     return {"benchmarks": _benchmarks(data_root), "regions": by_region}
 
 
+def _fundamentals(data_root: Path, watchlist: list[dict]) -> dict:
+    """Filed fundamentals per instrument, with derived ratios priced to today.
+
+    Ratios are computed here rather than cached because two of them (market
+    cap, P/E, price-to-book) depend on the current price, and a cached ratio
+    would quietly age against a moving quote.
+    """
+    path = data_root / "fundamentals.json"
+    if not path.exists():
+        return {}
+    try:
+        document = json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+    from ..data.fundamentals import derive
+
+    prices = {row["key"]: row.get("last") for row in watchlist}
+    out: dict = {"companies": {}, "unavailable": document.get("unavailable", {})}
+    for key, record in (document.get("companies") or {}).items():
+        price = prices.get(key)
+        ratios = derive(record, price=float(price) if price else None)
+        out["companies"][key] = {
+            "entity": record.get("entity"),
+            "cik": record.get("cik"),
+            "source": record.get("source"),
+            "series": record.get("series", {}),
+            "ratios": {k: _s(Decimal(str(v))) for k, v in ratios.items()},
+        }
+    return out
+
+
 def _mechanics(engine: BacktestEngine, feed: LiveFeed) -> dict:
     """The constants the run actually used, for the page to quote back.
 
@@ -682,6 +714,7 @@ def build_snapshot(
         "horizon_stats": stats,
         "watchlist": watchlist,
         "market": _market(watchlist, data_root or Path("data/live")),
+        "fundamentals": _fundamentals(data_root or Path("data/live"), watchlist),
         "mechanics": _mechanics(engine, feed),
         "totals": {
             "signals": _totals(orders, only_fresh=True),

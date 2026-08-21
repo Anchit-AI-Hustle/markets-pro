@@ -39,6 +39,12 @@ jobs:
         run: |
           PYTHONPATH=src python3 -m autotrader.data.quality --data data/live --regions india us \
             || echo "::warning::data quality check found hard failures — see job log"
+      # Filings change only when a company files, so a failure here is not
+      # worth blocking the deploy over — the page shows the previous cache.
+      - name: Refresh SEC fundamentals
+        run: |
+          PYTHONPATH=src python3 -m autotrader.data.fundamentals --out data/live \
+            || echo "::warning::fundamentals refresh failed; keeping previous cache"
       - name: Preview today's signals in the job log
         run: PYTHONPATH=src python3 -m autotrader.signals.live --data data/live --out /dev/null
       # Re-screens the whole universe on every refresh, same cadence as

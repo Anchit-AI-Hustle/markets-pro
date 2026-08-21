@@ -179,6 +179,17 @@ def build_static(
         screener=screener,
     )
     target.write_text(html, encoding="utf-8")
+
+    # Detail data lives beside the page and is fetched only when a reader
+    # opens a stock, keeping the first load small.
+    if signals is not None:
+        import json as _json
+
+        from .render import _stock_index
+
+        (target_dir / "stocks.json").write_text(
+            _json.dumps(_stock_index(signals, screener)), encoding="utf-8"
+        )
     return target
 
 

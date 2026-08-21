@@ -1132,6 +1132,15 @@ button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(-
 .tabshort{display:none}
 
 /* --- stock detail --------------------------------------------------------- */
+.nofund{padding:12px 14px;border:1px dashed var(--line);border-radius:8px;
+  font-size:12.5px;color:var(--muted);line-height:1.6}
+.nofund strong{color:var(--ink)}
+.fundwrap{overflow-x:auto;margin:12px 0 4px}
+.fundtable{min-width:520px;font-size:12.5px}
+.fundtable th{font-size:10.5px}
+.fundtable td:first-child,.fundtable th:first-child{font-weight:600}
+.fundsrc{color:var(--accent);font-weight:600}
+.fundsrc:hover{text-decoration:underline}
 .openable{cursor:pointer}
 tr.openable:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
 .screenrow.openable:hover{border-color:var(--accent)}
@@ -2200,6 +2209,16 @@ def _stock_index(signals: dict, screener: dict | None) -> dict:
 
     # Anything the strategies are actually acting on, so the detail view can
     # show the live levels rather than only the screener's opinion.
+    funds = signals.get("fundamentals") or {}
+    for key, record in (funds.get("companies") or {}).items():
+        target = merged.get(key)
+        if target is not None:
+            target["fundamentals"] = record
+    for key, reason in (funds.get("unavailable") or {}).items():
+        target = merged.get(key)
+        if target is not None and "fundamentals" not in target:
+            target["no_fundamentals"] = reason
+
     for order in signals.get("orders") or []:
         record = merged.get(order.get("key"))
         if record is not None:
@@ -3100,8 +3119,21 @@ DETAIL_JS = """
   var blob = document.getElementById('stocks-data');
   var host = document.querySelector('[data-detail]');
   if (!blob || !host) return;
-  var STOCKS;
-  try { STOCKS = JSON.parse(blob.textContent); } catch (e) { return; }
+  var STOCKS = null, loading = null;
+  var src = blob.getAttribute('data-src');
+  if (!src) {
+    try { STOCKS = JSON.parse(blob.textContent); } catch (e) { return; }
+  }
+
+  function stocks() {
+    if (STOCKS) return Promise.resolve(STOCKS);
+    if (loading) return loading;
+    loading = fetch(src)
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .then(function (data) { STOCKS = data; return STOCKS; })
+      .catch(function () { STOCKS = {}; return STOCKS; });
+    return loading;
+  }
 
   var body = host.querySelector('[data-detail-body]');
   var back = host.querySelector('[data-detail-back]');
@@ -3163,6 +3195,87 @@ DETAIL_JS = """
       '<span class="techval">' + esc(value) + '</span>' +
       '<span class="techword">' + esc(read[0]) + '</span>' +
       '<span class="techsay">' + esc(read[1]) + '</span></div>';
+  }
+
+
+  function money(v) {
+    if (v == null || v === '') return '—';
+    var n = Number(v), sign = n < 0 ? '−' : '';
+    n = Math.abs(n);
+    if (n >= 1e12) return sign + (n / 1e12).toFixed(2) + 'T';
+    if (n >= 1e9) return sign + (n / 1e9).toFixed(2) + 'B';
+    if (n >= 1e6) return sign + (n / 1e6).toFixed(1) + 'M';
+    return sign + n.toLocaleString('en-US', {maximumFractionDigits: 0});
+  }
+
+  // Filed fundamentals. Present only where a filing exists, and where it does
+  // not the page says why rather than showing a row of dashes.
+  function fundamentals(stock) {
+    if (!stock.fundamentals) {
+      var why = stock.no_fundamentals || 'No filings source covers this listing.';
+      return '<h3 class="detailsub">Fundamentals</h3>' +
+        '<div class="nofund"><strong>Not available for this listing.</strong> ' +
+        esc(why) + '. Nothing is estimated in its place \u2014 an absent ' +
+        'fundamental is honest, an invented one is not.</div>';
+    }
+    var f = stock.fundamentals, r = f.ratios || {}, s = f.series || {};
+
+    function tile(label, value, note) {
+      return '<span class="dstat"><i>' + esc(label) + '</i><b>' + value + '</b>' +
+        (note ? '<u>' + esc(note) + '</u>' : '') + '</span>';
+    }
+
+    var html = '<h3 class="detailsub">Fundamentals</h3>' +
+      '<div class="detailgrid">' +
+        tile('Market cap', money(r.market_cap)) +
+        tile('P/E', r.pe_ratio ? num(r.pe_ratio, 1) : '—', 'on last filed EPS') +
+        tile('Price / book', r.price_to_book ? num(r.price_to_book, 1) : '—') +
+        tile('Net margin', pct(r.net_margin, 1)) +
+        tile('Operating margin', pct(r.operating_margin, 1)) +
+        tile('Return on equity', pct(r.return_on_equity, 1)) +
+        tile('Debt / equity', r.debt_to_equity ? num(r.debt_to_equity, 2) : '—') +
+        tile('Book value / share', r.book_value_per_share
+             ? num(r.book_value_per_share) : '—') +
+      '</div>';
+
+    // Multi-year trend: the direction matters more than any single year.
+    var rows = [['revenue', 'Revenue'], ['net_income', 'Net income'],
+                ['operating_cash_flow', 'Operating cash flow'],
+                ['eps_diluted', 'EPS (diluted)']];
+    var years = (s.revenue || s.net_income || []).map(function (y) { return y.year; });
+    if (years.length) {
+      var head = '<tr><th>Figure</th>' + years.map(function (y) {
+        return '<th class="num">FY' + esc(y) + '</th>';
+      }).join('') + '</tr>';
+      var bodyRows = rows.map(function (row) {
+        var series = s[row[0]];
+        if (!series || !series.length) return '';
+        var byYear = {};
+        series.forEach(function (item) { byYear[item.year] = item.value; });
+        return '<tr><td>' + esc(row[1]) + '</td>' + years.map(function (y) {
+          var v = byYear[y];
+          if (v == null) return '<td class="num">—</td>';
+          return '<td class="num">' +
+            (row[0] === 'eps_diluted' ? num(v) : money(v)) + '</td>';
+        }).join('') + '</tr>';
+      }).join('');
+      html += '<div class="fundwrap"><table class="fundtable"><thead>' + head +
+        '</thead><tbody>' + bodyRows + '</tbody></table></div>';
+    }
+
+    var growth = [];
+    if (r.revenue_growth != null) {
+      growth.push('revenue ' + pct(r.revenue_growth, 1) + ' on the year');
+    }
+    if (r.earnings_growth != null) {
+      growth.push('earnings ' + pct(r.earnings_growth, 1));
+    }
+    html += '<p class="caption">' + (growth.length ? esc(growth.join(', ')) + '. ' : '') +
+      'Every figure is a tagged value from this company\u2019s own 10-K filings ' +
+      'with the SEC \u2014 nothing estimated, smoothed or modelled. ' +
+      '<a class="fundsrc" href="' + esc(f.source || '#') +
+      '" target="_blank" rel="noopener noreferrer">See the filings</a>.</p>';
+    return html;
   }
 
   function chart(stock) {
@@ -3299,6 +3412,8 @@ DETAIL_JS = """
         'this build.</p>';
     }
 
+    html += fundamentals(stock);
+
     html += '<h3 class="detailsub">Headlines</h3><div data-detail-news>' +
       '<p class="empty">Loading&hellip;</p></div>' +
       '<p class="caption">Everything above is measured from closing prices in ' +
@@ -3348,13 +3463,15 @@ DETAIL_JS = """
   }
 
   function open(key) {
-    var stock = STOCKS[key];
-    if (!stock) return false;
-    document.querySelectorAll('.tabpanel').forEach(function (p) { p.hidden = true; });
-    host.hidden = false;
-    render(stock);
-    window.scrollTo(0, 0);
-    return true;
+    return stocks().then(function (all) {
+      var stock = all[key];
+      if (!stock) { close(); return false; }
+      document.querySelectorAll('.tabpanel').forEach(function (p) { p.hidden = true; });
+      host.hidden = false;
+      render(stock);
+      window.scrollTo(0, 0);
+      return true;
+    });
   }
 
   function close() {
@@ -3372,10 +3489,8 @@ DETAIL_JS = """
       var panel = trigger.closest('[data-tab]');
       if (panel) lastTab = panel.getAttribute('data-tab');
       var key = trigger.getAttribute('data-stock');
-      if (STOCKS[key]) {
-        event.preventDefault();
-        location.hash = '#stock/' + key;
-      }
+      event.preventDefault();
+      location.hash = '#stock/' + key;
       return;
     }
     if (event.target.closest('[data-detail-back]')) { location.hash = '#' + lastTab; }
@@ -3383,7 +3498,7 @@ DETAIL_JS = """
 
   function route() {
     var match = /^#stock\\/(.+)$/.exec(location.hash || '');
-    if (match) { if (!open(decodeURIComponent(match[1]))) close(); }
+    if (match) { open(decodeURIComponent(match[1])); }
     else if (!host.hidden) { host.hidden = true; }
   }
   window.addEventListener('hashchange', route);
@@ -5128,9 +5243,13 @@ def render_dashboard(
         # <-escape so no substring can terminate the script element early.
         blob = json.dumps(embedded).replace("<", "\\u003c")
         signal_blob = f'<script type="application/json" id="signals-data">{blob}</script>'
-        stocks = json.dumps(_stock_index(signals, screener)).replace("<", "\\u003c")
+        # The stock index is ~200 KB of JSON that only matters once a reader
+        # opens a detail page. Inlining it made every visitor pay for content
+        # most never open, so it is written beside the page and fetched on
+        # demand; the element carries only its URL.
         signal_blob += (
-            f'\n<script type="application/json" id="stocks-data">{stocks}</script>'
+            '\n<script type="application/json" id="stocks-data" '
+            'data-src="stocks.json">{}</script>'
         )
         # Paper first: it defines window.__mpPaperRender before the quote
         # overlay starts polling, so the first poll can already mark the book.
