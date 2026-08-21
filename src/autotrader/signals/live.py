@@ -369,8 +369,22 @@ def _watchlist(
         else:
             status, status_note = "watching", "no setup"
 
+        # 52-week context: where this price sits inside its own year is the
+        # first thing anyone asks of a quote, and it cannot be read off a
+        # percentage change.
+        year = closes[-252:] if len(closes) >= 2 else closes
+        high_52, low_52 = max(year), min(year)
+        span = high_52 - low_52
+        volumes = [bar.volume for bar in series][-21:] if series is not None else []
+
         rows.append({
             "key": entry.key,
+            "high_52w": _s(high_52),
+            "low_52w": _s(low_52),
+            "off_high": _s((last - high_52) / high_52) if high_52 > 0 else None,
+            "off_low": _s((last - low_52) / low_52) if low_52 > 0 else None,
+            "range_position": _s((last - low_52) / span) if span > 0 else None,
+            "avg_volume": _s(sum(volumes) / len(volumes)) if volumes else None,
             "symbol": entry.symbol,
             "name": entry.name,
             "region": entry.region,

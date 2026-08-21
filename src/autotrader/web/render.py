@@ -1131,6 +1131,67 @@ button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(-
    query would be overruled by the default below it. */
 .tabshort{display:none}
 
+/* --- stock detail --------------------------------------------------------- */
+.openable{cursor:pointer}
+tr.openable:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
+.screenrow.openable:hover{border-color:var(--accent)}
+.openable:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.detail{animation:rise .3s var(--ease) both}
+.detailback{appearance:none;border:1px solid var(--line);background:var(--panel);
+  color:var(--muted);font:inherit;font-size:12.5px;font-weight:600;
+  padding:8px 13px;border-radius:8px;cursor:pointer;margin:18px 0 16px}
+.detailback:hover{color:var(--accent);border-color:var(--accent)}
+.detailhead{display:flex;justify-content:space-between;align-items:flex-start;
+  gap:18px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.detailsym{margin:0;font-size:28px;letter-spacing:-0.02em}
+.detailname{margin:2px 0 8px;color:var(--muted);font-size:14px}
+.detailtags{margin:0;display:flex;gap:5px;flex-wrap:wrap}
+.detailprice{text-align:right;display:flex;flex-direction:column;gap:2px}
+.detaillast{font-size:30px;font-weight:600;font-variant-numeric:tabular-nums}
+.detaillast i{font-style:normal;font-size:13px;color:var(--muted)}
+.detailmove{font-size:14px;font-weight:600}
+.detailchart{margin:18px 0 6px}
+.detailchart svg{width:100%;height:190px;display:block}
+.chartscale{display:flex;justify-content:space-between;font-size:11px;
+  color:var(--muted);margin-top:6px}
+.detailgrid{display:grid;gap:10px;margin:16px 0;
+  grid-template-columns:repeat(auto-fit,minmax(132px,1fr))}
+.detailgrid.tight{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+.dstat{display:flex;flex-direction:column;gap:1px;padding:10px 12px;
+  border:1px solid var(--line);border-radius:8px}
+.dstat i{font-style:normal;font-size:10px;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--muted)}
+.dstat b{font-size:17px;font-variant-numeric:tabular-nums;text-transform:capitalize}
+.dstat u{text-decoration:none;font-size:10.5px;color:var(--muted)}
+.detailstatus{padding:11px 14px;border-radius:8px;background:var(--tag);
+  font-size:13px;color:var(--muted);margin:6px 0 4px;line-height:1.55}
+.detailstatus strong{color:var(--ink)}
+.detailstatus.held,.detailstatus.signal{
+  background:color-mix(in srgb,var(--accent) 12%,var(--tag))}
+.detailsub{margin:22px 0 10px;font-size:12px;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--accent);font-weight:700}
+.detailverdict{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;
+  margin-bottom:10px}
+.detailverdict .screensig{margin-left:0;align-self:center;font-size:12px;
+  padding:6px 12px}
+.detailverdict .dstat{flex:1 1 110px}
+.techtable{border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.techrow{display:grid;grid-template-columns:130px 78px 96px 1fr;gap:12px;
+  align-items:baseline;padding:10px 13px;border-bottom:1px solid var(--line);
+  font-size:12.5px}
+.techrow:last-child{border-bottom:none}
+.techlabel{font-weight:600}
+.techval{font-variant-numeric:tabular-nums;color:var(--ink)}
+.techword{font-weight:700;font-size:11.5px;color:var(--accent)}
+.techsay{color:var(--muted);font-size:12px}
+@media (max-width:640px){
+  .detailhead{flex-direction:column}
+  .detailprice{text-align:left}
+  .techrow{grid-template-columns:1fr auto;gap:4px 10px}
+  .techword{grid-column:1}
+  .techsay{grid-column:1 / -1}
+}
+
 /* --- markets -------------------------------------------------------------- */
 .mktgroup{margin:20px 0 10px;font-size:12px;text-transform:uppercase;
   letter-spacing:.06em;color:var(--accent);font-weight:700}
@@ -1806,7 +1867,9 @@ def _watchlist_section(signals: dict) -> str:
         search_terms = _esc(
             " ".join(str(row.get(f, "")) for f in ("symbol", "name", "sector")).lower()
         )
-        body += f"""<tr data-wrow data-wstatus="{cls}"
+        body += f"""<tr class="openable" data-wrow data-wstatus="{cls}"
+    data-stock="{_esc(row.get('key', ''))}" tabindex="0" role="button"
+    aria-label="Open {_esc(row.get('symbol', ''))} detail"
     data-wsearch="{search_terms}">
   <td class="wname">
     <span class="wsym">{_esc(row['symbol'])}</span>
@@ -2032,7 +2095,10 @@ def _screener_section(screener: dict | None) -> str:
         region_label = REGION_NAMES.get(
             "IN" if row.get("region") == "india" else "US", row.get("region", "")
         )
-        body += f"""<article class="screenrow" data-srow data-ssignal="{_esc(signal)}"
+        body += f"""<article class="screenrow openable" data-srow
+    data-stock="{_esc(row.get('key', ''))}" tabindex="0" role="button"
+    aria-label="Open {_esc(row.get('symbol', ''))} detail"
+    data-ssignal="{_esc(signal)}"
     data-ssearch="{_esc((str(row.get('symbol', '')) + ' ' + str(row.get('name', ''))
                         + ' ' + str(row.get('sector', ''))).lower())}">
   <div class="screenhead">
@@ -2076,6 +2142,95 @@ row. A high score is a description of what the price has done, not a forecast of
 what it will do, and the screener does not size or place anything: only the
 strategies on <button type="button" class="linkish" data-tabgo="invest">Invest
 Now</button> do that.</p>"""
+
+
+def _stock_index(signals: dict, screener: dict | None) -> dict:
+    """One record per instrument, merging what the watchlist and screener know.
+
+    The detail view is built from this in the browser rather than as 34
+    server-rendered panels: duplicating the markup would triple the page for
+    content almost nobody opens more than one of.
+    """
+    merged: dict[str, dict] = {}
+    for row in signals.get("watchlist") or []:
+        if row.get("last") in (None, ""):
+            continue
+        merged[row["key"]] = {
+            "key": row["key"],
+            "symbol": row.get("symbol"),
+            "name": row.get("name"),
+            "region": row.get("region"),
+            "sector": row.get("sector"),
+            "currency": row.get("currency"),
+            "exchange": row.get("exchange"),
+            "yahoo": row.get("yahoo"),
+            "last": row.get("last"),
+            "change_1d": row.get("change_1d"),
+            "change_1w": row.get("change_1w"),
+            "change_1m": row.get("change_1m"),
+            "change_3m": row.get("change_3m"),
+            "high_52w": row.get("high_52w"),
+            "low_52w": row.get("low_52w"),
+            "off_high": row.get("off_high"),
+            "off_low": row.get("off_low"),
+            "range_position": row.get("range_position"),
+            "avg_volume": row.get("avg_volume"),
+            "status": row.get("status"),
+            "status_note": row.get("status_note"),
+            "sessions": row.get("sessions"),
+            "spark": row.get("spark") or [],
+        }
+
+    for row in (screener or {}).get("results") or []:
+        record = merged.get(row.get("key"))
+        if record is None:
+            continue
+        record["screen"] = {
+            "score": row.get("score"),
+            "signal": row.get("signal"),
+            "strength": row.get("signal_strength"),
+            "regime": row.get("regime"),
+            "volatility_bucket": row.get("volatility_bucket"),
+            "indicators": row.get("indicators_used") or [],
+            "rationale": row.get("rationale"),
+            "relative_momentum": row.get("relative_momentum_long"),
+            "sector_momentum": row.get("sector_momentum_long"),
+            "reading": row.get("reading") or {},
+        }
+
+    # Anything the strategies are actually acting on, so the detail view can
+    # show the live levels rather than only the screener's opinion.
+    for order in signals.get("orders") or []:
+        record = merged.get(order.get("key"))
+        if record is not None:
+            record["order"] = {
+                "side": order.get("side"), "quantity": order.get("quantity"),
+                "stop_loss": order.get("stop_loss"),
+                "take_profit": order.get("take_profit"),
+                "reason": plain_reason(order.get("reason") or ""),
+                "fresh": order.get("fresh"),
+            }
+    for position in signals.get("positions") or []:
+        record = merged.get(position.get("key"))
+        if record is not None:
+            record["position"] = {
+                "quantity": position.get("quantity"),
+                "average_cost": position.get("average_cost"),
+                "stop": position.get("stop"),
+                "take_profit": position.get("take_profit"),
+                "days_held": position.get("days_held"),
+                "max_holding_days": position.get("max_holding_days"),
+            }
+    return merged
+
+
+def _detail_shell() -> str:
+    """The detail view's frame. Script fills it for whichever stock is open."""
+    return """<section class="detail" data-detail hidden aria-live="polite">
+  <button type="button" class="detailback" data-detail-back>
+    &larr; Back to the list</button>
+  <div data-detail-body></div>
+</section>"""
 
 
 def _paper_section() -> str:
@@ -2926,6 +3081,313 @@ WATCH_NEWS_JS = """
   window.addEventListener('hashchange', function () {
     if (location.hash === '#news') load(false);
   });
+})();
+"""
+
+
+#: Stock detail views.
+#:
+#: Rendered in the browser from one embedded index rather than as 34
+#: server-rendered panels — the markup would be near-identical and almost
+#: nobody opens more than one. Routed on the hash (``#stock/US:XOM``) so a
+#: detail view is linkable and the back button behaves.
+#:
+#: Every technical reading is paired with what it means in words. A number like
+#: "RSI 71" tells a reader who already knows nothing they did not know; the
+#: point of a detail page is to be readable by someone who does not.
+DETAIL_JS = """
+(function () {
+  var blob = document.getElementById('stocks-data');
+  var host = document.querySelector('[data-detail]');
+  if (!blob || !host) return;
+  var STOCKS;
+  try { STOCKS = JSON.parse(blob.textContent); } catch (e) { return; }
+
+  var body = host.querySelector('[data-detail-body]');
+  var back = host.querySelector('[data-detail-back]');
+  var lastTab = 'screener';
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+    });
+  }
+  function num(v, dp) {
+    if (v == null || v === '') return '—';
+    return Number(v).toLocaleString('en-US',
+      {minimumFractionDigits: dp == null ? 2 : dp, maximumFractionDigits: dp == null ? 2 : dp});
+  }
+  function pct(v, dp) {
+    if (v == null || v === '') return '—';
+    var n = Number(v) * 100;
+    return (n >= 0 ? '+' : '') + n.toFixed(dp == null ? 2 : dp) + '%';
+  }
+  function tone(v) {
+    if (v == null || v === '') return 'flat';
+    return Number(v) > 0 ? 'pos' : (Number(v) < 0 ? 'neg' : 'flat');
+  }
+
+  // Plain-language readings. Thresholds match the strategies' own config so
+  // the words cannot contradict the rules on the Invest tab.
+  function readRSI(v) {
+    if (v == null) return null;
+    if (v >= 70) return ['Overbought', 'has run hard and often pauses or pulls back from here'];
+    if (v <= 30) return ['Oversold', 'has fallen hard — the dip strategy looks for entries here'];
+    if (v >= 55) return ['Firm', 'buyers have had the upper hand recently'];
+    if (v <= 45) return ['Soft', 'sellers have had the upper hand recently'];
+    return ['Balanced', 'neither side is in control'];
+  }
+  function readADX(v) {
+    if (v == null) return null;
+    if (v >= 25) return ['Trending',
+      'the move has real direction, so trend rules carry the weight'];
+    if (v >= 20) return ['Firming', 'a trend may be forming but is not established'];
+    return ['Ranging', 'no clear direction — oscillators carry the weight instead'];
+  }
+  function readST(v) {
+    if (v == null) return null;
+    return Number(v) > 0
+      ? ['Bullish', 'price is above the supertrend line']
+      : ['Bearish', 'price is below the supertrend line'];
+  }
+  function readMACD(v) {
+    if (v == null) return null;
+    return Number(v) > 0
+      ? ['Positive', 'short-term momentum is above the longer trend']
+      : ['Negative', 'short-term momentum has fallen below the longer trend'];
+  }
+
+  function techRow(label, value, read) {
+    if (!read) return '';
+    return '<div class="techrow"><span class="techlabel">' + esc(label) + '</span>' +
+      '<span class="techval">' + esc(value) + '</span>' +
+      '<span class="techword">' + esc(read[0]) + '</span>' +
+      '<span class="techsay">' + esc(read[1]) + '</span></div>';
+  }
+
+  function chart(stock) {
+    var pts = stock.spark || [];
+    if (pts.length < 2) return '';
+    var w = 720, h = 190;
+    var hi = Number(stock.high_52w), lo = Number(stock.low_52w);
+    var vals = pts.slice();
+    if (isFinite(hi)) vals.push(hi);
+    if (isFinite(lo)) vals.push(lo);
+    var top = Math.max.apply(null, vals), bottom = Math.min.apply(null, vals);
+    if (top === bottom) top = bottom + 1;
+    var pad = (top - bottom) * 0.08;
+    top += pad; bottom -= pad;
+    var span = top - bottom;
+    function x(i) { return i * w / (pts.length - 1); }
+    function y(v) { return h - ((v - bottom) / span * h); }
+    var line = pts.map(function (v, i) {
+      return x(i).toFixed(1) + ',' + y(v).toFixed(1);
+    }).join(' ');
+    var area = '0,' + h + ' ' + line + ' ' + w + ',' + h;
+    var rising = pts[pts.length - 1] >= pts[0];
+    var rules = '';
+    [[hi, 'win', '52w high'], [lo, 'lose', '52w low']].forEach(function (row) {
+      if (!isFinite(row[0])) return;
+      var yy = y(row[0]);
+      if (yy < 0 || yy > h) return;
+      rules += '<line class="jrule ' + row[1] + '" x1="0" y1="' + yy.toFixed(1) +
+        '" x2="' + w + '" y2="' + yy.toFixed(1) + '"/>';
+    });
+    return '<div class="detailchart"><svg viewBox="0 0 ' + w + ' ' + h +
+      '" preserveAspectRatio="none" class="spark spark-' + (rising ? 'up' : 'down') +
+      '" aria-hidden="true">' + rules +
+      '<polygon class="sparkarea" points="' + area + '" fill="url(#sparkfill)"/>' +
+      '<polyline class="sparkline" points="' + line +
+      '" vector-effect="non-scaling-stroke"/></svg>' +
+      '<div class="chartscale"><span>last ' + pts.length +
+      ' sessions of ' + esc(stock.sessions || pts.length) + ' held</span>' +
+      '<span>52-week range ' + num(stock.low_52w) + ' \u2013 ' +
+      num(stock.high_52w) + '</span></div></div>';
+  }
+
+  function render(stock) {
+    var screen = stock.screen || {};
+    var reading = screen.reading || {};
+    var regionLabel = stock.region === 'india' ? 'India' : 'United States';
+    var rangePos = stock.range_position == null ? null : Number(stock.range_position) * 100;
+
+    var html =
+      '<div class="detailhead">' +
+        '<div><h2 class="detailsym">' + esc(stock.symbol) + '</h2>' +
+        '<p class="detailname">' + esc(stock.name) + '</p>' +
+        '<p class="detailtags"><span class="tag">' + esc(regionLabel) + '</span>' +
+        '<span class="tag">' + esc(stock.exchange || '') + '</span>' +
+        '<span class="tag">' + esc(stock.sector || '') + '</span></p></div>' +
+        '<div class="detailprice"><span class="detaillast">' + num(stock.last) +
+          ' <i>' + esc(stock.currency || '') + '</i></span>' +
+          '<span class="detailmove ' + tone(stock.change_1d) + '">' +
+          pct(stock.change_1d) + ' today</span></div>' +
+      '</div>';
+
+    html += chart(stock);
+
+    html += '<div class="detailgrid">' +
+      ['1 day', '1 week', '1 month', '3 months'].map(function (label, i) {
+        var key = ['change_1d', 'change_1w', 'change_1m', 'change_3m'][i];
+        return '<span class="dstat"><i>' + label + '</i><b class="' + tone(stock[key]) +
+          '">' + pct(stock[key]) + '</b></span>';
+      }).join('') +
+      '<span class="dstat"><i>52-week high</i><b>' + num(stock.high_52w) + '</b>' +
+        '<u>' + pct(stock.off_high) + ' from here</u></span>' +
+      '<span class="dstat"><i>52-week low</i><b>' + num(stock.low_52w) + '</b>' +
+        '<u>' + pct(stock.off_low) + ' from here</u></span>' +
+      (rangePos == null ? '' :
+        '<span class="dstat"><i>Position in range</i><b>' + rangePos.toFixed(0) +
+        '%</b><u>' + (rangePos > 80 ? 'near its high' : rangePos < 20 ?
+          'near its low' : 'mid-range') + '</u></span>') +
+      '<span class="dstat"><i>Avg volume (21d)</i><b>' +
+        (stock.avg_volume ? Number(stock.avg_volume).toLocaleString('en-US',
+          {maximumFractionDigits: 0}) : '—') + '</b></span>' +
+    '</div>';
+
+    // What the strategies are doing about it, if anything.
+    var statusText = {
+      held: 'The book holds this.', signal: 'Suggested today.',
+      resting: 'An order for this is still resting.',
+      watching: 'Watched, but nothing qualifies right now.'
+    }[stock.status] || '';
+    html += '<div class="detailstatus ' + esc(stock.status || '') + '">' +
+      '<strong>' + esc(statusText) + '</strong>';
+    if (stock.order) {
+      html += ' ' + esc(stock.order.reason) + '. Stop ' + num(stock.order.stop_loss) +
+        ', target ' + num(stock.order.take_profit) + '.';
+    } else if (stock.position) {
+      html += ' Holding ' + esc(stock.position.quantity) + ' at ' +
+        num(stock.position.average_cost) +
+        (stock.position.stop ? ', stop ' + num(stock.position.stop) : '') +
+        (stock.position.take_profit ? ', target ' + num(stock.position.take_profit) : '') + '.';
+    }
+    html += '</div>';
+
+    if (screen.signal) {
+      html += '<h3 class="detailsub">What the screener reads</h3>' +
+        '<div class="detailverdict">' +
+          '<span class="screensig ' + esc(screen.signal) + '">' +
+            esc(screen.signal.charAt(0).toUpperCase() + screen.signal.slice(1)) + '</span>' +
+          '<span class="dstat"><i>Score</i><b>' + num(screen.score) + '</b></span>' +
+          '<span class="dstat"><i>Conviction</i><b>' +
+            Math.round(Number(screen.strength || 0) * 100) + '%</b></span>' +
+          '<span class="dstat"><i>Regime</i><b>' + esc(screen.regime || '—') + '</b></span>' +
+          '<span class="dstat"><i>vs its market</i><b class="' +
+            tone(screen.relative_momentum) + '">' + pct(screen.relative_momentum) +
+            '</b></span>' +
+        '</div>' +
+        '<p class="screenwhy">' + esc(screen.rationale || '') + '</p>';
+
+      html += '<h3 class="detailsub">Technical readings</h3><div class="techtable">' +
+        techRow('RSI (14)', num(reading.rsi, 0), readRSI(reading.rsi)) +
+        techRow('ADX', num(reading.adx, 0), readADX(reading.adx)) +
+        techRow('Supertrend', Number(reading.supertrend_direction) > 0 ? 'up' : 'down',
+                readST(reading.supertrend_direction)) +
+        techRow('MACD histogram', num(reading.macd_hist, 3), readMACD(reading.macd_hist)) +
+      '</div>' +
+      '<div class="detailgrid tight">' +
+        '<span class="dstat"><i>50-day average</i><b>' + num(reading.sma_fast) + '</b></span>' +
+        '<span class="dstat"><i>200-day average</i><b>' + num(reading.sma_slow) + '</b></span>' +
+        '<span class="dstat"><i>Daily range (ATR)</i><b>' +
+          pct(reading.atr_pct) + '</b><u>of price</u></span>' +
+        '<span class="dstat"><i>Annualised volatility</i><b>' +
+          pct(reading.annualised_volatility, 1) + '</b></span>' +
+      '</div>';
+    } else {
+      html += '<p class="empty">The screener has no reading for this name in ' +
+        'this build.</p>';
+    }
+
+    html += '<h3 class="detailsub">Headlines</h3><div data-detail-news>' +
+      '<p class="empty">Loading&hellip;</p></div>' +
+      '<p class="caption">Everything above is measured from closing prices in ' +
+      'this app\u2019s own cache. None of it is a forecast, and none of it is ' +
+      'advice.</p>';
+
+    body.innerHTML = html;
+    loadNews(stock);
+  }
+
+  function loadNews(stock) {
+    var slot = body.querySelector('[data-detail-news]');
+    if (!slot || typeof fetch !== 'function') return;
+    var cfg = window.__mpCfg || {};
+    var API = cfg.api_base || '/markets-pro/api';
+    fetch(API + '/news?symbols=' + encodeURIComponent(stock.yahoo))
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (payload) {
+        var stories = payload && payload.news ? (payload.news[stock.yahoo] || []) : [];
+        slot.textContent = '';
+        if (!stories.length) {
+          var none = document.createElement('p');
+          none.className = 'empty';
+          none.textContent = 'No headlines carried for this name. Coverage is '
+            + 'thin for many listings.';
+          slot.appendChild(none);
+          return;
+        }
+        stories.forEach(function (story) {
+          var a = document.createElement('a');
+          a.className = 'newsitem';
+          a.href = story.link; a.target = '_blank'; a.rel = 'noopener noreferrer';
+          var title = document.createElement('span');
+          title.className = 'newstitle';
+          title.textContent = story.title;
+          a.appendChild(title);
+          slot.appendChild(a);
+        });
+      })
+      .catch(function () {
+        slot.textContent = '';
+        var failed = document.createElement('p');
+        failed.className = 'empty';
+        failed.textContent = 'Headlines could not be reached.';
+        slot.appendChild(failed);
+      });
+  }
+
+  function open(key) {
+    var stock = STOCKS[key];
+    if (!stock) return false;
+    document.querySelectorAll('.tabpanel').forEach(function (p) { p.hidden = true; });
+    host.hidden = false;
+    render(stock);
+    window.scrollTo(0, 0);
+    return true;
+  }
+
+  function close() {
+    host.hidden = true;
+    var tab = document.querySelector('[data-tabbtn="' + lastTab + '"]');
+    if (tab) tab.click(); else location.hash = '#dashboard';
+  }
+
+  document.addEventListener('click', function (event) {
+    var trigger = event.target.closest('[data-stock]');
+    if (trigger) {
+      // Read the panel the row lives in rather than the active tab button:
+      // the button's class lags a programmatic hash change, which sent Back
+      // to the dashboard instead of where the reader actually came from.
+      var panel = trigger.closest('[data-tab]');
+      if (panel) lastTab = panel.getAttribute('data-tab');
+      var key = trigger.getAttribute('data-stock');
+      if (STOCKS[key]) {
+        event.preventDefault();
+        location.hash = '#stock/' + key;
+      }
+      return;
+    }
+    if (event.target.closest('[data-detail-back]')) { location.hash = '#' + lastTab; }
+  });
+
+  function route() {
+    var match = /^#stock\\/(.+)$/.exec(location.hash || '');
+    if (match) { if (!open(decodeURIComponent(match[1]))) close(); }
+    else if (!host.hidden) { host.hidden = true; }
+  }
+  window.addEventListener('hashchange', route);
+  route();
 })();
 """
 
@@ -4590,6 +5052,7 @@ def render_dashboard(
     invest_panel = ""
     invest_tab = ""
     strategy_book = ""
+    detail_shell = ""
     if signals is not None:
         fresh_count = sum(1 for order in signals.get("orders", []) if order["fresh"])
         badge = f'<span class="tabbadge">{fresh_count}</span>' if fresh_count else ""
@@ -4610,6 +5073,9 @@ def render_dashboard(
         # The engine's own book is deliberately NOT on this tab. A reader with
         # one paper trade seeing the strategy's three test positions reads them
         # as holdings of theirs; it lives under the track record instead.
+        # Assigned before the f-string below consumes it — an f-string is
+        # evaluated where it is written, not where its result is used.
+        detail_shell = _detail_shell()
         invest_panel = f"""
   <section class="tabpanel" id="panel-invest" data-tab="invest" role="tabpanel" hidden>
     <h2>Today's suggested trades</h2>
@@ -4617,6 +5083,8 @@ def render_dashboard(
     <p class="caption">Your own holdings and profit/loss are under
     <button type="button" class="linkish" data-tabgo="paper">Paper</button>.</p>
   </section>
+
+  {detail_shell}
 
   <section class="tabpanel" id="panel-markets" data-tab="markets"
            role="tabpanel" hidden>
@@ -4660,6 +5128,10 @@ def render_dashboard(
         # <-escape so no substring can terminate the script element early.
         blob = json.dumps(embedded).replace("<", "\\u003c")
         signal_blob = f'<script type="application/json" id="signals-data">{blob}</script>'
+        stocks = json.dumps(_stock_index(signals, screener)).replace("<", "\\u003c")
+        signal_blob += (
+            f'\n<script type="application/json" id="stocks-data">{stocks}</script>'
+        )
         # Paper first: it defines window.__mpPaperRender before the quote
         # overlay starts polling, so the first poll can already mark the book.
         # Order matters: settings defines the sizing the paper book spends
@@ -4672,6 +5144,7 @@ def render_dashboard(
             f"<script>{COUNTER_JS}</script>\n"
             f"<script>{ODOMETER_JS}</script>\n"
             f"<script>{WATCH_NEWS_JS}</script>\n"
+            f"<script>{DETAIL_JS}</script>\n"
             f"<script>{TILT_JS}</script>\n"
             f"<script>{JOURNEY_JS}</script>"
         )
