@@ -157,6 +157,7 @@ def build_static(
     tests_total: int = 0,
     signals: dict | None = None,
     subtitle: str | None = None,
+    screener: dict | None = None,
 ) -> Path:
     """Write ``out_dir/markets-pro/index.html`` and return its path."""
     report = report or run_demo_backtest()
@@ -175,6 +176,7 @@ def build_static(
         tests_passed=tests_passed,
         tests_total=tests_total,
         signals=signals,
+        screener=screener,
     )
     target.write_text(html, encoding="utf-8")
     return target
@@ -228,8 +230,22 @@ def main(argv: list[str] | None = None) -> int:
     else:
         report = run_demo_backtest(sessions=args.sessions)
 
+    # The screener runs on every data refresh and commits its own file; the
+    # build reads it if present rather than re-running it, so the page always
+    # shows the same ranking the refresh recorded.
+    screener = None
+    if args.live:
+        screener_path = args.live / "screener.json"
+        if screener_path.exists():
+            try:
+                import json as _json
+
+                screener = _json.loads(screener_path.read_text())
+            except (OSError, ValueError) as error:
+                print(f"screener unreadable ({error}); the tab will say so")
+
     path = build_static(
-        args.out, report=report,
+        args.out, report=report, screener=screener,
         tests_passed=args.tests_passed, tests_total=args.tests_total,
         signals=signals, subtitle=subtitle,
     )

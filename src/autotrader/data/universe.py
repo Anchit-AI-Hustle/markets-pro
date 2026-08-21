@@ -105,3 +105,42 @@ def entry_for_key(key: str) -> UniverseEntry:
             if entry.key == key:
                 return entry
     raise KeyError(key)
+
+@dataclass(frozen=True)
+class Benchmark:
+    """A reference series that is quoted but never traded.
+
+    Indices, commodities and FX are shown for context — what the market did,
+    what oil and gold did, where the rupee sits. They are deliberately kept out
+    of ``UNIVERSES`` so nothing can generate an order against something that
+    has no shares to buy.
+    """
+
+    yahoo: str
+    label: str
+    group: str        # "india" | "us" | "global" | "commodity" | "currency"
+    kind: str         # "index" | "commodity" | "currency" | "volatility"
+
+
+BENCHMARKS: tuple[Benchmark, ...] = (
+    Benchmark("^NSEI", "Nifty 50", "india", "index"),
+    Benchmark("^NSEBANK", "Nifty Bank", "india", "index"),
+    Benchmark("^BSESN", "BSE Sensex", "india", "index"),
+    Benchmark("^GSPC", "S&P 500", "us", "index"),
+    Benchmark("^IXIC", "Nasdaq Composite", "us", "index"),
+    Benchmark("^DJI", "Dow Jones", "us", "index"),
+    Benchmark("^RUT", "Russell 2000", "us", "index"),
+    Benchmark("^VIX", "Volatility (VIX)", "us", "volatility"),
+    Benchmark("GC=F", "Gold", "commodity", "commodity"),
+    Benchmark("CL=F", "Crude oil (WTI)", "commodity", "commodity"),
+    Benchmark("SI=F", "Silver", "commodity", "commodity"),
+    Benchmark("INR=X", "US dollar / rupee", "currency", "currency"),
+    Benchmark("EURUSD=X", "Euro / US dollar", "currency", "currency"),
+)
+
+BENCHMARK_GROUPS: tuple[tuple[str, str], ...] = (
+    ("india", "India"),
+    ("us", "United States"),
+    ("commodity", "Commodities"),
+    ("currency", "Currencies"),
+)

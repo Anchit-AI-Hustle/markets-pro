@@ -395,6 +395,98 @@ def _watchlist(
     return rows
 
 
+def _benchmarks(data_root: Path) -> list[dict]:
+    """Index, commodity and currency levels with their recent moves."""
+    path = data_root / "benchmarks.json"
+    if not path.exists():
+        return []
+    try:
+        document = json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return []
+
+    rows = []
+    for yahoo, series in (document.get("series") or {}).items():
+        closes = [Decimal(str(c)) for c in (series.get("closes") or [])]
+        if len(closes) < 2:
+            continue
+        last = closes[-1]
+
+        def move(sessions: int, closes=closes, last=last) -> str | None:
+            if len(closes) <= sessions:
+                return None
+            earlier = closes[-1 - sessions]
+            return None if earlier <= 0 else _s((last - earlier) / earlier)
+
+        days = series.get("days") or []
+        rows.append({
+            "yahoo": yahoo,
+            "label": series.get("label", yahoo),
+            "group": series.get("group", "global"),
+            "kind": series.get("kind", "index"),
+            "currency": series.get("currency", ""),
+            "last": _s(last),
+            "change_1d": move(1),
+            "change_1w": move(5),
+            "change_1m": move(21),
+            "change_1y": move(251),
+            "as_of": days[-1] if days else None,
+            "spark": [round(float(c), 4) for c in closes[-60:]],
+        })
+    return rows
+
+
+def _market(watchlist: list[dict], data_root: Path) -> dict:
+    """The market page: what moved, which way, and how broadly.
+
+    Movers and breadth are computed from the same cached closes the strategies
+    read, so the market summary and the signals can never disagree about what
+    a price did. Breadth is the honest headline number here — an index up on
+    four names is a different market from an index up on thirty, and only the
+    advance/decline split shows which one happened.
+    """
+    by_region: dict[str, dict] = {}
+    for region in ("india", "us"):
+        names = [r for r in watchlist if r["region"] == region and r.get("change_1d")]
+        if not names:
+            continue
+        ranked = sorted(names, key=lambda r: float(r["change_1d"]), reverse=True)
+        advancing = sum(1 for r in names if float(r["change_1d"]) > 0)
+        declining = sum(1 for r in names if float(r["change_1d"]) < 0)
+        unchanged = len(names) - advancing - declining
+
+        sectors: dict[str, list[float]] = {}
+        for row in names:
+            sectors.setdefault(row["sector"], []).append(float(row["change_1d"]))
+        sector_rows = sorted(
+            (
+                {
+                    "sector": sector,
+                    "change": _s(Decimal(str(sum(moves) / len(moves)))),
+                    "count": len(moves),
+                    "advancing": sum(1 for m in moves if m > 0),
+                }
+                for sector, moves in sectors.items()
+            ),
+            key=lambda s: float(s["change"]),
+            reverse=True,
+        )
+
+        by_region[region] = {
+            "gainers": ranked[:5],
+            "losers": list(reversed(ranked[-5:])),
+            "breadth": {
+                "advancing": advancing,
+                "declining": declining,
+                "unchanged": unchanged,
+                "total": len(names),
+            },
+            "sectors": sector_rows,
+        }
+
+    return {"benchmarks": _benchmarks(data_root), "regions": by_region}
+
+
 def _mechanics(engine: BacktestEngine, feed: LiveFeed) -> dict:
     """The constants the run actually used, for the page to quote back.
 
@@ -482,6 +574,7 @@ def build_snapshot(
     report: PerformanceReport | None = None,
     *,
     generated_at: datetime | None = None,
+    data_root: Path | None = None,
 ) -> dict:
     """The one JSON document the dashboard, buttons and executors all consume."""
     stamp = generated_at or datetime.now(timezone.utc)
@@ -557,6 +650,10 @@ def build_snapshot(
         )
         positions.append(row)
 
+    # Built once: the market summary is derived from the same rows the
+    # watchlist shows, so the two can never disagree about a price.
+    watchlist = _watchlist(engine, feed, orders, positions)
+
     return {
         "version": SNAPSHOT_VERSION,
         "generated_at": stamp.isoformat(timespec="seconds"),
@@ -569,7 +666,8 @@ def build_snapshot(
         "starting_cash": dict(live_config["starting_cash"]),
         "kite_api_key": live_config.get("kite_api_key", ""),
         "horizon_stats": stats,
-        "watchlist": _watchlist(engine, feed, orders, positions),
+        "watchlist": watchlist,
+        "market": _market(watchlist, data_root or Path("data/live")),
         "mechanics": _mechanics(engine, feed),
         "totals": {
             "signals": _totals(orders, only_fresh=True),
@@ -595,7 +693,10 @@ def generate(data_root: Path, config_path: Path | None) -> tuple[dict, Performan
     live_config = load_live_config(config_path)
     feed = load_livefeed(data_root)
     engine, report = run_live(feed, live_config)
-    return build_snapshot(engine, feed, live_config, report), report
+    return (
+        build_snapshot(engine, feed, live_config, report, data_root=data_root),
+        report,
+    )
 
 
 def main(argv: list[str] | None = None) -> int:

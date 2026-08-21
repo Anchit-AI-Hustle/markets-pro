@@ -16,6 +16,7 @@ import argparse
 import json
 import sys
 import time
+import urllib.parse
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -32,6 +33,50 @@ def fetch_usdinr() -> str:
     if not rows:
         raise FetchError("no completed USD/INR sessions in payload")
     return rows[-1].close
+
+
+def fetch_benchmarks(root: Path, *, range_: str = "1y", pause: float = 0.3) -> list[str]:
+    """Cache the indices, commodities and FX the market page quotes.
+
+    Kept in one file rather than one per symbol: these are read together, as a
+    single market summary, and never fed to the engine. A benchmark that fails
+    is simply absent from the file — the page then shows the rest rather than
+    inventing a level for it.
+    """
+    from .universe import BENCHMARKS
+
+    document: dict = {"version": 1, "series": {}}
+    failed: list[str] = []
+    for mark in BENCHMARKS:
+        try:
+            payload = _http_get_json(
+                "https://query1.finance.yahoo.com/v8/finance/chart/"
+                f"{urllib.parse.quote(mark.yahoo)}?range={range_}&interval=1d"
+            )
+            rows, currency = parse_chart(
+                payload, today=datetime.now(timezone.utc).date()
+            )
+            if len(rows) < 2:
+                raise FetchError("not enough completed sessions")
+            document["series"][mark.yahoo] = {
+                "label": mark.label,
+                "group": mark.group,
+                "kind": mark.kind,
+                "currency": currency,
+                "closes": [row.close for row in rows[-260:]],
+                "days": [row.day.isoformat() for row in rows[-260:]],
+            }
+            print(f"benchmark {mark.yahoo}: {len(rows)} sessions")
+        except FetchError as error:
+            failed.append(mark.yahoo)
+            print(f"benchmark {mark.yahoo}: FAILED — {error}", file=sys.stderr)
+        time.sleep(pause)
+
+    document["fetched_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    path = root / "benchmarks.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(document, indent=1) + "\n")
+    return failed
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -62,6 +107,12 @@ def main(argv: list[str] | None = None) -> int:
                 failures.append(entry.symbol)
                 print(f"{entry.region}/{entry.symbol}: FAILED — {error}", file=sys.stderr)
             time.sleep(args.pause)
+
+    try:
+        benchmark_failures = fetch_benchmarks(root, pause=args.pause)
+        failures.extend(benchmark_failures)
+    except Exception as error:  # noqa: BLE001 — context is optional, bars are not
+        print(f"benchmarks: FAILED — {error}", file=sys.stderr)
 
     try:
         rate = fetch_usdinr()

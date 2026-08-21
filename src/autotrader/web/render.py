@@ -1131,6 +1131,97 @@ button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(-
    query would be overruled by the default below it. */
 .tabshort{display:none}
 
+/* --- markets -------------------------------------------------------------- */
+.mktgroup{margin:20px 0 10px;font-size:12px;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--accent);font-weight:700}
+.idxgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
+.idxcard{border:1px solid var(--line);border-radius:9px;padding:12px 13px;
+  background:var(--panel);box-shadow:var(--elev-1);display:flex;
+  flex-direction:column;gap:2px}
+.idxname{font-size:12px;color:var(--muted);font-weight:600}
+.idxlast{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
+.idxmove{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.idxmove i{font-style:normal;font-size:10.5px;color:var(--muted);
+  font-weight:400;margin-left:5px}
+.idxspark{margin:6px 0 4px}
+.idxspark .spark{height:34px}
+.idxrow{display:flex;gap:12px;border-top:1px solid var(--line);padding-top:7px}
+.idxrow span{display:flex;flex-direction:column;gap:1px}
+.idxrow i{font-style:normal;font-size:9.5px;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--muted)}
+.idxrow b{font-size:12px;font-variant-numeric:tabular-nums;font-weight:600}
+
+.mktblock{margin-top:26px;padding-top:6px}
+.breadth{border:1px solid var(--line);border-radius:9px;padding:12px 14px;
+  margin-bottom:14px}
+.breadthlabel{display:block;font-size:11px;color:var(--muted);margin-bottom:8px}
+.breadthbar{display:flex;height:10px;border-radius:5px;overflow:hidden;
+  background:var(--tag)}
+.breadthup{width:var(--w);background:var(--pos)}
+.breadthdown{width:var(--w);background:var(--neg)}
+.breadthnums{display:flex;gap:14px;margin-top:8px;font-size:12px;
+  align-items:baseline;flex-wrap:wrap}
+.breadthnums b{font-variant-numeric:tabular-nums}
+.breadthnums i{font-style:normal;color:var(--muted);font-size:11px}
+
+.moverpair{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.moverbox{border:1px solid var(--line);border-radius:9px;padding:11px 13px}
+.moverhead{margin:0 0 8px;font-size:11.5px;text-transform:uppercase;
+  letter-spacing:.05em;font-weight:700;color:var(--muted)}
+.moverhead.pos{color:var(--pos)} .moverhead.neg{color:var(--neg)}
+.moverrow{display:grid;grid-template-columns:1fr auto auto;gap:10px;
+  align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line)}
+.moverrow:last-child{border-bottom:none}
+.moversym{font-weight:600;font-size:13px;min-width:0}
+.moversym i{font-style:normal;font-weight:400;color:var(--muted);
+  font-size:11px;display:block}
+.moverlast,.movermove{font-variant-numeric:tabular-nums;font-size:12.5px}
+.movermove{font-weight:600;min-width:58px;text-align:right}
+
+.sectors{border:1px solid var(--line);border-radius:9px;padding:11px 13px}
+.secrow{display:grid;grid-template-columns:minmax(80px,1fr) 2fr auto auto;
+  gap:10px;align-items:center;padding:5px 0;font-size:12.5px}
+.secname{font-weight:600;text-transform:capitalize}
+.sectrack{background:var(--tag);border-radius:3px;height:7px;overflow:hidden}
+.secfill{display:block;height:100%;width:var(--w);border-radius:3px;
+  background:var(--muted)}
+.secfill.pos{background:var(--pos)} .secfill.neg{background:var(--neg)}
+.secmove{font-variant-numeric:tabular-nums;font-weight:600;min-width:58px;
+  text-align:right}
+.seccount{font-size:11px;color:var(--muted);min-width:62px;text-align:right}
+
+/* --- screener ------------------------------------------------------------- */
+.screenlist{display:grid;gap:10px}
+.screenrow{border:1px solid var(--line);border-radius:9px;padding:12px 14px;
+  background:var(--panel);box-shadow:var(--elev-1)}
+.screenhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  margin-bottom:9px}
+.screensym{font-weight:700;font-size:15px}
+.screensig{margin-left:auto;font-size:11px;font-weight:700;padding:2px 9px;
+  border-radius:999px;background:var(--tag);color:var(--muted)}
+.screensig.bullish{background:color-mix(in srgb,var(--pos) 20%,var(--tag));
+  color:var(--pos)}
+.screensig.bearish{background:color-mix(in srgb,var(--neg) 20%,var(--tag));
+  color:var(--neg)}
+.screenmetrics{display:grid;gap:8px;
+  grid-template-columns:repeat(auto-fit,minmax(84px,1fr));margin-bottom:9px}
+.screenmetrics span{display:flex;flex-direction:column;gap:1px}
+.screenmetrics i{font-style:normal;font-size:9.5px;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--muted)}
+.screenmetrics b{font-size:14px;font-variant-numeric:tabular-nums;
+  text-transform:capitalize}
+.screenwhy{margin:0;font-size:12.5px;color:var(--muted);line-height:1.55}
+.screenind{margin:5px 0 0;font-size:11px;color:var(--muted);opacity:.8;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+
+@media (max-width:640px){
+  .idxgrid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .secrow{grid-template-columns:1fr auto auto}
+  .sectrack{grid-column:1 / -1;order:4}
+  .moverrow{grid-template-columns:1fr auto}
+  .moverlast{display:none}
+}
+
 /* --- watchlist ------------------------------------------------------------ */
 .wbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
 .wsearch{flex:1 1 240px;min-width:0}
@@ -1778,6 +1869,213 @@ and many Indian ones carry none at all. A name with nothing is shown as having
 nothing rather than being padded with something less relevant. Headlines link
 to the publisher; nothing is summarised or rewritten here, and opening one
 tells this page nothing.</p>"""
+
+
+BENCHMARK_GROUP_LABELS = (
+    ("india", "India"),
+    ("us", "United States"),
+    ("commodity", "Commodities"),
+    ("currency", "Currencies"),
+)
+
+
+def _market_section(signals: dict) -> str:
+    """Indices, movers, breadth and sectors — the state of the market itself.
+
+    Breadth leads each market rather than the index level, because an index up
+    on four names is a different market from an index up on thirty and only the
+    advance/decline split tells them apart. Everything is computed from the
+    same cached closes the strategies read, so this page and the signals can
+    never disagree about what a price did.
+    """
+    market = signals.get("market") or {}
+    benchmarks = market.get("benchmarks") or []
+    regions = market.get("regions") or {}
+    if not benchmarks and not regions:
+        return ('<p class="empty">Market data is not in this build. It arrives '
+                "with the next refresh after the close.</p>")
+
+    # --- indices, commodities, currencies, grouped by where they trade ---
+    groups = ""
+    for key, label in BENCHMARK_GROUP_LABELS:
+        rows = [b for b in benchmarks if b.get("group") == key]
+        if not rows:
+            continue
+        cards = ""
+        for row in rows:
+            tone = _move_tone(row.get("change_1d"))
+            spark = sparkline_svg(row.get("spark") or [], width=150, height=34)
+            cards += f"""<div class="idxcard">
+  <span class="idxname">{_esc(row['label'])}</span>
+  <span class="idxlast">{_price(row['last'])}</span>
+  <span class="idxmove {tone}">{_pct_move(row.get('change_1d'))}<i>today</i></span>
+  <div class="idxspark">{spark}</div>
+  <div class="idxrow">
+    <span><i>1w</i><b class="{_move_tone(row.get('change_1w'))}">{
+      _pct_move(row.get('change_1w'))}</b></span>
+    <span><i>1m</i><b class="{_move_tone(row.get('change_1m'))}">{
+      _pct_move(row.get('change_1m'))}</b></span>
+    <span><i>1y</i><b class="{_move_tone(row.get('change_1y'))}">{
+      _pct_move(row.get('change_1y'))}</b></span>
+  </div>
+</div>"""
+        groups += f'<h3 class="mktgroup">{_esc(label)}</h3><div class="idxgrid">{cards}</div>'
+
+    # --- per-market breadth, movers and sectors ---
+    blocks = ""
+    for region, label in (("india", "India"), ("us", "United States")):
+        data = regions.get(region)
+        if not data:
+            continue
+        breadth = data["breadth"]
+        total = max(breadth["total"], 1)
+        up_pct = breadth["advancing"] / total * 100
+        down_pct = breadth["declining"] / total * 100
+
+        def movers(rows, kind):
+            if not rows:
+                return '<p class="empty">Nothing to show.</p>'
+            out = ""
+            for row in rows:
+                out += f"""<div class="moverrow">
+  <span class="moversym">{_esc(row['symbol'])}
+    <i>{_esc(row['name'])}</i></span>
+  <span class="moverlast">{_price(row['last'])}
+    <span class="ccy">{_esc(row.get('currency', ''))}</span></span>
+  <span class="movermove {_move_tone(row.get('change_1d'))}">{
+    _pct_move(row.get('change_1d'))}</span>
+</div>"""
+            return out
+
+        sector_rows = "".join(
+            f"""<div class="secrow">
+  <span class="secname">{_esc(s['sector'])}</span>
+  <span class="sectrack"><span class="secfill {_move_tone(s['change'])}"
+    style="--w:{min(abs(float(s['change'])) * 100 * 12, 100):.1f}%"></span></span>
+  <span class="secmove {_move_tone(s['change'])}">{_pct_move(s['change'])}</span>
+  <span class="seccount">{s['advancing']}/{s['count']} up</span>
+</div>"""
+            for s in data["sectors"]
+        )
+
+        blocks += f"""<div class="mktblock">
+  <h3 class="mktgroup">{_esc(label)}</h3>
+  <div class="breadth">
+    <span class="breadthlabel">Breadth &mdash; how many names moved which way</span>
+    <span class="breadthbar">
+      <span class="breadthup" style="--w:{up_pct:.1f}%"></span>
+      <span class="breadthdown" style="--w:{down_pct:.1f}%"></span>
+    </span>
+    <span class="breadthnums">
+      <b class="pos">{breadth['advancing']} up</b>
+      <b class="neg">{breadth['declining']} down</b>
+      <b class="flat">{breadth['unchanged']} flat</b>
+      <i>of {breadth['total']} tracked</i>
+    </span>
+  </div>
+  <div class="moverpair">
+    <div class="moverbox">
+      <h4 class="moverhead pos">Top gainers</h4>{movers(data['gainers'], 'up')}</div>
+    <div class="moverbox">
+      <h4 class="moverhead neg">Top losers</h4>{movers(data['losers'], 'down')}</div>
+  </div>
+  <h4 class="moverhead">Sectors</h4>
+  <div class="sectors">{sector_rows}</div>
+</div>"""
+
+    return f"""{groups}{blocks}
+<p class="caption">Levels are the last completed close for each market, so an
+index still trading shows yesterday's figure until it settles. Breadth and
+sector moves are measured across the {len(signals.get('watchlist') or [])} names
+this app tracks &mdash; not the whole exchange, so treat them as the mood of
+this list rather than of the entire market.</p>"""
+
+
+SCREEN_SIGNALS = (
+    ("bullish", "Bullish"),
+    ("bearish", "Bearish"),
+    ("neutral", "Neutral"),
+)
+
+
+def _screener_section(screener: dict | None) -> str:
+    """The whole universe ranked by the screener, with its reasoning shown.
+
+    A score with no rationale is an oracle, and an oracle is not something a
+    reader can disagree with. Every row carries the indicators that drove it
+    and the sentence the screener wrote for itself, so a ranking can be argued
+    with rather than merely accepted.
+    """
+    rows = (screener or {}).get("results") or []
+    if not rows:
+        return ('<p class="empty">The screener has not run for this build. It '
+                "runs on every data refresh, after each market close.</p>")
+
+    counts: dict[str, int] = {}
+    for row in rows:
+        counts[row.get("signal", "neutral")] = counts.get(row.get("signal", "neutral"), 0) + 1
+    chips = "".join(
+        f'<button type="button" class="wfilter" data-sfilter="{key}" '
+        f'aria-pressed="false">{label}<span class="wcount">{counts.get(key, 0)}</span>'
+        "</button>"
+        for key, label in SCREEN_SIGNALS
+        if counts.get(key)
+    )
+
+    body = ""
+    for row in rows:
+        signal = row.get("signal", "neutral")
+        reading = row.get("reading") or {}
+        strength = float(row.get("signal_strength") or 0)
+        score = float(row.get("score") or 0)
+        indicators = ", ".join(row.get("indicators_used") or []) or "&mdash;"
+        region_label = REGION_NAMES.get(
+            "IN" if row.get("region") == "india" else "US", row.get("region", "")
+        )
+        body += f"""<article class="screenrow" data-srow data-ssignal="{_esc(signal)}"
+    data-ssearch="{_esc((str(row.get('symbol', '')) + ' ' + str(row.get('name', ''))
+                        + ' ' + str(row.get('sector', ''))).lower())}">
+  <div class="screenhead">
+    <span class="screensym">{_esc(row.get('symbol', ''))}</span>
+    <span class="muted-inline">{_esc(row.get('name', ''))}</span>
+    <span class="tag">{_esc(region_label)}</span>
+    <span class="tag">{_esc(row.get('sector', ''))}</span>
+    <span class="screensig {_esc(signal)}">{_esc(signal.title())}</span>
+  </div>
+  <div class="screenmetrics">
+    <span><i>Score</i><b>{score:.2f}</b></span>
+    <span><i>Conviction</i><b>{strength * 100:.0f}%</b></span>
+    <span><i>Regime</i><b>{_esc(row.get('regime', '&mdash;'))}</b></span>
+    <span><i>Volatility</i><b>{_esc(row.get('volatility_bucket', '&mdash;'))}</b></span>
+    <span><i>Price</i><b>{_price(reading.get('price')) if reading.get('price')
+      else '&mdash;'}</b></span>
+    <span><i>RSI</i><b>{f"{float(reading['rsi']):.0f}" if reading.get('rsi')
+      else '&mdash;'}</b></span>
+  </div>
+  <p class="screenwhy">{_esc(row.get('rationale', ''))}</p>
+  <p class="screenind">Indicators weighted: {_esc(indicators)}</p>
+</article>"""
+
+    return f"""<div class="wbar">
+  <label class="wsearch">
+    <span class="sr-only">Filter the screener</span>
+    <input type="search" data-ssearch-input
+           placeholder="Filter by name, symbol or sector">
+  </label>
+  <div class="wfilters">{chips}
+    <button type="button" class="wfilter" data-sfilter="all" aria-pressed="true">All
+      <span class="wcount">{len(rows)}</span></button>
+  </div>
+</div>
+<div class="screenlist">{body}</div>
+<p class="wempty" data-sempty hidden>Nothing matches that.</p>
+<p class="caption">Ranked highest score first. The screener weights its
+indicators by the regime it detects &mdash; trend-following ones when a name is
+trending, oscillators when it is ranging &mdash; and says which it used on every
+row. A high score is a description of what the price has done, not a forecast of
+what it will do, and the screener does not size or place anything: only the
+strategies on <button type="button" class="linkish" data-tabgo="invest">Invest
+Now</button> do that.</p>"""
 
 
 def _paper_section() -> str:
@@ -2475,6 +2773,37 @@ WATCH_NEWS_JS = """
     });
   });
   if (search) search.addEventListener('input', applyFilter);
+
+  // --- screener filtering --------------------------------------------------
+  var srows = [].slice.call(document.querySelectorAll('[data-srow]'));
+  var ssearch = document.querySelector('[data-ssearch-input]');
+  var schips = [].slice.call(document.querySelectorAll('[data-sfilter]'));
+  var sempty = document.querySelector('[data-sempty]');
+  var sactive = 'all';
+
+  function applyScreen() {
+    var term = (ssearch && ssearch.value || '').trim().toLowerCase();
+    var shown = 0;
+    srows.forEach(function (row) {
+      var okSignal = sactive === 'all' || row.getAttribute('data-ssignal') === sactive;
+      var okTerm = !term || row.getAttribute('data-ssearch').indexOf(term) >= 0;
+      var show = okSignal && okTerm;
+      row.hidden = !show;
+      if (show) shown++;
+    });
+    if (sempty) sempty.hidden = shown > 0;
+  }
+
+  schips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      sactive = chip.getAttribute('data-sfilter');
+      schips.forEach(function (other) {
+        other.setAttribute('aria-pressed', other === chip ? 'true' : 'false');
+      });
+      applyScreen();
+    });
+  });
+  if (ssearch) ssearch.addEventListener('input', applyScreen);
 
   // --- headlines -----------------------------------------------------------
   var cfg = window.__mpCfg;
@@ -4232,6 +4561,7 @@ def render_dashboard(
     tests_passed: int = 0,
     tests_total: int = 0,
     signals: dict | None = None,
+    screener: dict | None = None,
 ) -> str:
     """Return a complete, self-contained HTML document for ``report``.
 
@@ -4288,6 +4618,18 @@ def render_dashboard(
     <button type="button" class="linkish" data-tabgo="paper">Paper</button>.</p>
   </section>
 
+  <section class="tabpanel" id="panel-markets" data-tab="markets"
+           role="tabpanel" hidden>
+    <h2>Markets</h2>
+    <div class="panel">{_market_section(signals)}</div>
+  </section>
+
+  <section class="tabpanel" id="panel-screener" data-tab="screener"
+           role="tabpanel" hidden>
+    <h2>Screener</h2>
+    <div class="panel">{_screener_section(screener)}</div>
+  </section>
+
   <section class="tabpanel" id="panel-watchlist" data-tab="watchlist"
            role="tabpanel" hidden>
     <h2>Watchlist</h2>
@@ -4335,6 +4677,8 @@ def render_dashboard(
         )
 
     dash_label = _tab_label("Today", "Dashboard")
+    market_label = _tab_label("Markets", "Markets")
+    screen_label = _tab_label("Screen", "Screener")
     watch_label = _tab_label("List", "Watchlist")
     news_label = _tab_label("News", "News")
     record_label = _tab_label("Record", "Track record")
@@ -4343,6 +4687,10 @@ def render_dashboard(
     <button type="button" role="tab" data-tabbtn="dashboard" aria-selected="true"
             aria-controls="panel-dashboard" class="active">{dash_label}</button>
     {invest_tab}
+    <button type="button" role="tab" data-tabbtn="markets" aria-selected="false"
+            aria-controls="panel-markets">{market_label}</button>
+    <button type="button" role="tab" data-tabbtn="screener" aria-selected="false"
+            aria-controls="panel-screener">{screen_label}</button>
     <button type="button" role="tab" data-tabbtn="watchlist" aria-selected="false"
             aria-controls="panel-watchlist">{watch_label}</button>
     <button type="button" role="tab" data-tabbtn="news" aria-selected="false"
