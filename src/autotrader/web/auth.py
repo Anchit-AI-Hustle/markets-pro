@@ -45,8 +45,16 @@ AUTH_CSS = """
    the same easing curve, and nothing at all under reduced-motion.
 --------------------------------------------------------------------------- */
 .authslot{position:absolute;top:0;right:0;display:flex;align-items:center;gap:8px}
-@media (max-width:640px){.authslot{position:static;margin-top:10px;justify-content:flex-end}}
 header{position:relative}
+/* On a phone this used to drop below the subtitle, which cost about ninety
+   pixels of the first screen -- the one place on the page where vertical
+   space actually decides whether a visitor understands the product. It stays
+   pinned top-right instead, and the heading and subtitle reserve room for it
+   so neither ever runs underneath. */
+@media (max-width:640px){
+  header h1,header .sub{padding-right:96px}
+  .authchip .who{display:none}
+}
 
 .authbtn{
   font:inherit;font-size:.82rem;font-weight:600;color:var(--ink);

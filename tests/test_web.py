@@ -271,11 +271,11 @@ def make_signals(**overrides):
         "daily_cap": {"INR": "20000", "USD": "250"},
         "starting_cash": {"INR": "500000", "USD": "10000"},
         "watchlist": [
-            {"symbol": "RELIANCE", "name": "Reliance Industries",
+            {"key": "IN:RELIANCE", "symbol": "RELIANCE", "name": "Reliance Industries",
              "region": "india", "sector": "energy"},
-            {"symbol": "TCS", "name": "TCS", "region": "india", "sector": "tech"},
-            {"symbol": "AAPL", "name": "Apple", "region": "us", "sector": "tech"},
-            {"symbol": "NVDA", "name": "NVIDIA", "region": "us", "sector": "tech"},
+            {"key": "IN:TCS", "symbol": "TCS", "name": "TCS", "region": "india", "sector": "tech"},
+            {"key": "US:AAPL", "symbol": "AAPL", "name": "Apple", "region": "us", "sector": "tech"},
+            {"key": "US:NVDA", "symbol": "NVDA", "name": "NVIDIA", "region": "us", "sector": "tech"},
         ],
         "mechanics": {
             "names": 4, "regions": 2, "sessions": 518,
@@ -374,8 +374,10 @@ class TestJourney(unittest.TestCase):
     def test_the_scan_step_names_the_real_watchlist(self):
         journey = self._journey()
         for i, row in enumerate(self.signals["watchlist"]):
-            self.assertIn(f'<span class="jtick" style="--i:{i}">{row["symbol"]}</span>',
-                          journey)
+            # The chip's position is what the animation keys off; the name
+            # inside it is a link like every other name on the page.
+            chip = journey.split(f'<span class="jtick" style="--i:{i}">', 1)[1]
+            self.assertIn(row["symbol"], chip.split("</span>", 1)[0])
         self.assertIn("<strong>4</strong> names", self._journey())
         self.assertIn("<strong>518</strong>", self.html)
 
@@ -608,6 +610,129 @@ class TestRouting(unittest.TestCase):
 
     def test_handler_has_a_default_page(self):
         self.assertIn("markets-pro", DashboardHandler.html)
+
+
+class HeroTest(unittest.TestCase):
+    """The first screen has to explain the product on its own.
+
+    A visitor who cannot tell what something does in the first viewport
+    leaves. Before this the page opened on a status line and a walkthrough of
+    the mechanism, both of which assume the reader already knows what they are
+    looking at.
+    """
+
+    def setUp(self):
+        self.html = render_dashboard(make_report(), signals=make_signals())
+        self.hero = self.html.split('<section class="hero">', 1)[1] \
+                             .split("</section>", 1)[0]
+
+    def test_the_hero_comes_before_anything_that_assumes_knowledge(self):
+        # Ahead of the walkthrough and ahead of the live numbers: both are
+        # explanations of a thing the reader has not been told about yet.
+        body = self.html.split('id="panel-dashboard"', 1)[1]
+        self.assertLess(
+            body.index('class="hero"'), body.index("journey"),
+            "the walkthrough precedes the explanation of what this is",
+        )
+
+    def test_it_says_what_the_product_does(self):
+        self.assertIn("Know what to buy", self.hero)
+        self.assertIn("your own broker", self.hero)
+
+    def test_it_says_which_markets_and_that_it_is_free(self):
+        self.assertIn("Indian", self.hero)
+        self.assertIn("free", self.hero.lower())
+
+    def test_it_offers_a_way_in(self):
+        self.assertIn("data-tabgo", self.hero)
+
+    def test_the_headline_is_not_shouted(self):
+        # h2 is uppercase everywhere else on the page by design; a sentence
+        # set in it becomes shouting and is measurably harder to read.
+        # Asserted against the rendered page rather than a named constant, so
+        # moving the rule between stylesheets does not fail the test for a
+        # reason that has nothing to do with the headline.
+        rule = self.html.split(".heroline{", 1)[1][:220]
+        self.assertIn("text-transform:none", rule)
+
+    def test_the_unflattering_number_is_in_the_hero_too(self):
+        # The study found nothing that beat chance. Reporting that on the
+        # first screen rather than burying it in a tab is the whole basis for
+        # trusting the numbers that would have appeared had anything passed.
+        html = render_dashboard(
+            make_report(), signals=make_signals(),
+            fitness={"tests_run": 102, "instruments_with_evidence": 0},
+        )
+        hero = html.split('<section class="hero">', 1)[1].split("</section>", 1)[0]
+        self.assertIn("102", hero)
+        self.assertIn("beat chance", hero)
+
+    def test_it_promises_nothing(self):
+        self.assertIn("No", self.hero)
+        self.assertIn("profit promised", self.hero)
+
+
+class ClickableAssetTest(unittest.TestCase):
+    """Every named asset opens its own page, wherever the name appears.
+
+    Checked structurally rather than by counting links: the guarantee is that
+    a reader who can see a name can open it, so the test asserts on the
+    containers that hold a name and fails when a new one is added without a
+    route. A symbol that is a link in one table and inert text in another is
+    worse than either choice made consistently, because it teaches people not
+    to try.
+    """
+
+    #: container class -> where it comes from, for a readable failure.
+    CONTAINERS = {
+        "moversym": "top gainers and losers",
+        "wsym": "watchlist rows",
+        "screensym": "screener rows",
+        "signame": "today's suggested trades",
+        "jtick": "the walkthrough's ticker chips",
+    }
+
+    def setUp(self):
+        self.html = render_dashboard(make_report(), signals=make_signals())
+
+    def _blocks(self, css_class):
+        # The element and everything up to its close. Crude on purpose: a real
+        # parser here would test the parser, not the page.
+        return re.findall(
+            r'<[^>]*class="[^"]*\b' + css_class + r'\b[^"]*"[^>]*>(.*?)</',
+            self.html, re.S,
+        )
+
+    def test_every_named_asset_container_routes_somewhere(self):
+        seen = 0
+        for css_class, where in self.CONTAINERS.items():
+            for block in self._blocks(css_class):
+                seen += 1
+                self.assertRegex(
+                    block, r'data-stock="[^"]+"',
+                    f"an asset name in {where} does not open its detail page",
+                )
+        # A floor, so the test cannot pass by rendering nothing at all.
+        self.assertGreater(seen, 3, "no asset containers rendered — fixture drifted")
+
+    def test_completed_trades_link_their_instrument(self):
+        record = self.html.split('id="panel-performance"', 1)[1].split("</section>", 1)[0]
+        self.assertIn("data-stock", record)
+
+    def test_a_ticker_without_a_key_degrades_to_plain_text(self):
+        # An asset the app has no detail page for must still be shown. A dead
+        # link that opens an empty page is worse than a name that is just a
+        # name.
+        from autotrader.web.render import _ticker
+
+        self.assertNotIn("data-stock", _ticker("", "MYSTERY"))
+        self.assertIn("MYSTERY", _ticker("", "MYSTERY"))
+
+    def test_a_ticker_escapes_what_it_is_given(self):
+        from autotrader.web.render import _ticker
+
+        rendered = _ticker('IN:X"><script>', '<script>alert(1)</script>')
+        self.assertNotIn("<script>", rendered)
 
 
 class TabBarTest(unittest.TestCase):

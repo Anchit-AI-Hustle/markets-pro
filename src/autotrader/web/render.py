@@ -321,6 +321,29 @@ def _exit_breakdown(report: PerformanceReport) -> str:
 </table>"""
 
 
+def _ticker(key: str, label: str, *, cls: str = "") -> str:
+    """A named asset, rendered as a link to its own detail page.
+
+    Every company, index, fund and ETF the page names anywhere goes through
+    here. The rule is that a reader who can see a name can open it: a symbol
+    that is text in one table and a link in another is a worse experience than
+    either choice made consistently, because it teaches people not to try.
+
+    An anchor rather than a div: middle-click and "open in new tab" work, the
+    destination is visible on hover, and it is reachable by keyboard without
+    having to be given a role and a tabindex by hand. The click handler
+    intercepts it for the in-page view; without script it still routes, because
+    the detail view is addressed by hash.
+    """
+    if not key:
+        return _esc(label)
+    classes = ("tickerlink " + cls).strip()
+    return (
+        f'<a class="{classes}" href="#stock/{_esc(key)}" data-stock="{_esc(key)}">'
+        f"{_esc(label)}</a>"
+    )
+
+
 def _trades_table(report: PerformanceReport, limit: int = 25) -> str:
     if not report.trades:
         return '<p class="empty">No completed round trips.</p>'
@@ -337,7 +360,8 @@ def _trades_table(report: PerformanceReport, limit: int = 25) -> str:
             f"<span class='ccy'>{_esc(t.currency)}</span></td>"
         )
         rows.append(
-            f"<tr><td><span class='tag'>{_esc(t.region)}</span> {_esc(t.key)}</td>"
+            f"<tr><td><span class='tag'>{_esc(t.region)}</span> "
+            f"{_ticker(t.key, t.key)}</td>"
             f"<td>{_esc(t.entry_day)}</td><td>{_esc(t.exit_day)}</td>"
             f"<td class='num'>{float(t.entry_price):,.2f}</td>"
             f"<td class='num'>{float(t.exit_price):,.2f}</td>"
@@ -578,7 +602,7 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
     return f"""<article class="sigcard tilt{stale}" data-sigcard="{index}">
   <div class="sighead">
     <span class="tag {side_class}">{side}</span>
-    <strong class="signame">{_esc(order['symbol'])}</strong>
+    <strong class="signame">{_ticker(order.get('key', ''), order['symbol'])}</strong>
     <span class="muted-inline">{_esc(order['name'])}</span>
     <span class="tag">{_esc(region_label)}</span>
     {'' if order['fresh'] else '<span class="tag">resting</span>'}
@@ -750,6 +774,68 @@ def _positions_section(signals: dict) -> str:
   <tbody>{''.join(rows)}</tbody>
 </table>
 <p class="caption">{caption}</p>"""
+
+
+def _hero(signals: dict, fitness: dict | None) -> str:
+    """The first thing on the page: what this is, for someone who has never seen it.
+
+    The rule this satisfies is that the first screen alone has to be enough to
+    understand what the product is. Before this, the page opened on a status
+    line ("no trades suggested today") and a walkthrough of the mechanism --
+    both of which assume the reader already knows what they are looking at. A
+    first-time visitor does not, and a visitor who cannot tell what something
+    does leaves.
+
+    Every number here is read from the snapshot rather than written into the
+    copy, including the unflattering one. "None of them beat chance" is the
+    honest headline for this study and it stays in the hero, because a product
+    that hides its own negative result in a tab is making a claim it has not
+    earned.
+    """
+    watchlist = signals.get("watchlist") or []
+    fresh = sum(1 for order in signals.get("orders", []) if order.get("fresh"))
+    markets = len({row.get("region") for row in watchlist if row.get("region")}) or 2
+    tests = (fitness or {}).get("tests_run") or 0
+    proven = (fitness or {}).get("instruments_with_evidence")
+
+    if tests:
+        # Stated as what was found, not as a score. The point of running 102
+        # tests and reporting zero is that the reader can trust the ones that
+        # would have been reported had any passed.
+        evidence = (
+            f"<b>{tests}</b> rule tests over 20 years"
+            + (f" &middot; <b>{proven}</b> beat chance" if proven is not None else "")
+        )
+    else:
+        evidence = "every rule scored against its own history"
+
+    today = (
+        f"<b>{fresh}</b> suggestion{'' if fresh == 1 else 's'} today"
+        if fresh
+        else "<b>Nothing</b> worth buying today"
+    )
+
+    return f"""<section class="hero">
+  <p class="herokicker">Indian &amp; US stocks &middot; free &middot; nothing to install</p>
+  <h2 class="heroline">Know what to buy, what it could make or lose,
+  and whether the rule behind it ever worked.</h2>
+  <p class="herosub">Markets Pro re-reads <b>{len(watchlist)}</b> companies across
+  {markets} markets after every close, applies four rules, and shows you only what
+  survives &mdash; each with its entry, its target, its stop, and the exact money at
+  risk written down <em>before</em> you act. Trade it on paper for nothing, or hand it
+  straight to your own broker.</p>
+  <div class="herofacts">
+    <span class="herofact">{today}</span>
+    <span class="herofact">{evidence}</span>
+    <span class="herofact"><b>No</b> profit promised, ever</span>
+  </div>
+  <div class="herocta">
+    <button type="button" class="exec big" data-tabgo="invest">See today&rsquo;s
+    suggestions</button>
+    <button type="button" class="exec ghost" data-tabgo="evidence">Does any of
+    it work?</button>
+  </div>
+</section>"""
 
 
 def _onboarding(signals: dict) -> str:
@@ -1209,6 +1295,57 @@ button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(-
 .tabbadge{display:inline-block;min-width:18px;text-align:center;background:var(--accent);
   color:var(--panel);border-radius:999px;font-size:11px;font-weight:700;padding:1px 6px}
 .tabpanel[hidden]{display:none}
+/* A named asset, wherever it appears. Deliberately quiet: these run to
+   hundreds on a dense page, and underlining every one would turn a table into
+   a wall of blue. The affordance shows on hover and on keyboard focus, which
+   is where a reader is actually asking "can I click this". */
+.tickerlink{color:inherit;text-decoration:none;border-bottom:1px solid transparent;
+  cursor:pointer;transition:color .15s var(--ease),border-color .15s var(--ease)}
+.tickerlink:hover{color:var(--accent);border-bottom-color:currentColor}
+.tickerlink:focus-visible{outline:2px solid var(--accent);outline-offset:2px;
+  border-radius:3px}
+
+/* The hero. Sized so it and the tab bar clear the fold on a 375x812 phone --
+   the whole point is being readable without a scroll, which a hero that needs
+   scrolling to finish would defeat. */
+.hero{position:relative;padding:26px 0 22px;border-bottom:1px solid var(--line);
+  margin-bottom:18px}
+.herokicker{margin:0 0 10px;font-size:.72rem;font-weight:700;color:var(--accent);
+  text-transform:uppercase;letter-spacing:.1em}
+.heroline{margin:0 0 12px;font-size:clamp(1.4rem,3.4vw,2.15rem);line-height:1.2;
+  text-transform:none;letter-spacing:-.02em;font-weight:700;max-width:34ch;
+  background:linear-gradient(135deg,var(--ink),color-mix(in srgb,var(--ink) 62%,var(--accent)));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+@supports not (background-clip:text){.heroline{color:var(--ink)}}
+.herosub{margin:0 0 16px;color:var(--muted);font-size:.94rem;line-height:1.6;
+  max-width:62ch}
+.herosub b{color:var(--ink)}
+.herofacts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.herofact{font-size:.78rem;color:var(--muted);background:var(--tag);
+  border:1px solid var(--line);border-radius:999px;padding:5px 12px;
+  box-shadow:var(--elev-1)}
+.herofact b{color:var(--ink)}
+.herocta{display:flex;flex-wrap:wrap;gap:10px}
+/* Outranks button.exec.big's full-width rule: these two sit side by side and
+   size to their own labels. */
+.herocta button.exec,.herocta button.exec.big,.herocta button.exec.ghost{
+  width:auto;flex:0 0 auto;margin-top:0;
+  display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:640px){
+  .hero{padding:18px 0 16px;margin-bottom:14px}
+  .heroline{max-width:100%}
+  .herosub{font-size:.88rem}
+  .herocta button.exec,.herocta button.exec.big,
+  .herocta button.exec.ghost{flex:1 1 100%;width:100%}
+}
+/* A slow drift behind the headline, well away from any live number. */
+.hero::before{content:"";position:absolute;inset:-20% -10% auto -10%;height:150%;
+  z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 55% 45% at 15% 25%,
+    color-mix(in srgb,var(--accent) 13%,transparent),transparent 70%);
+  animation:herodrift 22s var(--ease) infinite alternate}
+@keyframes herodrift{to{transform:translate3d(6%,4%,0) scale(1.12)}}
+@media (prefers-reduced-motion:reduce){.hero::before{animation:none}}
 /* Both label variants live here, in this order: SIGNALS_CSS is concatenated
    after the base sheet, so a mobile override written in the base sheet's media
    query would be overruled by the default below it. */
@@ -2209,7 +2346,7 @@ def _market_section(signals: dict) -> str:
             out = ""
             for row in rows:
                 out += f"""<div class="moverrow">
-  <span class="moversym">{_esc(row['symbol'])}
+  <span class="moversym">{_ticker(row.get('key', ''), row['symbol'])}
     <i>{_esc(row['name'])}</i></span>
   <span class="moverlast">{_price(row['last'])}
     <span class="ccy">{_esc(row.get('currency', ''))}</span></span>
@@ -2612,7 +2749,8 @@ def _evidence_section(fitness: dict | None) -> str:
                 f'<span class="verdictdetail">{detail}</span></td>'
             )
         rows += (
-            f'<tr><td class="wname"><strong>{_esc(record["symbol"])}</strong></td>'
+            f'<tr><td class="wname"><strong>'
+            f'{_ticker(_key, record["symbol"])}</strong></td>'
             f"{cells}</tr>"
         )
 
@@ -5262,7 +5400,8 @@ def _journey_scan(signals: dict) -> str:
     watchlist = signals.get("watchlist") or []
     mech = signals.get("mechanics") or {}
     chips = "".join(
-        f'<span class="jtick" style="--i:{i}">{_esc(row["symbol"])}</span>'
+        f'<span class="jtick" style="--i:{i}">'
+        f'{_ticker(row.get("key", ""), row["symbol"])}</span>'
         for i, row in enumerate(watchlist)
     ) or '<span class="jtick" style="--i:0">watchlist unavailable</span>'
     as_of = " &middot; ".join(
@@ -5983,7 +6122,8 @@ def render_dashboard(
         # Order matters: the walkthrough answers "what is this and where do I
         # come into it", which is the question the reader has before the form
         # asking for their money makes any sense.
-        glance = _journey_section(report, signals) + _onboarding(signals) + _glance(signals)
+        glance = (_hero(signals, fitness) + _journey_section(report, signals)
+                  + _onboarding(signals) + _glance(signals))
         # The engine's own book is deliberately NOT on this tab. A reader with
         # one paper trade seeing the strategy's three test positions reads them
         # as holdings of theirs; it lives under the track record instead.
