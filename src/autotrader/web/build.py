@@ -162,6 +162,7 @@ def build_static(
     funds: dict | None = None,
     funds_source: Path | None = None,
     fitness: dict | None = None,
+    supabase: dict | None = None,
 ) -> Path:
     """Write ``out_dir/markets-pro/index.html`` and return its path."""
     report = report or run_demo_backtest()
@@ -183,6 +184,7 @@ def build_static(
         screener=screener,
         funds=funds,
         fitness=fitness,
+        supabase=supabase,
     )
     target.write_text(html, encoding="utf-8")
 
@@ -201,6 +203,63 @@ def build_static(
                 funds_source.read_text(), encoding="utf-8"
             )
     return target
+
+
+def supabase_settings(config_path: Path) -> dict | None:
+    """The Supabase project this build signs readers in against, or ``None``.
+
+    Environment wins over the committed file so a deploy can point at a
+    different project without a commit. Both halves must be present: a URL
+    without a key would render a sign-in button that could not authenticate,
+    which is worse than no button at all.
+    """
+    import os
+
+    config: dict = {}
+    if config_path.exists():
+        try:
+            config = json.loads(config_path.read_text()).get("supabase") or {}
+        except (OSError, ValueError) as error:
+            print(f"supabase config unreadable ({error}); sign-in will be omitted")
+            config = {}
+
+    url = os.environ.get("SUPABASE_URL") or config.get("url") or ""
+    key = os.environ.get("SUPABASE_ANON_KEY") or config.get("anon_key") or ""
+    if not url or not key:
+        return None
+    return {"url": url.rstrip("/"), "anon_key": key}
+
+
+def check_csp_allows(supabase: dict, vercel_config: Path) -> None:
+    """Fail the build if the deployed CSP would block the auth calls.
+
+    The project origin has to appear in two files that nothing otherwise keeps
+    in agreement: the config this build reads, and the ``Content-Security-Policy``
+    header in ``vercel.json``. When they drift, every sign-in fails in
+    production with a console error and nowhere else --- the same shape of bug
+    as the sidecar URLs that were correct locally and 404ed once deployed.
+    Failing here is cheap and loud; Vercel keeps the previous deployment
+    serving, so the cost of a mismatch is a red build rather than a dead site.
+    """
+    if not vercel_config.exists():
+        return
+    try:
+        document = json.loads(vercel_config.read_text())
+    except (OSError, ValueError):
+        return
+    origin = supabase["url"]
+    for header_rule in document.get("headers", []):
+        for header in header_rule.get("headers", []):
+            if header.get("key", "").lower() != "content-security-policy":
+                continue
+            policy = header.get("value", "")
+            if "connect-src" in policy and origin not in policy:
+                raise SystemExit(
+                    f"{vercel_config}: connect-src does not permit {origin}, so "
+                    "every sign-in would fail once deployed. Add the origin to "
+                    "the connect-src directive, or drop the supabase block from "
+                    "the build config to ship without sign-in."
+                )
 
 
 def _try_live(data_root: Path, config_path: Path) -> tuple[dict, PerformanceReport] | None:
@@ -314,8 +373,16 @@ def main(argv: list[str] | None = None) -> int:
             except (OSError, ValueError) as error:
                 print(f"fitness unreadable ({error}); the tab will say so")
 
+    supabase = supabase_settings(args.live_config)
+    if supabase:
+        check_csp_allows(supabase, Path("vercel.json"))
+        print(f"sign-in enabled against {supabase['url']}")
+    else:
+        print("no supabase project configured; the page ships without sign-in")
+
     path = build_static(
         args.out, report=report, screener=screener, funds=funds, fitness=fitness,
+        supabase=supabase,
         funds_source=(args.live / "funds.json") if args.live else None,
         tests_passed=args.tests_passed, tests_total=args.tests_total,
         signals=signals, subtitle=subtitle,

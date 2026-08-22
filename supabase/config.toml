@@ -1,0 +1,76 @@
+# Markets Pro authentication.
+#
+# This file records the auth settings that are live on the project, so the
+# configuration is reviewable in a diff instead of existing only as a series
+# of clicks in a dashboard nobody can audit later.
+#
+# The project is shared with another application: it hosts Markets Pro's auth
+# and its mp_-prefixed tables, nothing more. Because of that, prefer
+#
+#     supabase link --project-ref wvnqyegqxgvjbgqujyom
+#     supabase config push
+#
+# only when you have read what else it would change --- `config push` sends the
+# whole file, not just the [auth] block, so an omitted section is a section
+# reset to this file's defaults on a project that is not exclusively ours.
+# Everything below was applied through the management API and is what the
+# project currently serves.
+
+project_id = "wvnqyegqxgvjbgqujyom"
+
+[auth]
+enabled = true
+# Where a magic link and an OAuth redirect are allowed to land. An origin
+# missing here is rejected by Supabase before the browser ever sees it, which
+# is the behaviour we want: it is the one thing standing between a stolen
+# link and an attacker's own page.
+site_url = "https://markets-pro.anchit-tandon.com"
+additional_redirect_urls = [
+  "https://markets-pro.anchit-tandon.com",
+  "https://markets-pro.anchit-tandon.com/",
+  "https://anchit-tandon.com/markets-pro",
+  "https://anchit-tandon.com/markets-pro/",
+]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+enable_signup = true
+enable_anonymous_sign_ins = false
+
+[auth.email]
+enable_signup = true
+# No confirmation step: thesix-digit code the reader just typed already proves
+# they hold the address, and a second click adds friction without evidence.
+enable_confirmations = false
+double_confirm_changes = true
+otp_length = 6
+otp_expiry = 900
+max_frequency = "60s"
+
+[auth.email.template.magic_link]
+subject = "Your Markets Pro sign-in code"
+content_path = "./supabase/templates/magic_link.html"
+
+# Phone sign-in. Supabase has no SMS of its own -- every message is sent by a
+# third party and billed per message -- so this stays off until credentials
+# exist. The app hides the phone button entirely while enabled = false, which
+# is why turning this on needs no redeploy.
+[auth.sms]
+enable_signup = true
+enable_confirmations = true
+otp_length = 6
+otp_exp = 900
+
+[auth.sms.twilio]
+enabled = false
+account_sid = ""
+message_service_sid = ""
+auth_token = "env(TWILIO_AUTH_TOKEN)"
+
+# Google. Free, but the client ID and secret have to be created in Google
+# Cloud Console first; the authorised redirect URI there must be
+# https://wvnqyegqxgvjbgqujyom.supabase.co/auth/v1/callback
+[auth.external.google]
+enabled = false
+client_id = "env(SUPABASE_AUTH_GOOGLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_GOOGLE_SECRET)"
+skip_nonce_check = false

@@ -14,6 +14,14 @@ from datetime import date
 from decimal import Decimal
 
 from ..engine.metrics import PerformanceReport, drawdown_series
+from .auth import (
+    AUTH_CSS,
+    AUTH_JS,
+    auth_account_section,
+    auth_blob,
+    auth_dialog,
+    auth_slot,
+)
 
 REGION_NAMES = {
     "IN": "India",
@@ -813,6 +821,7 @@ def _setup_section(signals: dict) -> str:
         else '<span class="state off">needs api_key</span>'
     )
     return f"""{_settings_form()}
+{auth_account_section()}
 <h3 class="papersub">How you can place trades</h3>
 <div class="tiers">
   <div class="tier">
@@ -1749,6 +1758,9 @@ SETTINGS_JS = """
   }
   function write(s) {
     try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) { /* blocked */ }
+    // Signed in, this mirrors the change to the reader's account; signed
+    // out the hook does not exist and the call is a no-op.
+    if (window.__mpStateChanged) window.__mpStateChanged('settings');
   }
   function total(settings) {
     if (!settings) return 0;
@@ -2694,6 +2706,7 @@ PAPER_JS = """
 
   function save(state) {
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* full or blocked */ }
+    if (window.__mpStateChanged) window.__mpStateChanged('paper');
   }
 
   function money(n) {
@@ -5883,6 +5896,7 @@ def render_dashboard(
     screener: dict | None = None,
     funds: dict | None = None,
     fitness: dict | None = None,
+    supabase: dict | None = None,
 ) -> str:
     """Return a complete, self-contained HTML document for ``report``.
 
@@ -6071,7 +6085,7 @@ def render_dashboard(
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>{_esc(title)}</title>
-<style>{CSS}{SIGNALS_CSS}{JOURNEY_CSS}</style>
+<style>{CSS}{SIGNALS_CSS}{JOURNEY_CSS}{AUTH_CSS}</style>
 </head>
 <body>
 {SPARK_DEFS}
@@ -6079,6 +6093,7 @@ def render_dashboard(
   <header>
     <h1>{_esc(title)}</h1>
     <p class="sub">{sub}</p>
+    {auth_slot()}
   </header>
 
   {tab_bar}
@@ -6136,9 +6151,12 @@ def render_dashboard(
     Your amounts and paper trades are stored only in this browser.
   </footer>
 </div>
+{auth_dialog()}
 {signal_blob}
+{auth_blob(supabase)}
 <script>{TABS_JS}</script>
 <script>{ZOOM_JS}</script>
 {signal_script}
+<script>{AUTH_JS}</script>
 </body>
 </html>"""

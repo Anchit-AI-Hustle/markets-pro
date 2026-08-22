@@ -27,7 +27,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; connect-src 'self'; base-uri 'none'; form-action https://kite.zerodha.com; frame-ancestors 'none'"
+          "value": "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; connect-src 'self' https://wvnqyegqxgvjbgqujyom.supabase.co; base-uri 'none'; form-action https://kite.zerodha.com; frame-ancestors 'none'"
         }
       ]
     }

@@ -43,6 +43,21 @@ make serve      # http://localhost:8000/markets-pro
 The bundled server is for development only — no TLS, no auth, no rate limiting.
 Do not expose it directly.
 
+## Sign-in
+
+Optional, and off unless `config/live.json` carries a `supabase` block. The
+build prints which it chose:
+
+```
+sign-in enabled against https://<ref>.supabase.co
+no supabase project configured; the page ships without sign-in
+```
+
+The project origin must also appear in the `connect-src` directive in
+`vercel.json`, or every sign-in fails once deployed. The build checks this and
+stops rather than shipping a page whose own CSP blocks it. See
+[AUTH.md](AUTH.md).
+
 ## What is not automated
 
 Pointing a domain at a deployment requires DNS and hosting-account access. That

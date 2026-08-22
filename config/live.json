@@ -1,5 +1,15 @@
 {
-  "starting_cash": {"INR": "500000", "USD": "10000"},
-  "daily_cap": {"INR": "20000", "USD": "250"},
-  "kite_api_key": ""
+  "starting_cash": {
+    "INR": "500000",
+    "USD": "10000"
+  },
+  "daily_cap": {
+    "INR": "20000",
+    "USD": "250"
+  },
+  "kite_api_key": "",
+  "supabase": {
+    "url": "https://wvnqyegqxgvjbgqujyom.supabase.co",
+    "anon_key": "sb_publishable_Wm9gogIObnIllMqFfIlK-g_873t47b_"
+  }
 }
