@@ -389,6 +389,14 @@ AUTH_JS = """
     }).catch(function () { pip('error'); });
   }
 
+  // The broker relay authenticates callers by their Supabase access token.
+  // Exposed as a promise rather than a value so callers always get a fresh
+  // one -- a token that expired between page load and a click would otherwise
+  // fail an order for a reason the reader could do nothing about.
+  window.__mpAuthToken = function () { return token(); };
+  window.__mpSignedIn = function () { return !!session; };
+  window.__mpOpenSignIn = function () { open(); };
+
   // Called by the settings and paper modules the moment they write. Debounced
   // because dragging a capital slider writes on every input event and each one
   // does not deserve its own round trip.

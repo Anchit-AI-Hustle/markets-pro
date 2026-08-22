@@ -46,6 +46,7 @@ MODULES = [
     ("tests.test_screener", "Universe screener ranking"),
     ("tests.test_broker", "Execution caps & journal"),
     ("tests.test_auth", "Sign-in & state sync"),
+    ("tests.test_broker_link", "Broker links & order guards"),
 ]
 
 BAR = "=" * 74

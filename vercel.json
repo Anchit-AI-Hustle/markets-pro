@@ -31,5 +31,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/broker/*.py": {
+      "includeFiles": "src/**"
+    }
+  }
 }

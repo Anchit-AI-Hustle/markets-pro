@@ -22,6 +22,7 @@ from .auth import (
     auth_dialog,
     auth_slot,
 )
+from .broker_ui import BROKER_CSS, BROKER_JS, broker_section
 
 REGION_NAMES = {
     "IN": "India",
@@ -822,6 +823,7 @@ def _setup_section(signals: dict) -> str:
     )
     return f"""{_settings_form()}
 {auth_account_section()}
+{broker_section()}
 <h3 class="papersub">How you can place trades</h3>
 <div class="tiers">
   <div class="tier">
@@ -6106,7 +6108,7 @@ def render_dashboard(
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>{_esc(title)}</title>
-<style>{CSS}{SIGNALS_CSS}{JOURNEY_CSS}{AUTH_CSS}</style>
+<style>{CSS}{SIGNALS_CSS}{JOURNEY_CSS}{AUTH_CSS}{BROKER_CSS}</style>
 </head>
 <body>
 {SPARK_DEFS}
@@ -6179,5 +6181,6 @@ def render_dashboard(
 <script>{ZOOM_JS}</script>
 {signal_script}
 <script>{AUTH_JS}</script>
+<script>{BROKER_JS}</script>
 </body>
 </html>"""
