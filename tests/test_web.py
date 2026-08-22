@@ -10,6 +10,7 @@ from autotrader.web.render import (
     JOURNEY_HOLDS,
     JOURNEY_JS,
     JOURNEY_STEPS,
+    TABS_JS,
     _pct,
     equity_chart_svg,
     render_dashboard,
@@ -607,6 +608,40 @@ class TestRouting(unittest.TestCase):
 
     def test_handler_has_a_default_page(self):
         self.assertIn("markets-pro", DashboardHandler.html)
+
+
+class TabBarTest(unittest.TestCase):
+    """The row has to survive the number of tabs actually in it."""
+
+    def test_tabs_keep_their_own_width_on_a_phone(self):
+        # An equal-share rule was fine for five tabs and overlaps their labels
+        # at eleven. Whatever the count, a tab sizes to its label and the row
+        # scrolls.
+        from autotrader.web.render import CSS
+
+        mobile = CSS.split("@media (max-width:640px)")[1]
+        self.assertIn(".tabs button{flex:none", mobile)
+        self.assertNotIn("flex:1 1 0", mobile)
+
+    def test_a_scrolling_row_reveals_the_active_tab(self):
+        # Otherwise the tab a reader is on can sit off-screen with nothing
+        # they did to explain it.
+        # In show(), not go(): a #hash link and the first load are the two
+        # paths where nothing the reader did brought the tab into view, and
+        # neither of them goes through go().
+        self.assertIn("scrollIntoView", TABS_JS)
+        show = TABS_JS.split("function show(")[1].split("function go(")[0]
+        self.assertIn("reveal(b)", show)
+
+    def test_every_tab_button_has_a_panel(self):
+        # Scoped to the nav: the tab module's own source mentions the
+        # attribute too, and matching that would test nothing.
+        html = render_dashboard(make_report())
+        nav = html.split('<nav class="tabs"', 1)[1].split("</nav>", 1)[0]
+        buttons = set(re.findall(r'data-tabbtn="([^"]+)"', nav))
+        panels = set(re.findall(r'data-tab="([^"]+)"', html))
+        self.assertTrue(buttons)
+        self.assertEqual(buttons - panels, set(), "tab with no panel to open")
 
 
 if __name__ == "__main__":

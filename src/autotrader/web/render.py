@@ -1643,6 +1643,18 @@ TABS_JS = """
     names.push(b.getAttribute('data-tabbtn'));
   });
 
+  // On a narrow screen the row scrolls, so the active tab can sit off-screen
+  // -- following a #hash link or landing on the page especially, where nothing
+  // the reader did put it there. Nearest rather than centre: it moves the row
+  // only when the tab is genuinely out of view, so opening the first tab does
+  // not jolt the bar sideways for no reason.
+  function reveal(button) {
+    if (!button || !button.scrollIntoView) return;
+    try {
+      button.scrollIntoView({inline: 'nearest', block: 'nearest'});
+    } catch (e) { /* older browsers: the row simply stays where it is */ }
+  }
+
   function show(name) {
     if (names.indexOf(name) < 0) name = names[0];
     Array.prototype.forEach.call(panels, function (panel) {
@@ -1652,6 +1664,7 @@ TABS_JS = """
       var active = b.getAttribute('data-tabbtn') === name;
       b.setAttribute('aria-selected', active ? 'true' : 'false');
       b.classList.toggle('active', active);
+      if (active) reveal(b);
     });
   }
 
@@ -4718,13 +4731,21 @@ footer code{background:var(--tag);padding:1px 5px;border-radius:4px;font-size:11
 @media (max-width:640px){
   .wrap{padding:20px 14px 48px} h1{font-size:21px}
   .kpi-value{font-size:18px}
-  /* Fit all five tabs on a phone rather than hiding the last one behind a
-     scroll most people never discover. */
-  /* Share the width equally so every tab is reachable without a sideways
-     scroll people do not know is there. */
-  .tabs{gap:0;overflow-x:visible}
-  .tabs button{flex:1 1 0;min-width:0;justify-content:center;
-    font-size:12.5px;padding:9px 4px;gap:4px}
+  /* This once shared the width equally between five tabs so none needed a
+     sideways scroll. There are eleven now, which gives each about thirty
+     pixels on a phone and leaves the labels overlapping one another. Let them
+     keep their own width and scroll instead; the active one is scrolled into
+     view on load, which is what makes the row legible as something that
+     moves. */
+  /* No scroll snapping: it re-snaps the row after scrollIntoView has placed
+     the active tab, which leaves the tabs at either end a few pixels short of
+     visible -- the exact case the reveal exists for. */
+  .tabs{gap:2px;overflow-x:auto}
+  .tabs button{flex:none;font-size:12.5px;padding:9px 11px;gap:4px}
+  /* The scrollbar itself would sit on top of the panel below. The row is
+     already legible as scrollable from the clipped tab at its edge. */
+  .tabs{scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
   .tabbadge{min-width:16px;font-size:10px;padding:1px 5px}
   .onboard{padding:16px 15px}
   .onboardtitle{font-size:17px}
@@ -5924,6 +5945,7 @@ def render_dashboard(
     glance = ""
     invest_panel = ""
     invest_tab = ""
+    signal_tabs = ""
     strategy_book = ""
     detail_shell = ""
     if signals is not None:
@@ -5938,6 +5960,23 @@ def render_dashboard(
             f'aria-controls="panel-paper">{paper_label}'
             '<span class="tabbadge" data-paper-badge '
             'style="display:none"></span></button>'
+        )
+        # These tabs and the panels they open are built from the same
+        # snapshot, so they appear and disappear together. Rendering the
+        # buttons unconditionally left the demo page offering six tabs whose
+        # panels do not exist, which shows the reader an empty screen and no
+        # reason for it.
+        signal_tabs = "".join(
+            f'<button type="button" role="tab" data-tabbtn="{name}" '
+            f'aria-selected="false" aria-controls="panel-{name}">{label}</button>'
+            for name, label in (
+                ("markets", _tab_label("Markets", "Markets")),
+                ("screener", _tab_label("Screen", "Screener")),
+                ("evidence", _tab_label("Proof", "Evidence")),
+                ("funds", _tab_label("Funds", "Mutual funds")),
+                ("watchlist", _tab_label("List", "Watchlist")),
+                ("news", _tab_label("News", "News")),
+            )
         )
         # Order matters: the walkthrough answers "what is this and where do I
         # come into it", which is the question the reader has before the form
@@ -6045,30 +6084,12 @@ def render_dashboard(
         )
 
     dash_label = _tab_label("Today", "Dashboard")
-    market_label = _tab_label("Markets", "Markets")
-    screen_label = _tab_label("Screen", "Screener")
-    evidence_label = _tab_label("Proof", "Evidence")
-    funds_label = _tab_label("Funds", "Mutual funds")
-    watch_label = _tab_label("List", "Watchlist")
-    news_label = _tab_label("News", "News")
     record_label = _tab_label("Record", "Track record")
     setup_label = _tab_label("Setup", "Settings")
     tab_bar = f"""<nav class="tabs" role="tablist" aria-label="Sections">
     <button type="button" role="tab" data-tabbtn="dashboard" aria-selected="true"
             aria-controls="panel-dashboard" class="active">{dash_label}</button>
-    {invest_tab}
-    <button type="button" role="tab" data-tabbtn="markets" aria-selected="false"
-            aria-controls="panel-markets">{market_label}</button>
-    <button type="button" role="tab" data-tabbtn="screener" aria-selected="false"
-            aria-controls="panel-screener">{screen_label}</button>
-    <button type="button" role="tab" data-tabbtn="evidence" aria-selected="false"
-            aria-controls="panel-evidence">{evidence_label}</button>
-    <button type="button" role="tab" data-tabbtn="funds" aria-selected="false"
-            aria-controls="panel-funds">{funds_label}</button>
-    <button type="button" role="tab" data-tabbtn="watchlist" aria-selected="false"
-            aria-controls="panel-watchlist">{watch_label}</button>
-    <button type="button" role="tab" data-tabbtn="news" aria-selected="false"
-            aria-controls="panel-news">{news_label}</button>
+    {invest_tab}{signal_tabs}
     <button type="button" role="tab" data-tabbtn="performance" aria-selected="false"
             aria-controls="panel-performance">{record_label}</button>
     <button type="button" role="tab" data-tabbtn="setup" aria-selected="false"
