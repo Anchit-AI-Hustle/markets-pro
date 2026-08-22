@@ -3318,7 +3318,15 @@ DETAIL_JS = """
       return '<h3 class="detailsub">Fundamentals</h3>' +
         '<div class="nofund"><strong>Not available for this listing.</strong> ' +
         esc(why) + '. Nothing is estimated in its place \u2014 an absent ' +
-        'fundamental is honest, an invented one is not.</div>';
+        'fundamental is honest, an invented one is not.' +
+        (stock.region === 'india'
+          ? '<span class="nofundfix">Indian fundamentals need a free '
+            + 'provider key. Every keyless route was tested: the exchanges '
+            + 'block automated access, and the aggregators that do carry the '
+            + 'figures forbid reuse. Add a key and these fill in on the next '
+            + 'refresh.</span>'
+          : '') +
+        '</div>';
     }
     var f = stock.fundamentals, r = f.ratios || {}, s = f.series || {};
 
@@ -3338,6 +3346,12 @@ DETAIL_JS = """
         tile('Debt / equity', r.debt_to_equity ? num(r.debt_to_equity, 2) : '—') +
         tile('Book value / share', r.book_value_per_share
              ? num(r.book_value_per_share) : '—') +
+        (r.dividend_yield != null
+          ? tile('Dividend yield', pct(r.dividend_yield, 2)) : '') +
+        (r.eps != null ? tile('EPS', num(r.eps)) : '') +
+        (r.beta != null ? tile('Beta', num(r.beta, 2), 'vs its index') : '') +
+        (r.analyst_target != null
+          ? tile('Analyst target', num(r.analyst_target), 'provider consensus') : '') +
       '</div>';
 
     // Multi-year trend: the direction matters more than any single year.
