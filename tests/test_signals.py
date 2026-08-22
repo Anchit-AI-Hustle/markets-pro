@@ -532,6 +532,32 @@ class TestRenderWithSignals(unittest.TestCase):
         self.assertIn("54.0M", html)          # volume, humanised
         self.assertIn("71%", html)            # position inside the year
 
+    def test_evidence_leads_with_the_finding_not_a_hedge(self):
+        """The point of the study is the headline. Burying "no rule beat
+        chance" under the table would make it decoration."""
+        fitness = {
+            "tests_run": 102, "min_trades": 20, "alpha": 0.05,
+            "false_positives_expected": 5.1, "instruments_with_evidence": 0,
+            "results": {"IN:X": {"symbol": "X", "logics": [
+                {"logic": "pullback", "verdict": "profitable_but_unproven",
+                 "trades": 91, "profit_factor": 1.285, "p_value": 0.834},
+                {"logic": "breakout", "verdict": "no_edge",
+                 "trades": 28, "profit_factor": 0.42, "p_value": 0.008},
+                {"logic": "momentum", "verdict": "insufficient", "trades": 0},
+            ], "best": "pullback", "best_verdict": "profitable_but_unproven"}},
+        }
+        html = render_dashboard(self.report, signals=self.signals, fitness=fitness)
+        self.assertIn("0 rule beat chance on any single name", html)
+        # The false-positive budget must be stated, not hidden.
+        self.assertIn("5.1", html)
+        self.assertIn("luck alone", html)
+        self.assertIn("Made money, unproven", html)
+        self.assertIn("Too few trades", html)
+
+    def test_evidence_absent_says_so_rather_than_claiming_none(self):
+        html = render_dashboard(self.report, signals=self.signals, fitness=None)
+        self.assertIn("evidence study has not run", html)
+
     def test_charts_offer_real_range_filters(self):
         """Ranges must slice a real series, not redraw the same window."""
         html = render_dashboard(self.report, signals=self.signals)

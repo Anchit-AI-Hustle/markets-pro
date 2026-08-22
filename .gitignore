@@ -30,3 +30,7 @@ data/raw/
 .vercel
 public/
 data/executions/
+# The twenty-year research cache is ~40 MB of bars used only by the weekly
+# evidence study. The study's output (fitness.json) is committed; the bars
+# behind it are refetched rather than stored.
+data/research/*/

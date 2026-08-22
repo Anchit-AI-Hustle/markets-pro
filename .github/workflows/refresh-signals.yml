@@ -73,11 +73,23 @@ jobs:
         run: |
           PYTHONPATH=src python3 -m autotrader.screener.core --data data/live \
             --regions india us --out data/live/screener.json
+      # The evidence study needs decades, not days. The deep cache is
+      # refreshed on Saturdays only — filings and prices move, twenty years
+      # of history does not — and the study is cheap once it exists.
+      - name: Re-run the evidence study (weekly)
+        if: github.event_name == 'workflow_dispatch' || fromJSON('[0]')[0] == 0
+        run: |
+          if [ ! -f data/research/fitness.json ] || [ "$(date -u +%u)" = "6" ]; then
+            PYTHONPATH=src python3 -m autotrader.research.fitness \
+              --data data/research || echo "::warning::evidence study skipped"
+          else
+            echo "not Saturday and a study already exists — keeping it"
+          fi
       - name: Commit refreshed cache
         run: |
           git config user.name "signals-refresh"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/live
+          git add data/live data/research
           if git diff --cached --quiet; then
             echo "cache unchanged — no deploy needed"
           else

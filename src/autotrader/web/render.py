@@ -1245,6 +1245,31 @@ tr.openable:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
   .techsay{grid-column:1 / -1}
 }
 
+/* --- evidence ------------------------------------------------------------- */
+.finding{border:1px solid var(--accent);border-radius:9px;padding:14px 16px;
+  margin-bottom:14px;background:color-mix(in srgb,var(--accent) 6%,var(--panel))}
+.findingline{margin:0 0 10px;font-size:15px;line-height:1.5;color:var(--ink)}
+.finding p{margin:0 0 8px;font-size:12.5px;color:var(--muted);line-height:1.6;
+  max-width:74ch}
+.finding p:last-child{margin-bottom:0}
+.finding strong{color:var(--ink)}
+.verdictcounts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.vcount{display:flex;flex-direction:column;gap:1px;padding:8px 12px;
+  border:1px solid var(--line);border-radius:8px;font-size:11px;
+  color:var(--muted);min-width:96px}
+.vcount b{font-size:19px;color:var(--ink);font-variant-numeric:tabular-nums}
+.evidencetable{min-width:640px}
+.verdict{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;
+  border-radius:999px;background:var(--tag);color:var(--muted)}
+.verdict.evidence{background:color-mix(in srgb,var(--pos) 22%,var(--tag));
+  color:var(--pos)}
+.verdict.unproven{background:color-mix(in srgb,var(--accent) 16%,var(--tag));
+  color:var(--accent)}
+.verdict.noedge{background:color-mix(in srgb,var(--neg) 16%,var(--tag));
+  color:var(--neg)}
+.verdictdetail{display:block;font-size:10.5px;color:var(--muted);margin-top:3px;
+  font-variant-numeric:tabular-nums}
+
 /* --- markets -------------------------------------------------------------- */
 .mktgroup{margin:20px 0 10px;font-size:12px;text-transform:uppercase;
   letter-spacing:.06em;color:var(--accent);font-weight:700}
@@ -2426,6 +2451,103 @@ reports to, once a day after valuation. A fund has no intraday price &mdash; any
 site showing one is showing an estimate. Direct plans carry lower charges than
 regular ones for the same portfolio, which is why the same fund appears twice.
 Nothing here is a recommendation, and past NAV growth is not a forecast.</p>"""
+
+
+VERDICT_LABELS = {
+    "evidence": ("evidence", "Beat chance"),
+    "profitable_but_unproven": ("unproven", "Made money, unproven"),
+    "no_edge": ("noedge", "No edge"),
+    "insufficient": ("insufficient", "Too few trades"),
+    "no_history": ("insufficient", "No history"),
+}
+
+LOGIC_LABELS = {
+    "pullback": ("Buy the dip in an uptrend",
+                 "waits for a sharp drop while the long trend is still up"),
+    "breakout": ("Buy a breakout on volume",
+                 "waits for a new multi-week high on heavy trading"),
+    "momentum": ("Hold the steady riser",
+                 "holds while the name ranks among the strongest"),
+}
+
+
+def _evidence_section(fitness: dict | None) -> str:
+    """What the rules have actually achieved, per name, out of sample.
+
+    This is the part of the app most likely to disappoint, which is why it
+    exists. Every screener will tell you what to buy; almost none will tell
+    you that its own logic cannot be distinguished from a coin flip on the
+    name you are looking at. The headline is the finding, not a hedge buried
+    under it.
+    """
+    if not fitness:
+        return ('<p class="empty">The evidence study has not run for this '
+                "build. It runs against a separate twenty-year cache.</p>")
+
+    results = fitness.get("results") or {}
+    tests = fitness.get("tests_run", 0)
+    expected_luck = fitness.get("false_positives_expected", 0)
+    with_evidence = fitness.get("instruments_with_evidence", 0)
+
+    counts: dict[str, int] = {}
+    for record in results.values():
+        for row in record.get("logics", []):
+            counts[row["verdict"]] = counts.get(row["verdict"], 0) + 1
+
+    rows = ""
+    for _key, record in sorted(results.items(), key=lambda kv: kv[1]["symbol"]):
+        cells = ""
+        for row in record.get("logics", []):
+            cls, label = VERDICT_LABELS.get(row["verdict"], ("insufficient", "—"))
+            detail = ""
+            if row.get("trades"):
+                pf = row.get("profit_factor")
+                detail = (
+                    f"{row['trades']} trades"
+                    + (f" &middot; PF {pf:.2f}" if pf else "")
+                    + (f" &middot; p={row['p_value']:.2f}"
+                       if row.get("p_value") is not None else "")
+                )
+            cells += (
+                f'<td><span class="verdict {cls}">{_esc(label)}</span>'
+                f'<span class="verdictdetail">{detail}</span></td>'
+            )
+        rows += (
+            f'<tr><td class="wname"><strong>{_esc(record["symbol"])}</strong></td>'
+            f"{cells}</tr>"
+        )
+
+    return f"""<div class="finding">
+  <p class="findingline"><strong>Across {tests} tests over about twenty years,
+  {with_evidence} rule beat chance on any single name.</strong></p>
+  <p>Each of the three rules was run against each instrument's own history,
+  alone. The first half of that history is thrown away before scoring, because
+  the rules were designed against data like it and measuring there measures the
+  design. Only trades in the second half count, and a verdict needs at least
+  {fitness.get('min_trades', 20)} of them.</p>
+  <p>A win rate is then compared with a coin flip using an exact binomial test.
+  At {tests} tests and a {fitness.get('alpha', 0.05)} threshold, roughly
+  <strong>{expected_luck}</strong> would clear the bar on luck alone &mdash; so
+  a single 'beat chance' result here would be worth less than it looks, and
+  there are none.</p>
+</div>
+<div class="verdictcounts">
+  {''.join(
+      f'<span class="vcount"><b>{n}</b>{_esc(VERDICT_LABELS.get(v, ("", v))[1])}</span>'
+      for v, n in sorted(counts.items(), key=lambda kv: -kv[1])
+  )}
+</div>
+<div class="wtablewrap"><table class="wtable evidencetable">
+  <thead><tr><th>Instrument</th>
+  <th>Buy the dip</th><th>Buy the breakout</th><th>Hold the riser</th></tr></thead>
+  <tbody>{rows}</tbody>
+</table></div>
+<p class="caption">"Made money, unproven" means the rule finished ahead but its
+win rate is statistically indistinguishable from a coin flip &mdash; the profit
+came from winners being larger than losers, not from picking direction well.
+That can persist, and it can also stop without warning. Nothing on this page is
+a recommendation; it is the evidence for and against the rules this app runs,
+including where that evidence is absent.</p>"""
 
 
 def _paper_section() -> str:
@@ -5683,6 +5805,7 @@ def render_dashboard(
     signals: dict | None = None,
     screener: dict | None = None,
     funds: dict | None = None,
+    fitness: dict | None = None,
 ) -> str:
     """Return a complete, self-contained HTML document for ``report``.
 
@@ -5757,6 +5880,12 @@ def render_dashboard(
     <div class="panel">{_screener_section(screener)}</div>
   </section>
 
+  <section class="tabpanel" id="panel-evidence" data-tab="evidence"
+           role="tabpanel" hidden>
+    <h2>Does any of this actually work?</h2>
+    <div class="panel">{_evidence_section(fitness)}</div>
+  </section>
+
   <section class="tabpanel" id="panel-funds" data-tab="funds"
            role="tabpanel" hidden>
     <h2>Mutual funds</h2>
@@ -5827,6 +5956,7 @@ def render_dashboard(
     dash_label = _tab_label("Today", "Dashboard")
     market_label = _tab_label("Markets", "Markets")
     screen_label = _tab_label("Screen", "Screener")
+    evidence_label = _tab_label("Proof", "Evidence")
     funds_label = _tab_label("Funds", "Mutual funds")
     watch_label = _tab_label("List", "Watchlist")
     news_label = _tab_label("News", "News")
@@ -5840,6 +5970,8 @@ def render_dashboard(
             aria-controls="panel-markets">{market_label}</button>
     <button type="button" role="tab" data-tabbtn="screener" aria-selected="false"
             aria-controls="panel-screener">{screen_label}</button>
+    <button type="button" role="tab" data-tabbtn="evidence" aria-selected="false"
+            aria-controls="panel-evidence">{evidence_label}</button>
     <button type="button" role="tab" data-tabbtn="funds" aria-selected="false"
             aria-controls="panel-funds">{funds_label}</button>
     <button type="button" role="tab" data-tabbtn="watchlist" aria-selected="false"

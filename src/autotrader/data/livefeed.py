@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
@@ -34,21 +34,39 @@ class LiveFeed:
     data: MarketDataSet
     fx: FXRates
     as_of: dict[str, date]  # region -> last completed session in the cache
+    #: Rows the cache held that could not be read, per instrument. Empty is
+    #: the normal case; anything here is worth seeing in a job log.
+    bad_bars: dict[str, int] = field(default_factory=dict)
 
 
-def _series_from_cache(document: dict, key: str) -> BarSeries:
-    bars = [
-        Bar(
-            day=date.fromisoformat(row["day"]),
-            open=Decimal(row["open"]),
-            high=Decimal(row["high"]),
-            low=Decimal(row["low"]),
-            close=Decimal(row["close"]),
-            volume=Decimal(row["volume"]),
-        )
-        for row in document["bars"]
-    ]
-    return BarSeries(key, bars)
+def _series_from_cache(document: dict, key: str) -> tuple[BarSeries, int]:
+    """Bars from a cache file, with unusable rows dropped and counted.
+
+    Deep history contains the occasional corrupt session — a zero open against
+    a live high and low, for instance, which appears in vendor data going back
+    a decade or more. ``Bar`` refuses to construct one, which is correct, but a
+    single bad session two thousand rows back should not take down an entire
+    instrument. Such rows are skipped and counted so the loss is visible rather
+    than silent; a bar is never repaired, because inventing a price to fill a
+    gap is worse than having the gap.
+    """
+    bars = []
+    dropped = 0
+    for row in document["bars"]:
+        try:
+            bars.append(
+                Bar(
+                    day=date.fromisoformat(row["day"]),
+                    open=Decimal(row["open"]),
+                    high=Decimal(row["high"]),
+                    low=Decimal(row["low"]),
+                    close=Decimal(row["close"]),
+                    volume=Decimal(row["volume"]),
+                )
+            )
+        except (ValueError, ArithmeticError, KeyError):
+            dropped += 1
+    return BarSeries(key, bars), dropped
 
 
 def load_fx(root: Path) -> FXRates:
@@ -75,6 +93,7 @@ def load_livefeed(root: Path, regions: Sequence[str] = ("india", "us")) -> LiveF
     signal page silently covering zero instruments would be worse than no page.
     """
     instruments: list[Instrument] = []
+    bad_bars: dict[str, int] = {}
     entries: list[UniverseEntry] = []
     data = MarketDataSet()
     as_of: dict[str, date] = {}
@@ -86,7 +105,9 @@ def load_livefeed(root: Path, regions: Sequence[str] = ("india", "us")) -> LiveF
                 document = read_cache(root, entry)
             except FetchError:
                 continue
-            series = _series_from_cache(document, entry.key)
+            series, dropped = _series_from_cache(document, entry.key)
+            if dropped:
+                bad_bars[entry.key] = dropped
             if not len(series):
                 continue
             last_day = series.last_day
@@ -118,4 +139,5 @@ def load_livefeed(root: Path, regions: Sequence[str] = ("india", "us")) -> LiveF
         data=data,
         fx=load_fx(root),
         as_of=as_of,
+        bad_bars=bad_bars,
     )

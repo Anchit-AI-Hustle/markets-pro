@@ -1,0 +1,861 @@
+{
+ "version": 1,
+ "min_trades": 20,
+ "in_sample_fraction": 0.6,
+ "alpha": 0.05,
+ "tests_run": 102,
+ "false_positives_expected": 5.1,
+ "instruments_with_evidence": 0,
+ "results": {
+  "IN:RELIANCE": {
+   "symbol": "RELIANCE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 3,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:HDFCBANK": {
+   "symbol": "HDFCBANK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 3,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:ICICIBANK": {
+   "symbol": "ICICIBANK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:INFY": {
+   "symbol": "INFY",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:TCS": {
+   "symbol": "TCS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:LT": {
+   "symbol": "LT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 11,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:SBIN": {
+   "symbol": "SBIN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 7,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 5,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:BHARTIARTL": {
+   "symbol": "BHARTIARTL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 5,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:ITC": {
+   "symbol": "ITC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:MARUTI": {
+   "symbol": "MARUTI",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:ASIANPAINT": {
+   "symbol": "ASIANPAINT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 8,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 4,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:BAJFINANCE": {
+   "symbol": "BAJFINANCE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 3,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 3,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:TITAN": {
+   "symbol": "TITAN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 8,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 3,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:NIFTYBEES": {
+   "symbol": "NIFTYBEES",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 5,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:BANKBEES": {
+   "symbol": "BANKBEES",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 4,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:GOLDBEES": {
+   "symbol": "GOLDBEES",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 8,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 5,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:AAPL": {
+   "symbol": "AAPL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:MSFT": {
+   "symbol": "MSFT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:NVDA": {
+   "symbol": "NVDA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:AMZN": {
+   "symbol": "AMZN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:GOOGL": {
+   "symbol": "GOOGL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:META": {
+   "symbol": "META",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:TSLA": {
+   "symbol": "TSLA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:JPM": {
+   "symbol": "JPM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:UNH": {
+   "symbol": "UNH",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:XOM": {
+   "symbol": "XOM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:V": {
+   "symbol": "V",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:PG": {
+   "symbol": "PG",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:COST": {
+   "symbol": "COST",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:AVGO": {
+   "symbol": "AVGO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:SPY": {
+   "symbol": "SPY",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:QQQ": {
+   "symbol": "QQQ",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:IWM": {
+   "symbol": "IWM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:GLD": {
+   "symbol": "GLD",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  }
+ }
+}

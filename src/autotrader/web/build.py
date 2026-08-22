@@ -161,6 +161,7 @@ def build_static(
     screener: dict | None = None,
     funds: dict | None = None,
     funds_source: Path | None = None,
+    fitness: dict | None = None,
 ) -> Path:
     """Write ``out_dir/markets-pro/index.html`` and return its path."""
     report = report or run_demo_backtest()
@@ -181,6 +182,7 @@ def build_static(
         signals=signals,
         screener=screener,
         funds=funds,
+        fitness=fitness,
     )
     target.write_text(html, encoding="utf-8")
 
@@ -298,8 +300,22 @@ def main(argv: list[str] | None = None) -> int:
             except (OSError, ValueError) as error:
                 print(f"funds cache unreadable ({error}); the tab will say so")
 
+    # The evidence study runs against its own deep cache and is committed
+    # like the rest; the build only reads it.
+    fitness = None
+    for candidate in (Path("data/research/fitness.json"),
+                      (args.live / "fitness.json") if args.live else None):
+        if candidate and candidate.exists():
+            try:
+                import json as _kjson
+
+                fitness = _kjson.loads(candidate.read_text())
+                break
+            except (OSError, ValueError) as error:
+                print(f"fitness unreadable ({error}); the tab will say so")
+
     path = build_static(
-        args.out, report=report, screener=screener, funds=funds,
+        args.out, report=report, screener=screener, funds=funds, fitness=fitness,
         funds_source=(args.live / "funds.json") if args.live else None,
         tests_passed=args.tests_passed, tests_total=args.tests_total,
         signals=signals, subtitle=subtitle,
