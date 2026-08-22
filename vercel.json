@@ -9,6 +9,14 @@
       "destination": "/api/:path*"
     },
     {
+      "source": "/stocks.json",
+      "destination": "/markets-pro/stocks.json"
+    },
+    {
+      "source": "/funds.json",
+      "destination": "/markets-pro/funds.json"
+    },
+    {
       "source": "/",
       "destination": "/markets-pro/index.html"
     }

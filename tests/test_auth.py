@@ -238,6 +238,44 @@ class CspGuardTest(unittest.TestCase):
         check_csp_allows(PROJECT, self._vercel("default-src 'self'"))
 
 
+class SidecarRoutingTest(unittest.TestCase):
+    """Every file the page fetches must resolve from where the page lives.
+
+    The subdomain serves the document at "/" through a rewrite while the
+    sidecars sit under /markets-pro/. Absolute URLs in the page make that
+    work, but /stocks.json on the subdomain still 404s, which is a trap for
+    anyone -- or anything -- reasoning about the site from its own root. Each
+    sidecar now has its own rewrite, and this fails if a new one is added
+    without one.
+    """
+
+    def setUp(self):
+        from autotrader.web.build import SIDECARS
+
+        root = Path(__file__).resolve().parent.parent
+        self.sidecars = SIDECARS
+        self.rewrites = json.loads((root / "vercel.json").read_text())["rewrites"]
+
+    def test_every_sidecar_resolves_from_the_site_root(self):
+        sources = {r["source"]: r["destination"] for r in self.rewrites}
+        for name in self.sidecars:
+            self.assertIn(f"/{name}", sources,
+                          f"/{name} would 404 on the subdomain")
+            self.assertEqual(sources[f"/{name}"], f"/markets-pro/{name}")
+
+    def test_the_document_itself_still_resolves(self):
+        sources = {r["source"] for r in self.rewrites}
+        self.assertIn("/", sources)
+
+    def test_the_api_route_is_not_shadowed(self):
+        # A sidecar rewrite must never be broad enough to swallow /api.
+        for rewrite in self.rewrites:
+            if rewrite["source"] in ("/", "/markets-pro/api/:path*"):
+                continue
+            self.assertNotIn(":path*", rewrite["source"],
+                             f'{rewrite["source"]} is broad enough to catch other routes')
+
+
 class ShippedConfigTest(unittest.TestCase):
     """The two committed files that have to agree, checked against each other.
 

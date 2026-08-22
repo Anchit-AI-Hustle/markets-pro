@@ -33,6 +33,13 @@ from ..strategy.long_term import LongTermConfig, LongTermStrategy
 from ..strategy.short_term import ShortTermConfig, ShortTermStrategy
 from .render import render_dashboard
 
+#: Files written beside the page and fetched by the browser on demand. The
+#: subdomain serves the document itself at "/" through a rewrite, so each of
+#: these needs a rewrite of its own or it resolves only under /markets-pro/ --
+#: reachable, but not from where the page appears to live. Tested against
+#: vercel.json, so adding a fourth without routing it fails the build's suite.
+SIDECARS = ("stocks.json", "funds.json")
+
 FX = FXRates(
     "USD",
     {"INR": Decimal("83.20"), "CNY": Decimal("7.10"), "RUB": Decimal("90.50")},
@@ -195,11 +202,11 @@ def build_static(
 
         from .render import _stock_index
 
-        (target_dir / "stocks.json").write_text(
+        (target_dir / SIDECARS[0]).write_text(
             _json.dumps(_stock_index(signals, screener)), encoding="utf-8"
         )
         if funds_source is not None and funds_source.exists():
-            (target_dir / "funds.json").write_text(
+            (target_dir / SIDECARS[1]).write_text(
                 funds_source.read_text(), encoding="utf-8"
             )
     return target
