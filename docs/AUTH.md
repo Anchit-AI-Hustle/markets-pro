@@ -45,9 +45,17 @@ nobody has configured never renders a button that could only fail.
 
 ## Providers
 
-**Email (on).** Supabase sends a six-digit code from its own mailer. Free, no
-third-party account. The shared mailer is rate limited and is fine for personal
-use; a real user base needs custom SMTP configured in the Supabase dashboard.
+**Email (on).** Supabase sends a six-digit code from its own mailer, with a
+sign-in link below it as a fallback. Free, no third-party account. The shared
+mailer is rate limited and is fine for personal use; a real user base needs
+custom SMTP configured in the Supabase dashboard.
+
+Two templates carry that code, and both have to. The first sign-in from an
+address Supabase has not seen is a **signup**, which sends `confirmation`;
+`magic_link` is only used once the account exists. Customising just one leaves
+half the readers — and specifically every new one — with the stock link-only
+mail and a code screen they cannot satisfy. Both live in
+`supabase/templates/`.
 
 **Google (off).** Free, but the credentials must be created first:
 

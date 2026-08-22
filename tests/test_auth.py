@@ -86,6 +86,20 @@ class MarkupTest(unittest.TestCase):
         # handled in script, so none may carry an action.
         self.assertNotIn("<form action", auth_dialog())
 
+    def test_code_screen_admits_the_link_exists(self):
+        # The email carries both. A screen that mentions only the code strands
+        # the reader who used the link, and the first sign-in from a new
+        # address is exactly when that happens.
+        dialog = auth_dialog()
+        code_pane = dialog.split('data-pane="code"')[1]
+        self.assertIn("link in the same email", code_pane)
+
+    def test_code_screen_names_the_address_it_used(self):
+        # So a typo is obvious before the reader searches an inbox that will
+        # never receive the mail.
+        self.assertIn("data-authwhere", auth_dialog())
+        self.assertIn("where.textContent = address", AUTH_JS)
+
     def test_dialog_states_what_the_account_is_not(self):
         self.assertIn("not a broker login", auth_dialog())
 

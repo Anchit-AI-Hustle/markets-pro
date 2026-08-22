@@ -46,6 +46,15 @@ otp_length = 6
 otp_expiry = 900
 max_frequency = "60s"
 
+# Both templates, and for the same reason. The first sign-in from an address
+# Supabase has not seen is a *signup*, which sends `confirmation`, not
+# `magic_link` -- so customising only the latter leaves every new reader with
+# the stock link-only mail and a code screen they cannot satisfy. magic_link
+# takes over once the account exists.
+[auth.email.template.confirmation]
+subject = "Your Markets Pro sign-in code"
+content_path = "./supabase/templates/confirmation.html"
+
 [auth.email.template.magic_link]
 subject = "Your Markets Pro sign-in code"
 content_path = "./supabase/templates/magic_link.html"

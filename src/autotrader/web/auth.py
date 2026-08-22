@@ -532,7 +532,10 @@ AUTH_JS = """
       pending = {channel: channel, address: address};
       busy(false);
       pane('code');
-      say('Code sent to ' + address + '. It expires in 15 minutes.', 'ok');
+      var where = dlg.querySelector('[data-authwhere]');
+      // textContent: the address came from a text field and is not markup.
+      if (where) where.textContent = address;
+      say('Sent. The code expires in 15 minutes.', 'ok');
       var input = dlg.querySelector('[data-code]');
       if (input) { input.value = ''; input.focus(); }
     }).catch(function (error) {
@@ -788,8 +791,10 @@ def auth_dialog() -> str:
     </div>
 
     <div class="authpane" data-pane="code" hidden>
-      <h2>Enter your code</h2>
-      <p class="lede">Six digits, valid for fifteen minutes.</p>
+      <h2>Check your email</h2>
+      <p class="lede">We sent a six-digit code to
+      <strong data-authwhere>your inbox</strong>. Type it below, or just click
+      the link in the same email &mdash; either one signs you in.</p>
       <form data-authcode>
         <label for="auth-code">Code</label>
         <input id="auth-code" data-code type="text" inputmode="numeric"
