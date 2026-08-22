@@ -127,6 +127,26 @@ def _spark(feed: LiveFeed, key: str) -> list[float]:
     return [round(float(bar.close), 4) for bar in bars]
 
 
+def _history(feed: LiveFeed, key: str, sessions: int = 505) -> dict:
+    """Closes, volumes and dates for the ranges a detail chart offers.
+
+    Two years is the cache depth, which supports every range up to 2Y. Closes
+    are rounded to two places and volumes to whole shares: the extra digits
+    are noise at chart resolution and they triple the payload. Dates travel
+    with the series because trading days are not evenly spaced — weekends and
+    holidays mean an index cannot be turned back into a date.
+    """
+    series = feed.data.get(key)
+    if series is None or not len(series):
+        return {}
+    bars = list(series)[-sessions:]
+    return {
+        "d": [bar.day.isoformat() for bar in bars],
+        "c": [round(float(bar.close), 2) for bar in bars],
+        "v": [int(bar.volume) for bar in bars],
+    }
+
+
 def _s(value: object) -> str | None:
     """Decimal/date → JSON-safe string; None passes through."""
     if value is None:
@@ -401,6 +421,7 @@ def _watchlist(
             "status": status,
             "status_note": status_note,
             "spark": _spark(feed, entry.key),
+            "history": _history(feed, entry.key),
         })
 
     # Biggest movers first: on a list this long, the ones that did something

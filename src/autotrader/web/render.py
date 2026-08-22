@@ -558,7 +558,9 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
         move = (series[-1] - series[0]) / series[0] * 100 if series and series[0] else 0.0
         stop_txt = _price(order["stop_loss"]) if order.get("stop_loss") else "&mdash;"
         target_txt = _price(order["take_profit"]) if order.get("take_profit") else "&mdash;"
-        spark_block = f"""<div class="sparkwrap">{spark}</div>
+        spark_block = f"""<div class="sparkwrap openable" data-stock="{
+            _esc(order.get('key', ''))}" role="button" tabindex="0"
+     aria-label="Open {_esc(order['symbol'])} detail">{spark}</div>
   <div class="sparkscale">
     <span>{len(series)} sessions &middot; {move:+.1f}%</span>
     <span>stop {stop_txt} &middot; target {target_txt}</span>
@@ -697,7 +699,9 @@ def _positions_section(signals: dict) -> str:
   <td><span class="tag">{_esc(region_label)}</span>
       <strong>{_esc(position['symbol'])}</strong>
       <span class="muted-inline">{_esc(position['name'])}</span>
-      <span class="cellspark">{sparkline_svg(
+      <span class="cellspark openable" data-stock="{_esc(position.get('key', ''))}"
+            role="button" tabindex="0"
+            aria-label="Open {_esc(position['symbol'])} detail">{sparkline_svg(
           position.get('spark') or [], stop=position.get('stop'),
           target=position.get('take_profit'), width=120, height=26)}</span></td>
   <td>{book}</td>
@@ -1172,6 +1176,26 @@ tr.openable:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
 .detaillast{font-size:30px;font-weight:600;font-variant-numeric:tabular-nums}
 .detaillast i{font-style:normal;font-size:13px;color:var(--muted)}
 .detailmove{font-size:14px;font-weight:600}
+.chartbar{display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.chartmove{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.rangebtns{display:inline-flex;gap:2px;border:1px solid var(--line);
+  border-radius:8px;padding:2px;background:var(--panel)}
+.rangebtn{appearance:none;border:0;background:transparent;color:var(--muted);
+  font:inherit;font-size:11.5px;font-weight:600;padding:5px 10px;
+  border-radius:6px;cursor:pointer}
+.rangebtn:hover{color:var(--ink);background:var(--tag)}
+.rangebtn.on{color:var(--accent);background:var(--tag)}
+.rangebtn:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.volchart{width:100%;height:34px;display:block;margin-top:2px}
+.volchart rect{fill:var(--muted);opacity:.42}
+.chartscale{display:flex;justify-content:space-between;font-size:11px;
+  color:var(--muted);margin-top:6px}
+.sparkwrap.openable,.cellspark.openable{cursor:pointer;border-radius:6px}
+.sparkwrap.openable:hover,.cellspark.openable:hover{
+  outline:1px solid var(--accent);outline-offset:2px}
+.sparkwrap.openable:focus-visible,.cellspark.openable:focus-visible{
+  outline:2px solid var(--accent);outline-offset:2px}
 .detailchart{margin:18px 0 6px}
 .detailchart svg{width:100%;height:190px;display:block}
 .chartscale{display:flex;justify-content:space-between;font-size:11px;
@@ -2201,6 +2225,9 @@ def _stock_index(signals: dict, screener: dict | None) -> dict:
             "status_note": row.get("status_note"),
             "sessions": row.get("sessions"),
             "spark": row.get("spark") or [],
+            # Full series so the detail chart can offer real range filters
+            # rather than redrawing the same 60 sessions at every setting.
+            "history": row.get("history") or {},
         }
 
     for row in (screener or {}).get("results") or []:
@@ -3250,6 +3277,16 @@ DETAIL_JS = """
       : ['Negative', 'short-term momentum has fallen below the longer trend'];
   }
 
+  function readBollinger(v) {
+    if (v == null) return null;
+    var pctb = Number(v);
+    if (pctb >= 1) return ['Above the band', 'stretched above its normal range'];
+    if (pctb >= 0.8) return ['Upper band', 'near the top of its normal range'];
+    if (pctb <= 0) return ['Below the band', 'stretched below its normal range'];
+    if (pctb <= 0.2) return ['Lower band', 'near the bottom of its normal range'];
+    return ['Mid-band', 'inside its normal range'];
+  }
+
   function techRow(label, value, read) {
     if (!read) return '';
     return '<div class="techrow"><span class="techlabel">' + esc(label) + '</span>' +
@@ -3421,45 +3458,109 @@ DETAIL_JS = """
     return html;
   }
 
+  // --- price chart with range filters ------------------------------------
+  // Ranges slice the full cached series rather than redrawing the same 60
+  // sessions at every setting, which is why the sidecar carries two years.
+  var RANGES = [['1M', 21], ['3M', 63], ['6M', 126], ['1Y', 252], ['2Y', 0]];
+  var chartRange = 126;
+
+  function chartSeries(stock) {
+    var h = stock.history || {};
+    if (h.c && h.c.length >= 2) return {c: h.c, d: h.d || [], v: h.v || []};
+    var s = stock.spark || [];
+    return s.length >= 2 ? {c: s, d: [], v: []} : null;
+  }
+
   function chart(stock) {
-    var pts = stock.spark || [];
-    if (pts.length < 2) return '';
-    var w = 720, h = 190;
+    var full = chartSeries(stock);
+    if (!full) return '';
+    var n = chartRange > 0 ? Math.min(chartRange, full.c.length) : full.c.length;
+    var closes = full.c.slice(-n);
+    var days = full.d.slice(-n);
+    var vols = full.v.slice(-n);
+
+    var w = 720, h = 190, vh = 34, gap = 8;
     var hi = Number(stock.high_52w), lo = Number(stock.low_52w);
-    var vals = pts.slice();
-    if (isFinite(hi)) vals.push(hi);
-    if (isFinite(lo)) vals.push(lo);
+    var vals = closes.slice();
+    // Only fold the 52-week levels into the scale when they are actually in
+    // view; on a one-month range they would flatten the line to nothing.
+    var showLevels = n >= 200;
+    if (showLevels && isFinite(hi)) vals.push(hi);
+    if (showLevels && isFinite(lo)) vals.push(lo);
     var top = Math.max.apply(null, vals), bottom = Math.min.apply(null, vals);
     if (top === bottom) top = bottom + 1;
     var pad = (top - bottom) * 0.08;
     top += pad; bottom -= pad;
     var span = top - bottom;
-    function x(i) { return i * w / (pts.length - 1); }
+
+    function x(i) { return closes.length < 2 ? 0 : i * w / (closes.length - 1); }
     function y(v) { return h - ((v - bottom) / span * h); }
-    var line = pts.map(function (v, i) {
+
+    var line = closes.map(function (v, i) {
       return x(i).toFixed(1) + ',' + y(v).toFixed(1);
     }).join(' ');
     var area = '0,' + h + ' ' + line + ' ' + w + ',' + h;
-    var rising = pts[pts.length - 1] >= pts[0];
+    var rising = closes[closes.length - 1] >= closes[0];
+
     var rules = '';
-    [[hi, 'win', '52w high'], [lo, 'lose', '52w low']].forEach(function (row) {
-      if (!isFinite(row[0])) return;
-      var yy = y(row[0]);
-      if (yy < 0 || yy > h) return;
-      rules += '<line class="jrule ' + row[1] + '" x1="0" y1="' + yy.toFixed(1) +
-        '" x2="' + w + '" y2="' + yy.toFixed(1) + '"/>';
-    });
-    return '<div class="detailchart"><svg viewBox="0 0 ' + w + ' ' + h +
-      '" preserveAspectRatio="none" class="spark spark-' + (rising ? 'up' : 'down') +
-      '" aria-hidden="true">' + rules +
-      '<polygon class="sparkarea" points="' + area + '" fill="url(#sparkfill)"/>' +
-      '<polyline class="sparkline" points="' + line +
-      '" vector-effect="non-scaling-stroke"/></svg>' +
-      '<div class="chartscale"><span>last ' + pts.length +
-      ' sessions of ' + esc(stock.sessions || pts.length) + ' held</span>' +
-      '<span>52-week range ' + num(stock.low_52w) + ' \u2013 ' +
-      num(stock.high_52w) + '</span></div></div>';
+    if (showLevels) {
+      [[hi, 'win', '52w high'], [lo, 'lose', '52w low']].forEach(function (row) {
+        if (!isFinite(row[0])) return;
+        var yy = y(row[0]);
+        if (yy < 0 || yy > h) return;
+        rules += '<line class="jrule ' + row[1] + '" x1="0" y1="' + yy.toFixed(1) +
+          '" x2="' + w + '" y2="' + yy.toFixed(1) + '"/>';
+      });
+    }
+
+    // Volume underneath, scaled to its own maximum — sharing the price scale
+    // would render every bar invisible.
+    var volSvg = '';
+    if (vols.length === closes.length && vols.some(function (v) { return v > 0; })) {
+      var vmax = Math.max.apply(null, vols) || 1;
+      var bw = Math.max(w / closes.length * 0.72, 0.6);
+      volSvg = '<svg class="volchart" viewBox="0 0 ' + w + ' ' + vh +
+        '" preserveAspectRatio="none" aria-hidden="true">' +
+        vols.map(function (v, i) {
+          var bh = Math.max(v / vmax * vh, 0.4);
+          return '<rect x="' + (x(i) - bw / 2).toFixed(1) + '" y="' +
+            (vh - bh).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' +
+            bh.toFixed(1) + '"/>';
+        }).join('') + '</svg>';
+    }
+
+    var buttons = RANGES.map(function (r) {
+      var available = r[1] === 0 || full.c.length > r[1];
+      if (!available) return '';
+      var on = chartRange === r[1];
+      return '<button type="button" class="rangebtn' + (on ? ' on' : '') +
+        '" data-range="' + r[1] + '"' + (on ? ' aria-pressed="true"' : '') + '>' +
+        r[0] + '</button>';
+    }).join('');
+
+    var first = days.length ? days[0] : '';
+    var last = days.length ? days[days.length - 1] : '';
+    var move = closes[0] ? (closes[closes.length - 1] - closes[0]) / closes[0] * 100 : 0;
+
+    return '<div class="detailchart">' +
+      '<div class="chartbar"><span class="chartmove ' +
+        (move >= 0 ? 'pos' : 'neg') + '">' + (move >= 0 ? '+' : '') +
+        move.toFixed(2) + '% over this range</span>' +
+        '<span class="rangebtns" role="group" aria-label="Chart range">' +
+        buttons + '</span></div>' +
+      '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" ' +
+        'class="spark spark-' + (rising ? 'up' : 'down') + '" aria-hidden="true">' +
+        rules +
+        '<polygon class="sparkarea" points="' + area + '" fill="url(#sparkfill)"/>' +
+        '<polyline class="sparkline" points="' + line +
+        '" vector-effect="non-scaling-stroke"/></svg>' +
+      volSvg +
+      '<div class="chartscale"><span>' + esc(first) + '</span>' +
+        '<span>' + closes.length + ' sessions \u00b7 volume below</span>' +
+        '<span>' + esc(last) + '</span></div>' +
+    '</div>';
   }
+
 
   function render(stock) {
     var screen = stock.screen || {};
@@ -3541,6 +3642,9 @@ DETAIL_JS = """
         techRow('Supertrend', Number(reading.supertrend_direction) > 0 ? 'up' : 'down',
                 readST(reading.supertrend_direction)) +
         techRow('MACD histogram', num(reading.macd_hist, 3), readMACD(reading.macd_hist)) +
+        techRow('Bollinger position', reading.bollinger_pct_b == null ? '—'
+                  : (Number(reading.bollinger_pct_b) * 100).toFixed(0) + '%',
+                readBollinger(reading.bollinger_pct_b)) +
       '</div>' +
       '<div class="detailgrid tight">' +
         '<span class="dstat"><i>50-day average</i><b>' + num(reading.sma_fast) + '</b></span>' +
@@ -3549,6 +3653,15 @@ DETAIL_JS = """
           pct(reading.atr_pct) + '</b><u>of price</u></span>' +
         '<span class="dstat"><i>Annualised volatility</i><b>' +
           pct(reading.annualised_volatility, 1) + '</b></span>' +
+        '<span class="dstat"><i>Momentum, 3 months</i><b class="' +
+          tone(reading.momentum_short) + '">' + pct(reading.momentum_short, 1) +
+          '</b></span>' +
+        '<span class="dstat"><i>Momentum, 12 months</i><b class="' +
+          tone(reading.momentum_long) + '">' + pct(reading.momentum_long, 1) +
+          '</b></span>' +
+        '<span class="dstat"><i>Its sector</i><b class="' +
+          tone(screen.sector_momentum) + '">' + pct(screen.sector_momentum, 1) +
+          '</b><u>same window</u></span>' +
       '</div>';
     } else {
       html += '<p class="empty">The screener has no reading for this name in ' +
@@ -3612,6 +3725,7 @@ DETAIL_JS = """
       if (!stock) { close(); return false; }
       document.querySelectorAll('.tabpanel').forEach(function (p) { p.hidden = true; });
       host.hidden = false;
+      openStock = stock;
       render(stock);
       window.scrollTo(0, 0);
       return true;
@@ -3624,7 +3738,15 @@ DETAIL_JS = """
     if (tab) tab.click(); else location.hash = '#dashboard';
   }
 
+  var openStock = null;
+
   document.addEventListener('click', function (event) {
+    var range = event.target.closest('[data-range]');
+    if (range && openStock) {
+      chartRange = Number(range.getAttribute('data-range'));
+      render(openStock);                     // redraw at the new range
+      return;
+    }
     var trigger = event.target.closest('[data-stock]');
     if (trigger) {
       // Read the panel the row lives in rather than the active tab button:

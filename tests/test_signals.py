@@ -481,6 +481,38 @@ class TestRenderWithSignals(unittest.TestCase):
             "Every figure is a tagged value from this company", html
         )
 
+    def test_charts_offer_real_range_filters(self):
+        """Ranges must slice a real series, not redraw the same window."""
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("data-range=", html)
+        for label in ("'1M'", "'3M'", "'6M'", "'1Y'", "'2Y'"):
+            self.assertIn(label, html)
+        self.assertIn("chartSeries", html)
+        # The 52-week rules must not squash a short range.
+        self.assertIn("showLevels = n >= 200", html)
+
+    def test_every_sparkline_opens_its_detail_page(self):
+        self.signals["orders"][0]["spark"] = [100, 102, 101, 104]
+        screener = {"results": [{
+            "key": "IN:RELIANCE", "symbol": "RELIANCE", "name": "Reliance",
+            "region": "india", "sector": "energy", "signal": "bullish",
+            "score": 0.5, "signal_strength": 1.0, "regime": "trending",
+            "rationale": "test", "indicators_used": ["macd"], "reading": {},
+        }]}
+        html = render_dashboard(
+            self.report, signals=self.signals, screener=screener
+        )
+        self.assertIn('class="sparkwrap openable" data-stock=', html)
+        self.assertIn('class="cellspark openable" data-stock=', html)
+        self.assertIn('class="screenrow openable"', html)
+
+    def test_computed_indicators_are_not_left_unshown(self):
+        """Anything the screener bothers to compute should be readable."""
+        html = render_dashboard(self.report, signals=self.signals)
+        for label in ("Bollinger position", "Momentum, 3 months",
+                      "Momentum, 12 months", "Its sector"):
+            self.assertIn(label, html)
+
     def test_sidecar_data_is_fetched_from_an_absolute_path(self):
         """The subdomain serves this document at "/" through a rewrite, so a
         relative sidecar URL resolves to /stocks.json and 404s. This only
@@ -509,7 +541,9 @@ class TestRenderWithSignals(unittest.TestCase):
         self.signals["orders"][0]["spark"] = [1360, 1380, 1370, 1395, 1400]
         html = render_dashboard(self.report, signals=self.signals)
         # Assert on markup, not class names — those also appear in the CSS.
-        self.assertIn('<div class="sparkwrap">', html)
+        # The wrapper is also a link into the detail page, so match the opening
+        # tag rather than an exact class string.
+        self.assertIn('<div class="sparkwrap openable"', html)
         self.assertIn('class="sparkline"', html)
         self.assertIn('<line class="sparkstop"', html)
         self.assertIn('<line class="sparktarget"', html)
@@ -518,7 +552,7 @@ class TestRenderWithSignals(unittest.TestCase):
     def test_sparkline_needs_at_least_two_points(self):
         self.signals["orders"][0]["spark"] = [100]
         html = render_dashboard(self.report, signals=self.signals)
-        self.assertNotIn('<div class="sparkwrap">', html)
+        self.assertNotIn('<div class="sparkwrap', html)
 
     def test_market_status_is_present_for_both_venues(self):
         html = render_dashboard(self.report, signals=self.signals)
