@@ -516,9 +516,21 @@ class TestRenderWithSignals(unittest.TestCase):
         self.assertNotIn('fundgroup">[\\s\\S]', html)
 
     def test_watchlist_shows_the_range_and_volume_it_holds(self):
+        """The panel only renders with priced rows, so give it one."""
+        self.signals["watchlist"] = [{
+            "key": "US:AAPL", "symbol": "AAPL", "name": "Apple", "region": "us",
+            "sector": "tech", "currency": "USD", "yahoo": "AAPL",
+            "last": "232.00", "change_1d": "0.01", "change_1w": "0.02",
+            "change_1m": "0.03", "change_3m": "0.04",
+            "high_52w": "260.00", "low_52w": "164.00", "range_position": "0.71",
+            "avg_volume": "54000000", "status": "watching",
+            "status_note": "no setup", "spark": [1, 2, 3], "sessions": 501,
+        }]
         html = render_dashboard(self.report, signals=self.signals)
         for column in ("52w low", "52w high", "In range", "Avg volume"):
             self.assertIn(column, html)
+        self.assertIn("54.0M", html)          # volume, humanised
+        self.assertIn("71%", html)            # position inside the year
 
     def test_charts_offer_real_range_filters(self):
         """Ranges must slice a real series, not redraw the same window."""
