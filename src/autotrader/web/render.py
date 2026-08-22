@@ -3386,8 +3386,15 @@ DETAIL_JS = """
     if (r.earnings_growth != null) {
       growth.push('earnings ' + pct(r.earnings_growth, 1));
     }
-    // Attribution follows the actual source: calling a vendor's computed
-    // ratio a filing would misstate where the number came from.
+    // Attribution follows the actual source, field by field. A filing does
+    // not contain a beta or an analyst consensus target, so a page carrying
+    // both must not credit all of it to the filings.
+    var PROVIDER_ONLY = ['beta', 'analyst_target', 'dividend_yield', 'eps'];
+    var fromProvider = PROVIDER_ONLY.filter(function (name) {
+      return r[name] != null;
+    });
+    var LABELS = {beta: 'beta', analyst_target: 'analyst target',
+                  dividend_yield: 'dividend yield', eps: 'EPS'};
     var credit;
     if (f.provider) {
       credit = 'Supplied by ' + esc(f.provider) + ', a third-party data '
@@ -3395,10 +3402,19 @@ DETAIL_JS = """
         + 'that provider\u2019s own computed ratios rather than figures read '
         + 'from a filing, so they carry its assumptions.';
     } else {
-      credit = 'Every figure is a tagged value from this company\u2019s own '
-        + '10-K filings with the SEC \u2014 nothing estimated, smoothed or '
-        + 'modelled. <a class="fundsrc" href="' + esc(f.source || '#')
+      credit = 'Read from this company\u2019s own 10-K filings with the SEC '
+        + '\u2014 nothing estimated, smoothed or modelled. '
+        + '<a class="fundsrc" href="' + esc(f.source || '#')
         + '" target="_blank" rel="noopener noreferrer">See the filings</a>.';
+      if (f.extras_provider && fromProvider.length) {
+        credit += ' The ' + fromProvider.map(function (n) {
+          return LABELS[n];
+        }).join(', ') + ' ' + (fromProvider.length === 1 ? 'is' : 'are')
+          + ' the exception: a filing does not carry '
+          + (fromProvider.length === 1 ? 'it' : 'those') + ', so '
+          + (fromProvider.length === 1 ? 'it comes' : 'they come') + ' from '
+          + esc(f.extras_provider) + '.';
+      }
     }
     html += '<p class="caption">' + (growth.length ? esc(growth.join(', ')) + '. ' : '')
       + credit + '</p>';

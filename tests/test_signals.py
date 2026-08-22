@@ -469,6 +469,18 @@ class TestRenderWithSignals(unittest.TestCase):
         self.assertIn("data-paper-positions", html)
         self.assertIn("No paper positions yet", html)
 
+    def test_provider_fields_are_not_credited_to_the_filings(self):
+        """A 10-K contains no beta and no analyst target. A page carrying both
+        must not tell the reader every figure came from the filings."""
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("PROVIDER_ONLY", html)
+        self.assertIn("extras_provider", html)
+        self.assertIn("a filing does not carry", html)
+        # The unqualified claim must be gone.
+        self.assertNotIn(
+            "Every figure is a tagged value from this company", html
+        )
+
     def test_sidecar_data_is_fetched_from_an_absolute_path(self):
         """The subdomain serves this document at "/" through a rewrite, so a
         relative sidecar URL resolves to /stocks.json and 404s. This only
