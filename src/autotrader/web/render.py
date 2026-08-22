@@ -1146,6 +1146,8 @@ button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(-
 .nofund{padding:12px 14px;border:1px dashed var(--line);border-radius:8px;
   font-size:12.5px;color:var(--muted);line-height:1.6}
 .nofund strong{color:var(--ink)}
+.nofundfix{display:block;margin-top:7px;padding-top:7px;
+  border-top:1px solid var(--line);color:var(--muted)}
 .fundwrap{overflow-x:auto;margin:12px 0 4px}
 .fundtable{min-width:520px;font-size:12.5px}
 .fundtable th{font-size:10.5px}
@@ -3367,11 +3369,22 @@ DETAIL_JS = """
     if (r.earnings_growth != null) {
       growth.push('earnings ' + pct(r.earnings_growth, 1));
     }
-    html += '<p class="caption">' + (growth.length ? esc(growth.join(', ')) + '. ' : '') +
-      'Every figure is a tagged value from this company\u2019s own 10-K filings ' +
-      'with the SEC \u2014 nothing estimated, smoothed or modelled. ' +
-      '<a class="fundsrc" href="' + esc(f.source || '#') +
-      '" target="_blank" rel="noopener noreferrer">See the filings</a>.</p>';
+    // Attribution follows the actual source: calling a vendor's computed
+    // ratio a filing would misstate where the number came from.
+    var credit;
+    if (f.provider) {
+      credit = 'Supplied by ' + esc(f.provider) + ', a third-party data '
+        + 'provider' + (f.as_of ? ', as of ' + esc(f.as_of) : '') + '. These are '
+        + 'that provider\u2019s own computed ratios rather than figures read '
+        + 'from a filing, so they carry its assumptions.';
+    } else {
+      credit = 'Every figure is a tagged value from this company\u2019s own '
+        + '10-K filings with the SEC \u2014 nothing estimated, smoothed or '
+        + 'modelled. <a class="fundsrc" href="' + esc(f.source || '#')
+        + '" target="_blank" rel="noopener noreferrer">See the filings</a>.';
+    }
+    html += '<p class="caption">' + (growth.length ? esc(growth.join(', ')) + '. ' : '')
+      + credit + '</p>';
     return html;
   }
 

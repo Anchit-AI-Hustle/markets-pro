@@ -51,6 +51,14 @@ jobs:
         run: |
           PYTHONPATH=src python3 -m autotrader.data.funds --out data/live \
             || echo "::warning::fund NAV refresh failed; keeping previous cache"
+      # No-ops unless ALPHAVANTAGE_KEY is set as a repository secret; the
+      # pages keep saying "not available" until one exists.
+      - name: Fill non-US fundamentals (needs a free provider key)
+        env:
+          ALPHAVANTAGE_KEY: ${{ secrets.ALPHAVANTAGE_KEY }}
+        run: |
+          PYTHONPATH=src python3 -m autotrader.data.fundamentals_intl --out data/live \
+            || echo "::warning::provider fundamentals skipped"
       - name: Preview today's signals in the job log
         run: PYTHONPATH=src python3 -m autotrader.signals.live --data data/live --out /dev/null
       # Re-screens the whole universe on every refresh, same cadence as

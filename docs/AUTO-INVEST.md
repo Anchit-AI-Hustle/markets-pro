@@ -107,3 +107,47 @@ after the US close, commits the cache, and the push redeploys the site — so
 signals recompute every trading day without a server. In between, the page
 polls delayed quotes (~15 min for NSE) and flags any open position that trades
 through its stop or target.
+
+---
+
+## Where the data comes from
+
+Every number on the site is traceable to a source, and each source was chosen
+for being free and legitimate rather than merely available.
+
+| Data | Source | Key needed |
+|---|---|---|
+| Daily prices, India + US | Yahoo Finance chart API | no |
+| Indices, commodities, FX | Yahoo Finance chart API | no |
+| Dividends and splits | Yahoo Finance chart events | no |
+| Headlines | Yahoo Finance RSS | no |
+| US fundamentals | **SEC EDGAR** company facts (XBRL from 10-K filings) | no |
+| Indian mutual fund NAVs | **AMFI** `NAVAll.txt` | no |
+| Non-US fundamentals | Alpha Vantage free tier | **yes — free** |
+
+### Filling in Indian fundamentals
+
+This is the one gap, and it is an access problem rather than an engineering
+one. Every keyless route was tested and rejected:
+
+- **NSE and BSE company APIs** return `403` to automated clients, including
+  the cookie-seeded flow their own website uses.
+- **Yahoo's `quoteSummary`** is crumb-gated, and the crumb endpoint
+  rate-limits datacenter addresses — which is exactly what a CI runner is.
+- **Commercial aggregators** expose the figures only through their frontend's
+  private payloads: undocumented, liable to change without notice, and
+  against the terms of the sites publishing them.
+
+What is left is a documented API on a free tier. The integration is already
+written and does nothing until a key exists:
+
+1. Get a free key at <https://www.alphavantage.co/support/#api-key> (about
+   twenty seconds, no payment).
+2. Add it as a repository secret named `ALPHAVANTAGE_KEY`.
+
+The next nightly refresh fills the Indian pages in. Until then they say
+"not available", which is the honest state — the free tier allows 25 calls a
+day and the Indian universe is 17 names, so one pass fits comfortably.
+
+Provider figures are labelled as such on the page. They are that provider's
+computed ratios, not values read from a filing, and the attribution says so.
