@@ -501,6 +501,25 @@ class TestRenderWithSignals(unittest.TestCase):
         self.assertIn("stock.is_benchmark", html)
         self.assertIn("This is a market benchmark, not a tradable", html)
 
+    def test_tables_show_every_metric_they_have(self):
+        """A table holding eleven series and showing four is hiding data the
+        reader already downloaded."""
+        html = render_dashboard(self.report, signals=self.signals)
+        # Full statement, not a selection.
+        for label in ("Total assets", "Total liabilities", "Shareholders",
+                      "Cash and equivalents", "Long-term debt",
+                      "Operating income", "Diluted shares"):
+            self.assertIn(label, html)
+        # Section headings must be built, never stripped by a regex: the
+        # lazy match that did it deleted the rows between them.
+        self.assertIn("function flush()", html)
+        self.assertNotIn('fundgroup">[\\s\\S]', html)
+
+    def test_watchlist_shows_the_range_and_volume_it_holds(self):
+        html = render_dashboard(self.report, signals=self.signals)
+        for column in ("52w low", "52w high", "In range", "Avg volume"):
+            self.assertIn(column, html)
+
     def test_charts_offer_real_range_filters(self):
         """Ranges must slice a real series, not redraw the same window."""
         html = render_dashboard(self.report, signals=self.signals)

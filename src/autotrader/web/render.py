@@ -1156,6 +1156,9 @@ button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(-
 .fundtable{min-width:520px;font-size:12.5px}
 .fundtable th{font-size:10.5px}
 .fundtable td:first-child,.fundtable th:first-child{font-weight:600}
+.fundtable tr.fundgroup td{font-size:10px;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--accent);font-weight:700;
+  padding-top:12px;border-bottom:none}
 .fundsrc{color:var(--accent);font-weight:600}
 .fundsrc:hover{text-decoration:underline}
 .openable{cursor:pointer}
@@ -1350,7 +1353,11 @@ tr.openable:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
   background:color-mix(in srgb,var(--accent) 10%,var(--panel))}
 .wcount{font-size:10.5px;opacity:.75;font-variant-numeric:tabular-nums}
 .wtablewrap{overflow-x:auto}
-.wtable{min-width:760px}
+.wtable{min-width:1020px}
+.rangebar{display:inline-block;width:38px;height:6px;background:var(--tag);
+  border-radius:3px;overflow:hidden;vertical-align:middle;margin-right:5px}
+.rangebar span{display:block;height:100%;width:var(--w);background:var(--accent)}
+.rangepct{font-size:11px;color:var(--muted)}
 .wname{min-width:180px}
 .wsym{font-weight:700;margin-right:6px}
 .wtags{display:block;margin-top:3px}
@@ -1914,6 +1921,26 @@ def _watchlist_section(signals: dict) -> str:
             "IN" if region == "india" else "US", region
         )
         spark = sparkline_svg(row.get("spark") or [], width=110, height=28)
+        # Where the price sits inside its own year, as a bar plus the number:
+        # "73%" alone reads as a return until you see it against the range.
+        position = row.get("range_position")
+        if position in (None, ""):
+            range_cell = "&mdash;"
+        else:
+            pct_in = float(str(position)) * 100
+            range_cell = (
+                f'<span class="rangebar"><span style="--w:{pct_in:.0f}%"></span></span>'
+                f'<span class="rangepct">{pct_in:.0f}%</span>'
+            )
+        volume = row.get("avg_volume")
+        if volume in (None, ""):
+            volume_cell = "&mdash;"
+        else:
+            v = float(str(volume))
+            volume_cell = (
+                f"{v / 1e6:.1f}M" if v >= 1e6 else f"{v / 1e3:.0f}k" if v >= 1e3
+                else f"{v:.0f}"
+            )
         search_terms = _esc(
             " ".join(str(row.get(f, "")) for f in ("symbol", "name", "sector")).lower()
         )
@@ -1934,6 +1961,10 @@ def _watchlist_section(signals: dict) -> str:
   <td class="num {_move_tone(row.get('change_1w'))}">{_pct_move(row.get('change_1w'))}</td>
   <td class="num {_move_tone(row.get('change_1m'))}">{_pct_move(row.get('change_1m'))}</td>
   <td class="num {_move_tone(row.get('change_3m'))}">{_pct_move(row.get('change_3m'))}</td>
+  <td class="num">{_price(row['low_52w']) if row.get('low_52w') else '&mdash;'}</td>
+  <td class="num">{_price(row['high_52w']) if row.get('high_52w') else '&mdash;'}</td>
+  <td class="num">{range_cell}</td>
+  <td class="num">{volume_cell}</td>
   <td><span class="wstatus {cls}">{_esc(label)}</span>
     <span class="wnote">{_esc(row.get('status_note', ''))}</span></td>
 </tr>"""
@@ -1951,7 +1982,8 @@ def _watchlist_section(signals: dict) -> str:
 <div class="wtablewrap"><table class="wtable">
   <thead><tr><th>Instrument</th><th>60 sessions</th><th class="num">Last close</th>
   <th class="num">1 day</th><th class="num">1 week</th><th class="num">1 month</th>
-  <th class="num">3 months</th><th>Status</th></tr></thead>
+  <th class="num">3 months</th><th class="num">52w low</th><th class="num">52w high</th>
+  <th class="num">In range</th><th class="num">Avg volume</th><th>Status</th></tr></thead>
   <tbody>{body}</tbody>
 </table></div>
 <p class="wempty" data-wempty hidden>Nothing on the watchlist matches that.</p>
@@ -2113,6 +2145,14 @@ SCREEN_SIGNALS = (
 )
 
 
+def _reading(reading: dict, key: str, places: int) -> str:
+    """One indicator value, or an em dash when the screener did not compute it."""
+    value = reading.get(key)
+    if value in (None, ""):
+        return "&mdash;"
+    return f"{float(value):,.{places}f}"
+
+
 def _screener_section(screener: dict | None) -> str:
     """The whole universe ranked by the screener, with its reasoning shown.
 
@@ -2167,8 +2207,27 @@ def _screener_section(screener: dict | None) -> str:
     <span><i>Volatility</i><b>{_esc(row.get('volatility_bucket', '&mdash;'))}</b></span>
     <span><i>Price</i><b>{_price(reading.get('price')) if reading.get('price')
       else '&mdash;'}</b></span>
-    <span><i>RSI</i><b>{f"{float(reading['rsi']):.0f}" if reading.get('rsi')
-      else '&mdash;'}</b></span>
+    <span><i>RSI</i><b>{_reading(reading, 'rsi', 0)}</b></span>
+    <span><i>ADX</i><b>{_reading(reading, 'adx', 0)}</b></span>
+    <span><i>MACD</i><b>{_reading(reading, 'macd_hist', 3)}</b></span>
+    <span><i>Supertrend</i><b>{
+      'Up' if (reading.get('supertrend_direction') or 0) > 0 else 'Down'
+      if reading.get('supertrend_direction') is not None else '&mdash;'}</b></span>
+    <span><i>Bollinger</i><b>{
+      f"{float(reading['bollinger_pct_b']) * 100:.0f}%"
+      if reading.get('bollinger_pct_b') is not None else '&mdash;'}</b></span>
+    <span><i>50d avg</i><b>{_reading(reading, 'sma_fast', 2)}</b></span>
+    <span><i>200d avg</i><b>{_reading(reading, 'sma_slow', 2)}</b></span>
+    <span><i>ATR</i><b>{_pct_move(reading.get('atr_pct'))}</b></span>
+    <span><i>Volatility (a)</i><b>{_pct_move(reading.get('annualised_volatility'))}</b></span>
+    <span><i>Momentum 3m</i><b class="{_move_tone(reading.get('momentum_short'))}"
+      >{_pct_move(reading.get('momentum_short'))}</b></span>
+    <span><i>Momentum 12m</i><b class="{_move_tone(reading.get('momentum_long'))}"
+      >{_pct_move(reading.get('momentum_long'))}</b></span>
+    <span><i>vs its market</i><b class="{_move_tone(row.get('relative_momentum_long'))}"
+      >{_pct_move(row.get('relative_momentum_long'))}</b></span>
+    <span><i>Its sector</i><b class="{_move_tone(row.get('sector_momentum_long'))}"
+      >{_pct_move(row.get('sector_momentum_long'))}</b></span>
   </div>
   <p class="screenwhy">{_esc(row.get('rationale', ''))}</p>
   <p class="screenind">Indicators weighted: {_esc(indicators)}</p>
@@ -3423,27 +3482,58 @@ DETAIL_JS = """
           ? tile('Analyst target', num(r.analyst_target), 'provider consensus') : '') +
       '</div>';
 
-    // Multi-year trend: the direction matters more than any single year.
-    var rows = [['revenue', 'Revenue'], ['net_income', 'Net income'],
-                ['operating_cash_flow', 'Operating cash flow'],
-                ['eps_diluted', 'EPS (diluted)']];
+    // Every series the filings carry, grouped the way a statement is read.
+    // Showing four of eleven meant the balance sheet was invisible on a page
+    // claiming to show fundamentals.
+    var rows = [
+      ['@', 'Income statement'],
+      ['revenue', 'Revenue'],
+      ['operating_income', 'Operating income'],
+      ['net_income', 'Net income'],
+      ['@', 'Balance sheet'],
+      ['assets', 'Total assets'],
+      ['liabilities', 'Total liabilities'],
+      ['equity', 'Shareholders\u2019 equity'],
+      ['cash', 'Cash and equivalents'],
+      ['long_term_debt', 'Long-term debt'],
+      ['@', 'Cash flow and shares'],
+      ['operating_cash_flow', 'Operating cash flow'],
+      ['shares', 'Diluted shares'],
+      ['eps_diluted', 'EPS (diluted)']
+    ];
     var years = (s.revenue || s.net_income || []).map(function (y) { return y.year; });
     if (years.length) {
       var head = '<tr><th>Figure</th>' + years.map(function (y) {
         return '<th class="num">FY' + esc(y) + '</th>';
       }).join('') + '</tr>';
-      var bodyRows = rows.map(function (row) {
+      // Built section by section rather than filtered afterwards. The
+      // previous version stripped empty headings with a regex whose lazy
+      // match ran from one heading to the next and deleted the rows between
+      // them — the table rendered with no body at all.
+      var bodyRows = '';
+      var section = null, sectionRows = '';
+      function flush() {
+        if (section && sectionRows) {
+          bodyRows += '<tr class="fundgroup"><td colspan="' + (years.length + 1) +
+            '">' + esc(section) + '</td></tr>' + sectionRows;
+        }
+        sectionRows = '';
+      }
+      rows.forEach(function (row) {
+        if (row[0] === '@') { flush(); section = row[1]; return; }
         var series = s[row[0]];
-        if (!series || !series.length) return '';
+        if (!series || !series.length) return;
         var byYear = {};
         series.forEach(function (item) { byYear[item.year] = item.value; });
-        return '<tr><td>' + esc(row[1]) + '</td>' + years.map(function (y) {
+        sectionRows += '<tr><td>' + esc(row[1]) + '</td>' + years.map(function (y) {
           var v = byYear[y];
           if (v == null) return '<td class="num">—</td>';
           return '<td class="num">' +
             (row[0] === 'eps_diluted' ? num(v) : money(v)) + '</td>';
         }).join('') + '</tr>';
-      }).join('');
+      });
+      flush();
+
       html += '<div class="fundwrap"><table class="fundtable"><thead>' + head +
         '</thead><tbody>' + bodyRows + '</tbody></table></div>';
     }
