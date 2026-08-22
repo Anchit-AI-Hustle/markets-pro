@@ -481,6 +481,26 @@ class TestRenderWithSignals(unittest.TestCase):
             "Every figure is a tagged value from this company", html
         )
 
+    def test_market_cards_open_their_own_detail_page(self):
+        """Every other chart on the site expands; these were the exception."""
+        self.signals["market"] = {"benchmarks": [{
+            "key": "IDX:^NSEI", "yahoo": "^NSEI", "label": "Nifty 50",
+            "group": "india", "kind": "index", "currency": "INR",
+            "last": "24231.85", "change_1d": "0.0064", "change_1w": "-0.0047",
+            "change_1m": "0.016", "change_1y": "-0.0149",
+            "spark": [100, 101, 102], "history": {"d": [], "c": [100, 101], "v": []},
+        }], "regions": {}}
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn('class="idxcard openable" data-stock="IDX:^NSEI"', html)
+        self.assertIn('aria-label="Open Nifty 50 detail"', html)
+
+    def test_an_index_detail_omits_what_an_index_cannot_have(self):
+        """An index has no filing, dividend or strategy signal. Three
+        'not available' panels would be noise, not honesty."""
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("stock.is_benchmark", html)
+        self.assertIn("This is a market benchmark, not a tradable", html)
+
     def test_charts_offer_real_range_filters(self):
         """Ranges must slice a real series, not redraw the same window."""
         html = render_dashboard(self.report, signals=self.signals)

@@ -454,8 +454,13 @@ def _benchmarks(data_root: Path) -> list[dict]:
             return None if earlier <= 0 else _s((last - earlier) / earlier)
 
         days = series.get("days") or []
+        closes_f = [round(float(c), 2) for c in closes]
         rows.append({
             "yahoo": yahoo,
+            # A benchmark opens the same detail view as a stock, so it needs
+            # the same shape of history behind it.
+            "key": f"IDX:{yahoo}",
+            "history": {"d": days[-len(closes_f):], "c": closes_f, "v": []},
             "label": series.get("label", yahoo),
             "group": series.get("group", "global"),
             "kind": series.get("kind", "index"),
@@ -465,6 +470,7 @@ def _benchmarks(data_root: Path) -> list[dict]:
             "change_1w": move(5),
             "change_1m": move(21),
             "change_1y": move(251),
+            "change_2y": move(500),
             "as_of": days[-1] if days else None,
             "spark": [round(float(c), 4) for c in closes[-60:]],
         })

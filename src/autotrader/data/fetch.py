@@ -35,7 +35,7 @@ def fetch_usdinr() -> str:
     return rows[-1].close
 
 
-def fetch_benchmarks(root: Path, *, range_: str = "1y", pause: float = 0.3) -> list[str]:
+def fetch_benchmarks(root: Path, *, range_: str = "2y", pause: float = 0.3) -> list[str]:
     """Cache the indices, commodities and FX the market page quotes.
 
     Kept in one file rather than one per symbol: these are read together, as a
@@ -63,8 +63,8 @@ def fetch_benchmarks(root: Path, *, range_: str = "1y", pause: float = 0.3) -> l
                 "group": mark.group,
                 "kind": mark.kind,
                 "currency": currency,
-                "closes": [row.close for row in rows[-260:]],
-                "days": [row.day.isoformat() for row in rows[-260:]],
+                "closes": [row.close for row in rows[-520:]],
+                "days": [row.day.isoformat() for row in rows[-520:]],
             }
             print(f"benchmark {mark.yahoo}: {len(rows)} sessions")
         except FetchError as error:

@@ -1192,6 +1192,10 @@ tr.openable:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
 .chartscale{display:flex;justify-content:space-between;font-size:11px;
   color:var(--muted);margin-top:6px}
 .sparkwrap.openable,.cellspark.openable{cursor:pointer;border-radius:6px}
+.idxcard.openable{cursor:pointer;transition:border-color .16s var(--ease),
+  transform .16s var(--ease)}
+.idxcard.openable:hover{border-color:var(--accent);transform:translateY(-2px)}
+.idxcard.openable:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .sparkwrap.openable:hover,.cellspark.openable:hover{
   outline:1px solid var(--accent);outline-offset:2px}
 .sparkwrap.openable:focus-visible,.cellspark.openable:focus-visible{
@@ -2014,7 +2018,9 @@ def _market_section(signals: dict) -> str:
         for row in rows:
             tone = _move_tone(row.get("change_1d"))
             spark = sparkline_svg(row.get("spark") or [], width=150, height=34)
-            cards += f"""<div class="idxcard">
+            cards += f"""<div class="idxcard openable" data-stock="{
+                _esc(row.get('key', ''))}" role="button" tabindex="0"
+     aria-label="Open {_esc(row['label'])} detail">
   <span class="idxname">{_esc(row['label'])}</span>
   <span class="idxlast">{_price(row['last'])}</span>
   <span class="idxmove {tone}">{_pct_move(row.get('change_1d'))}<i>today</i></span>
@@ -2249,6 +2255,32 @@ def _stock_index(signals: dict, screener: dict | None) -> dict:
 
     # Anything the strategies are actually acting on, so the detail view can
     # show the live levels rather than only the screener's opinion.
+    # Indices, commodities and currencies open the same detail view. They are
+    # marked so it can skip the sections that make no sense for them: an index
+    # has no dividend, no filing and no screener verdict.
+    for bench in (signals.get("market") or {}).get("benchmarks") or []:
+        merged[bench["key"]] = {
+            "key": bench["key"],
+            "symbol": bench["label"],
+            "name": {"index": "Index", "commodity": "Commodity",
+                     "currency": "Exchange rate",
+                     "volatility": "Volatility index"}.get(bench.get("kind"), ""),
+            "region": bench.get("group"),
+            "sector": bench.get("kind"),
+            "currency": bench.get("currency"),
+            "exchange": "",
+            "yahoo": bench["yahoo"],
+            "last": bench.get("last"),
+            "change_1d": bench.get("change_1d"),
+            "change_1w": bench.get("change_1w"),
+            "change_1m": bench.get("change_1m"),
+            "change_3m": bench.get("change_1m"),
+            "spark": bench.get("spark") or [],
+            "history": bench.get("history") or {},
+            "sessions": len((bench.get("history") or {}).get("c") or []),
+            "is_benchmark": True,
+        }
+
     funds = signals.get("fundamentals") or {}
     for key, record in (funds.get("companies") or {}).items():
         target = merged.get(key)
@@ -3603,6 +3635,14 @@ DETAIL_JS = """
     '</div>';
 
     // What the strategies are doing about it, if anything.
+    if (stock.is_benchmark) {
+      html += '<h3 class="detailsub">Headlines</h3><div data-detail-news>'
+        + '<p class="empty">Loading&hellip;</p></div>';
+      body.innerHTML = html;
+      loadNews(stock);
+      return;
+    }
+
     var statusText = {
       held: 'The book holds this.', signal: 'Suggested today.',
       resting: 'An order for this is still resting.',
@@ -3668,8 +3708,18 @@ DETAIL_JS = """
         'this build.</p>';
     }
 
-    html += actions(stock);
-    html += fundamentals(stock);
+    // An index has no dividend, no filing and no screener verdict. Rendering
+    // three "not available" panels would be noise, so they are simply absent
+    // and a line says what this view is instead.
+    if (!stock.is_benchmark) {
+      html += actions(stock);
+      html += fundamentals(stock);
+    } else {
+      html += '<p class="caption">This is a market benchmark, not a tradable '
+        + 'holding \u2014 there are no filings, dividends or strategy signals '
+        + 'behind it. It is here for context: what the market did while your '
+        + 'own positions did whatever they did.</p>';
+    }
 
     html += '<h3 class="detailsub">Headlines</h3><div data-detail-news>' +
       '<p class="empty">Loading&hellip;</p></div>' +
