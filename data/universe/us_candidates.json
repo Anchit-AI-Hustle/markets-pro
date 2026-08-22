@@ -1,0 +1,884 @@
+[
+  {
+    "symbol": "AAPL",
+    "name": "Apple",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MSFT",
+    "name": "Microsoft",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NVDA",
+    "name": "NVIDIA",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "GOOGL",
+    "name": "Alphabet",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "AMZN",
+    "name": "Amazon",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "META",
+    "name": "Meta Platforms",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TSLA",
+    "name": "Tesla",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "AVGO",
+    "name": "Broadcom",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ORCL",
+    "name": "Oracle",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CRM",
+    "name": "Salesforce",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "AMD",
+    "name": "Advanced Micro Devices",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ADBE",
+    "name": "Adobe",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NFLX",
+    "name": "Netflix",
+    "sector": "media",
+    "kind": "equity"
+  },
+  {
+    "symbol": "INTC",
+    "name": "Intel",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CSCO",
+    "name": "Cisco Systems",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "QCOM",
+    "name": "Qualcomm",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TXN",
+    "name": "Texas Instruments",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "IBM",
+    "name": "IBM",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NOW",
+    "name": "ServiceNow",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "INTU",
+    "name": "Intuit",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "AMAT",
+    "name": "Applied Materials",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MU",
+    "name": "Micron Technology",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "LRCX",
+    "name": "Lam Research",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "KLAC",
+    "name": "KLA Corporation",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ADI",
+    "name": "Analog Devices",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PANW",
+    "name": "Palo Alto Networks",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SNOW",
+    "name": "Snowflake",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "UBER",
+    "name": "Uber Technologies",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ABNB",
+    "name": "Airbnb",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SHOP",
+    "name": "Shopify",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PLTR",
+    "name": "Palantir Technologies",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CRWD",
+    "name": "CrowdStrike",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "DDOG",
+    "name": "Datadog",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MDB",
+    "name": "MongoDB",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TEAM",
+    "name": "Atlassian",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "WDAY",
+    "name": "Workday",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "JPM",
+    "name": "JPMorgan Chase",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BAC",
+    "name": "Bank of America",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "WFC",
+    "name": "Wells Fargo",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "GS",
+    "name": "Goldman Sachs",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MS",
+    "name": "Morgan Stanley",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "C",
+    "name": "Citigroup",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BLK",
+    "name": "BlackRock",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SCHW",
+    "name": "Charles Schwab",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "AXP",
+    "name": "American Express",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "V",
+    "name": "Visa",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MA",
+    "name": "Mastercard",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PYPL",
+    "name": "PayPal",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "COF",
+    "name": "Capital One",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SPGI",
+    "name": "S&P Global",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CME",
+    "name": "CME Group",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ICE",
+    "name": "Intercontinental Exchange",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BRK-B",
+    "name": "Berkshire Hathaway",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "JNJ",
+    "name": "Johnson & Johnson",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "UNH",
+    "name": "UnitedHealth Group",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "LLY",
+    "name": "Eli Lilly",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PFE",
+    "name": "Pfizer",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ABBV",
+    "name": "AbbVie",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MRK",
+    "name": "Merck",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TMO",
+    "name": "Thermo Fisher Scientific",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ABT",
+    "name": "Abbott Laboratories",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "DHR",
+    "name": "Danaher",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BMY",
+    "name": "Bristol-Myers Squibb",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "AMGN",
+    "name": "Amgen",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "GILD",
+    "name": "Gilead Sciences",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CVS",
+    "name": "CVS Health",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ISRG",
+    "name": "Intuitive Surgical",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "VRTX",
+    "name": "Vertex Pharmaceuticals",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "REGN",
+    "name": "Regeneron Pharmaceuticals",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MDT",
+    "name": "Medtronic",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "XOM",
+    "name": "Exxon Mobil",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CVX",
+    "name": "Chevron",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "COP",
+    "name": "ConocoPhillips",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SLB",
+    "name": "SLB",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "EOG",
+    "name": "EOG Resources",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PSX",
+    "name": "Phillips 66",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MPC",
+    "name": "Marathon Petroleum",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "VLO",
+    "name": "Valero Energy",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "OXY",
+    "name": "Occidental Petroleum",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "KMI",
+    "name": "Kinder Morgan",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "WMT",
+    "name": "Walmart",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "COST",
+    "name": "Costco Wholesale",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PG",
+    "name": "Procter & Gamble",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "KO",
+    "name": "Coca-Cola",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PEP",
+    "name": "PepsiCo",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MCD",
+    "name": "McDonalds",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NKE",
+    "name": "Nike",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SBUX",
+    "name": "Starbucks",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TGT",
+    "name": "Target",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "HD",
+    "name": "Home Depot",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "LOW",
+    "name": "Lowes",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CL",
+    "name": "Colgate-Palmolive",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MDLZ",
+    "name": "Mondelez International",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MO",
+    "name": "Altria Group",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PM",
+    "name": "Philip Morris International",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "KHC",
+    "name": "Kraft Heinz",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "GIS",
+    "name": "General Mills",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CAT",
+    "name": "Caterpillar",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BA",
+    "name": "Boeing",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "HON",
+    "name": "Honeywell International",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "GE",
+    "name": "GE Aerospace",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "UNP",
+    "name": "Union Pacific",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "UPS",
+    "name": "United Parcel Service",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "RTX",
+    "name": "RTX",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "LMT",
+    "name": "Lockheed Martin",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "DE",
+    "name": "Deere & Company",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MMM",
+    "name": "3M",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "EMR",
+    "name": "Emerson Electric",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ETN",
+    "name": "Eaton",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NOC",
+    "name": "Northrop Grumman",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "GD",
+    "name": "General Dynamics",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CSX",
+    "name": "CSX",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "FDX",
+    "name": "FedEx",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "T",
+    "name": "AT&T",
+    "sector": "telecom",
+    "kind": "equity"
+  },
+  {
+    "symbol": "VZ",
+    "name": "Verizon Communications",
+    "sector": "telecom",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TMUS",
+    "name": "T-Mobile US",
+    "sector": "telecom",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CMCSA",
+    "name": "Comcast",
+    "sector": "media",
+    "kind": "equity"
+  },
+  {
+    "symbol": "DIS",
+    "name": "Walt Disney",
+    "sector": "media",
+    "kind": "equity"
+  },
+  {
+    "symbol": "WBD",
+    "name": "Warner Bros Discovery",
+    "sector": "media",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NEE",
+    "name": "NextEra Energy",
+    "sector": "utilities",
+    "kind": "equity"
+  },
+  {
+    "symbol": "DUK",
+    "name": "Duke Energy",
+    "sector": "utilities",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SO",
+    "name": "Southern Company",
+    "sector": "utilities",
+    "kind": "equity"
+  },
+  {
+    "symbol": "D",
+    "name": "Dominion Energy",
+    "sector": "utilities",
+    "kind": "equity"
+  },
+  {
+    "symbol": "AEP",
+    "name": "American Electric Power",
+    "sector": "utilities",
+    "kind": "equity"
+  },
+  {
+    "symbol": "LIN",
+    "name": "Linde",
+    "sector": "chemicals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "APD",
+    "name": "Air Products & Chemicals",
+    "sector": "chemicals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SHW",
+    "name": "Sherwin-Williams",
+    "sector": "chemicals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ECL",
+    "name": "Ecolab",
+    "sector": "chemicals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "DOW",
+    "name": "Dow",
+    "sector": "chemicals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "FCX",
+    "name": "Freeport-McMoRan",
+    "sector": "metals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NEM",
+    "name": "Newmont",
+    "sector": "metals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NUE",
+    "name": "Nucor",
+    "sector": "metals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "AMT",
+    "name": "American Tower",
+    "sector": "realty",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PLD",
+    "name": "Prologis",
+    "sector": "realty",
+    "kind": "equity"
+  },
+  {
+    "symbol": "EQIX",
+    "name": "Equinix",
+    "sector": "realty",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SPG",
+    "name": "Simon Property Group",
+    "sector": "realty",
+    "kind": "equity"
+  },
+  {
+    "symbol": "O",
+    "name": "Realty Income",
+    "sector": "realty",
+    "kind": "equity"
+  },
+  {
+    "symbol": "F",
+    "name": "Ford Motor",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "GM",
+    "name": "General Motors",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "RIVN",
+    "name": "Rivian Automotive",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "LCID",
+    "name": "Lucid Group",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SPY",
+    "name": "SPDR S&P 500 ETF",
+    "sector": "index",
+    "kind": "index"
+  },
+  {
+    "symbol": "QQQ",
+    "name": "Invesco QQQ",
+    "sector": "index",
+    "kind": "index"
+  },
+  {
+    "symbol": "IWM",
+    "name": "iShares Russell 2000 ETF",
+    "sector": "index",
+    "kind": "index"
+  },
+  {
+    "symbol": "DIA",
+    "name": "SPDR Dow Jones Industrial ETF",
+    "sector": "index",
+    "kind": "index"
+  },
+  {
+    "symbol": "VTI",
+    "name": "Vanguard Total Stock Market ETF",
+    "sector": "index",
+    "kind": "index"
+  },
+  {
+    "symbol": "GLD",
+    "name": "SPDR Gold Shares",
+    "sector": "index",
+    "kind": "index"
+  }
+]

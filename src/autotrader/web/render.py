@@ -23,6 +23,13 @@ from .auth import (
     auth_slot,
 )
 from .broker_ui import BROKER_CSS, BROKER_JS, broker_section
+from .search_ui import (
+    SEARCH_CSS,
+    SEARCH_JS,
+    find_button,
+    find_dialog,
+    kept_section,
+)
 
 REGION_NAMES = {
     "IN": "India",
@@ -2516,6 +2523,40 @@ strategies on <button type="button" class="linkish" data-tabgo="invest">Invest
 Now</button> do that.</p>"""
 
 
+#: Fields the lists, the finder and the watchlist cards need. Everything else
+#: — history, sparks, fundamentals, the screener reading — is only ever looked
+#: at on one instrument at a time, so it does not belong in a file every
+#: visitor downloads.
+_LIGHT_FIELDS = (
+    "key", "symbol", "name", "region", "sector", "currency", "exchange",
+    "yahoo", "last", "change_1d", "change_1w", "change_1m", "change_3m",
+    "high_52w", "low_52w", "range_position", "avg_volume",
+    "status", "status_note", "is_benchmark", "has_volume",
+)
+
+
+def split_index(full: dict) -> tuple[dict, dict]:
+    """``(light, per_instrument)`` — the same data, sized for how it is read.
+
+    At 35 instruments one blob was fine. At 325 it is 5.7 MB, and the finder
+    needs it to open at all, so every visitor would pay for the full history
+    of every company to search for one. The light index is a few hundred
+    kilobytes and covers every list on the page; a detail page fetches its own
+    file and nothing else.
+    """
+    light = {
+        key: {f: record[f] for f in _LIGHT_FIELDS if f in record}
+        for key, record in full.items()
+    }
+    return light, dict(full)
+
+
+def detail_filename(key: str) -> str:
+    """A key as a filename. ``IN:RELIANCE`` has a colon in it, which is legal
+    on Linux and a problem almost everywhere else."""
+    return key.replace(":", "_").replace("/", "_").replace("^", "-") + ".json"
+
+
 def _stock_index(signals: dict, screener: dict | None) -> dict:
     """One record per instrument, merging what the watchlist and screener know.
 
@@ -3698,6 +3739,10 @@ DETAIL_JS = """
     return loading;
   }
 
+  // Shared with the finder, which needs this same index and must not download
+  // a second copy of it.
+  window.__mpStocks = stocks;
+
   var body = host.querySelector('[data-detail-body]');
   var back = host.querySelector('[data-detail-back]');
   var lastTab = 'screener';
@@ -4219,9 +4264,15 @@ DETAIL_JS = """
     loadNews(stock);
   }
 
+  var newsLoadedFor = null;
   function loadNews(stock) {
     var slot = body.querySelector('[data-detail-news]');
     if (!slot || typeof fetch !== 'function') return;
+    if (!stock.yahoo) return;
+    // A detail page paints twice — once from the light index, once when its
+    // own file lands — and headlines do not change in between.
+    if (newsLoadedFor === stock.yahoo) return;
+    newsLoadedFor = stock.yahoo;
     var cfg = window.__mpCfg || {};
     var API = cfg.api_base || '/markets-pro/api';
     fetch(API + '/news?symbols=' + encodeURIComponent(stock.yahoo))
@@ -4257,16 +4308,45 @@ DETAIL_JS = """
       });
   }
 
+  // One instrument's full record, fetched on demand and kept for the session.
+  // The light index knows this key exists; only this file knows its history,
+  // fundamentals and screener reading.
+  var DETAIL = {};
+  function detailFor(key) {
+    if (DETAIL[key]) return Promise.resolve(DETAIL[key]);
+    // split/join rather than regex: this JS lives inside a Python string, and
+    // a backslash here is two languages' escape rules arguing.
+    var name = key.split(':').join('_').split('/').join('_').split('^').join('-');
+    return fetch(base + 'd/' + encodeURIComponent(name) + '.json')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (record) {
+        // Falling back to the light row rather than failing: a page with the
+        // price and no chart beats a dead end.
+        if (record) DETAIL[key] = record;
+        return record;
+      })
+      .catch(function () { return null; });
+  }
+
   function open(key) {
     return stocks().then(function (all) {
-      var stock = all[key];
-      if (!stock) { close(); return false; }
+      var light = all[key];
+      if (!light) { close(); return false; }
       document.querySelectorAll('.tabpanel').forEach(function (p) { p.hidden = true; });
       host.hidden = false;
-      openStock = stock;
-      render(stock);
       window.scrollTo(0, 0);
-      return true;
+      // Draw what the light index already knows straight away, then fill in
+      // the rest when it lands. On a slow connection that is the difference
+      // between a blank panel and a page that is simply still loading.
+      openStock = light;
+      render(light);
+      return detailFor(key).then(function (full) {
+        if (full && location.hash === '#stock/' + key) {
+          openStock = full;
+          render(full);
+        }
+        return true;
+      });
     });
   }
 
@@ -6200,7 +6280,7 @@ def render_dashboard(
   <section class="tabpanel" id="panel-watchlist" data-tab="watchlist"
            role="tabpanel" hidden>
     <h2>Watchlist</h2>
-    <div class="panel">{_watchlist_section(signals)}</div>
+    <div class="panel">{kept_section()}{_watchlist_section(signals)}</div>
   </section>
 
   <section class="tabpanel" id="panel-news" data-tab="news" role="tabpanel" hidden>
@@ -6281,7 +6361,7 @@ def render_dashboard(
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>{_esc(title)}</title>
-<style>{CSS}{SIGNALS_CSS}{JOURNEY_CSS}{AUTH_CSS}{BROKER_CSS}</style>
+<style>{CSS}{SIGNALS_CSS}{JOURNEY_CSS}{AUTH_CSS}{BROKER_CSS}{SEARCH_CSS}</style>
 </head>
 <body>
 {SPARK_DEFS}
@@ -6290,6 +6370,7 @@ def render_dashboard(
     <h1>{_esc(title)}</h1>
     <p class="sub">{sub}</p>
     {auth_slot()}
+    <div class="findslot">{find_button()}</div>
   </header>
 
   {tab_bar}
@@ -6348,6 +6429,7 @@ def render_dashboard(
   </footer>
 </div>
 {auth_dialog()}
+{find_dialog()}
 {signal_blob}
 {auth_blob(supabase)}
 <script>{TABS_JS}</script>
@@ -6355,5 +6437,6 @@ def render_dashboard(
 {signal_script}
 <script>{AUTH_JS}</script>
 <script>{BROKER_JS}</script>
+<script>{SEARCH_JS}</script>
 </body>
 </html>"""

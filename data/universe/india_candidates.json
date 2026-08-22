@@ -1,0 +1,1070 @@
+[
+  {
+    "symbol": "RELIANCE",
+    "name": "Reliance Industries",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "HDFCBANK",
+    "name": "HDFC Bank",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ICICIBANK",
+    "name": "ICICI Bank",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "INFY",
+    "name": "Infosys",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TCS",
+    "name": "Tata Consultancy Services",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "LT",
+    "name": "Larsen & Toubro",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SBIN",
+    "name": "State Bank of India",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BHARTIARTL",
+    "name": "Bharti Airtel",
+    "sector": "telecom",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ITC",
+    "name": "ITC",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TMPV",
+    "name": "Tata Motors Passenger Vehicles",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MARUTI",
+    "name": "Maruti Suzuki",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ASIANPAINT",
+    "name": "Asian Paints",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BAJFINANCE",
+    "name": "Bajaj Finance",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TITAN",
+    "name": "Titan Company",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "AXISBANK",
+    "name": "Axis Bank",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "KOTAKBANK",
+    "name": "Kotak Mahindra Bank",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "HINDUNILVR",
+    "name": "Hindustan Unilever",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SUNPHARMA",
+    "name": "Sun Pharmaceutical",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "WIPRO",
+    "name": "Wipro",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "HCLTECH",
+    "name": "HCL Technologies",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TECHM",
+    "name": "Tech Mahindra",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ULTRACEMCO",
+    "name": "UltraTech Cement",
+    "sector": "cement",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NESTLEIND",
+    "name": "Nestle India",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "POWERGRID",
+    "name": "Power Grid Corporation",
+    "sector": "utilities",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NTPC",
+    "name": "NTPC",
+    "sector": "utilities",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ONGC",
+    "name": "Oil & Natural Gas Corporation",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "COALINDIA",
+    "name": "Coal India",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "JSWSTEEL",
+    "name": "JSW Steel",
+    "sector": "metals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TATASTEEL",
+    "name": "Tata Steel",
+    "sector": "metals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "HINDALCO",
+    "name": "Hindalco Industries",
+    "sector": "metals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "GRASIM",
+    "name": "Grasim Industries",
+    "sector": "cement",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ADANIENT",
+    "name": "Adani Enterprises",
+    "sector": "infra",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ADANIPORTS",
+    "name": "Adani Ports & SEZ",
+    "sector": "infra",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BAJAJFINSV",
+    "name": "Bajaj Finserv",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BAJAJ-AUTO",
+    "name": "Bajaj Auto",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "HEROMOTOCO",
+    "name": "Hero MotoCorp",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "EICHERMOT",
+    "name": "Eicher Motors",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "M&M",
+    "name": "Mahindra & Mahindra",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "DRREDDY",
+    "name": "Dr Reddys Laboratories",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CIPLA",
+    "name": "Cipla",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "DIVISLAB",
+    "name": "Divis Laboratories",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "APOLLOHOSP",
+    "name": "Apollo Hospitals",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BRITANNIA",
+    "name": "Britannia Industries",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "DABUR",
+    "name": "Dabur India",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "GODREJCP",
+    "name": "Godrej Consumer Products",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MARICO",
+    "name": "Marico",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "COLPAL",
+    "name": "Colgate-Palmolive India",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TATACONSUM",
+    "name": "Tata Consumer Products",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "INDUSINDBK",
+    "name": "IndusInd Bank",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BANDHANBNK",
+    "name": "Bandhan Bank",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "FEDERALBNK",
+    "name": "Federal Bank",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "IDFCFIRSTB",
+    "name": "IDFC First Bank",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PNB",
+    "name": "Punjab National Bank",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BANKBARODA",
+    "name": "Bank of Baroda",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CANBK",
+    "name": "Canara Bank",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SBILIFE",
+    "name": "SBI Life Insurance",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "HDFCLIFE",
+    "name": "HDFC Life Insurance",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ICICIPRULI",
+    "name": "ICICI Prudential Life",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ICICIGI",
+    "name": "ICICI Lombard General",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SHRIRAMFIN",
+    "name": "Shriram Finance",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CHOLAFIN",
+    "name": "Cholamandalam Investment",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MUTHOOTFIN",
+    "name": "Muthoot Finance",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "LICHSGFIN",
+    "name": "LIC Housing Finance",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PFC",
+    "name": "Power Finance Corporation",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "RECLTD",
+    "name": "REC",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "IRFC",
+    "name": "Indian Railway Finance",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "HDFCAMC",
+    "name": "HDFC Asset Management",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NAUKRI",
+    "name": "Info Edge India",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PERSISTENT",
+    "name": "Persistent Systems",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "COFORGE",
+    "name": "Coforge",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MPHASIS",
+    "name": "Mphasis",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "OFSS",
+    "name": "Oracle Financial Services",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TATAELXSI",
+    "name": "Tata Elxsi",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SHREECEM",
+    "name": "Shree Cement",
+    "sector": "cement",
+    "kind": "equity"
+  },
+  {
+    "symbol": "AMBUJACEM",
+    "name": "Ambuja Cements",
+    "sector": "cement",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ACC",
+    "name": "ACC",
+    "sector": "cement",
+    "kind": "equity"
+  },
+  {
+    "symbol": "DALBHARAT",
+    "name": "Dalmia Bharat",
+    "sector": "cement",
+    "kind": "equity"
+  },
+  {
+    "symbol": "JKCEMENT",
+    "name": "JK Cement",
+    "sector": "cement",
+    "kind": "equity"
+  },
+  {
+    "symbol": "VEDL",
+    "name": "Vedanta",
+    "sector": "metals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NATIONALUM",
+    "name": "National Aluminium",
+    "sector": "metals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SAIL",
+    "name": "Steel Authority of India",
+    "sector": "metals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "JINDALSTEL",
+    "name": "Jindal Steel & Power",
+    "sector": "metals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "APLAPOLLO",
+    "name": "APL Apollo Tubes",
+    "sector": "metals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BPCL",
+    "name": "Bharat Petroleum",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "IOC",
+    "name": "Indian Oil Corporation",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "GAIL",
+    "name": "GAIL India",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PETRONET",
+    "name": "Petronet LNG",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "OIL",
+    "name": "Oil India",
+    "sector": "energy",
+    "kind": "equity"
+  },
+  {
+    "symbol": "IGL",
+    "name": "Indraprastha Gas",
+    "sector": "utilities",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ADANIGREEN",
+    "name": "Adani Green Energy",
+    "sector": "utilities",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TATAPOWER",
+    "name": "Tata Power",
+    "sector": "utilities",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TORNTPOWER",
+    "name": "Torrent Power",
+    "sector": "utilities",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NHPC",
+    "name": "NHPC",
+    "sector": "utilities",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SIEMENS",
+    "name": "Siemens India",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ABB",
+    "name": "ABB India",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BHEL",
+    "name": "Bharat Heavy Electricals",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BEL",
+    "name": "Bharat Electronics",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "HAL",
+    "name": "Hindustan Aeronautics",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CUMMINSIND",
+    "name": "Cummins India",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "THERMAX",
+    "name": "Thermax",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "POLYCAB",
+    "name": "Polycab India",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "HAVELLS",
+    "name": "Havells India",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "VOLTAS",
+    "name": "Voltas",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "DIXON",
+    "name": "Dixon Technologies",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BOSCHLTD",
+    "name": "Bosch",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MOTHERSON",
+    "name": "Samvardhana Motherson",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BALKRISIND",
+    "name": "Balkrishna Industries",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MRF",
+    "name": "MRF",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TVSMOTOR",
+    "name": "TVS Motor Company",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ASHOKLEY",
+    "name": "Ashok Leyland",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ESCORTS",
+    "name": "Escorts Kubota",
+    "sector": "auto",
+    "kind": "equity"
+  },
+  {
+    "symbol": "LUPIN",
+    "name": "Lupin",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "AUROPHARMA",
+    "name": "Aurobindo Pharma",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TORNTPHARM",
+    "name": "Torrent Pharmaceuticals",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ALKEM",
+    "name": "Alkem Laboratories",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ZYDUSLIFE",
+    "name": "Zydus Lifesciences",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BIOCON",
+    "name": "Biocon",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "GLENMARK",
+    "name": "Glenmark Pharmaceuticals",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "IPCALAB",
+    "name": "Ipca Laboratories",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MAXHEALTH",
+    "name": "Max Healthcare",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "FORTIS",
+    "name": "Fortis Healthcare",
+    "sector": "pharma",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PIDILITIND",
+    "name": "Pidilite Industries",
+    "sector": "chemicals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SRF",
+    "name": "SRF",
+    "sector": "chemicals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "UPL",
+    "name": "UPL",
+    "sector": "chemicals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "DEEPAKNTR",
+    "name": "Deepak Nitrite",
+    "sector": "chemicals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "AARTIIND",
+    "name": "Aarti Industries",
+    "sector": "chemicals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TATACHEM",
+    "name": "Tata Chemicals",
+    "sector": "chemicals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PIIND",
+    "name": "PI Industries",
+    "sector": "chemicals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "DLF",
+    "name": "DLF",
+    "sector": "realty",
+    "kind": "equity"
+  },
+  {
+    "symbol": "GODREJPROP",
+    "name": "Godrej Properties",
+    "sector": "realty",
+    "kind": "equity"
+  },
+  {
+    "symbol": "OBEROIRLTY",
+    "name": "Oberoi Realty",
+    "sector": "realty",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PRESTIGE",
+    "name": "Prestige Estates",
+    "sector": "realty",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PHOENIXLTD",
+    "name": "Phoenix Mills",
+    "sector": "realty",
+    "kind": "equity"
+  },
+  {
+    "symbol": "INDHOTEL",
+    "name": "Indian Hotels Company",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "JUBLFOOD",
+    "name": "Jubilant FoodWorks",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "TRENT",
+    "name": "Trent",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "DMART",
+    "name": "Avenue Supermarts",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PAGEIND",
+    "name": "Page Industries",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BATAINDIA",
+    "name": "Bata India",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ETERNAL",
+    "name": "Eternal (formerly Zomato)",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PAYTM",
+    "name": "One97 Communications",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NYKAA",
+    "name": "FSN E-Commerce",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "POLICYBZR",
+    "name": "PB Fintech",
+    "sector": "tech",
+    "kind": "equity"
+  },
+  {
+    "symbol": "IRCTC",
+    "name": "Indian Railway Catering",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CONCOR",
+    "name": "Container Corporation",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "INDIGO",
+    "name": "InterGlobe Aviation",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "IDEA",
+    "name": "Vodafone Idea",
+    "sector": "telecom",
+    "kind": "equity"
+  },
+  {
+    "symbol": "INDUSTOWER",
+    "name": "Indus Towers",
+    "sector": "telecom",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SUNTV",
+    "name": "Sun TV Network",
+    "sector": "media",
+    "kind": "equity"
+  },
+  {
+    "symbol": "PVRINOX",
+    "name": "PVR INOX",
+    "sector": "media",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ZEEL",
+    "name": "Zee Entertainment",
+    "sector": "media",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BERGEPAINT",
+    "name": "Berger Paints India",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "KANSAINER",
+    "name": "Kansai Nerolac Paints",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "SUPREMEIND",
+    "name": "Supreme Industries",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ASTRAL",
+    "name": "Astral",
+    "sector": "industrials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CROMPTON",
+    "name": "Crompton Greaves Consumer",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "WHIRLPOOL",
+    "name": "Whirlpool of India",
+    "sector": "consumer",
+    "kind": "equity"
+  },
+  {
+    "symbol": "GODREJIND",
+    "name": "Godrej Industries",
+    "sector": "chemicals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "AUBANK",
+    "name": "AU Small Finance Bank",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "YESBANK",
+    "name": "Yes Bank",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "UNIONBANK",
+    "name": "Union Bank of India",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "INDIANB",
+    "name": "Indian Bank",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "JSWENERGY",
+    "name": "JSW Energy",
+    "sector": "utilities",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NMDC",
+    "name": "NMDC",
+    "sector": "metals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "HINDZINC",
+    "name": "Hindustan Zinc",
+    "sector": "metals",
+    "kind": "equity"
+  },
+  {
+    "symbol": "GMRAIRPORT",
+    "name": "GMR Airports",
+    "sector": "infra",
+    "kind": "equity"
+  },
+  {
+    "symbol": "IRB",
+    "name": "IRB Infrastructure",
+    "sector": "infra",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NBCC",
+    "name": "NBCC India",
+    "sector": "infra",
+    "kind": "equity"
+  },
+  {
+    "symbol": "RVNL",
+    "name": "Rail Vikas Nigam",
+    "sector": "infra",
+    "kind": "equity"
+  },
+  {
+    "symbol": "BSE",
+    "name": "BSE",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "MCX",
+    "name": "Multi Commodity Exchange",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "CDSL",
+    "name": "Central Depository Services",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "ANGELONE",
+    "name": "Angel One",
+    "sector": "financials",
+    "kind": "equity"
+  },
+  {
+    "symbol": "NIFTYBEES",
+    "name": "Nippon Nifty 50 ETF",
+    "sector": "index",
+    "kind": "index"
+  },
+  {
+    "symbol": "BANKBEES",
+    "name": "Nippon Bank Nifty ETF",
+    "sector": "index",
+    "kind": "index"
+  },
+  {
+    "symbol": "GOLDBEES",
+    "name": "Nippon Gold ETF",
+    "sector": "index",
+    "kind": "index"
+  },
+  {
+    "symbol": "JUNIORBEES",
+    "name": "Nippon Nifty Next 50 ETF",
+    "sector": "index",
+    "kind": "index"
+  },
+  {
+    "symbol": "ITBEES",
+    "name": "Nippon Nifty IT ETF",
+    "sector": "index",
+    "kind": "index"
+  }
+]

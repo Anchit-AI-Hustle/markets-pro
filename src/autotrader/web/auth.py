@@ -30,10 +30,10 @@ from __future__ import annotations
 
 import json
 
-#: Keys whose contents follow the reader between devices once signed in. The
-#: watchlist is deliberately absent: it is rendered from the signal snapshot
-#: rather than stored, so there is nothing device-specific to carry.
-SYNCED_DOCUMENTS = ("settings", "paper")
+#: Keys whose contents follow the reader between devices once signed in.
+#: The watchlist joined them when it became something a reader builds
+#: rather than a fixed list the build chose.
+SYNCED_DOCUMENTS = ("settings", "paper", "watchlist")
 
 
 AUTH_CSS = """
@@ -45,6 +45,8 @@ AUTH_CSS = """
    the same easing curve, and nothing at all under reduced-motion.
 --------------------------------------------------------------------------- */
 .authslot{position:absolute;top:0;right:0;display:flex;align-items:center;gap:8px}
+.findslot{position:absolute;top:44px;right:0}
+@media (max-width:640px){.findslot{position:static;margin-top:12px}}
 header{position:relative}
 /* On a phone this used to drop below the subtitle, which cost about ninety
    pixels of the first screen -- the one place on the page where vertical
@@ -198,7 +200,8 @@ AUTH_JS = """
   // before the paper book that spends against it.
   var DOCS = [
     {key: 'settings', store: 'markets-pro.settings.v1'},
-    {key: 'paper', store: 'markets-pro.paper.v1'}
+    {key: 'paper', store: 'markets-pro.paper.v1'},
+    {key: 'watchlist', store: 'markets-pro.watchlist.v1'}
   ];
 
   var session = null;

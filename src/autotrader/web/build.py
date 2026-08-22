@@ -200,11 +200,19 @@ def build_static(
     if signals is not None:
         import json as _json
 
-        from .render import _stock_index
+        from .render import _stock_index, detail_filename, split_index
 
-        (target_dir / SIDECARS[0]).write_text(
-            _json.dumps(_stock_index(signals, screener)), encoding="utf-8"
-        )
+        light, details = split_index(_stock_index(signals, screener))
+        (target_dir / SIDECARS[0]).write_text(_json.dumps(light), encoding="utf-8")
+        # One file per instrument. A detail page fetches exactly the one it is
+        # showing, so opening RELIANCE does not download the history of 324
+        # other companies.
+        detail_dir = target_dir / "d"
+        detail_dir.mkdir(exist_ok=True)
+        for key, record in details.items():
+            (detail_dir / detail_filename(key)).write_text(
+                _json.dumps(record), encoding="utf-8"
+            )
         if funds_source is not None and funds_source.exists():
             (target_dir / SIDECARS[1]).write_text(
                 funds_source.read_text(), encoding="utf-8"

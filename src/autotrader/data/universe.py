@@ -12,7 +12,9 @@ so breadth is deliberately traded away for executability.
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
+from pathlib import Path
 
 REGION_CODES = {"india": "IN", "us": "US"}
 
@@ -39,57 +41,62 @@ class UniverseEntry:
         return f"{self.region_code}:{self.symbol}"
 
 
-_INDIA: tuple[UniverseEntry, ...] = tuple(
-    UniverseEntry(sym, f"{sym}.NS", "NSE", "india", "INR", kind, sector, name)
-    for sym, kind, sector, name in [
-        ("RELIANCE", "equity", "energy", "Reliance Industries"),
-        ("HDFCBANK", "equity", "financials", "HDFC Bank"),
-        ("ICICIBANK", "equity", "financials", "ICICI Bank"),
-        ("INFY", "equity", "tech", "Infosys"),
-        ("TCS", "equity", "tech", "Tata Consultancy Services"),
-        ("LT", "equity", "industrials", "Larsen & Toubro"),
-        ("SBIN", "equity", "financials", "State Bank of India"),
-        ("BHARTIARTL", "equity", "telecom", "Bharti Airtel"),
-        ("ITC", "equity", "consumer", "ITC"),
-        ("TATAMOTORS", "equity", "auto", "Tata Motors"),
-        ("MARUTI", "equity", "auto", "Maruti Suzuki"),
-        ("ASIANPAINT", "equity", "consumer", "Asian Paints"),
-        ("BAJFINANCE", "equity", "financials", "Bajaj Finance"),
-        ("TITAN", "equity", "consumer", "Titan Company"),
-        ("NIFTYBEES", "etf", "index", "Nippon Nifty 50 ETF"),
-        ("BANKBEES", "etf", "index", "Nippon Bank Nifty ETF"),
-        ("GOLDBEES", "etf", "commodity", "Nippon Gold ETF"),
-    ]
-)
+#: Where the verified lists live. These are *outputs* of
+#: :mod:`autotrader.data.universe_verify`, not hand-maintained files: every
+#: symbol in them was fetched and returned at least a year of real history
+#: before it was written. That matters more than it sounds — verifying this
+#: list is what surfaced that TATAMOTORS had stopped resolving after the
+#: demerger and had been silently absent from the product, and that ZOMATO and
+#: GMRINFRA had both been renamed at the exchange.
+_DATA = Path(__file__).parent / "universe_data"
 
-_US: tuple[UniverseEntry, ...] = tuple(
-    UniverseEntry(sym, sym, exch, "us", "USD", kind, sector, name)
-    for sym, exch, kind, sector, name in [
-        ("AAPL", "NASDAQ", "equity", "tech", "Apple"),
-        ("MSFT", "NASDAQ", "equity", "tech", "Microsoft"),
-        ("NVDA", "NASDAQ", "equity", "tech", "NVIDIA"),
-        ("AMZN", "NASDAQ", "equity", "consumer", "Amazon"),
-        ("GOOGL", "NASDAQ", "equity", "tech", "Alphabet"),
-        ("META", "NASDAQ", "equity", "tech", "Meta Platforms"),
-        ("TSLA", "NASDAQ", "equity", "auto", "Tesla"),
-        ("JPM", "NYSE", "equity", "financials", "JPMorgan Chase"),
-        ("UNH", "NYSE", "equity", "healthcare", "UnitedHealth"),
-        ("XOM", "NYSE", "equity", "energy", "Exxon Mobil"),
-        ("V", "NYSE", "equity", "financials", "Visa"),
-        ("PG", "NYSE", "equity", "consumer", "Procter & Gamble"),
-        ("COST", "NASDAQ", "equity", "consumer", "Costco"),
-        ("AVGO", "NASDAQ", "equity", "tech", "Broadcom"),
-        ("SPY", "NYSEARCA", "etf", "index", "SPDR S&P 500 ETF"),
-        ("QQQ", "NASDAQ", "etf", "index", "Invesco QQQ"),
-        ("IWM", "NYSEARCA", "etf", "index", "iShares Russell 2000 ETF"),
-        ("GLD", "NYSEARCA", "etf", "commodity", "SPDR Gold Shares"),
-    ]
-)
+#: Kept so the package still works if the data files are missing — a handful of
+#: names is a degraded universe, but an import error is a dead application.
+_FALLBACK = {
+    "india": [("RELIANCE", "Reliance Industries", "energy", "equity"),
+              ("HDFCBANK", "HDFC Bank", "financials", "equity"),
+              ("INFY", "Infosys", "tech", "equity"),
+              ("NIFTYBEES", "Nippon Nifty 50 ETF", "index", "index")],
+    "us": [("AAPL", "Apple", "tech", "equity"),
+           ("MSFT", "Microsoft", "tech", "equity"),
+           ("JPM", "JPMorgan Chase", "financials", "equity"),
+           ("SPY", "SPDR S&P 500 ETF", "index", "index")],
+}
+
+_VENUE = {
+    "india": (".NS", "NSE", "INR"),
+    "us": ("", "NASDAQ", "USD"),
+}
+
+
+def _load(region: str) -> tuple[UniverseEntry, ...]:
+    """Build a region's universe from its verified list."""
+    suffix, exchange, currency = _VENUE[region]
+    path = _DATA / f"{region}.json"
+    try:
+        rows = [(r["symbol"], r["name"], r["sector"], r.get("kind", "equity"))
+                for r in json.loads(path.read_text())]
+    except (OSError, ValueError, KeyError):
+        rows = _FALLBACK[region]
+    return tuple(
+        UniverseEntry(symbol, symbol + suffix, exchange, region, currency,
+                      kind, sector, name)
+        for symbol, name, sector, kind in rows
+    )
+
+
+_INDIA = _load("india")
+_US = _load("us")
 
 UNIVERSES: dict[str, tuple[UniverseEntry, ...]] = {"india": _INDIA, "us": _US}
 
 
 def universe(region: str) -> tuple[UniverseEntry, ...]:
+    """Every instrument covered in ``region``.
+
+    ValueError rather than KeyError: a mistyped region is a caller error worth
+    naming, and the message lists what is actually available.
+    """
     try:
         return UNIVERSES[region]
     except KeyError:

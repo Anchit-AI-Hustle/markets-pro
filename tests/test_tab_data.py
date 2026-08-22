@@ -13,22 +13,10 @@ green rather than failing for a reason that is not about the code.
 
 import json
 import unittest
-from collections import defaultdict
 from decimal import Decimal
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-LIVE = ROOT / "data" / "live"
-
-
-def _load():
-    from autotrader.signals.live import generate
-    from autotrader.web.render import _stock_index
-
-    snapshot, _ = generate(LIVE, ROOT / "config" / "live.json")
-    screener_path = LIVE / "screener.json"
-    screener = json.loads(screener_path.read_text()) if screener_path.exists() else None
-    return snapshot, screener, _stock_index(snapshot, screener)
+from .live_cache import LIVE, ROOT  # noqa: E402
+from .live_cache import load as _load
 
 
 @unittest.skipUnless((LIVE / "benchmarks.json").exists(), "no committed live cache")
@@ -39,25 +27,42 @@ class TabDataTest(unittest.TestCase):
 
     # -- detail pages, which every other tab links into --------------------
 
-    def test_no_two_time_windows_report_the_same_move(self):
+    #: Fraction of a group that must share an identical pair before it stops
+    #: looking like coincidence. A copy bug is total within the class it
+    #: affects -- the real one hit 13 of 13 benchmarks -- while genuine ties
+    #: are a few percent: a stock that closed at the same price one day and
+    #: five days ago reports the same 1d and 1w move, honestly.
+    COPY_RATIO = 0.5
+
+    def test_no_time_window_is_assigned_from_another(self):
         """1d, 1w, 1m and 3m must be four measurements, not one copied.
 
-        Exact equality between two windows across many instruments does not
-        happen by chance; it happens when one field is assigned from another.
+        Checked as a rate within each group rather than as an absolute rule.
+        The first version of this test forbade any two windows from matching,
+        which was right at 47 instruments and wrong at 325 -- exact ties do
+        occur, and failing on them would train everyone to ignore the test.
         """
         windows = ("change_1d", "change_1w", "change_1m", "change_3m")
-        for key, record in self.index.items():
-            seen = defaultdict(list)
-            for field in windows:
-                value = record.get(field)
-                if value not in (None, ""):
-                    seen[str(value)].append(field)
-            for value, fields in seen.items():
-                self.assertEqual(
-                    len(fields), 1,
-                    f"{key}: {' and '.join(fields)} both report {value} — "
-                    "one is assigned from the other",
-                )
+        groups = {"benchmarks": [], "equities": []}
+        for record in self.index.values():
+            groups["benchmarks" if record.get("is_benchmark")
+                   else "equities"].append(record)
+
+        for name, records in groups.items():
+            if not records:
+                continue
+            for i, a in enumerate(windows):
+                for b in windows[i + 1:]:
+                    tied = sum(
+                        1 for r in records
+                        if r.get(a) not in (None, "") and r.get(a) == r.get(b)
+                    )
+                    ratio = tied / len(records)
+                    self.assertLess(
+                        ratio, self.COPY_RATIO,
+                        f"{name}: {a} equals {b} on {tied} of {len(records)} "
+                        f"({ratio:.0%}) — one is assigned from the other",
+                    )
 
     def test_every_instrument_has_a_52_week_band(self):
         for key, record in self.index.items():

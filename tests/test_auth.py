@@ -116,7 +116,9 @@ class ModuleTest(unittest.TestCase):
         self.assertEqual(re.findall(r"[a-z]+://[^'\" ]*", AUTH_JS), [])
 
     def test_syncs_exactly_the_documents_it_claims(self):
-        self.assertEqual(SYNCED_DOCUMENTS, ("settings", "paper"))
+        # The watchlist joined the set when it stopped being a fixed list the
+        # build chose and became one the reader assembles.
+        self.assertEqual(SYNCED_DOCUMENTS, ("settings", "paper", "watchlist"))
         for key in SYNCED_DOCUMENTS:
             self.assertIn(f"markets-pro.{key}.v1", AUTH_JS)
 
@@ -274,6 +276,64 @@ class SidecarRoutingTest(unittest.TestCase):
                 continue
             self.assertNotIn(":path*", rewrite["source"],
                              f'{rewrite["source"]} is broad enough to catch other routes')
+
+
+class PayloadWeightTest(unittest.TestCase):
+    """What a first visit costs, guarded.
+
+    Expanding the universe from 35 to 325 instruments turned the single stock
+    index into a 5.7 MB file that the finder needed before it could open at
+    all — every visitor paying for the full history of every company in order
+    to search for one. Splitting it fixed that, and these bounds stop it
+    coming back the next time the universe grows.
+    """
+
+    #: The light index is fetched by every visitor who searches. It carries a
+    #: row per instrument and nothing per-session.
+    MAX_LIGHT_KB = 600
+    #: A detail file is fetched one at a time, so it can afford full history.
+    MAX_DETAIL_KB = 120
+
+    def setUp(self):
+        from autotrader.web.render import split_index
+
+        from .live_cache import available, load
+
+        if not available():
+            self.skipTest("no committed live cache")
+        _snapshot, _screener, index = load()
+        self.light, self.details = split_index(index)
+
+    def _kb(self, obj):
+        return len(json.dumps(obj).encode()) / 1024
+
+    def test_the_shared_index_stays_small_enough_to_fetch_eagerly(self):
+        size = self._kb(self.light)
+        self.assertLess(
+            size, self.MAX_LIGHT_KB,
+            f"the index every visitor downloads is {size:.0f} KB — move a "
+            "field out of _LIGHT_FIELDS rather than raising this bound",
+        )
+
+    def test_no_single_detail_file_is_oversized(self):
+        for key, record in self.details.items():
+            size = self._kb(record)
+            self.assertLess(size, self.MAX_DETAIL_KB, f"{key} detail is {size:.0f} KB")
+
+    def test_the_light_index_carries_no_history(self):
+        # History is the bulk. If it reappears here, the split has been undone.
+        for key, record in self.light.items():
+            for heavy in ("history", "spark", "fundamentals", "screen"):
+                self.assertNotIn(heavy, record, f"{key}: {heavy} is back in the light index")
+
+    def test_every_light_row_can_reach_its_detail_file(self):
+        from autotrader.web.render import detail_filename
+
+        for key in self.light:
+            self.assertIn(key, self.details, f"{key} has no detail file")
+            name = detail_filename(key)
+            for illegal in (":", "/", "^"):
+                self.assertNotIn(illegal, name, f"{key} -> {name} is not a safe filename")
 
 
 class ShippedConfigTest(unittest.TestCase):
