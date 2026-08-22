@@ -138,16 +138,35 @@ one. Every keyless route was tested and rejected:
   private payloads: undocumented, liable to change without notice, and
   against the terms of the sites publishing them.
 
-What is left is a documented API on a free tier. The integration is already
-written and does nothing until a key exists:
+What is left is a keyed provider on a free tier — but **coverage differs
+between providers and is not visible from the outside**, so check before
+relying on one:
 
-1. Get a free key at <https://www.alphavantage.co/support/#api-key> (about
-   twenty seconds, no payment).
-2. Add it as a repository secret named `ALPHAVANTAGE_KEY`.
+```bash
+ALPHAVANTAGE_KEY=... TWELVEDATA_KEY=... \
+PYTHONPATH=src python3 -m autotrader.data.fundamentals_intl --probe
+```
 
-The next nightly refresh fills the Indian pages in. Until then they say
-"not available", which is the honest state — the free tier allows 25 calls a
-day and the Indian universe is 17 names, so one pass fits comfortably.
+That asks each configured provider for one Indian company and reports what
+came back, in a single call.
+
+**Alpha Vantage does not carry Indian fundamentals.** Tested against a live
+key: `OVERVIEW` returns a full record for `IBM` and an empty object for
+`RELIANCE.BSE`. It indexes Indian symbols for search, which makes it look
+supported when it is not. It is still worth configuring — it supplies beta,
+analyst target price, dividend yield and PEG for US names, none of which
+EDGAR publishes.
+
+**Twelve Data lists NSE instruments** in its keyless catalogue endpoint, so
+Reliance is in its universe with full metadata. Whether its statistics
+endpoint sits on the free plan can only be settled with a key — which is what
+`--probe` is for. Free key: <https://twelvedata.com/pricing>.
+
+Set either key as `ALPHAVANTAGE_KEY` / `TWELVEDATA_KEY`, in the repository
+secrets **or** in the Vercel project's environment variables — the build
+honours both, rate-guarded to one pass a day. Until a provider that covers
+India is configured, the pages say "not available", which is the honest
+state.
 
 Provider figures are labelled as such on the page. They are that provider's
 computed ratios, not values read from a filing, and the attribution says so.

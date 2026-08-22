@@ -9,6 +9,7 @@ to find. Point the engine at real history to get a result worth interpreting.
 from __future__ import annotations
 
 import argparse
+import json
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
@@ -209,6 +210,25 @@ def _try_live(data_root: Path, config_path: Path) -> tuple[dict, PerformanceRepo
     """
     if not data_root.exists():
         return None
+
+    # A provider key may be configured on the host that builds this site
+    # rather than on the job that refreshes the data. Honour either: this is
+    # best-effort and rate-guarded to one pass a day, and a failure here just
+    # leaves the pages saying "not available", which they already do.
+    try:
+        import os
+
+        from ..data.fundamentals_intl import api_key
+        from ..data.fundamentals_intl import refresh as refresh_intl
+
+        config = (
+            json.loads(config_path.read_text()) if config_path.exists() else None
+        )
+        if api_key(config) and os.environ.get("SKIP_PROVIDER_FUNDAMENTALS") != "1":
+            refresh_intl(data_root, config)
+    except Exception as error:  # noqa: BLE001 — never fail a deploy over this
+        print(f"provider fundamentals skipped ({error!r})")
+
     try:
         from ..signals.live import generate
 
