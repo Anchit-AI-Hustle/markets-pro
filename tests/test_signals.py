@@ -469,6 +469,17 @@ class TestRenderWithSignals(unittest.TestCase):
         self.assertIn("data-paper-positions", html)
         self.assertIn("No paper positions yet", html)
 
+    def test_sidecar_data_is_fetched_from_an_absolute_path(self):
+        """The subdomain serves this document at "/" through a rewrite, so a
+        relative sidecar URL resolves to /stocks.json and 404s. This only
+        reproduces on the deployed URL, never on a local file server."""
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn('"data_base": "/markets-pro/"', html)
+        # No bare relative fetch of either sidecar.
+        self.assertNotIn("fetch('stocks.json')", html)
+        self.assertNotIn("fetch('funds.json')", html)
+        self.assertNotIn("var API_FILE = 'funds.json'", html)
+
     def test_script_written_values_are_never_animated(self):
         """The count-up restores the text it captured when it started, so
         animating a cell that script rewrites can strand a wrong number."""

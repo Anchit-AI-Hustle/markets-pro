@@ -3178,7 +3178,10 @@ DETAIL_JS = """
   var host = document.querySelector('[data-detail]');
   if (!blob || !host) return;
   var STOCKS = null, loading = null;
-  var src = blob.getAttribute('data-src');
+  var cfgEarly = window.__mpCfg || {};
+  var base = cfgEarly.data_base || '/markets-pro/';
+  var rawSrc = blob.getAttribute('data-src');
+  var src = rawSrc ? base + rawSrc : null;
   if (!src) {
     try { STOCKS = JSON.parse(blob.textContent); } catch (e) { return; }
   }
@@ -3631,7 +3634,8 @@ FUNDS_JS = """
   if (!results || !search || typeof fetch !== 'function') return;
 
   var DATA = null, loading = null, category = 'all';
-  var API_FILE = 'funds.json';
+  var API_FILE = ((window.__mpCfg || {}).data_base || '/markets-pro/')
+    + 'funds.json';
 
   function load() {
     if (DATA) return Promise.resolve(DATA);
@@ -5488,6 +5492,11 @@ def render_dashboard(
     <div class="panel">{_positions_section(signals)}</div>"""
         embedded = {
             "api_base": "/markets-pro/api",
+            # Absolute, not relative: the subdomain serves this document at
+            # "/" through a rewrite, so a relative "stocks.json" resolves to
+            # /stocks.json and 404s. The path-based URL has the same problem
+            # without a trailing slash.
+            "data_base": "/markets-pro/",
             "kite_api_key": signals.get("kite_api_key", ""),
             "daily_cap": signals.get("daily_cap", {}),
             "starting_cash": signals.get("starting_cash", {}),
