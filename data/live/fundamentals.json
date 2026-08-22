@@ -490,7 +490,14 @@
     ]
    },
    "cik": 320193,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000320193&type=10-K"
+   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000320193&type=10-K",
+   "ratios": {
+    "dividend_yield": "0.0033",
+    "eps": "8.56",
+    "beta": "1.086",
+    "analyst_target": "326.34"
+   },
+   "extras_provider": "Alpha Vantage"
   },
   "US:MSFT": {
    "entity": "MICROSOFT CORPORATION",
@@ -981,7 +988,14 @@
     ]
    },
    "cik": 789019,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019&type=10-K"
+   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019&type=10-K",
+   "ratios": {
+    "dividend_yield": "0.0075",
+    "eps": "17.85",
+    "beta": "1.099",
+    "analyst_target": "569.56"
+   },
+   "extras_provider": "Alpha Vantage"
   },
   "US:NVDA": {
    "entity": "NVIDIA CORP",
@@ -1458,7 +1472,14 @@
     ]
    },
    "cik": 1045810,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001045810&type=10-K"
+   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001045810&type=10-K",
+   "ratios": {
+    "dividend_yield": "0.0002",
+    "eps": "6.51",
+    "beta": "2.215",
+    "analyst_target": "304.12"
+   },
+   "extras_provider": "Alpha Vantage"
   },
   "US:AMZN": {
    "entity": "AMAZON COM INC",
@@ -1905,7 +1926,13 @@
     ]
    },
    "cik": 1018724,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001018724&type=10-K"
+   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001018724&type=10-K",
+   "ratios": {
+    "eps": "12.44",
+    "beta": "1.454",
+    "analyst_target": "326.84"
+   },
+   "extras_provider": "Alpha Vantage"
   },
   "US:GOOGL": {
    "entity": "Alphabet Inc.",
@@ -2361,7 +2388,14 @@
     ]
    },
    "cik": 1652044,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044&type=10-K"
+   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044&type=10-K",
+   "ratios": {
+    "dividend_yield": "0.0025",
+    "eps": "19.69",
+    "beta": "1.237",
+    "analyst_target": "428.07"
+   },
+   "extras_provider": "Alpha Vantage"
   },
   "US:META": {
    "entity": "Meta Platforms, Inc.",
@@ -2852,7 +2886,14 @@
     ]
    },
    "cik": 1326801,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801&type=10-K"
+   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801&type=10-K",
+   "ratios": {
+    "dividend_yield": "0.0039",
+    "eps": "26.65",
+    "beta": "1.243",
+    "analyst_target": "754.14"
+   },
+   "extras_provider": "Alpha Vantage"
   },
   "US:TSLA": {
    "entity": "Tesla, Inc.",
@@ -3308,7 +3349,13 @@
     ]
    },
    "cik": 1318605,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001318605&type=10-K"
+   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001318605&type=10-K",
+   "ratios": {
+    "eps": "1.07",
+    "beta": "1.827",
+    "analyst_target": "395.34"
+   },
+   "extras_provider": "Alpha Vantage"
   },
   "US:JPM": {
    "entity": "JPMORGAN CHASE & CO",
@@ -3713,7 +3760,14 @@
     ]
    },
    "cik": 19617,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000019617&type=10-K"
+   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000019617&type=10-K",
+   "ratios": {
+    "dividend_yield": "0.0168",
+    "eps": "22.96",
+    "beta": "0.977",
+    "analyst_target": "374.57"
+   },
+   "extras_provider": "Alpha Vantage"
   },
   "US:UNH": {
    "entity": "UnitedHealth Group Incorporated",
@@ -4204,13 +4258,27 @@
     ]
    },
    "cik": 731766,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000731766&type=10-K"
+   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000731766&type=10-K",
+   "ratios": {
+    "dividend_yield": "0.023",
+    "eps": "15.39",
+    "beta": "0.632",
+    "analyst_target": "475.23"
+   },
+   "extras_provider": "Alpha Vantage"
   },
   "US:XOM": {
    "entity": "Exxon Mobil Corporation",
    "series": {},
    "cik": 2115436,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0002115436&type=10-K"
+   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0002115436&type=10-K",
+   "ratios": {
+    "dividend_yield": "0.0248",
+    "eps": "7.78",
+    "beta": "0.173",
+    "analyst_target": "169.68"
+   },
+   "extras_provider": "Alpha Vantage"
   },
   "US:V": {
    "entity": "VISA INC.",
@@ -4585,7 +4653,14 @@
     ]
    },
    "cik": 1403161,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001403161&type=10-K"
+   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001403161&type=10-K",
+   "ratios": {
+    "dividend_yield": "0.0073",
+    "eps": "11.74",
+    "beta": "0.759",
+    "analyst_target": "416.2"
+   },
+   "extras_provider": "Alpha Vantage"
   },
   "US:PG": {
    "entity": "PROCTER & GAMBLE CO",
@@ -5076,7 +5151,14 @@
     ]
    },
    "cik": 80424,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000080424&type=10-K"
+   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000080424&type=10-K",
+   "ratios": {
+    "dividend_yield": "0.0295",
+    "eps": "6.56",
+    "beta": "0.377",
+    "analyst_target": "160.57"
+   },
+   "extras_provider": "Alpha Vantage"
   },
   "US:COST": {
    "entity": "COSTCO WHOLESALE CORP /NEW",
@@ -5567,7 +5649,14 @@
     ]
    },
    "cik": 909832,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000909832&type=10-K"
+   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000909832&type=10-K",
+   "ratios": {
+    "dividend_yield": "0.0056",
+    "eps": "19.42",
+    "beta": "0.86",
+    "analyst_target": "1077.31"
+   },
+   "extras_provider": "Alpha Vantage"
   },
   "US:AVGO": {
    "entity": "Broadcom Inc.",
@@ -5988,7 +6077,14 @@
     ]
    },
    "cik": 1730168,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001730168&type=10-K"
+   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001730168&type=10-K",
+   "ratios": {
+    "dividend_yield": "0.007",
+    "eps": "6.02",
+    "beta": "1.473",
+    "analyst_target": "527.88"
+   },
+   "extras_provider": "Alpha Vantage"
   },
   "US:GLD": {
    "entity": "SPDR\u00ae GOLD TRUST",
@@ -6350,5 +6446,6 @@
   "IN:NIFTYBEES": "no free filings source: the SEC does not cover NSE listings, and the exchanges' own APIs refuse automated access",
   "IN:BANKBEES": "no free filings source: the SEC does not cover NSE listings, and the exchanges' own APIs refuse automated access",
   "IN:GOLDBEES": "no free filings source: the SEC does not cover NSE listings, and the exchanges' own APIs refuse automated access"
- }
+ },
+ "us_enriched_on": "2026-08-22"
 }

@@ -218,14 +218,16 @@ def _try_live(data_root: Path, config_path: Path) -> tuple[dict, PerformanceRepo
     try:
         import os
 
-        from ..data.fundamentals_intl import api_key
-        from ..data.fundamentals_intl import refresh as refresh_intl
+        from ..data.fundamentals_intl import api_key, enrich_us
 
         config = (
             json.loads(config_path.read_text()) if config_path.exists() else None
         )
         if api_key(config) and os.environ.get("SKIP_PROVIDER_FUNDAMENTALS") != "1":
-            refresh_intl(data_root, config)
+            # US extras only: no free tier was found that carries Indian
+            # fundamentals, so attempting them would spend the allowance to
+            # learn nothing.
+            enrich_us(data_root, config)
     except Exception as error:  # noqa: BLE001 — never fail a deploy over this
         print(f"provider fundamentals skipped ({error!r})")
 

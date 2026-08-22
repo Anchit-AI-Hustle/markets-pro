@@ -523,12 +523,22 @@ def _fundamentals(data_root: Path, watchlist: list[dict]) -> dict:
     for key, record in (document.get("companies") or {}).items():
         price = prices.get(key)
         ratios = derive(record, price=float(price) if price else None)
+        merged = {k: _s(Decimal(str(v))) for k, v in ratios.items()}
+        # Provider-only fields (beta, analyst target, dividend yield) are not
+        # derivable from a filing, so they are carried through from the cache.
+        # Derived values win on any overlap: a figure computed from a filed
+        # EPS is more traceable than the same ratio from a vendor.
+        for name, value in (record.get("ratios") or {}).items():
+            if name not in merged:
+                merged[name] = _s(Decimal(str(value)))
         out["companies"][key] = {
             "entity": record.get("entity"),
             "cik": record.get("cik"),
             "source": record.get("source"),
+            "provider": record.get("provider"),
+            "extras_provider": record.get("extras_provider"),
             "series": record.get("series", {}),
-            "ratios": {k: _s(Decimal(str(v))) for k, v in ratios.items()},
+            "ratios": merged,
         }
     return out
 

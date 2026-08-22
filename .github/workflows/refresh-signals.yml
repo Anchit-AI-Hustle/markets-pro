@@ -53,12 +53,17 @@ jobs:
             || echo "::warning::fund NAV refresh failed; keeping previous cache"
       # No-ops unless ALPHAVANTAGE_KEY is set as a repository secret; the
       # pages keep saying "not available" until one exists.
-      - name: Fill non-US fundamentals (needs a free provider key)
+      # Adds beta, analyst target, dividend yield and EPS to the US names —
+      # figures a filing does not carry. No-ops without a key. Indian
+      # fundamentals are NOT filled here: no free tier was found that covers
+      # them (see docs/AUTO-INVEST.md), so those pages stay honest about it.
+      - name: Enrich US fundamentals (needs a free provider key)
         env:
           ALPHAVANTAGE_KEY: ${{ secrets.ALPHAVANTAGE_KEY }}
         run: |
-          PYTHONPATH=src python3 -m autotrader.data.fundamentals_intl --out data/live \
-            || echo "::warning::provider fundamentals skipped"
+          PYTHONPATH=src python3 -m autotrader.data.fundamentals_intl \
+            --enrich-us --out data/live \
+            || echo "::warning::provider enrichment skipped"
       - name: Preview today's signals in the job log
         run: PYTHONPATH=src python3 -m autotrader.signals.live --data data/live --out /dev/null
       # Re-screens the whole universe on every refresh, same cadence as

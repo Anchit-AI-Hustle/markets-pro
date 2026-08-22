@@ -157,10 +157,26 @@ supported when it is not. It is still worth configuring — it supplies beta,
 analyst target price, dividend yield and PEG for US names, none of which
 EDGAR publishes.
 
+**Twelve Data's fundamentals are paid-only.** Its keyless catalogue lists
+Reliance on NSE with full metadata, so the instrument is genuinely in its
+universe — but `/statistics` answers `403: available exclusively with pro or
+ultra or venture or enterprise plans`. The free tier gives quotes and time
+series, which this app already gets from Yahoo, so a free key adds nothing
+here.
+
+**Conclusion: no free tier was found that carries Indian fundamentals.** Both
+candidates were tested with live keys rather than trusted on their coverage
+pages. This is a purchasing decision, not an engineering one. The pages say
+"not available" and will keep saying it until a paid feed is configured.
+
+<details><summary>Original note on Twelve Data's catalogue</summary>
+
 **Twelve Data lists NSE instruments** in its keyless catalogue endpoint, so
 Reliance is in its universe with full metadata. Whether its statistics
 endpoint sits on the free plan can only be settled with a key — which is what
 `--probe` is for. Free key: <https://twelvedata.com/pricing>.
+
+</details>
 
 Set either key as `ALPHAVANTAGE_KEY` / `TWELVEDATA_KEY`, in the repository
 secrets **or** in the Vercel project's environment variables — the build

@@ -270,6 +270,73 @@ def refresh(
     return document
 
 
+def enrich_us(root: Path, config: dict | None = None, *, pause: float = 13.0,
+              force: bool = False) -> dict:
+    """Add what EDGAR does not publish to the US names, if a key allows it.
+
+    Filings carry what a company reported; they do not carry beta, a analyst
+    consensus target, or a dividend yield priced against today. Those come
+    from a provider, are labelled as the provider's own figures on the page,
+    and are merged alongside the filed series rather than replacing it — so a
+    reader can still see which number came from where.
+
+    Paced at one call every thirteen seconds: the free tier is five a minute,
+    and being rate-limited mid-run would leave half the universe enriched.
+    """
+    from .universe import universe
+
+    key = api_key(config, "alphavantage")
+    path = root / "fundamentals.json"
+    document = (
+        json.loads(path.read_text()) if path.exists()
+        else {"version": 1, "companies": {}, "unavailable": {}}
+    )
+    if not key:
+        return document
+
+    from datetime import date as _date
+
+    today = _date.today().isoformat()
+    if document.get("us_enriched_on") == today and not force:
+        print(f"US extras already fetched today ({today}); skipping")
+        return document
+
+    used = 0
+    for entry in universe("us"):
+        if used >= DAILY_BUDGET:
+            print(f"stopping at {used} calls to stay inside the free allowance")
+            break
+        record = document.get("companies", {}).get(entry.key)
+        if record is None:
+            continue                      # ETFs and anything EDGAR had no facts for
+        try:
+            used += 1
+            extra = fetch_one(entry.symbol, key)
+        except Exception as error:  # noqa: BLE001 — one symbol must not stop the run
+            print(f"extras {entry.symbol}: {error}")
+            break                         # a rate-limit message means stop, not retry
+        if extra:
+            # Only fields the filings genuinely lack. A provider's P/E must
+            # never quietly overwrite one computed from a filed EPS.
+            wanted = ("beta", "analyst_target", "dividend_yield", "eps")
+            added = {
+                name: value for name, value in extra["ratios"].items()
+                if name in wanted
+            }
+            if added:
+                record.setdefault("ratios", {}).update(
+                    {k: str(v) for k, v in added.items()}
+                )
+                record["extras_provider"] = extra["provider"]
+                print(f"extras {entry.symbol}: {', '.join(sorted(added))}")
+        time.sleep(pause)
+
+    document["us_enriched_on"] = today
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(document, indent=1) + "\n")
+    return document
+
+
 def main(argv: list[str] | None = None) -> int:
     import argparse
 
@@ -278,6 +345,10 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--out", default="data/live")
     parser.add_argument("--config", default="config/live.json")
+    parser.add_argument(
+        "--enrich-us", action="store_true",
+        help="add provider-only fields (beta, target, yield) to US names",
+    )
     parser.add_argument(
         "--probe", action="store_true",
         help="ask each configured provider whether it carries Indian figures",
@@ -291,6 +362,14 @@ def main(argv: list[str] | None = None) -> int:
     if args.probe:
         for provider, finding in probe(config).items():
             print(f"{provider:<14} {finding}")
+        return 0
+
+    if args.enrich_us:
+        document = enrich_us(Path(args.out), config)
+        enriched = sum(
+            1 for r in document.get("companies", {}).values() if r.get("extras_provider")
+        )
+        print(f"{enriched} US companies enriched with provider-only fields")
         return 0
 
     document = refresh(Path(args.out), config)
