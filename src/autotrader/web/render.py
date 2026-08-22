@@ -1131,6 +1131,17 @@ button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(-
    query would be overruled by the default below it. */
 .tabshort{display:none}
 
+/* --- mutual funds --------------------------------------------------------- */
+.fundsbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.fundstable{width:100%;min-width:560px;font-size:12.5px}
+.fundstable td{vertical-align:top}
+.fundstable strong{display:block;font-size:13px}
+.fundmeta{display:block;font-size:10.5px;color:var(--muted);margin-top:2px}
+.fundplan{font-size:11.5px;color:var(--muted);white-space:nowrap}
+.fundday{font-size:11px;color:var(--muted);white-space:nowrap}
+@media (max-width:640px){.fundplan,.fundday{display:none}
+  .fundstable{min-width:0}}
+
 /* --- stock detail --------------------------------------------------------- */
 .nofund{padding:12px 14px;border:1px dashed var(--line);border-radius:8px;
   font-size:12.5px;color:var(--muted);line-height:1.6}
@@ -2219,6 +2230,11 @@ def _stock_index(signals: dict, screener: dict | None) -> dict:
         if target is not None and "fundamentals" not in target:
             target["no_fundamentals"] = reason
 
+    for key, actions in (signals.get("corporate_actions") or {}).items():
+        target = merged.get(key)
+        if target is not None:
+            target["actions"] = actions
+
     for order in signals.get("orders") or []:
         record = merged.get(order.get("key"))
         if record is not None:
@@ -2250,6 +2266,46 @@ def _detail_shell() -> str:
     &larr; Back to the list</button>
   <div data-detail-body></div>
 </section>"""
+
+
+def _funds_section(funds: dict | None) -> str:
+    """Mutual fund NAVs, searched in the browser against a fetched index.
+
+    Fourteen thousand schemes cannot be rendered as rows, and paging them
+    server-side would mean a round trip per keystroke on a static host. The
+    index is fetched once when the tab is opened and searched locally.
+    """
+    if not funds:
+        return ('<p class="empty">Fund NAVs are not in this build. They refresh '
+                "daily with the rest of the data.</p>")
+    count = funds.get("count", 0)
+    as_of = funds.get("as_of", "")
+    houses = funds.get("houses") or []
+    categories = funds.get("categories") or []
+    chips = "".join(
+        f'<button type="button" class="wfilter" data-fcat="{_esc(name)}" '
+        f'aria-pressed="false">{_esc(name)}<span class="wcount">{n}</span></button>'
+        for name, n in categories[:8]
+    )
+    return f"""<div class="fundsbar">
+  <label class="wsearch">
+    <span class="sr-only">Search mutual funds</span>
+    <input type="search" data-fsearch placeholder="Search {count:,} schemes by name or fund house">
+  </label>
+  <div class="wfilters">{chips}
+    <button type="button" class="wfilter" data-fcat="all" aria-pressed="true">All
+      <span class="wcount">{count:,}</span></button>
+  </div>
+</div>
+<p class="sigmeta">{count:,} schemes from {len(houses)} fund houses &middot;
+NAVs as of {_esc(as_of)}</p>
+<div data-funds-results><p class="empty" data-funds-hint>Type at least two
+characters to search, or pick a category.</p></div>
+<p class="caption">Published by AMFI, the association every Indian asset manager
+reports to, once a day after valuation. A fund has no intraday price &mdash; any
+site showing one is showing an estimate. Direct plans carry lower charges than
+regular ones for the same portfolio, which is why the same fund appears twice.
+Nothing here is a recommendation, and past NAV growth is not a forecast.</p>"""
 
 
 def _paper_section() -> str:
@@ -3210,6 +3266,47 @@ DETAIL_JS = """
 
   // Filed fundamentals. Present only where a filing exists, and where it does
   // not the page says why rather than showing a row of dashes.
+
+  // Dividends and splits. A trailing yield is shown only when the company
+  // actually paid inside the last year — projecting one from an older payment
+  // would flatter anything that has since cut.
+  function actions(stock) {
+    var a = stock.actions;
+    if (!a || (!(a.dividends || []).length && !(a.splits || []).length)) {
+      return '<h3 class="detailsub">Dividends</h3>' +
+        '<p class="empty">No dividend or split recorded in the last five years.</p>';
+    }
+    var html = '<h3 class="detailsub">Dividends and splits</h3>';
+    html += '<div class="detailgrid">' +
+      '<span class="dstat"><i>Trailing yield</i><b>' +
+        (a['yield'] ? pct(a['yield'], 2) : '—') + '</b><u>' +
+        (a.ttm_count ? a.ttm_count + ' payment' + (a.ttm_count === 1 ? '' : 's') +
+         ' in 12 months' : 'nothing paid in 12 months') + '</u></span>' +
+      '<span class="dstat"><i>Paid (12 months)</i><b>' +
+        (a.ttm_paid ? num(a.ttm_paid) : '—') + '</b><u>' +
+        esc(stock.currency || '') + ' per share</u></span>' +
+      '<span class="dstat"><i>Splits (5 years)</i><b>' +
+        ((a.splits || []).length || '0') + '</b></span>' +
+    '</div>';
+
+    if ((a.dividends || []).length) {
+      html += '<div class="fundwrap"><table class="fundtable"><thead><tr>' +
+        '<th>Ex-date</th><th class="num">Amount</th></tr></thead><tbody>' +
+        a.dividends.map(function (d) {
+          return '<tr><td>' + esc(d.date) + '</td><td class="num">' +
+            num(d.amount) + ' <span class="ccy">' + esc(stock.currency || '') +
+            '</span></td></tr>';
+        }).join('') + '</tbody></table></div>';
+    }
+    if ((a.splits || []).length) {
+      html += '<p class="caption">Splits: ' + a.splits.map(function (s) {
+        return esc(s.ratio) + ' on ' + esc(s.date);
+      }).join(', ') + '. Prices before a split are adjusted for it, so the ' +
+      'chart above shows a continuous series rather than a cliff.</p>';
+    }
+    return html;
+  }
+
   function fundamentals(stock) {
     if (!stock.fundamentals) {
       var why = stock.no_fundamentals || 'No filings source covers this listing.';
@@ -3412,6 +3509,7 @@ DETAIL_JS = """
         'this build.</p>';
     }
 
+    html += actions(stock);
     html += fundamentals(stock);
 
     html += '<h3 class="detailsub">Headlines</h3><div data-detail-news>' +
@@ -3503,6 +3601,142 @@ DETAIL_JS = """
   }
   window.addEventListener('hashchange', route);
   route();
+})();
+"""
+
+
+#: Mutual fund search.
+#:
+#: The index is ~1.8 MB uncompressed and about 190 KB on the wire, fetched
+#: once when the tab is first opened. Searching it locally means a keystroke
+#: costs nothing; paging it from a static host would mean a round trip per
+#: character.
+FUNDS_JS = """
+(function () {
+  var results = document.querySelector('[data-funds-results]');
+  var search = document.querySelector('[data-fsearch]');
+  if (!results || !search || typeof fetch !== 'function') return;
+
+  var DATA = null, loading = null, category = 'all';
+  var API_FILE = 'funds.json';
+
+  function load() {
+    if (DATA) return Promise.resolve(DATA);
+    if (loading) return loading;
+    loading = fetch(API_FILE)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { DATA = d || {schemes: []}; return DATA; })
+      .catch(function () { DATA = {schemes: []}; return DATA; });
+    return loading;
+  }
+
+  function money(v) {
+    return Number(v).toLocaleString('en-IN',
+      {minimumFractionDigits: 2, maximumFractionDigits: 4});
+  }
+
+  function render(rows, data, truncated) {
+    results.textContent = '';
+    if (!rows.length) {
+      var none = document.createElement('p');
+      none.className = 'empty';
+      none.textContent = 'No scheme matches that.';
+      results.appendChild(none);
+      return;
+    }
+    var table = document.createElement('table');
+    table.className = 'fundstable';
+    table.innerHTML = '<thead><tr><th>Scheme</th><th>Plan</th>' +
+      '<th class="num">NAV</th><th class="num">As of</th></tr></thead>';
+    var body = document.createElement('tbody');
+    rows.forEach(function (s) {
+      var tr = document.createElement('tr');
+      var name = document.createElement('td');
+      var strong = document.createElement('strong');
+      strong.textContent = s.n;                    // third-party text stays text
+      name.appendChild(strong);
+      var meta = document.createElement('span');
+      meta.className = 'fundmeta';
+      meta.textContent = (data.house_names[s.h] || '') + ' · ' +
+        (data.category_names[s.g] || '');
+      name.appendChild(meta);
+      tr.appendChild(name);
+
+      var plan = document.createElement('td');
+      plan.className = 'fundplan';
+      plan.textContent = [s.p, s.o].filter(Boolean).join(' · ');
+      tr.appendChild(plan);
+
+      var nav = document.createElement('td');
+      nav.className = 'num';
+      nav.textContent = money(s.v);
+      tr.appendChild(nav);
+
+      var day = document.createElement('td');
+      day.className = 'num fundday';
+      day.textContent = s.d;
+      tr.appendChild(day);
+      body.appendChild(tr);
+    });
+    table.appendChild(body);
+    var wrap = document.createElement('div');
+    wrap.className = 'fundwrap';
+    wrap.appendChild(table);
+    results.appendChild(wrap);
+
+    if (truncated) {
+      var note = document.createElement('p');
+      note.className = 'caption';
+      note.textContent = 'Showing the first 200 of ' + truncated.toLocaleString('en-US') +
+        ' matches — narrow the search to see the rest. Nothing is hidden by ' +
+        'ranking; these are simply the first in the file.';
+      results.appendChild(note);
+    }
+  }
+
+  function run() {
+    var term = search.value.trim().toLowerCase();
+    if (term.length < 2 && category === 'all') {
+      results.innerHTML = '<p class="empty">Type at least two characters to ' +
+        'search, or pick a category.</p>';
+      return;
+    }
+    results.innerHTML = '<p class="empty">Searching\u2026</p>';
+    load().then(function (data) {
+      var schemes = data.schemes || [];
+      var matched = [];
+      for (var i = 0; i < schemes.length; i++) {
+        var s = schemes[i];
+        if (category !== 'all' && data.category_names[s.g] !== category) continue;
+        if (term) {
+          var hay = (s.n + ' ' + (data.house_names[s.h] || '')).toLowerCase();
+          if (hay.indexOf(term) < 0) continue;
+        }
+        matched.push(s);
+      }
+      render(matched.slice(0, 200), data, matched.length > 200 ? matched.length : 0);
+    });
+  }
+
+  var debounce = null;
+  search.addEventListener('input', function () {
+    clearTimeout(debounce);
+    debounce = setTimeout(run, 180);
+  });
+
+  document.querySelectorAll('[data-fcat]').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      category = chip.getAttribute('data-fcat');
+      document.querySelectorAll('[data-fcat]').forEach(function (other) {
+        other.setAttribute('aria-pressed', other === chip ? 'true' : 'false');
+      });
+      run();
+    });
+  });
+
+  // Warm the index when the tab opens so the first search feels instant.
+  var tab = document.querySelector('[data-tabbtn="funds"]');
+  if (tab) tab.addEventListener('click', function () { load(); });
 })();
 """
 
@@ -5139,6 +5373,7 @@ def render_dashboard(
     tests_total: int = 0,
     signals: dict | None = None,
     screener: dict | None = None,
+    funds: dict | None = None,
 ) -> str:
     """Return a complete, self-contained HTML document for ``report``.
 
@@ -5213,6 +5448,12 @@ def render_dashboard(
     <div class="panel">{_screener_section(screener)}</div>
   </section>
 
+  <section class="tabpanel" id="panel-funds" data-tab="funds"
+           role="tabpanel" hidden>
+    <h2>Mutual funds</h2>
+    <div class="panel">{_funds_section(funds)}</div>
+  </section>
+
   <section class="tabpanel" id="panel-watchlist" data-tab="watchlist"
            role="tabpanel" hidden>
     <h2>Watchlist</h2>
@@ -5264,6 +5505,7 @@ def render_dashboard(
             f"<script>{ODOMETER_JS}</script>\n"
             f"<script>{WATCH_NEWS_JS}</script>\n"
             f"<script>{DETAIL_JS}</script>\n"
+            f"<script>{FUNDS_JS}</script>\n"
             f"<script>{TILT_JS}</script>\n"
             f"<script>{JOURNEY_JS}</script>"
         )
@@ -5271,6 +5513,7 @@ def render_dashboard(
     dash_label = _tab_label("Today", "Dashboard")
     market_label = _tab_label("Markets", "Markets")
     screen_label = _tab_label("Screen", "Screener")
+    funds_label = _tab_label("Funds", "Mutual funds")
     watch_label = _tab_label("List", "Watchlist")
     news_label = _tab_label("News", "News")
     record_label = _tab_label("Record", "Track record")
@@ -5283,6 +5526,8 @@ def render_dashboard(
             aria-controls="panel-markets">{market_label}</button>
     <button type="button" role="tab" data-tabbtn="screener" aria-selected="false"
             aria-controls="panel-screener">{screen_label}</button>
+    <button type="button" role="tab" data-tabbtn="funds" aria-selected="false"
+            aria-controls="panel-funds">{funds_label}</button>
     <button type="button" role="tab" data-tabbtn="watchlist" aria-selected="false"
             aria-controls="panel-watchlist">{watch_label}</button>
     <button type="button" role="tab" data-tabbtn="news" aria-selected="false"

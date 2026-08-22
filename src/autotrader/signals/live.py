@@ -533,6 +533,42 @@ def _fundamentals(data_root: Path, watchlist: list[dict]) -> dict:
     return out
 
 
+def _corporate_actions(data_root: Path, watchlist: list[dict]) -> dict:
+    """Dividends and splits, with a trailing yield where one can be computed."""
+    path = data_root / "corporate_actions.json"
+    if not path.exists():
+        return {}
+    try:
+        document = json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+    prices = {row["key"]: row.get("last") for row in watchlist}
+    today = date.today()
+    out: dict = {}
+    for key, record in (document.get("instruments") or {}).items():
+        dividends = record.get("dividends") or []
+        # Trailing twelve months, by ex-date. A yield built from anything
+        # longer would flatter a company that has cut its dividend.
+        recent = [
+            d for d in dividends
+            if d.get("date") and (today - date.fromisoformat(d["date"])).days <= 365
+        ]
+        paid = sum(Decimal(str(d["amount"])) for d in recent if d.get("amount"))
+        price = prices.get(key)
+        yield_pct = None
+        if price and Decimal(str(price)) > 0 and paid > 0:
+            yield_pct = _s(paid / Decimal(str(price)))
+        out[key] = {
+            "dividends": dividends[:12],
+            "splits": record.get("splits") or [],
+            "ttm_paid": _s(paid) if paid > 0 else None,
+            "ttm_count": len(recent),
+            "yield": yield_pct,
+        }
+    return out
+
+
 def _mechanics(engine: BacktestEngine, feed: LiveFeed) -> dict:
     """The constants the run actually used, for the page to quote back.
 
@@ -715,6 +751,9 @@ def build_snapshot(
         "watchlist": watchlist,
         "market": _market(watchlist, data_root or Path("data/live")),
         "fundamentals": _fundamentals(data_root or Path("data/live"), watchlist),
+        "corporate_actions": _corporate_actions(
+            data_root or Path("data/live"), watchlist
+        ),
         "mechanics": _mechanics(engine, feed),
         "totals": {
             "signals": _totals(orders, only_fresh=True),

@@ -45,6 +45,12 @@ jobs:
         run: |
           PYTHONPATH=src python3 -m autotrader.data.fundamentals --out data/live \
             || echo "::warning::fundamentals refresh failed; keeping previous cache"
+      # AMFI publishes once a day after valuation; a miss just leaves
+      # yesterday's NAVs in place rather than blocking the deploy.
+      - name: Refresh mutual fund NAVs
+        run: |
+          PYTHONPATH=src python3 -m autotrader.data.funds --out data/live \
+            || echo "::warning::fund NAV refresh failed; keeping previous cache"
       - name: Preview today's signals in the job log
         run: PYTHONPATH=src python3 -m autotrader.signals.live --data data/live --out /dev/null
       # Re-screens the whole universe on every refresh, same cadence as

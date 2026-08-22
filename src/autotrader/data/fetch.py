@@ -79,6 +79,71 @@ def fetch_benchmarks(root: Path, *, range_: str = "1y", pause: float = 0.3) -> l
     return failed
 
 
+def fetch_corporate_actions(root: Path, *, pause: float = 0.25) -> list[str]:
+    """Dividends and splits per instrument, from the price feed's own events.
+
+    Carried separately from the bar cache because they are sparse and change
+    only when a company acts — refetching two years of events nightly costs
+    one request per name and keeps the detail pages honest about what a price
+    series has been adjusted for.
+    """
+    from .universe import universe
+
+    document: dict = {"version": 1, "instruments": {}}
+    failed: list[str] = []
+    for region in ("india", "us"):
+        for entry in universe(region):
+            try:
+                payload = _http_get_json(
+                    "https://query1.finance.yahoo.com/v8/finance/chart/"
+                    f"{urllib.parse.quote(entry.yahoo)}"
+                    "?range=5y&interval=1d&events=div,split"
+                )
+                result = payload["chart"]["result"][0]
+                events = result.get("events") or {}
+                offset = int(result.get("meta", {}).get("gmtoffset", 0))
+
+                def when(stamp: int, offset: int = offset) -> str:
+                    return datetime.fromtimestamp(
+                        stamp + offset, tz=timezone.utc
+                    ).date().isoformat()
+
+                dividends = [
+                    {"date": when(int(row["date"])), "amount": row.get("amount")}
+                    for row in (events.get("dividends") or {}).values()
+                    if row.get("amount") is not None
+                ]
+                splits = [
+                    {
+                        "date": when(int(row["date"])),
+                        "ratio": row.get("splitRatio")
+                        or f"{row.get('numerator')}:{row.get('denominator')}",
+                    }
+                    for row in (events.get("splits") or {}).values()
+                ]
+                dividends.sort(key=lambda d: d["date"], reverse=True)
+                splits.sort(key=lambda s: s["date"], reverse=True)
+                document["instruments"][entry.key] = {
+                    "dividends": dividends[:20],
+                    "splits": splits[:10],
+                }
+                if dividends or splits:
+                    print(
+                        f"actions {entry.symbol}: {len(dividends)} dividends, "
+                        f"{len(splits)} splits"
+                    )
+            except (FetchError, KeyError, IndexError, TypeError) as error:
+                failed.append(entry.symbol)
+                print(f"actions {entry.symbol}: FAILED — {error}", file=sys.stderr)
+            time.sleep(pause)
+
+    document["fetched_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    path = root / "corporate_actions.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(document, indent=1) + "\n")
+    return failed
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Refresh the live daily-bar cache from Yahoo Finance"
@@ -107,6 +172,11 @@ def main(argv: list[str] | None = None) -> int:
                 failures.append(entry.symbol)
                 print(f"{entry.region}/{entry.symbol}: FAILED — {error}", file=sys.stderr)
             time.sleep(args.pause)
+
+    try:
+        fetch_corporate_actions(root, pause=args.pause)
+    except Exception as error:  # noqa: BLE001 — context is optional, bars are not
+        print(f"corporate actions: FAILED — {error}", file=sys.stderr)
 
     try:
         benchmark_failures = fetch_benchmarks(root, pause=args.pause)

@@ -158,6 +158,8 @@ def build_static(
     signals: dict | None = None,
     subtitle: str | None = None,
     screener: dict | None = None,
+    funds: dict | None = None,
+    funds_source: Path | None = None,
 ) -> Path:
     """Write ``out_dir/markets-pro/index.html`` and return its path."""
     report = report or run_demo_backtest()
@@ -177,6 +179,7 @@ def build_static(
         tests_total=tests_total,
         signals=signals,
         screener=screener,
+        funds=funds,
     )
     target.write_text(html, encoding="utf-8")
 
@@ -190,6 +193,10 @@ def build_static(
         (target_dir / "stocks.json").write_text(
             _json.dumps(_stock_index(signals, screener)), encoding="utf-8"
         )
+        if funds_source is not None and funds_source.exists():
+            (target_dir / "funds.json").write_text(
+                funds_source.read_text(), encoding="utf-8"
+            )
     return target
 
 
@@ -255,8 +262,23 @@ def main(argv: list[str] | None = None) -> int:
             except (OSError, ValueError) as error:
                 print(f"screener unreadable ({error}); the tab will say so")
 
+    # Fund NAVs: only the summary counts are needed at build time — the
+    # schemes themselves are fetched by the browser from the copied file.
+    funds = None
+    if args.live:
+        funds_path = args.live / "funds.json"
+        if funds_path.exists():
+            try:
+                import json as _fjson
+
+                document = _fjson.loads(funds_path.read_text())
+                funds = {k: v for k, v in document.items() if k != "schemes"}
+            except (OSError, ValueError) as error:
+                print(f"funds cache unreadable ({error}); the tab will say so")
+
     path = build_static(
-        args.out, report=report, screener=screener,
+        args.out, report=report, screener=screener, funds=funds,
+        funds_source=(args.live / "funds.json") if args.live else None,
         tests_passed=args.tests_passed, tests_total=args.tests_total,
         signals=signals, subtitle=subtitle,
     )
