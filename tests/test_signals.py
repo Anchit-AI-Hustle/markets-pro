@@ -638,6 +638,31 @@ class TestRenderWithSignals(unittest.TestCase):
         self.assertIn("Asia/Kolkata", html)
         self.assertIn("America/New_York", html)
 
+    def test_every_card_surface_tilts_not_just_signal_cards(self):
+        """The 3D layer was written when signals were the only cards on the
+        site. Most days there are none, so in practice nothing tilted."""
+        html = render_dashboard(self.report, signals=self.signals)
+        for surface in (".idxcard", ".screenrow", ".moverbox", ".vcount",
+                        ".tier", ".newsitem"):
+            self.assertIn(surface, html)
+        self.assertIn("var TILTABLE", html)
+        # Grids establish their own vanishing point.
+        self.assertIn("perspective:1200px", html)
+        self.assertIn("perspective:1400px", html)
+
+    def test_rows_and_grids_animate_in(self):
+        html = render_dashboard(self.report, signals=self.signals)
+        self.assertIn("@keyframes rowin", html)
+        self.assertIn("@keyframes cardin", html)
+        self.assertIn("@keyframes rowturn", html)
+
+    def test_all_of_it_collapses_flat_under_reduced_motion(self):
+        html = render_dashboard(self.report, signals=self.signals)
+        block = html[html.index("@media (prefers-reduced-motion:reduce)"):]
+        block = block[:block.index("\n}") + 2]
+        for surface in (".idxcard", ".screenrow", ".moverbox", ".vcount"):
+            self.assertIn(surface, block)
+
     def test_cards_sit_in_a_shared_3d_scene(self):
         html = render_dashboard(self.report, signals=self.signals)
         self.assertIn('<div class="scene">', html)

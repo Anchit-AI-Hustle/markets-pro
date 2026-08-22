@@ -990,6 +990,34 @@ button.exec:not(:disabled):active{transform:translateY(0) scale(.985)}
   padding:18px;margin:-18px}
 .panel:has(.scene){overflow:visible}
 
+.tilt,.idxcard,.screenrow,.moverbox,.vcount,.tier,.newsitem,
+.jrule-card,.allocsplitrow,.jstat,.jtier{transform-style:preserve-3d;
+  position:relative;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease);
+  will-change:transform}
+.idxcard.tilting,.screenrow.tilting,.moverbox.tilting,.vcount.tilting,
+.tier.tilting,.newsitem.tilting,.jrule-card.tilting,.allocsplitrow.tilting,
+.jstat.tilting,.jtier.tilting{transition:transform .08s linear;
+  box-shadow:var(--elev-3);z-index:2}
+.idxcard::after,.screenrow::after,.moverbox::after,.vcount::after,
+.tier::after,.newsitem::after,.jrule-card::after,.allocsplitrow::after,
+.jstat::after,.jtier::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;
+  pointer-events:none;opacity:0;transition:opacity .4s var(--ease);
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),
+    color-mix(in srgb,var(--accent) 14%,transparent),transparent 45%)}
+.idxcard.tilting::after,.screenrow.tilting::after,.moverbox.tilting::after,
+.vcount.tilting::after,.tier.tilting::after,.newsitem.tilting::after,
+.jrule-card.tilting::after,.allocsplitrow.tilting::after,
+.jstat.tilting::after,.jtier.tilting::after{opacity:1}
+
+/* Depth inside a screener row, so tilting parallaxes rather than rotating
+   a flat plane. */
+.screenrow .screenhead{transform:translateZ(22px)}
+.screenrow .screenmetrics{transform:translateZ(12px)}
+.idxcard .idxlast{transform:translateZ(26px)}
+.idxcard .idxspark{transform:translateZ(16px)}
+
 .tilt{transform-style:preserve-3d;
   transition:transform .5s var(--ease),box-shadow .5s var(--ease);
   will-change:transform}
@@ -1039,11 +1067,22 @@ button.exec:not(:disabled):active{
    support simply keep the flat layout. */
 @media (hover: none), (pointer: coarse){
   @supports (animation-timeline: view()){
-    .tilt{
+    .tilt,.screenrow,.idxcard,.moverbox,.tier,.jrule-card,.newsitem{
       animation:cardturn linear both;
       animation-timeline:view();
       animation-range:entry 12% exit 88%;
       transition:none;
+    }
+    /* Rows too, gently: a table where every line pivots is unreadable, so
+       they fade and lift rather than rotate. */
+    .tabpanel:not([hidden]) tbody tr{
+      animation:rowturn linear both;
+      animation-timeline:view();
+      animation-range:entry 2% entry 90%;
+    }
+    @keyframes rowturn{
+      from{opacity:.25;transform:translateY(8px)}
+      to{opacity:1;transform:none}
     }
     @keyframes cardturn{
       from{transform:perspective(1000px) rotateX(7deg) scale(.965);opacity:.7}
@@ -1085,11 +1124,40 @@ button.exec:not(:disabled):active{
 /* Separators sit outside the cylinders so commas never roll. */
 .odo-sep{padding:0 .02em}
 
+/* Rows arrive in sequence. Capped at twenty so a long table finishes
+   assembling rather than trickling for several seconds. */
+.tabpanel:not([hidden]) tbody tr{animation:rowin .34s var(--ease) both}
+.tabpanel:not([hidden]) tbody tr:nth-child(1){animation-delay:.01s}
+.tabpanel:not([hidden]) tbody tr:nth-child(2){animation-delay:.03s}
+.tabpanel:not([hidden]) tbody tr:nth-child(3){animation-delay:.05s}
+.tabpanel:not([hidden]) tbody tr:nth-child(4){animation-delay:.07s}
+.tabpanel:not([hidden]) tbody tr:nth-child(5){animation-delay:.09s}
+.tabpanel:not([hidden]) tbody tr:nth-child(n+6){animation-delay:.11s}
+@keyframes rowin{from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:none}}
+
+/* Card grids assemble the same way. */
+.idxgrid > *,.screenlist > *,.verdictcounts > *,.tiers > *,.moverpair > *{
+  animation:cardin .4s var(--ease) both}
+.idxgrid > *:nth-child(1),.screenlist > *:nth-child(1){animation-delay:.02s}
+.idxgrid > *:nth-child(2),.screenlist > *:nth-child(2){animation-delay:.06s}
+.idxgrid > *:nth-child(3),.screenlist > *:nth-child(3){animation-delay:.10s}
+.idxgrid > *:nth-child(4),.screenlist > *:nth-child(4){animation-delay:.14s}
+.idxgrid > *:nth-child(n+5),.screenlist > *:nth-child(n+5){animation-delay:.18s}
+@keyframes cardin{from{opacity:0;transform:perspective(800px) rotateX(-6deg)
+  translateY(12px)} to{opacity:1;transform:none}}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none !important;transition:none !important}
   .kpi:hover,.sigcard:hover,button.exec:hover,button.exec:active{transform:none}
   .tilt,.tilt .sighead,.tilt .sparkwrap,.tilt .sigmoney,
-  .tilt .sigwhy,.tilt .sigtech,.tilt .mcell.act{transform:none !important}
+  .tilt .sigwhy,.tilt .sigtech,.tilt .mcell.act,
+  .idxcard,.screenrow,.moverbox,.vcount,.tier,.newsitem,
+  .jrule-card,.allocsplitrow,.jstat,.jtier,
+  .screenrow .screenhead,.screenrow .screenmetrics,
+  .idxcard .idxlast,.idxcard .idxspark{transform:none !important}
+  .idxcard::after,.screenrow::after,.moverbox::after,.vcount::after,
+  .tier::after,.newsitem::after{display:none}
   .tilt::after{display:none}
   .scene{perspective:none}
 }
@@ -1253,7 +1321,8 @@ tr.openable:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
   max-width:74ch}
 .finding p:last-child{margin-bottom:0}
 .finding strong{color:var(--ink)}
-.verdictcounts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.verdictcounts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;
+  perspective:900px}
 .vcount{display:flex;flex-direction:column;gap:1px;padding:8px 12px;
   border:1px solid var(--line);border-radius:8px;font-size:11px;
   color:var(--muted);min-width:96px}
@@ -1273,7 +1342,8 @@ tr.openable:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
 /* --- markets -------------------------------------------------------------- */
 .mktgroup{margin:20px 0 10px;font-size:12px;text-transform:uppercase;
   letter-spacing:.06em;color:var(--accent);font-weight:700}
-.idxgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
+.idxgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+  perspective:1200px;perspective-origin:50% 40%}
 .idxcard{border:1px solid var(--line);border-radius:9px;padding:12px 13px;
   background:var(--panel);box-shadow:var(--elev-1);display:flex;
   flex-direction:column;gap:2px}
@@ -1303,7 +1373,8 @@ tr.openable:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
 .breadthnums b{font-variant-numeric:tabular-nums}
 .breadthnums i{font-style:normal;color:var(--muted);font-size:11px}
 
-.moverpair{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.moverpair{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  perspective:1100px}
 .moverbox{border:1px solid var(--line);border-radius:9px;padding:11px 13px}
 .moverhead{margin:0 0 8px;font-size:11.5px;text-transform:uppercase;
   letter-spacing:.05em;font-weight:700;color:var(--muted)}
@@ -1330,7 +1401,7 @@ tr.openable:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
 .seccount{font-size:11px;color:var(--muted);min-width:62px;text-align:right}
 
 /* --- screener ------------------------------------------------------------- */
-.screenlist{display:grid;gap:10px}
+.screenlist{display:grid;gap:10px;perspective:1400px;perspective-origin:50% 30%}
 .screenrow{border:1px solid var(--line);border-radius:9px;padding:12px 14px;
   background:var(--panel);box-shadow:var(--elev-1)}
 .screenhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;
@@ -1538,6 +1609,7 @@ button.exec.danger:hover{background:color-mix(in srgb,var(--neg) 12%,var(--tag))
 .setupactions button.exec.big{width:auto;min-width:140px;flex:0 0 auto}
 
 .tiers{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  perspective:1100px;
   margin-top:14px}
 .tier{background:var(--panel);border:1px solid var(--line);
   border-radius:var(--radius);padding:14px 16px}
@@ -3065,9 +3137,14 @@ TILT_JS = """
     });
   }
 
-  document.querySelectorAll('.tilt').forEach(bind);
+  // Every card-shaped surface, not just signal cards. The 3D layer was built
+  // when signals were the only cards on the site; most days there are none,
+  // so in practice nothing tilted at all.
+  var TILTABLE = '.tilt, .idxcard, .screenrow, .moverbox, .vcount, .tier,'
+    + ' .newsitem, .kpi.cta, .jrule-card, .allocsplitrow, .jstat, .jtier';
+  document.querySelectorAll(TILTABLE).forEach(bind);
   window.__mpBindTilt = function (root) {
-    (root || document).querySelectorAll('.tilt').forEach(bind);
+    (root || document).querySelectorAll(TILTABLE).forEach(bind);
   };
 })();
 """
