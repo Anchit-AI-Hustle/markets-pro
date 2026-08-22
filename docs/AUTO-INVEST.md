@@ -63,7 +63,9 @@ The **Alpaca** button posts the order to `/markets-pro/api/execute`, which:
 
 ## Tier 3 — Capped India auto-invest (Kite Connect) — paid, opt-in
 
-Fully automated NSE order placement needs **Kite Connect** (₹2,000/month), and
+Fully automated NSE order placement needs **Kite Connect**, whose Personal
+tier is free for exactly this (orders, holdings, positions; market data is
+the part that costs), and
 Zerodha requires a fresh login token every morning by design, so "automated"
 means: log in once each trading morning, then run:
 

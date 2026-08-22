@@ -1,9 +1,12 @@
 """Capped auto-invest for India via Zerodha Kite Connect — opt-in, dry-run first.
 
-What "automated" can honestly mean on Zerodha: Kite Connect is a paid API
-(₹2,000/month as of 2026) and its access token expires every morning by
-design — Zerodha requires a fresh login daily, so a fully hands-off loop is
-not possible for a retail account. The supported flow is: log in once each
+What "automated" can honestly mean on Zerodha: order placement, holdings and
+positions are free on the Kite Connect **Personal** tier — the ₹2,000 charge
+that used to apply now buys market data, which this app does not need because
+it has its own. What has not changed is that the access token expires at 6 AM
+the next day by regulatory requirement, so Zerodha requires a fresh login each
+trading morning and a fully hands-off loop is not possible for a retail
+account. The supported flow is: log in once each
 trading morning, export the access token, and let this module place the day's
 fresh signals within the cap. SEBI's algo-trading framework applies to
 API-driven retail orders; check your broker's approval requirements before
