@@ -455,6 +455,17 @@ def _benchmarks(data_root: Path) -> list[dict]:
 
         days = series.get("days") or []
         closes_f = [round(float(c), 2) for c in closes]
+
+        # The 52-week band, from the same closes every other figure uses. A
+        # benchmark opens the same detail view as a stock and that view asks
+        # for these; without them it printed an em dash next to a live price,
+        # which reads as "this index has no range" rather than "this build
+        # never computed one".
+        year = closes[-252:] if len(closes) >= 252 else closes
+        high_52w = max(year) if year else None
+        low_52w = min(year) if year else None
+        band = (high_52w - low_52w) if (high_52w and low_52w) else None
+
         rows.append({
             "yahoo": yahoo,
             # A benchmark opens the same detail view as a stock, so it needs
@@ -469,8 +480,20 @@ def _benchmarks(data_root: Path) -> list[dict]:
             "change_1d": move(1),
             "change_1w": move(5),
             "change_1m": move(21),
+            "change_3m": move(63),
             "change_1y": move(251),
             "change_2y": move(500),
+            "high_52w": _s(high_52w) if high_52w is not None else None,
+            "low_52w": _s(low_52w) if low_52w is not None else None,
+            "off_high": _s((last - high_52w) / high_52w) if high_52w else None,
+            "off_low": _s((last - low_52w) / low_52w) if low_52w else None,
+            "range_position": _s((last - low_52w) / band) if band and band > 0 else None,
+            # Stated rather than left absent: an index is a computed level, not
+            # a traded instrument, so it has no volume of its own. The detail
+            # view reads this and omits the column instead of printing a dash
+            # that looks like missing data.
+            "has_volume": False,
+            "sessions_counted": len(year),
             "as_of": days[-1] if days else None,
             "spark": [round(float(c), 4) for c in closes[-60:]],
         })

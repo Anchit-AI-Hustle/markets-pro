@@ -2588,13 +2588,32 @@ def _stock_index(signals: dict, screener: dict | None) -> dict:
             "region": bench.get("group"),
             "sector": bench.get("kind"),
             "currency": bench.get("currency"),
-            "exchange": "",
+            # None, not "": an index is not listed on an exchange, and an
+            # empty string is a value that renders. The view filters falsy
+            # tags as well, but the data should not be claiming a blank
+            # exchange exists in the first place.
+            "exchange": None,
             "yahoo": bench["yahoo"],
             "last": bench.get("last"),
             "change_1d": bench.get("change_1d"),
             "change_1w": bench.get("change_1w"),
             "change_1m": bench.get("change_1m"),
-            "change_3m": bench.get("change_1m"),
+            # This read change_1m -- a copy-paste that labelled a one-month
+            # move as three months on every index detail page. The figure was
+            # not merely missing, it was confidently wrong, which is the worse
+            # of the two.
+            "change_3m": bench.get("change_3m"),
+            "change_1y": bench.get("change_1y"),
+            "change_2y": bench.get("change_2y"),
+            "high_52w": bench.get("high_52w"),
+            "low_52w": bench.get("low_52w"),
+            "off_high": bench.get("off_high"),
+            "off_low": bench.get("off_low"),
+            "range_position": bench.get("range_position"),
+            # An index has no volume of its own. Carried through so the view
+            # omits the tile rather than printing a dash beside a live price,
+            # which reads as a gap in the data instead of a fact about indices.
+            "has_volume": bench.get("has_volume", False),
             "spark": bench.get("spark") or [],
             "history": bench.get("history") or {},
             "sessions": len((bench.get("history") or {}).get("c") or []),
@@ -4043,7 +4062,10 @@ DETAIL_JS = """
         '" vector-effect="non-scaling-stroke"/></svg>' +
       volSvg +
       '<div class="chartscale"><span>' + esc(first) + '</span>' +
-        '<span>' + closes.length + ' sessions \u00b7 volume below</span>' +
+        // "volume below" pointed at a chart that is not drawn for an index,
+        // which has no volume of its own.
+        '<span>' + closes.length + ' sessions' +
+          (volSvg ? ' \u00b7 volume below' : '') + '</span>' +
         '<span>' + esc(last) + '</span></div>' +
     '</div>';
   }
@@ -4059,9 +4081,11 @@ DETAIL_JS = """
       '<div class="detailhead">' +
         '<div><h2 class="detailsym">' + esc(stock.symbol) + '</h2>' +
         '<p class="detailname">' + esc(stock.name) + '</p>' +
-        '<p class="detailtags"><span class="tag">' + esc(regionLabel) + '</span>' +
-        '<span class="tag">' + esc(stock.exchange || '') + '</span>' +
-        '<span class="tag">' + esc(stock.sector || '') + '</span></p></div>' +
+        '<p class="detailtags">' +
+        [regionLabel, stock.exchange, stock.sector]
+          .filter(Boolean)
+          .map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; })
+          .join('') + '</p></div>' +
         '<div class="detailprice"><span class="detaillast">' + num(stock.last) +
           ' <i>' + esc(stock.currency || '') + '</i></span>' +
           '<span class="detailmove ' + tone(stock.change_1d) + '">' +
@@ -4084,9 +4108,18 @@ DETAIL_JS = """
         '<span class="dstat"><i>Position in range</i><b>' + rangePos.toFixed(0) +
         '%</b><u>' + (rangePos > 80 ? 'near its high' : rangePos < 20 ?
           'near its low' : 'mid-range') + '</u></span>') +
-      '<span class="dstat"><i>Avg volume (21d)</i><b>' +
-        (stock.avg_volume ? Number(stock.avg_volume).toLocaleString('en-US',
-          {maximumFractionDigits: 0}) : '—') + '</b></span>' +
+      (stock.has_volume === false ? '' :
+        '<span class="dstat"><i>Avg volume (21d)</i><b>' +
+          (stock.avg_volume ? Number(stock.avg_volume).toLocaleString('en-US',
+            {maximumFractionDigits: 0}) : '—') + '</b></span>') +
+      // A benchmark carries these and a stock does not; showing them only
+      // where they exist beats showing an empty tile everywhere else.
+      (stock.change_1y == null ? '' :
+        '<span class="dstat"><i>1 year</i><b class="' + tone(stock.change_1y) +
+        '">' + pct(stock.change_1y) + '</b></span>') +
+      (stock.change_2y == null ? '' :
+        '<span class="dstat"><i>2 years</i><b class="' + tone(stock.change_2y) +
+        '">' + pct(stock.change_2y) + '</b></span>') +
     '</div>';
 
     // What the strategies are doing about it, if anything.
