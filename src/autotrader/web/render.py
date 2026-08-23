@@ -1312,6 +1312,28 @@ button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(-
 .tickerlink:focus-visible{outline:2px solid var(--accent);outline-offset:2px;
   border-radius:3px}
 
+/* Technicals. Dense tables that must stay readable on a phone, so each one
+   scrolls inside its own container rather than widening the page. */
+.tblwrap{overflow-x:auto;margin:8px 0 4px;-webkit-overflow-scrolling:touch}
+table.tbl.mini{width:100%;border-collapse:collapse;font-size:12.5px;min-width:420px}
+table.tbl.mini th,table.tbl.mini td{padding:7px 10px;text-align:left;
+  border-bottom:1px solid var(--line);white-space:nowrap}
+table.tbl.mini th{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted);font-weight:600}
+table.tbl.mini td.num,table.tbl.mini th.num{text-align:right;
+  font-variant-numeric:tabular-nums}
+table.tbl.mini tbody tr:last-child td{border-bottom:0}
+table.tbl.mini td.pivotpp{font-weight:700;color:var(--accent)}
+
+/* The gaps, stated. A reader comparing against another site deserves to know
+   which absences are deliberate rather than assuming the page is broken. */
+.whynot{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden}
+.whynot li{background:var(--panel);padding:10px 13px;display:grid;gap:2px}
+.whynot b{font-size:12.5px}
+.whynot span{font-size:12px;color:var(--muted);line-height:1.5}
+
 /* The hero. Sized so it and the tab bar clear the fold on a 375x812 phone --
    the whole point is being readable without a scroll, which a hero that needs
    scrolling to finish would defeat. */
@@ -2688,6 +2710,13 @@ def _stock_index(signals: dict, screener: dict | None) -> dict:
         target = merged.get(key)
         if target is not None:
             target["actions"] = actions
+
+    # Technicals ride in the per-instrument file, never the light index: a
+    # few kilobytes each, read one instrument at a time.
+    for key, block in (signals.get("technicals") or {}).items():
+        target = merged.get(key)
+        if target is not None:
+            target["technicals"] = block
 
     for order in signals.get("orders") or []:
         record = merged.get(order.get("key"))
@@ -4187,6 +4216,148 @@ DETAIL_JS = """
   }
 
 
+  // The block a reader arriving from Moneycontrol or Economic Times looks
+  // for: averages at six periods, an oscillator panel, three sets of pivot
+  // levels and the session's traded figures. Everything here is derived from
+  // the daily bars, so every number can be recomputed from the cache.
+  function technicalsHtml(stock) {
+    var t = stock.technicals;
+    if (!t) return '';
+    var ccy = stock.currency || '';
+    function n(v, d) {
+      if (v == null) return '&mdash;';
+      return Number(v).toLocaleString(ccy === 'INR' ? 'en-IN' : 'en-US',
+        {minimumFractionDigits: d == null ? 2 : d, maximumFractionDigits: d == null ? 2 : d});
+    }
+    function verdictClass(word) {
+      if (word === 'above' || word === 'bullish' || word === 'up') return 'pos';
+      if (word === 'below' || word === 'bearish' || word === 'down') return 'neg';
+      return '';
+    }
+
+    var out = '';
+
+    // --- moving averages ---
+    var ma = t.moving_averages || {};
+    if (ma.rows) {
+      out += '<h3 class="detailsub">Moving averages</h3>' +
+        '<p class="caption">Price sits above <b>' + ma.above + ' of ' + ma.counted +
+        '</b> simple and exponential averages &mdash; read as <b class="' +
+        verdictClass(ma.bias === 'bullish' ? 'bullish' : ma.bias === 'bearish' ? 'bearish' : '') +
+        '">' + esc(ma.bias) + '</b>.</p>' +
+        '<div class="tblwrap"><table class="tbl mini"><thead><tr><th>Period</th>' +
+        '<th class="num">Simple</th><th class="num">Exponential</th><th>Price is</th>' +
+        '</tr></thead><tbody>' +
+        ma.rows.map(function (r) {
+          return '<tr><td>' + r.period + '-day</td><td class="num">' + n(r.sma) +
+            '</td><td class="num">' + n(r.ema) + '</td><td class="' +
+            verdictClass(r.verdict) + '">' + (r.verdict || '&mdash;') + '</td></tr>';
+        }).join('') + '</tbody></table></div>';
+      if ((t.crossovers || []).length) {
+        out += '<p class="caption">' + t.crossovers.map(function (c) {
+          return '<span class="tag ' + verdictClass(c.state) + '">' + esc(c.label) + '</span>';
+        }).join(' ') + '</p>';
+      }
+    }
+
+    // --- oscillators ---
+    var o = t.oscillators || {};
+    var tiles = [];
+    function tile(label, value, note, cls) {
+      tiles.push('<span class="dstat"><i>' + label + '</i><b class="' + (cls || '') + '">' +
+        value + '</b>' + (note ? '<u>' + note + '</u>' : '') + '</span>');
+    }
+    if (o.rsi && o.rsi.value != null) {
+      tile('RSI (14)', n(o.rsi.value), o.rsi.reading,
+        o.rsi.reading === 'overbought' ? 'neg' : o.rsi.reading === 'oversold' ? 'pos' : '');
+    }
+    if (o.macd && o.macd.value != null) {
+      tile('MACD (12,26,9)', n(o.macd.value, 3),
+        'signal ' + n(o.macd.signal, 3) + ' &middot; ' + o.macd.reading,
+        verdictClass(o.macd.reading));
+    }
+    if (o.adx && o.adx.value != null) {
+      tile('ADX (14)', n(o.adx.value),
+        '+DI ' + n(o.adx.plus_di) + ' &middot; &minus;DI ' + n(o.adx.minus_di) +
+        ' &middot; ' + o.adx.reading, verdictClass(o.adx.direction));
+    }
+    if (o.atr && o.atr.value != null) {
+      tile('ATR (14)', n(o.atr.value), o.atr.percent + '% of price');
+    }
+    if (o.bollinger) {
+      tile('Bollinger %B', n(o.bollinger.percent_b, 1) + '%',
+        n(o.bollinger.lower) + ' &ndash; ' + n(o.bollinger.upper));
+    }
+    if (o.supertrend && o.supertrend.value != null) {
+      tile('Supertrend', n(o.supertrend.value), o.supertrend.reading,
+        verdictClass(o.supertrend.reading));
+    }
+    if (o.volatility != null) tile('Volatility', n(o.volatility, 1) + '%', 'annualised');
+    if (t.beta != null) {
+      tile('Beta', n(t.beta), stock.region === 'india' ? 'vs Nifty 50' : 'vs S&amp;P 500');
+    }
+    (o.momentum || []).forEach(function (m) {
+      tile('Momentum, ' + m.window, n(m.percent, 1) + '%', null,
+        m.percent >= 0 ? 'pos' : 'neg');
+    });
+    if (tiles.length) {
+      out += '<h3 class="detailsub">Technical indicators</h3>' +
+        '<div class="detailgrid">' + tiles.join('') + '</div>';
+    }
+
+    // --- session ---
+    var ss = t.session || {};
+    if (ss.open != null) {
+      out += '<h3 class="detailsub">This session</h3><div class="detailgrid">' +
+        '<span class="dstat"><i>Open</i><b>' + n(ss.open) + '</b></span>' +
+        '<span class="dstat"><i>High</i><b>' + n(ss.high) + '</b></span>' +
+        '<span class="dstat"><i>Low</i><b>' + n(ss.low) + '</b></span>' +
+        '<span class="dstat"><i>Previous close</i><b>' + n(ss.previous_close) + '</b></span>' +
+        '<span class="dstat"><i>Average traded price</i><b>' + n(ss.atp) + '</b>' +
+          '<u>(high + low + close) / 3</u></span>' +
+        '<span class="dstat"><i>Volume</i><b>' +
+          Number(ss.volume).toLocaleString('en-US') + '</b>' +
+          (ss.volume_vs_20d != null ? '<u>' + ss.volume_vs_20d +
+            '&times; the 20-day average</u>' : '') + '</span>' +
+        '<span class="dstat"><i>Turnover</i><b>' + n(ss.turnover, 0) +
+          ' <span class="ccy">' + esc(ccy) + '</span></b></span>' +
+        (t.range ? '<span class="dstat"><i>' + t.range.window_sessions +
+          '-session range</i><b>' + n(t.range.low) + ' &ndash; ' + n(t.range.high) +
+          '</b></span>' : '') +
+      '</div>';
+    }
+
+    // --- pivots ---
+    var pv = t.pivots || {};
+    if (pv.classic) {
+      out += '<h3 class="detailsub">Pivot levels</h3>' +
+        '<div class="tblwrap"><table class="tbl mini"><thead><tr><th>Method</th>' +
+        '<th class="num">S3</th><th class="num">S2</th><th class="num">S1</th>' +
+        '<th class="num">Pivot</th><th class="num">R1</th><th class="num">R2</th>' +
+        '<th class="num">R3</th></tr></thead><tbody>' +
+        ['classic', 'fibonacci', 'camarilla'].map(function (name) {
+          var p = pv[name] || {};
+          return '<tr><td>' + name.charAt(0).toUpperCase() + name.slice(1) + '</td>' +
+            ['s3','s2','s1','pp','r1','r2','r3'].map(function (k) {
+              return '<td class="num' + (k === 'pp' ? ' pivotpp' : '') + '">' +
+                n(p[k]) + '</td>';
+            }).join('') + '</tr>';
+        }).join('') + '</tbody></table></div>' +
+        '<p class="caption">Computed from the last completed session\u2019s high, ' +
+        'low and close. All three are shown because traders disagree about ' +
+        'which to use.</p>';
+    }
+
+    // --- what these pages show that this one cannot ---
+    if ((t.unavailable || []).length) {
+      out += '<h3 class="detailsub">Not shown, and why</h3><ul class="whynot">' +
+        t.unavailable.map(function (u) {
+          return '<li><b>' + esc(u.what) + '</b><span>' + esc(u.why) + '</span></li>';
+        }).join('') + '</ul>';
+    }
+    return out;
+  }
+
   function render(stock) {
     var screen = stock.screen || {};
     var reading = screen.reading || {};
@@ -4239,6 +4410,8 @@ DETAIL_JS = """
     '</div>';
 
     // What the strategies are doing about it, if anything.
+    html += technicalsHtml(stock);
+
     if (stock.is_benchmark) {
       html += '<h3 class="detailsub">Headlines</h3><div data-detail-news>'
         + '<p class="empty">Loading&hellip;</p></div>';
@@ -4280,32 +4453,15 @@ DETAIL_JS = """
         '</div>' +
         '<p class="screenwhy">' + esc(screen.rationale || '') + '</p>';
 
-      html += '<h3 class="detailsub">Technical readings</h3><div class="techtable">' +
-        techRow('RSI (14)', num(reading.rsi, 0), readRSI(reading.rsi)) +
-        techRow('ADX', num(reading.adx, 0), readADX(reading.adx)) +
-        techRow('Supertrend', Number(reading.supertrend_direction) > 0 ? 'up' : 'down',
-                readST(reading.supertrend_direction)) +
-        techRow('MACD histogram', num(reading.macd_hist, 3), readMACD(reading.macd_hist)) +
-        techRow('Bollinger position', reading.bollinger_pct_b == null ? '—'
-                  : (Number(reading.bollinger_pct_b) * 100).toFixed(0) + '%',
-                readBollinger(reading.bollinger_pct_b)) +
-      '</div>' +
-      '<div class="detailgrid tight">' +
-        '<span class="dstat"><i>50-day average</i><b>' + num(reading.sma_fast) + '</b></span>' +
-        '<span class="dstat"><i>200-day average</i><b>' + num(reading.sma_slow) + '</b></span>' +
-        '<span class="dstat"><i>Daily range (ATR)</i><b>' +
-          pct(reading.atr_pct) + '</b><u>of price</u></span>' +
-        '<span class="dstat"><i>Annualised volatility</i><b>' +
-          pct(reading.annualised_volatility, 1) + '</b></span>' +
-        '<span class="dstat"><i>Momentum, 3 months</i><b class="' +
-          tone(reading.momentum_short) + '">' + pct(reading.momentum_short, 1) +
-          '</b></span>' +
-        '<span class="dstat"><i>Momentum, 12 months</i><b class="' +
-          tone(reading.momentum_long) + '">' + pct(reading.momentum_long, 1) +
-          '</b></span>' +
+      // The indicator numbers this used to repeat now live in the technicals
+      // block above, at full precision and with wider coverage. Showing RSI
+      // twice on one page, to different rounding, only makes a reader wonder
+      // which one is right. What survives here is the sector reading, which
+      // belongs to the screener and appears nowhere else.
+      html += '<div class="detailgrid tight">' +
         '<span class="dstat"><i>Its sector</i><b class="' +
           tone(screen.sector_momentum) + '">' + pct(screen.sector_momentum, 1) +
-          '</b><u>same window</u></span>' +
+          '</b><u>same window as its own momentum</u></span>' +
       '</div>';
     } else {
       html += '<p class="empty">The screener has no reading for this name in ' +

@@ -22,7 +22,8 @@ from decimal import Decimal
 from pathlib import Path
 
 from ..data.livefeed import LiveFeed, load_livefeed
-from ..data.universe import UniverseEntry, entry_for_key
+from ..data.universe import UniverseEntry, entry_for_key, universe
+from ..data.yahoo import FetchError, read_cache
 from ..engine.backtest import BacktestConfig, BacktestEngine
 from ..engine.metrics import PerformanceReport
 from ..execution.costs import SlippageModel
@@ -430,6 +431,58 @@ def _watchlist(
     return rows
 
 
+def _technicals(data_root: Path) -> dict:
+    """The moving averages, oscillators and pivot levels per instrument.
+
+    What a reader arriving from Moneycontrol or Economic Times expects to
+    find on a stock page. Every figure is derived from the daily bars this
+    app already caches, so all of it can be recomputed and checked; the
+    fundamentals those sites also carry are reported as unavailable with the
+    reason rather than estimated.
+
+    Lives in the per-instrument detail file, never the shared index — it is a
+    few kilobytes each and only ever read one instrument at a time.
+    """
+    from .technicals import build
+
+    # Each region measured against its own index. Beta against the wrong
+    # market describes the time zone rather than the company.
+    indices: dict[str, dict[str, float]] = {}
+    try:
+        series = json.loads((data_root / "benchmarks.json").read_text()).get("series", {})
+        for region, yahoo in (("india", "^NSEI"), ("us", "^GSPC")):
+            entry = series.get(yahoo) or {}
+            days, closes = entry.get("days") or [], entry.get("closes") or []
+            if days and closes:
+                indices[region] = {
+                    # strict=False: days is sliced to the close count above,
+                    # and a ragged feed should lose a bar, not the page.
+                    str(d): float(c)
+                    for d, c in zip(days[-len(closes):], closes, strict=False)
+                }
+    except (OSError, ValueError, TypeError):
+        indices = {}
+
+    out: dict[str, dict] = {}
+    for region in ("india", "us"):
+        for entry in universe(region):
+            try:
+                document = read_cache(data_root, entry)
+            except FetchError:
+                continue
+            try:
+                block = build(document.get("bars") or [],
+                              index_series=indices.get(region),
+                              region=region)
+            except (ValueError, ArithmeticError, KeyError, TypeError):
+                # One instrument's odd history must not cost every other
+                # instrument its technicals.
+                continue
+            if block:
+                out[entry.key] = block
+    return out
+
+
 def _benchmarks(data_root: Path) -> list[dict]:
     """Index, commodity and currency levels with their recent moves."""
     path = data_root / "benchmarks.json"
@@ -815,6 +868,7 @@ def build_snapshot(
             data_root or Path("data/live"), watchlist
         ),
         "mechanics": _mechanics(engine, feed),
+        "technicals": _technicals(data_root or Path("data/live")),
         "totals": {
             "signals": _totals(orders, only_fresh=True),
             "positions": _totals(positions, only_fresh=False),

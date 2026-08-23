@@ -584,11 +584,39 @@ class TestRenderWithSignals(unittest.TestCase):
         self.assertIn('class="screenrow openable"', html)
 
     def test_computed_indicators_are_not_left_unshown(self):
-        """Anything the screener bothers to compute should be readable."""
+        """Anything the engine bothers to compute should be readable.
+
+        The indicators moved out of the screener's own block and into the
+        technicals section, which carries them at full precision alongside the
+        moving averages and pivot levels. The guarantee is unchanged: nothing
+        is computed and then hidden.
+        """
+        from autotrader.signals.technicals import build
+
+        bars = [
+            {"day": f"2026-01-{d:02d}", "open": "100", "high": "104",
+             "low": "98", "close": str(100 + (d % 7)), "volume": "10000"}
+            for d in range(1, 29)
+        ] * 12
+        signals = dict(self.signals)
+        signals["technicals"] = {"IN:RELIANCE": build(bars, region="india")}
+        html = render_dashboard(self.report, signals=signals)
+
+        # The screener's own contribution, which lives nowhere else.
+        self.assertIn("Its sector", html)
+        # And the indicator surface, which must be reachable from the page.
+        for marker in ("Moving averages", "Technical indicators", "Pivot levels",
+                       "RSI (14)", "MACD (12,26,9)", "ADX (14)", "Bollinger %B",
+                       "Supertrend", "Momentum, ", "Not shown, and why"):
+            self.assertIn(marker, html, f"{marker} is computed but never shown")
+
+    def test_no_indicator_is_reported_twice_on_one_page(self):
+        """RSI shown twice, to two roundings, only makes a reader wonder which
+        one is right. This caught exactly that after the technicals block
+        landed beside the screener's older readings."""
         html = render_dashboard(self.report, signals=self.signals)
-        for label in ("Bollinger position", "Momentum, 3 months",
-                      "Momentum, 12 months", "Its sector"):
-            self.assertIn(label, html)
+        for label in ("Technical readings",):
+            self.assertNotIn(label, html, "the superseded readings block is back")
 
     def test_sidecar_data_is_fetched_from_an_absolute_path(self):
         """The subdomain serves this document at "/" through a rewrite, so a
