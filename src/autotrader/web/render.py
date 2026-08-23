@@ -2198,7 +2198,7 @@ WATCH_STATUS = {
 }
 
 
-def _watchlist_section(signals: dict) -> str:
+def _watchlist_section(signals: dict, *, rows_only: bool = False) -> str:
     """Every name the strategies read, priced, with why it is or is not acting.
 
     The point of showing the whole list is that it makes the quiet days
@@ -2213,9 +2213,10 @@ def _watchlist_section(signals: dict) -> str:
         if row.get("last") not in (None, "")
     ]
     if not rows:
-        return ('<p class="empty">Prices for the watchlist are not in this '
-                "build's data. They arrive with the next refresh after the "
-                "market close.</p>")
+        return "" if rows_only else (
+            '<p class="empty">Prices for the watchlist are not in this '
+            "build's data. They arrive with the next refresh after the "
+            "market close.</p>")
 
     counts: dict[str, int] = {}
     for row in rows:
@@ -2288,6 +2289,12 @@ def _watchlist_section(signals: dict) -> str:
     <span class="wnote">{_esc(row.get('status_note', ''))}</span></td>
 </tr>"""
 
+    if rows_only:
+        return body
+
+    # 325 rows with a sparkline each is most of this page's weight, for a tab
+    # a reader reaches by choice. Same treatment as the screener: the shell
+    # ships, the rows follow on first open, both built here.
     return f"""<div class="wbar">
   <label class="wsearch">
     <span class="sr-only">Filter the watchlist</span>
@@ -2303,7 +2310,7 @@ def _watchlist_section(signals: dict) -> str:
   <th class="num">1 day</th><th class="num">1 week</th><th class="num">1 month</th>
   <th class="num">3 months</th><th class="num">52w low</th><th class="num">52w high</th>
   <th class="num">In range</th><th class="num">Avg volume</th><th>Status</th></tr></thead>
-  <tbody>{body}</tbody>
+  <tbody data-watchmount></tbody>
 </table></div>
 <p class="wempty" data-wempty hidden>Nothing on the watchlist matches that.</p>
 <div class="wpager">
@@ -3641,6 +3648,35 @@ WATCH_NEWS_JS = """
   // A new filter starts from the top again; keeping a deep limit would show
   // 200 rows of a three-row result set's worth of scrollbar.
   function refilter() { limit = PAGE; applyFilter(); }
+
+  // The rows arrive on first open, like the screener's cards. Everything
+  // above works on whatever is in the table, so it needs no other change.
+  var watchMount = document.querySelector('[data-watchmount]');
+  var watchLoaded = false;
+  function loadWatchlist() {
+    if (watchLoaded || !watchMount) return;
+    watchLoaded = true;
+    var base = (window.__mpCfg || {}).data_base || '/markets-pro/';
+    fetch(base + 'watchlist-rows.html')
+      .then(function (r) { return r.ok ? r.text() : null; })
+      .then(function (markup) {
+        if (!markup) throw new Error('unavailable');
+        watchMount.innerHTML = markup;
+        rows = [].slice.call(document.querySelectorAll('[data-wrow]'));
+        refilter();
+      })
+      .catch(function () {
+        watchMount.innerHTML = '<tr><td colspan="12"><p class="empty">The ' +
+          'watchlist could not be loaded. It is a separate file; a refresh ' +
+          'usually fixes it.</p></td></tr>';
+      });
+  }
+  var watchTab = document.querySelector('[data-tabbtn="watchlist"]');
+  if (watchTab) watchTab.addEventListener('click', loadWatchlist);
+  if (location.hash.replace('#', '') === 'watchlist') loadWatchlist();
+  window.addEventListener('hashchange', function () {
+    if (location.hash.replace('#', '') === 'watchlist') loadWatchlist();
+  });
 
   if (more) {
     more.addEventListener('click', function () {

@@ -21,6 +21,10 @@
       "destination": "/markets-pro/screener-cards.html"
     },
     {
+      "source": "/watchlist-rows.html",
+      "destination": "/markets-pro/watchlist-rows.html"
+    },
+    {
       "source": "/",
       "destination": "/markets-pro/index.html"
     }

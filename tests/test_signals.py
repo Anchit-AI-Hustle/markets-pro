@@ -527,10 +527,18 @@ class TestRenderWithSignals(unittest.TestCase):
             "status_note": "no setup", "spark": [1, 2, 3], "sessions": 501,
         }]
         html = render_dashboard(self.report, signals=self.signals)
+        # The table's shell ships with the page; its rows are a sidecar
+        # fetched when the tab is opened, so each is checked where it lives.
         for column in ("52w low", "52w high", "In range", "Avg volume"):
             self.assertIn(column, html)
-        self.assertIn("54.0M", html)          # volume, humanised
-        self.assertIn("71%", html)            # position inside the year
+        self.assertIn("data-watchmount", html)
+
+        from autotrader.web.render import _watchlist_section
+
+        body = _watchlist_section(self.signals, rows_only=True)
+        self.assertIn("54.0M", body)          # volume, humanised
+        self.assertIn("data-stock=", body)    # and still opens its detail page
+        self.assertIn("71%", body)            # position inside the year
 
     def test_evidence_leads_with_the_finding_not_a_hedge(self):
         """The point of the study is the headline. Burying "no rule beat

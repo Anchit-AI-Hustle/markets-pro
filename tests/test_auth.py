@@ -288,6 +288,11 @@ class PayloadWeightTest(unittest.TestCase):
     coming back the next time the universe grows.
     """
 
+    #: What a first visit costs before anything is opened. The page carries
+    #: the shell of every tab; the heavy tables are sidecars fetched on the
+    #: tab that needs them. Raising this bound is a decision to charge every
+    #: visitor more, so it should be argued for rather than nudged.
+    MAX_PAGE_KB = 700
     #: The light index is fetched by every visitor who searches. It carries a
     #: row per instrument and nothing per-session.
     MAX_LIGHT_KB = 600
@@ -306,6 +311,29 @@ class PayloadWeightTest(unittest.TestCase):
 
     def _kb(self, obj):
         return len(json.dumps(obj).encode()) / 1024
+
+    def test_the_page_itself_stays_within_budget(self):
+        """The document every visitor downloads, whatever they came for.
+
+        It was 1.7 MB when the universe grew to 325 instruments, because two
+        tabs server-rendered every row and then hid nine tenths of them. This
+        fails before that can happen again quietly.
+        """
+        from autotrader.web.render import render_dashboard
+
+        from .live_cache import load
+        from .test_web import make_report
+
+        snapshot, screener, _index = load()
+        # The report's own numbers are a fixed handful of rows; what is being
+        # measured is the shell around them at 325 instruments.
+        page = render_dashboard(make_report(), signals=snapshot, screener=screener)
+        size = len(page.encode()) / 1024
+        self.assertLess(
+            size, self.MAX_PAGE_KB,
+            f"the page every visitor downloads is {size:.0f} KB — move a table "
+            "to a sidecar rather than raising this bound",
+        )
 
     def test_the_shared_index_stays_small_enough_to_fetch_eagerly(self):
         size = self._kb(self.light)
