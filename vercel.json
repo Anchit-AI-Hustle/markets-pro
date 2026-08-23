@@ -17,6 +17,10 @@
       "destination": "/markets-pro/funds.json"
     },
     {
+      "source": "/screener-cards.html",
+      "destination": "/markets-pro/screener-cards.html"
+    },
+    {
       "source": "/",
       "destination": "/markets-pro/index.html"
     }

@@ -655,6 +655,36 @@ class HeroTest(unittest.TestCase):
         rule = self.html.split(".heroline{", 1)[1][:220]
         self.assertIn("text-transform:none", rule)
 
+    def test_a_pass_count_is_never_shown_without_its_luck_budget(self):
+        """Three passes out of 975 tests sounds like three rules that work.
+
+        Set against the ~49 that this many tests hand out on luck alone, it is
+        the opposite. The two numbers only mean anything together, and showing
+        the flattering half alone would be the single most misleading thing
+        this product could do — so it is asserted, not left to care.
+        """
+        html = render_dashboard(make_report(), signals=make_signals(), fitness={
+            "tests_run": 975, "instruments_with_evidence": 3,
+            "false_positives_expected": 48.8, "alpha": 0.05, "results": {},
+        })
+        hero = html.split('<section class="hero">', 1)[1].split("</section>", 1)[0]
+        self.assertIn("3", hero)
+        self.assertIn("luck", hero.lower(),
+                      "the pass count appears without the false-positive budget")
+        # And the same wherever the study is reported at length.
+        self.assertIn("luck alone", html)
+
+    def test_more_passes_than_luck_would_not_claim_an_edge_either(self):
+        # Guards the other branch: if a future study does clear the bar, the
+        # page must still hand the reader the comparison rather than a boast.
+        html = render_dashboard(make_report(), signals=make_signals(), fitness={
+            "tests_run": 100, "instruments_with_evidence": 40,
+            "false_positives_expected": 5.0, "alpha": 0.05, "results": {},
+        })
+        self.assertIn("luck alone", html)
+        self.assertNotIn("proven", html.lower().split("<footer")[0].replace(
+            "unproven", ""), "the page should never call a pass proof")
+
     def test_the_unflattering_number_is_in_the_hero_too(self):
         # The study found nothing that beat chance. Reporting that on the
         # first screen rather than burying it in a tab is the whole basis for

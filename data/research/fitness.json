@@ -3,23 +3,323 @@
  "min_trades": 20,
  "in_sample_fraction": 0.5,
  "alpha": 0.05,
- "tests_run": 102,
- "false_positives_expected": 5.1,
- "instruments_with_evidence": 0,
+ "tests_run": 975,
+ "false_positives_expected": 48.8,
+ "instruments_with_evidence": 3,
  "results": {
-  "IN:RELIANCE": {
-   "symbol": "RELIANCE",
+  "IN:AARTIIND": {
+   "symbol": "AARTIIND",
    "logics": [
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 91,
-     "wins": 44,
-     "win_rate": 0.4835,
-     "profit_factor": 1.285,
-     "p_value": 0.8341,
-     "net_base": 824.67,
+     "trades": 77,
+     "wins": 38,
+     "win_rate": 0.4935,
+     "profit_factor": 1.108,
+     "p_value": 1.0,
+     "net_base": 273.27,
      "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 31,
+     "wins": 9,
+     "win_rate": 0.2903,
+     "profit_factor": 0.46,
+     "p_value": 0.0294,
+     "net_base": -553.68,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ABB": {
+   "symbol": "ABB",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 72,
+     "wins": 39,
+     "win_rate": 0.5417,
+     "profit_factor": 1.619,
+     "p_value": 0.556,
+     "net_base": 945.78,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 37,
+     "wins": 18,
+     "win_rate": 0.4865,
+     "profit_factor": 0.949,
+     "p_value": 1.0,
+     "net_base": -69.08,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ACC": {
+   "symbol": "ACC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 55,
+     "wins": 26,
+     "win_rate": 0.4727,
+     "profit_factor": 0.914,
+     "p_value": 0.7877,
+     "net_base": -199.15,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 20,
+     "wins": 11,
+     "win_rate": 0.55,
+     "profit_factor": 1.553,
+     "p_value": 0.8238,
+     "net_base": 265.73,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 12,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ADANIENT": {
+   "symbol": "ADANIENT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 78,
+     "wins": 35,
+     "win_rate": 0.4487,
+     "profit_factor": 0.987,
+     "p_value": 0.4282,
+     "net_base": -44.06,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 51,
+     "wins": 28,
+     "win_rate": 0.549,
+     "profit_factor": 1.48,
+     "p_value": 0.5758,
+     "net_base": 800.37,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ADANIGREEN": {
+   "symbol": "ADANIGREEN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 22,
+     "wins": 12,
+     "win_rate": 0.5455,
+     "profit_factor": 1.339,
+     "p_value": 0.8318,
+     "net_base": 215.94,
+     "tested_from": "2022-07-21"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 12,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ADANIPORTS": {
+   "symbol": "ADANIPORTS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 72,
+     "wins": 36,
+     "win_rate": 0.5,
+     "profit_factor": 1.104,
+     "p_value": 1.0,
+     "net_base": 278.1,
+     "tested_from": "2017-04-21"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 22,
+     "wins": 12,
+     "win_rate": 0.5455,
+     "profit_factor": 0.858,
+     "p_value": 0.8318,
+     "net_base": -89.69,
+     "tested_from": "2017-04-21"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ALKEM": {
+   "symbol": "ALKEM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 36,
+     "wins": 21,
+     "win_rate": 0.5833,
+     "profit_factor": 1.426,
+     "p_value": 0.405,
+     "net_base": 427.99,
+     "tested_from": "2021-04-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 16,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:AMBUJACEM": {
+   "symbol": "AMBUJACEM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 59,
+     "wins": 27,
+     "win_rate": 0.4576,
+     "profit_factor": 0.855,
+     "p_value": 0.6029,
+     "net_base": -327.46,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 22,
+     "wins": 12,
+     "win_rate": 0.5455,
+     "profit_factor": 1.959,
+     "p_value": 0.8318,
+     "net_base": 527.93,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ANGELONE": {
+   "symbol": "ANGELONE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 22,
+     "wins": 9,
+     "win_rate": 0.4091,
+     "profit_factor": 0.798,
+     "p_value": 0.5235,
+     "net_base": -161.76,
+     "tested_from": "2023-09-11"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 7,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:APLAPOLLO": {
+   "symbol": "APLAPOLLO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 64,
+     "wins": 29,
+     "win_rate": 0.4531,
+     "profit_factor": 0.951,
+     "p_value": 0.5323,
+     "net_base": -120.66,
+     "tested_from": "2019-04-26"
     },
     {
      "logic": "breakout",
@@ -27,255 +327,10 @@
      "trades": 28,
      "wins": 15,
      "win_rate": 0.5357,
-     "profit_factor": 1.131,
+     "profit_factor": 1.612,
      "p_value": 0.8506,
-     "net_base": 82.17,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "momentum",
-     "verdict": "insufficient",
-     "trades": 0,
-     "needed": 20
-    }
-   ],
-   "best": "pullback",
-   "best_verdict": "profitable_but_unproven"
-  },
-  "IN:HDFCBANK": {
-   "symbol": "HDFCBANK",
-   "logics": [
-    {
-     "logic": "pullback",
-     "verdict": "no_edge",
-     "trades": 82,
-     "wins": 43,
-     "win_rate": 0.5244,
-     "profit_factor": 0.961,
-     "p_value": 0.7407,
-     "net_base": -115.92,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "breakout",
-     "verdict": "no_edge",
-     "trades": 24,
-     "wins": 9,
-     "win_rate": 0.375,
-     "profit_factor": 0.601,
-     "p_value": 0.3075,
-     "net_base": -336.22,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "momentum",
-     "verdict": "insufficient",
-     "trades": 16,
-     "needed": 20
-    }
-   ],
-   "best": null,
-   "best_verdict": "none"
-  },
-  "IN:ICICIBANK": {
-   "symbol": "ICICIBANK",
-   "logics": [
-    {
-     "logic": "pullback",
-     "verdict": "profitable_but_unproven",
-     "trades": 83,
-     "wins": 43,
-     "win_rate": 0.5181,
-     "profit_factor": 1.345,
-     "p_value": 0.8264,
-     "net_base": 1028.19,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "breakout",
-     "verdict": "no_edge",
-     "trades": 24,
-     "wins": 8,
-     "win_rate": 0.3333,
-     "profit_factor": 0.592,
-     "p_value": 0.1516,
-     "net_base": -302.34,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "momentum",
-     "verdict": "insufficient",
-     "trades": 9,
-     "needed": 20
-    }
-   ],
-   "best": "pullback",
-   "best_verdict": "profitable_but_unproven"
-  },
-  "IN:INFY": {
-   "symbol": "INFY",
-   "logics": [
-    {
-     "logic": "pullback",
-     "verdict": "no_edge",
-     "trades": 58,
-     "wins": 26,
-     "win_rate": 0.4483,
-     "profit_factor": 0.895,
-     "p_value": 0.5118,
-     "net_base": -232.01,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "breakout",
-     "verdict": "no_edge",
-     "trades": 24,
-     "wins": 10,
-     "win_rate": 0.4167,
-     "profit_factor": 0.839,
-     "p_value": 0.5413,
-     "net_base": -152.82,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "momentum",
-     "verdict": "insufficient",
-     "trades": 0,
-     "needed": 20
-    }
-   ],
-   "best": null,
-   "best_verdict": "none"
-  },
-  "IN:TCS": {
-   "symbol": "TCS",
-   "logics": [
-    {
-     "logic": "pullback",
-     "verdict": "no_edge",
-     "trades": 70,
-     "wins": 31,
-     "win_rate": 0.4429,
-     "profit_factor": 0.808,
-     "p_value": 0.403,
-     "net_base": -571.7,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "breakout",
-     "verdict": "no_edge",
-     "trades": 25,
-     "wins": 7,
-     "win_rate": 0.28,
-     "profit_factor": 0.389,
-     "p_value": 0.0433,
-     "net_base": -525.98,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "momentum",
-     "verdict": "insufficient",
-     "trades": 14,
-     "needed": 20
-    }
-   ],
-   "best": null,
-   "best_verdict": "none"
-  },
-  "IN:LT": {
-   "symbol": "LT",
-   "logics": [
-    {
-     "logic": "pullback",
-     "verdict": "profitable_but_unproven",
-     "trades": 82,
-     "wins": 38,
-     "win_rate": 0.4634,
-     "profit_factor": 1.127,
-     "p_value": 0.5811,
-     "net_base": 380.45,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "breakout",
-     "verdict": "no_edge",
-     "trades": 34,
-     "wins": 11,
-     "win_rate": 0.3235,
-     "profit_factor": 0.369,
-     "p_value": 0.0576,
-     "net_base": -789.3,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "momentum",
-     "verdict": "insufficient",
-     "trades": 0,
-     "needed": 20
-    }
-   ],
-   "best": "pullback",
-   "best_verdict": "profitable_but_unproven"
-  },
-  "IN:SBIN": {
-   "symbol": "SBIN",
-   "logics": [
-    {
-     "logic": "pullback",
-     "verdict": "no_edge",
-     "trades": 79,
-     "wins": 35,
-     "win_rate": 0.443,
-     "profit_factor": 0.998,
-     "p_value": 0.3682,
-     "net_base": -6.75,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "breakout",
-     "verdict": "no_edge",
-     "trades": 37,
-     "wins": 10,
-     "win_rate": 0.2703,
-     "profit_factor": 0.416,
-     "p_value": 0.0076,
-     "net_base": -969.57,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "momentum",
-     "verdict": "insufficient",
-     "trades": 0,
-     "needed": 20
-    }
-   ],
-   "best": null,
-   "best_verdict": "none"
-  },
-  "IN:BHARTIARTL": {
-   "symbol": "BHARTIARTL",
-   "logics": [
-    {
-     "logic": "pullback",
-     "verdict": "profitable_but_unproven",
-     "trades": 88,
-     "wins": 45,
-     "win_rate": 0.5114,
-     "profit_factor": 1.117,
-     "p_value": 0.9152,
-     "net_base": 331.29,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "breakout",
-     "verdict": "profitable_but_unproven",
-     "trades": 25,
-     "wins": 11,
-     "win_rate": 0.44,
-     "profit_factor": 1.188,
-     "p_value": 0.69,
-     "net_base": 129.53,
-     "tested_from": "2016-08-29"
+     "net_base": 549.64,
+     "tested_from": "2019-04-26"
     },
     {
      "logic": "momentum",
@@ -287,29 +342,64 @@
    "best": "breakout",
    "best_verdict": "profitable_but_unproven"
   },
-  "IN:ITC": {
-   "symbol": "ITC",
+  "IN:APOLLOHOSP": {
+   "symbol": "APOLLOHOSP",
    "logics": [
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 51,
-     "wins": 25,
-     "win_rate": 0.4902,
-     "profit_factor": 1.302,
-     "p_value": 1.0,
-     "net_base": 432.93,
+     "trades": 83,
+     "wins": 40,
+     "win_rate": 0.4819,
+     "profit_factor": 1.178,
+     "p_value": 0.8264,
+     "net_base": 492.86,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 27,
+     "wins": 15,
+     "win_rate": 0.5556,
+     "profit_factor": 1.269,
+     "p_value": 0.7011,
+     "net_base": 192.79,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ASHOKLEY": {
+   "symbol": "ASHOKLEY",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 65,
+     "wins": 36,
+     "win_rate": 0.5538,
+     "profit_factor": 1.209,
+     "p_value": 0.457,
+     "net_base": 507.17,
      "tested_from": "2016-08-29"
     },
     {
      "logic": "breakout",
      "verdict": "no_edge",
-     "trades": 28,
-     "wins": 14,
-     "win_rate": 0.5,
-     "profit_factor": 0.536,
-     "p_value": 1.0,
-     "net_base": -439.15,
+     "trades": 26,
+     "wins": 9,
+     "win_rate": 0.3462,
+     "profit_factor": 0.586,
+     "p_value": 0.1686,
+     "net_base": -328.44,
      "tested_from": "2016-08-29"
     },
     {
@@ -321,41 +411,6 @@
    ],
    "best": "pullback",
    "best_verdict": "profitable_but_unproven"
-  },
-  "IN:MARUTI": {
-   "symbol": "MARUTI",
-   "logics": [
-    {
-     "logic": "pullback",
-     "verdict": "no_edge",
-     "trades": 85,
-     "wins": 39,
-     "win_rate": 0.4588,
-     "profit_factor": 0.895,
-     "p_value": 0.5154,
-     "net_base": -329.58,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "breakout",
-     "verdict": "no_edge",
-     "trades": 29,
-     "wins": 11,
-     "win_rate": 0.3793,
-     "profit_factor": 0.592,
-     "p_value": 0.2649,
-     "net_base": -507.22,
-     "tested_from": "2016-08-29"
-    },
-    {
-     "logic": "momentum",
-     "verdict": "insufficient",
-     "trades": 0,
-     "needed": 20
-    }
-   ],
-   "best": null,
-   "best_verdict": "none"
   },
   "IN:ASIANPAINT": {
    "symbol": "ASIANPAINT",
@@ -368,7 +423,7 @@
      "win_rate": 0.4625,
      "profit_factor": 0.759,
      "p_value": 0.5764,
-     "net_base": -849.22,
+     "net_base": -849.09,
      "tested_from": "2016-08-29"
     },
     {
@@ -379,7 +434,7 @@
      "win_rate": 0.4722,
      "profit_factor": 0.684,
      "p_value": 0.8679,
-     "net_base": -295.12,
+     "net_base": -295.07,
      "tested_from": "2016-08-29"
     },
     {
@@ -392,64 +447,194 @@
    "best": null,
    "best_verdict": "none"
   },
-  "IN:BAJFINANCE": {
-   "symbol": "BAJFINANCE",
+  "IN:ASTRAL": {
+   "symbol": "ASTRAL",
    "logics": [
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 81,
-     "wins": 42,
-     "win_rate": 0.5185,
-     "profit_factor": 1.176,
-     "p_value": 0.8243,
-     "net_base": 615.91,
-     "tested_from": "2016-08-29"
+     "trades": 74,
+     "wins": 37,
+     "win_rate": 0.5,
+     "profit_factor": 1.142,
+     "p_value": 1.0,
+     "net_base": 345.08,
+     "tested_from": "2016-12-14"
     },
     {
      "logic": "breakout",
-     "verdict": "no_edge",
-     "trades": 39,
-     "wins": 14,
-     "win_rate": 0.359,
-     "profit_factor": 0.421,
-     "p_value": 0.1081,
-     "net_base": -898.98,
-     "tested_from": "2016-08-29"
+     "verdict": "profitable_but_unproven",
+     "trades": 28,
+     "wins": 16,
+     "win_rate": 0.5714,
+     "profit_factor": 1.674,
+     "p_value": 0.5716,
+     "net_base": 419.56,
+     "tested_from": "2016-12-14"
     },
     {
      "logic": "momentum",
      "verdict": "insufficient",
-     "trades": 6,
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:AUBANK": {
+   "symbol": "AUBANK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 30,
+     "wins": 13,
+     "win_rate": 0.4333,
+     "profit_factor": 0.88,
+     "p_value": 0.5847,
+     "net_base": -120.12,
+     "tested_from": "2022-02-02"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 16,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:AUROPHARMA": {
+   "symbol": "AUROPHARMA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 52,
+     "wins": 27,
+     "win_rate": 0.5192,
+     "profit_factor": 1.05,
+     "p_value": 0.8899,
+     "net_base": 95.94,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 36,
+     "wins": 14,
+     "win_rate": 0.3889,
+     "profit_factor": 0.618,
+     "p_value": 0.243,
+     "net_base": -516.75,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
      "needed": 20
     }
    ],
    "best": "pullback",
    "best_verdict": "profitable_but_unproven"
   },
-  "IN:TITAN": {
-   "symbol": "TITAN",
+  "IN:AXISBANK": {
+   "symbol": "AXISBANK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 73,
+     "wins": 34,
+     "win_rate": 0.4658,
+     "profit_factor": 0.863,
+     "p_value": 0.64,
+     "net_base": -428.42,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 15,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:BAJAJ-AUTO": {
+   "symbol": "BAJAJ-AUTO",
    "logics": [
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 85,
-     "wins": 46,
-     "win_rate": 0.5412,
-     "profit_factor": 1.227,
-     "p_value": 0.5154,
-     "net_base": 771.45,
+     "trades": 71,
+     "wins": 37,
+     "win_rate": 0.5211,
+     "profit_factor": 1.056,
+     "p_value": 0.8126,
+     "net_base": 137.94,
      "tested_from": "2016-08-29"
     },
     {
      "logic": "breakout",
      "verdict": "profitable_but_unproven",
-     "trades": 43,
-     "wins": 27,
-     "win_rate": 0.6279,
-     "profit_factor": 1.783,
-     "p_value": 0.1263,
-     "net_base": 807.79,
+     "trades": 31,
+     "wins": 17,
+     "win_rate": 0.5484,
+     "profit_factor": 1.555,
+     "p_value": 0.7201,
+     "net_base": 466.27,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:BAJAJFINSV": {
+   "symbol": "BAJAJFINSV",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 88,
+     "wins": 42,
+     "win_rate": 0.4773,
+     "profit_factor": 0.883,
+     "p_value": 0.7493,
+     "net_base": -399.24,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 41,
+     "wins": 20,
+     "win_rate": 0.4878,
+     "profit_factor": 1.212,
+     "p_value": 1.0,
+     "net_base": 266.61,
      "tested_from": "2016-08-29"
     },
     {
@@ -462,35 +647,135 @@
    "best": "breakout",
    "best_verdict": "profitable_but_unproven"
   },
-  "IN:NIFTYBEES": {
-   "symbol": "NIFTYBEES",
+  "IN:BAJFINANCE": {
+   "symbol": "BAJFINANCE",
    "logics": [
     {
      "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 81,
+     "wins": 42,
+     "win_rate": 0.5185,
+     "profit_factor": 1.176,
+     "p_value": 0.8243,
+     "net_base": 615.81,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
      "verdict": "no_edge",
-     "trades": 23,
-     "wins": 7,
-     "win_rate": 0.3043,
-     "profit_factor": 0.162,
-     "p_value": 0.0931,
-     "net_base": -2954.18,
-     "tested_from": "2017-11-06"
+     "trades": 39,
+     "wins": 14,
+     "win_rate": 0.359,
+     "profit_factor": 0.421,
+     "p_value": 0.1081,
+     "net_base": -898.84,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:BALKRISIND": {
+   "symbol": "BALKRISIND",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 64,
+     "wins": 35,
+     "win_rate": 0.5469,
+     "profit_factor": 1.233,
+     "p_value": 0.5323,
+     "net_base": 494.72,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 36,
+     "wins": 18,
+     "win_rate": 0.5,
+     "profit_factor": 1.221,
+     "p_value": 1.0,
+     "net_base": 229.27,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:BANDHANBNK": {
+   "symbol": "BANDHANBNK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 9,
+     "needed": 20
     },
     {
      "logic": "breakout",
      "verdict": "insufficient",
-     "trades": 7,
+     "trades": 8,
      "needed": 20
     },
     {
      "logic": "momentum",
      "verdict": "insufficient",
-     "trades": 5,
+     "trades": 1,
      "needed": 20
     }
    ],
    "best": null,
    "best_verdict": "none"
+  },
+  "IN:BANKBARODA": {
+   "symbol": "BANKBARODA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 60,
+     "wins": 24,
+     "win_rate": 0.4,
+     "profit_factor": 0.694,
+     "p_value": 0.155,
+     "net_base": -756.28,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 31,
+     "wins": 18,
+     "win_rate": 0.5806,
+     "profit_factor": 1.651,
+     "p_value": 0.4731,
+     "net_base": 421.63,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
   },
   "IN:BANKBEES": {
    "symbol": "BANKBEES",
@@ -517,6 +802,1326 @@
    "best": null,
    "best_verdict": "none"
   },
+  "IN:BATAINDIA": {
+   "symbol": "BATAINDIA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 59,
+     "wins": 30,
+     "win_rate": 0.5085,
+     "profit_factor": 1.038,
+     "p_value": 1.0,
+     "net_base": 96.6,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 35,
+     "wins": 21,
+     "win_rate": 0.6,
+     "profit_factor": 1.044,
+     "p_value": 0.3105,
+     "net_base": 38.16,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 8,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:BEL": {
+   "symbol": "BEL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 81,
+     "wins": 41,
+     "win_rate": 0.5062,
+     "profit_factor": 1.16,
+     "p_value": 1.0,
+     "net_base": 441.71,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 32,
+     "wins": 16,
+     "win_rate": 0.5,
+     "profit_factor": 0.949,
+     "p_value": 1.0,
+     "net_base": -38.98,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:BERGEPAINT": {
+   "symbol": "BERGEPAINT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 61,
+     "wins": 30,
+     "win_rate": 0.4918,
+     "profit_factor": 1.144,
+     "p_value": 1.0,
+     "net_base": 343.39,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 29,
+     "wins": 13,
+     "win_rate": 0.4483,
+     "profit_factor": 0.777,
+     "p_value": 0.7111,
+     "net_base": -183.34,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:BHARTIARTL": {
+   "symbol": "BHARTIARTL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 88,
+     "wins": 45,
+     "win_rate": 0.5114,
+     "profit_factor": 1.117,
+     "p_value": 0.9152,
+     "net_base": 331.24,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 25,
+     "wins": 11,
+     "win_rate": 0.44,
+     "profit_factor": 1.188,
+     "p_value": 0.69,
+     "net_base": 129.51,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:BHEL": {
+   "symbol": "BHEL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 62,
+     "wins": 31,
+     "win_rate": 0.5,
+     "profit_factor": 1.192,
+     "p_value": 1.0,
+     "net_base": 459.72,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 37,
+     "wins": 19,
+     "win_rate": 0.5135,
+     "profit_factor": 1.251,
+     "p_value": 1.0,
+     "net_base": 224.71,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:BIOCON": {
+   "symbol": "BIOCON",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 66,
+     "wins": 29,
+     "win_rate": 0.4394,
+     "profit_factor": 1.097,
+     "p_value": 0.3891,
+     "net_base": 269.5,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 21,
+     "wins": 8,
+     "win_rate": 0.381,
+     "profit_factor": 0.47,
+     "p_value": 0.3833,
+     "net_base": -430.71,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:BOSCHLTD": {
+   "symbol": "BOSCHLTD",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 58,
+     "wins": 24,
+     "win_rate": 0.4138,
+     "profit_factor": 0.729,
+     "p_value": 0.237,
+     "net_base": -517.6,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 30,
+     "wins": 16,
+     "win_rate": 0.5333,
+     "profit_factor": 1.569,
+     "p_value": 0.8555,
+     "net_base": 401.32,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:BPCL": {
+   "symbol": "BPCL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 67,
+     "wins": 31,
+     "win_rate": 0.4627,
+     "profit_factor": 0.852,
+     "p_value": 0.6254,
+     "net_base": -358.66,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 24,
+     "wins": 11,
+     "win_rate": 0.4583,
+     "profit_factor": 1.056,
+     "p_value": 0.8388,
+     "net_base": 41.78,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:BRITANNIA": {
+   "symbol": "BRITANNIA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 71,
+     "wins": 36,
+     "win_rate": 0.507,
+     "profit_factor": 0.971,
+     "p_value": 1.0,
+     "net_base": -62.91,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 24,
+     "wins": 17,
+     "win_rate": 0.7083,
+     "profit_factor": 2.461,
+     "p_value": 0.0639,
+     "net_base": 693.8,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 14,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:BSE": {
+   "symbol": "BSE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 47,
+     "wins": 22,
+     "win_rate": 0.4681,
+     "profit_factor": 1.328,
+     "p_value": 0.7709,
+     "net_base": 558.67,
+     "tested_from": "2021-11-17"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 27,
+     "wins": 17,
+     "win_rate": 0.6296,
+     "profit_factor": 2.811,
+     "p_value": 0.2478,
+     "net_base": 1168.76,
+     "tested_from": "2021-11-17"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:CANBK": {
+   "symbol": "CANBK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 73,
+     "wins": 37,
+     "win_rate": 0.5068,
+     "profit_factor": 0.949,
+     "p_value": 1.0,
+     "net_base": -134.88,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 35,
+     "wins": 16,
+     "win_rate": 0.4571,
+     "profit_factor": 1.095,
+     "p_value": 0.7359,
+     "net_base": 119.08,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:CDSL": {
+   "symbol": "CDSL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 35,
+     "wins": 18,
+     "win_rate": 0.5143,
+     "profit_factor": 1.338,
+     "p_value": 1.0,
+     "net_base": 449.56,
+     "tested_from": "2022-01-27"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 13,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:CHOLAFIN": {
+   "symbol": "CHOLAFIN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 88,
+     "wins": 45,
+     "win_rate": 0.5114,
+     "profit_factor": 1.074,
+     "p_value": 0.9152,
+     "net_base": 247.61,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 23,
+     "wins": 8,
+     "win_rate": 0.3478,
+     "profit_factor": 0.593,
+     "p_value": 0.21,
+     "net_base": -283.44,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:CIPLA": {
+   "symbol": "CIPLA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 64,
+     "wins": 31,
+     "win_rate": 0.4844,
+     "profit_factor": 1.026,
+     "p_value": 0.9007,
+     "net_base": 60.2,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 22,
+     "wins": 8,
+     "win_rate": 0.3636,
+     "profit_factor": 0.664,
+     "p_value": 0.2863,
+     "net_base": -261.92,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:COALINDIA": {
+   "symbol": "COALINDIA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 44,
+     "wins": 16,
+     "win_rate": 0.3636,
+     "profit_factor": 0.771,
+     "p_value": 0.0961,
+     "net_base": -340.84,
+     "tested_from": "2018-10-04"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 21,
+     "wins": 6,
+     "win_rate": 0.2857,
+     "profit_factor": 0.737,
+     "p_value": 0.0784,
+     "net_base": -213.72,
+     "tested_from": "2018-10-04"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 9,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:COFORGE": {
+   "symbol": "COFORGE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 73,
+     "wins": 43,
+     "win_rate": 0.589,
+     "profit_factor": 1.482,
+     "p_value": 0.1597,
+     "net_base": 1305.79,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 36,
+     "wins": 17,
+     "win_rate": 0.4722,
+     "profit_factor": 1.197,
+     "p_value": 0.8679,
+     "net_base": 210.14,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:COLPAL": {
+   "symbol": "COLPAL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 63,
+     "wins": 30,
+     "win_rate": 0.4762,
+     "profit_factor": 0.92,
+     "p_value": 0.8013,
+     "net_base": -133.25,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 34,
+     "wins": 18,
+     "win_rate": 0.5294,
+     "profit_factor": 1.249,
+     "p_value": 0.8642,
+     "net_base": 258.51,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 7,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:CONCOR": {
+   "symbol": "CONCOR",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 57,
+     "wins": 25,
+     "win_rate": 0.4386,
+     "profit_factor": 0.773,
+     "p_value": 0.427,
+     "net_base": -416.94,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 20,
+     "wins": 8,
+     "win_rate": 0.4,
+     "profit_factor": 0.564,
+     "p_value": 0.5034,
+     "net_base": -349.56,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 5,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:CROMPTON": {
+   "symbol": "CROMPTON",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 19,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 8,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:CUMMINSIND": {
+   "symbol": "CUMMINSIND",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 66,
+     "wins": 33,
+     "win_rate": 0.5,
+     "profit_factor": 1.331,
+     "p_value": 1.0,
+     "net_base": 610.87,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 39,
+     "wins": 24,
+     "win_rate": 0.6154,
+     "profit_factor": 1.736,
+     "p_value": 0.1996,
+     "net_base": 700.07,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 11,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:DABUR": {
+   "symbol": "DABUR",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 65,
+     "wins": 28,
+     "win_rate": 0.4308,
+     "profit_factor": 1.125,
+     "p_value": 0.3211,
+     "net_base": 290.56,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 19,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 11,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:DALBHARAT": {
+   "symbol": "DALBHARAT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 25,
+     "wins": 12,
+     "win_rate": 0.48,
+     "profit_factor": 1.108,
+     "p_value": 1.0,
+     "net_base": 122.29,
+     "tested_from": "2022-10-24"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 4,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:DEEPAKNTR": {
+   "symbol": "DEEPAKNTR",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 59,
+     "wins": 32,
+     "win_rate": 0.5424,
+     "profit_factor": 1.415,
+     "p_value": 0.6029,
+     "net_base": 836.45,
+     "tested_from": "2018-09-14"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 26,
+     "wins": 8,
+     "win_rate": 0.3077,
+     "profit_factor": 0.512,
+     "p_value": 0.0755,
+     "net_base": -511.12,
+     "tested_from": "2018-09-14"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:DIVISLAB": {
+   "symbol": "DIVISLAB",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 83,
+     "wins": 48,
+     "win_rate": 0.5783,
+     "profit_factor": 1.659,
+     "p_value": 0.1875,
+     "net_base": 1605.45,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 34,
+     "wins": 16,
+     "win_rate": 0.4706,
+     "profit_factor": 1.1,
+     "p_value": 0.8642,
+     "net_base": 88.03,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:DIXON": {
+   "symbol": "DIXON",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "evidence",
+     "trades": 29,
+     "wins": 21,
+     "win_rate": 0.7241,
+     "profit_factor": 3.721,
+     "p_value": 0.0241,
+     "net_base": 1656.91,
+     "tested_from": "2022-03-08"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 11,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 4,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "evidence"
+  },
+  "IN:DLF": {
+   "symbol": "DLF",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 64,
+     "wins": 32,
+     "win_rate": 0.5,
+     "profit_factor": 0.977,
+     "p_value": 1.0,
+     "net_base": -56.56,
+     "tested_from": "2017-02-06"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 33,
+     "wins": 14,
+     "win_rate": 0.4242,
+     "profit_factor": 0.928,
+     "p_value": 0.4869,
+     "net_base": -71.97,
+     "tested_from": "2017-02-06"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:DMART": {
+   "symbol": "DMART",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 31,
+     "wins": 7,
+     "win_rate": 0.2258,
+     "profit_factor": 0.254,
+     "p_value": 0.0033,
+     "net_base": -1223.28,
+     "tested_from": "2021-12-09"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 13,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 5,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:DRREDDY": {
+   "symbol": "DRREDDY",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 66,
+     "wins": 26,
+     "win_rate": 0.3939,
+     "profit_factor": 0.627,
+     "p_value": 0.1089,
+     "net_base": -976.2,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 27,
+     "wins": 10,
+     "win_rate": 0.3704,
+     "profit_factor": 0.68,
+     "p_value": 0.2478,
+     "net_base": -244.08,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 12,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:EICHERMOT": {
+   "symbol": "EICHERMOT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 92,
+     "wins": 46,
+     "win_rate": 0.5,
+     "profit_factor": 0.961,
+     "p_value": 1.0,
+     "net_base": -160.55,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 26,
+     "wins": 14,
+     "win_rate": 0.5385,
+     "profit_factor": 1.175,
+     "p_value": 0.845,
+     "net_base": 139.25,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 16,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ESCORTS": {
+   "symbol": "ESCORTS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 81,
+     "wins": 37,
+     "win_rate": 0.4568,
+     "profit_factor": 0.983,
+     "p_value": 0.5052,
+     "net_base": -58.28,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 40,
+     "wins": 21,
+     "win_rate": 0.525,
+     "profit_factor": 1.472,
+     "p_value": 0.8746,
+     "net_base": 526.81,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ETERNAL": {
+   "symbol": "ETERNAL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 18,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 3,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:FEDERALBNK": {
+   "symbol": "FEDERALBNK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 81,
+     "wins": 40,
+     "win_rate": 0.4938,
+     "profit_factor": 1.14,
+     "p_value": 1.0,
+     "net_base": 467.69,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 37,
+     "wins": 17,
+     "win_rate": 0.4595,
+     "profit_factor": 0.996,
+     "p_value": 0.7428,
+     "net_base": -4.58,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:FORTIS": {
+   "symbol": "FORTIS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 63,
+     "wins": 36,
+     "win_rate": 0.5714,
+     "profit_factor": 1.223,
+     "p_value": 0.3135,
+     "net_base": 415.35,
+     "tested_from": "2017-01-05"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 31,
+     "wins": 11,
+     "win_rate": 0.3548,
+     "profit_factor": 0.733,
+     "p_value": 0.1496,
+     "net_base": -250.28,
+     "tested_from": "2017-01-05"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:GAIL": {
+   "symbol": "GAIL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 65,
+     "wins": 35,
+     "win_rate": 0.5385,
+     "profit_factor": 1.614,
+     "p_value": 0.6201,
+     "net_base": 1052.34,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 23,
+     "wins": 4,
+     "win_rate": 0.1739,
+     "profit_factor": 0.311,
+     "p_value": 0.0026,
+     "net_base": -634.17,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:GLENMARK": {
+   "symbol": "GLENMARK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 63,
+     "wins": 26,
+     "win_rate": 0.4127,
+     "profit_factor": 0.737,
+     "p_value": 0.2074,
+     "net_base": -651.27,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 25,
+     "wins": 10,
+     "win_rate": 0.4,
+     "profit_factor": 0.994,
+     "p_value": 0.4244,
+     "net_base": -5.39,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:GMRAIRPORT": {
+   "symbol": "GMRAIRPORT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 82,
+     "wins": 44,
+     "win_rate": 0.5366,
+     "profit_factor": 1.327,
+     "p_value": 0.5811,
+     "net_base": 873.1,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 32,
+     "wins": 12,
+     "win_rate": 0.375,
+     "profit_factor": 0.782,
+     "p_value": 0.2153,
+     "net_base": -253.64,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:GODREJCP": {
+   "symbol": "GODREJCP",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 63,
+     "wins": 33,
+     "win_rate": 0.5238,
+     "profit_factor": 1.118,
+     "p_value": 0.8013,
+     "net_base": 273.64,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 22,
+     "wins": 9,
+     "win_rate": 0.4091,
+     "profit_factor": 0.395,
+     "p_value": 0.5235,
+     "net_base": -409.29,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 7,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:GODREJIND": {
+   "symbol": "GODREJIND",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 73,
+     "wins": 37,
+     "win_rate": 0.5068,
+     "profit_factor": 1.308,
+     "p_value": 1.0,
+     "net_base": 719.06,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 35,
+     "wins": 13,
+     "win_rate": 0.3714,
+     "profit_factor": 0.703,
+     "p_value": 0.1755,
+     "net_base": -387.81,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:GODREJPROP": {
+   "symbol": "GODREJPROP",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 56,
+     "wins": 29,
+     "win_rate": 0.5179,
+     "profit_factor": 1.321,
+     "p_value": 0.8939,
+     "net_base": 612.45,
+     "tested_from": "2018-05-03"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 35,
+     "wins": 19,
+     "win_rate": 0.5429,
+     "profit_factor": 1.253,
+     "p_value": 0.7359,
+     "net_base": 283.82,
+     "tested_from": "2018-05-03"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 4,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
   "IN:GOLDBEES": {
    "symbol": "GOLDBEES",
    "logics": [
@@ -534,8 +2139,8 @@
      "win_rate": 0.4118,
      "profit_factor": 0.978,
      "p_value": 0.3915,
-     "net_base": -31.08,
-     "tested_from": "2018-05-07"
+     "net_base": -31.07,
+     "tested_from": "2018-05-08"
     },
     {
      "logic": "momentum",
@@ -546,6 +2151,3856 @@
    ],
    "best": null,
    "best_verdict": "none"
+  },
+  "IN:GRASIM": {
+   "symbol": "GRASIM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 73,
+     "wins": 41,
+     "win_rate": 0.5616,
+     "profit_factor": 1.26,
+     "p_value": 0.3492,
+     "net_base": 552.81,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 29,
+     "wins": 17,
+     "win_rate": 0.5862,
+     "profit_factor": 1.179,
+     "p_value": 0.4583,
+     "net_base": 136.54,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 16,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:HAL": {
+   "symbol": "HAL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 38,
+     "wins": 23,
+     "win_rate": 0.6053,
+     "profit_factor": 1.232,
+     "p_value": 0.2559,
+     "net_base": 262.54,
+     "tested_from": "2022-06-14"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 26,
+     "wins": 13,
+     "win_rate": 0.5,
+     "profit_factor": 1.9,
+     "p_value": 1.0,
+     "net_base": 540.64,
+     "tested_from": "2022-06-14"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:HAVELLS": {
+   "symbol": "HAVELLS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 72,
+     "wins": 39,
+     "win_rate": 0.5417,
+     "profit_factor": 0.909,
+     "p_value": 0.556,
+     "net_base": -265.78,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 24,
+     "wins": 11,
+     "win_rate": 0.4583,
+     "profit_factor": 0.87,
+     "p_value": 0.8388,
+     "net_base": -108.39,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:HCLTECH": {
+   "symbol": "HCLTECH",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 75,
+     "wins": 36,
+     "win_rate": 0.48,
+     "profit_factor": 1.106,
+     "p_value": 0.8176,
+     "net_base": 290.82,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 32,
+     "wins": 16,
+     "win_rate": 0.5,
+     "profit_factor": 0.705,
+     "p_value": 1.0,
+     "net_base": -249.89,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:HDFCAMC": {
+   "symbol": "HDFCAMC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 28,
+     "wins": 16,
+     "win_rate": 0.5714,
+     "profit_factor": 1.767,
+     "p_value": 0.5716,
+     "net_base": 570.28,
+     "tested_from": "2022-08-18"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 12,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 3,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:HDFCBANK": {
+   "symbol": "HDFCBANK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 82,
+     "wins": 43,
+     "win_rate": 0.5244,
+     "profit_factor": 0.961,
+     "p_value": 0.7407,
+     "net_base": -115.9,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 24,
+     "wins": 9,
+     "win_rate": 0.375,
+     "profit_factor": 0.601,
+     "p_value": 0.3075,
+     "net_base": -336.17,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 16,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:HDFCLIFE": {
+   "symbol": "HDFCLIFE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 26,
+     "wins": 13,
+     "win_rate": 0.5,
+     "profit_factor": 1.262,
+     "p_value": 1.0,
+     "net_base": 158.24,
+     "tested_from": "2022-04-07"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 9,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:HEROMOTOCO": {
+   "symbol": "HEROMOTOCO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 52,
+     "wins": 23,
+     "win_rate": 0.4423,
+     "profit_factor": 0.823,
+     "p_value": 0.4885,
+     "net_base": -347.03,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 24,
+     "wins": 10,
+     "win_rate": 0.4167,
+     "profit_factor": 0.857,
+     "p_value": 0.5413,
+     "net_base": -82.05,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 11,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:HINDALCO": {
+   "symbol": "HINDALCO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 70,
+     "wins": 38,
+     "win_rate": 0.5429,
+     "profit_factor": 1.54,
+     "p_value": 0.5504,
+     "net_base": 1347.6,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 35,
+     "wins": 14,
+     "win_rate": 0.4,
+     "profit_factor": 0.535,
+     "p_value": 0.3105,
+     "net_base": -689.53,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 13,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:HINDUNILVR": {
+   "symbol": "HINDUNILVR",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 58,
+     "wins": 24,
+     "win_rate": 0.4138,
+     "profit_factor": 0.823,
+     "p_value": 0.237,
+     "net_base": -359.63,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 33,
+     "wins": 16,
+     "win_rate": 0.4848,
+     "profit_factor": 0.678,
+     "p_value": 1.0,
+     "net_base": -337.53,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:HINDZINC": {
+   "symbol": "HINDZINC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 68,
+     "wins": 30,
+     "win_rate": 0.4412,
+     "profit_factor": 1.013,
+     "p_value": 0.3961,
+     "net_base": 28.27,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 27,
+     "wins": 9,
+     "win_rate": 0.3333,
+     "profit_factor": 0.596,
+     "p_value": 0.1221,
+     "net_base": -485.8,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 4,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ICICIBANK": {
+   "symbol": "ICICIBANK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 83,
+     "wins": 43,
+     "win_rate": 0.5181,
+     "profit_factor": 1.345,
+     "p_value": 0.8264,
+     "net_base": 1028.03,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 24,
+     "wins": 8,
+     "win_rate": 0.3333,
+     "profit_factor": 0.592,
+     "p_value": 0.1516,
+     "net_base": -302.29,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 9,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ICICIGI": {
+   "symbol": "ICICIGI",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 20,
+     "wins": 8,
+     "win_rate": 0.4,
+     "profit_factor": 0.72,
+     "p_value": 0.5034,
+     "net_base": -160.88,
+     "tested_from": "2022-03-14"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 7,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 4,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:ICICIPRULI": {
+   "symbol": "ICICIPRULI",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 27,
+     "wins": 8,
+     "win_rate": 0.2963,
+     "profit_factor": 0.472,
+     "p_value": 0.0522,
+     "net_base": -693.4,
+     "tested_from": "2021-09-15"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 12,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:IDEA": {
+   "symbol": "IDEA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 47,
+     "wins": 24,
+     "win_rate": 0.5106,
+     "profit_factor": 1.209,
+     "p_value": 1.0,
+     "net_base": 265.51,
+     "tested_from": "2016-12-09"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 27,
+     "wins": 11,
+     "win_rate": 0.4074,
+     "profit_factor": 0.835,
+     "p_value": 0.4421,
+     "net_base": -171.26,
+     "tested_from": "2016-12-09"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 4,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:IDFCFIRSTB": {
+   "symbol": "IDFCFIRSTB",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 35,
+     "wins": 18,
+     "win_rate": 0.5143,
+     "profit_factor": 1.28,
+     "p_value": 1.0,
+     "net_base": 347.83,
+     "tested_from": "2021-04-06"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 18,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:IGL": {
+   "symbol": "IGL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 66,
+     "wins": 34,
+     "win_rate": 0.5152,
+     "profit_factor": 1.123,
+     "p_value": 0.9022,
+     "net_base": 286.17,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 29,
+     "wins": 10,
+     "win_rate": 0.3448,
+     "profit_factor": 0.503,
+     "p_value": 0.136,
+     "net_base": -537.68,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:INDHOTEL": {
+   "symbol": "INDHOTEL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 80,
+     "wins": 45,
+     "win_rate": 0.5625,
+     "profit_factor": 1.635,
+     "p_value": 0.3143,
+     "net_base": 1342.75,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 32,
+     "wins": 13,
+     "win_rate": 0.4062,
+     "profit_factor": 1.138,
+     "p_value": 0.3771,
+     "net_base": 133.96,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 14,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:INDIANB": {
+   "symbol": "INDIANB",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 76,
+     "wins": 37,
+     "win_rate": 0.4868,
+     "profit_factor": 1.006,
+     "p_value": 0.9088,
+     "net_base": 15.2,
+     "tested_from": "2016-12-06"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 29,
+     "wins": 15,
+     "win_rate": 0.5172,
+     "profit_factor": 1.438,
+     "p_value": 1.0,
+     "net_base": 447.62,
+     "tested_from": "2016-12-06"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:INDIGO": {
+   "symbol": "INDIGO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 45,
+     "wins": 23,
+     "win_rate": 0.5111,
+     "profit_factor": 1.437,
+     "p_value": 1.0,
+     "net_base": 582.79,
+     "tested_from": "2021-04-07"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 16,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 8,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:INDUSINDBK": {
+   "symbol": "INDUSINDBK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 63,
+     "wins": 37,
+     "win_rate": 0.5873,
+     "profit_factor": 1.296,
+     "p_value": 0.2074,
+     "net_base": 664.71,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 22,
+     "wins": 9,
+     "win_rate": 0.4091,
+     "profit_factor": 0.595,
+     "p_value": 0.5235,
+     "net_base": -348.09,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 12,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:INDUSTOWER": {
+   "symbol": "INDUSTOWER",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 33,
+     "wins": 16,
+     "win_rate": 0.4848,
+     "profit_factor": 0.704,
+     "p_value": 1.0,
+     "net_base": -396.53,
+     "tested_from": "2019-11-06"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 16,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 5,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:INFY": {
+   "symbol": "INFY",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 58,
+     "wins": 26,
+     "win_rate": 0.4483,
+     "profit_factor": 0.895,
+     "p_value": 0.5118,
+     "net_base": -231.98,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 24,
+     "wins": 10,
+     "win_rate": 0.4167,
+     "profit_factor": 0.839,
+     "p_value": 0.5413,
+     "net_base": -152.8,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:IOC": {
+   "symbol": "IOC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 64,
+     "wins": 31,
+     "win_rate": 0.4844,
+     "profit_factor": 1.004,
+     "p_value": 0.9007,
+     "net_base": 7.71,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 34,
+     "wins": 17,
+     "win_rate": 0.5,
+     "profit_factor": 1.15,
+     "p_value": 1.0,
+     "net_base": 157.79,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:IPCALAB": {
+   "symbol": "IPCALAB",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 71,
+     "wins": 33,
+     "win_rate": 0.4648,
+     "profit_factor": 0.947,
+     "p_value": 0.6353,
+     "net_base": -121.53,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 31,
+     "wins": 14,
+     "win_rate": 0.4516,
+     "profit_factor": 1.089,
+     "p_value": 0.7201,
+     "net_base": 85.66,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 11,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:IRB": {
+   "symbol": "IRB",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 53,
+     "wins": 29,
+     "win_rate": 0.5472,
+     "profit_factor": 1.211,
+     "p_value": 0.5831,
+     "net_base": 375.98,
+     "tested_from": "2017-06-06"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 24,
+     "wins": 12,
+     "win_rate": 0.5,
+     "profit_factor": 1.231,
+     "p_value": 1.0,
+     "net_base": 202.37,
+     "tested_from": "2017-06-06"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 5,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:IRCTC": {
+   "symbol": "IRCTC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 11,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 9,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:IRFC": {
+   "symbol": "IRFC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 11,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 4,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:ITBEES": {
+   "symbol": "ITBEES",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 20,
+     "wins": 9,
+     "win_rate": 0.45,
+     "profit_factor": 0.636,
+     "p_value": 0.8238,
+     "net_base": -264.41,
+     "tested_from": "2023-07-24"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 3,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:ITC": {
+   "symbol": "ITC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 51,
+     "wins": 25,
+     "win_rate": 0.4902,
+     "profit_factor": 1.302,
+     "p_value": 1.0,
+     "net_base": 432.86,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 28,
+     "wins": 14,
+     "win_rate": 0.5,
+     "profit_factor": 0.536,
+     "p_value": 1.0,
+     "net_base": -439.08,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:JINDALSTEL": {
+   "symbol": "JINDALSTEL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 84,
+     "wins": 39,
+     "win_rate": 0.4643,
+     "profit_factor": 0.996,
+     "p_value": 0.5856,
+     "net_base": -10.67,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "evidence",
+     "trades": 35,
+     "wins": 24,
+     "win_rate": 0.6857,
+     "profit_factor": 1.617,
+     "p_value": 0.041,
+     "net_base": 426.19,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "evidence"
+  },
+  "IN:JKCEMENT": {
+   "symbol": "JKCEMENT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 79,
+     "wins": 42,
+     "win_rate": 0.5316,
+     "profit_factor": 1.167,
+     "p_value": 0.653,
+     "net_base": 381.53,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 33,
+     "wins": 18,
+     "win_rate": 0.5455,
+     "profit_factor": 1.439,
+     "p_value": 0.7283,
+     "net_base": 389.25,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 6,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:JSWENERGY": {
+   "symbol": "JSWENERGY",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 48,
+     "wins": 31,
+     "win_rate": 0.6458,
+     "profit_factor": 1.631,
+     "p_value": 0.0595,
+     "net_base": 866.11,
+     "tested_from": "2018-05-03"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 27,
+     "wins": 11,
+     "win_rate": 0.4074,
+     "profit_factor": 1.026,
+     "p_value": 0.4421,
+     "net_base": 24.84,
+     "tested_from": "2018-05-03"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 3,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:JSWSTEEL": {
+   "symbol": "JSWSTEEL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 88,
+     "wins": 47,
+     "win_rate": 0.5341,
+     "profit_factor": 1.321,
+     "p_value": 0.5943,
+     "net_base": 962.24,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 29,
+     "wins": 12,
+     "win_rate": 0.4138,
+     "profit_factor": 0.63,
+     "p_value": 0.4583,
+     "net_base": -341.38,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:JUBLFOOD": {
+   "symbol": "JUBLFOOD",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 48,
+     "wins": 18,
+     "win_rate": 0.375,
+     "profit_factor": 0.722,
+     "p_value": 0.1114,
+     "net_base": -534.06,
+     "tested_from": "2018-05-21"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 21,
+     "wins": 9,
+     "win_rate": 0.4286,
+     "profit_factor": 0.781,
+     "p_value": 0.6636,
+     "net_base": -125.76,
+     "tested_from": "2018-05-21"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:JUNIORBEES": {
+   "symbol": "JUNIORBEES",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 56,
+     "wins": 20,
+     "win_rate": 0.3571,
+     "profit_factor": 0.344,
+     "p_value": 0.044,
+     "net_base": -1257.99,
+     "tested_from": "2018-05-07"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 9,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:KANSAINER": {
+   "symbol": "KANSAINER",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 56,
+     "wins": 28,
+     "win_rate": 0.5,
+     "profit_factor": 0.963,
+     "p_value": 1.0,
+     "net_base": -68.54,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 20,
+     "wins": 5,
+     "win_rate": 0.25,
+     "profit_factor": 0.171,
+     "p_value": 0.0414,
+     "net_base": -685.06,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 5,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:KOTAKBANK": {
+   "symbol": "KOTAKBANK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 68,
+     "wins": 33,
+     "win_rate": 0.4853,
+     "profit_factor": 1.023,
+     "p_value": 0.9036,
+     "net_base": 52.96,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 24,
+     "wins": 11,
+     "win_rate": 0.4583,
+     "profit_factor": 0.774,
+     "p_value": 0.8388,
+     "net_base": -169.22,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:LICHSGFIN": {
+   "symbol": "LICHSGFIN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 52,
+     "wins": 26,
+     "win_rate": 0.5,
+     "profit_factor": 0.839,
+     "p_value": 1.0,
+     "net_base": -365.87,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 28,
+     "wins": 14,
+     "win_rate": 0.5,
+     "profit_factor": 1.532,
+     "p_value": 1.0,
+     "net_base": 352.13,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 8,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:LT": {
+   "symbol": "LT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 82,
+     "wins": 38,
+     "win_rate": 0.4634,
+     "profit_factor": 1.127,
+     "p_value": 0.5811,
+     "net_base": 380.39,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 34,
+     "wins": 11,
+     "win_rate": 0.3235,
+     "profit_factor": 0.369,
+     "p_value": 0.0576,
+     "net_base": -789.18,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:LUPIN": {
+   "symbol": "LUPIN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 47,
+     "wins": 30,
+     "win_rate": 0.6383,
+     "profit_factor": 1.423,
+     "p_value": 0.0789,
+     "net_base": 559.87,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 21,
+     "wins": 12,
+     "win_rate": 0.5714,
+     "profit_factor": 2.582,
+     "p_value": 0.6636,
+     "net_base": 587.16,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 8,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:M&M": {
+   "symbol": "M&M",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 74,
+     "wins": 43,
+     "win_rate": 0.5811,
+     "profit_factor": 1.713,
+     "p_value": 0.2007,
+     "net_base": 1676.62,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 25,
+     "wins": 14,
+     "win_rate": 0.56,
+     "profit_factor": 1.918,
+     "p_value": 0.69,
+     "net_base": 358.54,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 4,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:MARICO": {
+   "symbol": "MARICO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 71,
+     "wins": 37,
+     "win_rate": 0.5211,
+     "profit_factor": 1.124,
+     "p_value": 0.8126,
+     "net_base": 310.21,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 24,
+     "wins": 8,
+     "win_rate": 0.3333,
+     "profit_factor": 0.372,
+     "p_value": 0.1516,
+     "net_base": -640.58,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:MARUTI": {
+   "symbol": "MARUTI",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 85,
+     "wins": 39,
+     "win_rate": 0.4588,
+     "profit_factor": 0.895,
+     "p_value": 0.5154,
+     "net_base": -329.53,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 29,
+     "wins": 11,
+     "win_rate": 0.3793,
+     "profit_factor": 0.592,
+     "p_value": 0.2649,
+     "net_base": -507.14,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:MAXHEALTH": {
+   "symbol": "MAXHEALTH",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 28,
+     "wins": 16,
+     "win_rate": 0.5714,
+     "profit_factor": 1.376,
+     "p_value": 0.5716,
+     "net_base": 238.78,
+     "tested_from": "2023-08-21"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 8,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 7,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:MCX": {
+   "symbol": "MCX",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 65,
+     "wins": 37,
+     "win_rate": 0.5692,
+     "profit_factor": 1.387,
+     "p_value": 0.3211,
+     "net_base": 810.57,
+     "tested_from": "2019-06-12"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 25,
+     "wins": 12,
+     "win_rate": 0.48,
+     "profit_factor": 0.948,
+     "p_value": 1.0,
+     "net_base": -61.73,
+     "tested_from": "2019-06-12"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:MOTHERSON": {
+   "symbol": "MOTHERSON",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 65,
+     "wins": 32,
+     "win_rate": 0.4923,
+     "profit_factor": 0.823,
+     "p_value": 1.0,
+     "net_base": -474.83,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 29,
+     "wins": 9,
+     "win_rate": 0.3103,
+     "profit_factor": 0.6,
+     "p_value": 0.0614,
+     "net_base": -314.03,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 11,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:MPHASIS": {
+   "symbol": "MPHASIS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 64,
+     "wins": 37,
+     "win_rate": 0.5781,
+     "profit_factor": 1.25,
+     "p_value": 0.2604,
+     "net_base": 519.35,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 27,
+     "wins": 15,
+     "win_rate": 0.5556,
+     "profit_factor": 1.764,
+     "p_value": 0.7011,
+     "net_base": 494.96,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:MRF": {
+   "symbol": "MRF",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 65,
+     "wins": 29,
+     "win_rate": 0.4462,
+     "profit_factor": 1.038,
+     "p_value": 0.457,
+     "net_base": 57.3,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 36,
+     "wins": 18,
+     "win_rate": 0.5,
+     "profit_factor": 1.109,
+     "p_value": 1.0,
+     "net_base": 85.96,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:MUTHOOTFIN": {
+   "symbol": "MUTHOOTFIN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 65,
+     "wins": 40,
+     "win_rate": 0.6154,
+     "profit_factor": 1.559,
+     "p_value": 0.0817,
+     "net_base": 1182.97,
+     "tested_from": "2019-01-04"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 21,
+     "wins": 7,
+     "win_rate": 0.3333,
+     "profit_factor": 0.684,
+     "p_value": 0.1892,
+     "net_base": -202.59,
+     "tested_from": "2019-01-04"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:NATIONALUM": {
+   "symbol": "NATIONALUM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "evidence",
+     "trades": 68,
+     "wins": 45,
+     "win_rate": 0.6618,
+     "profit_factor": 2.781,
+     "p_value": 0.0103,
+     "net_base": 2880.43,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 28,
+     "wins": 14,
+     "win_rate": 0.5,
+     "profit_factor": 0.896,
+     "p_value": 1.0,
+     "net_base": -85.19,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "evidence"
+  },
+  "IN:NAUKRI": {
+   "symbol": "NAUKRI",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 76,
+     "wins": 43,
+     "win_rate": 0.5658,
+     "profit_factor": 1.415,
+     "p_value": 0.3019,
+     "net_base": 975.0,
+     "tested_from": "2016-10-17"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 31,
+     "wins": 12,
+     "win_rate": 0.3871,
+     "profit_factor": 0.804,
+     "p_value": 0.281,
+     "net_base": -199.52,
+     "tested_from": "2016-10-17"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:NBCC": {
+   "symbol": "NBCC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 46,
+     "wins": 23,
+     "win_rate": 0.5,
+     "profit_factor": 1.223,
+     "p_value": 1.0,
+     "net_base": 367.84,
+     "tested_from": "2019-06-27"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 28,
+     "wins": 11,
+     "win_rate": 0.3929,
+     "profit_factor": 0.762,
+     "p_value": 0.3449,
+     "net_base": -296.57,
+     "tested_from": "2019-06-27"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:NESTLEIND": {
+   "symbol": "NESTLEIND",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 83,
+     "wins": 36,
+     "win_rate": 0.4337,
+     "profit_factor": 0.667,
+     "p_value": 0.2723,
+     "net_base": -1145.06,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 27,
+     "wins": 14,
+     "win_rate": 0.5185,
+     "profit_factor": 1.037,
+     "p_value": 1.0,
+     "net_base": 21.84,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:NHPC": {
+   "symbol": "NHPC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 48,
+     "wins": 25,
+     "win_rate": 0.5208,
+     "profit_factor": 1.38,
+     "p_value": 0.8854,
+     "net_base": 535.41,
+     "tested_from": "2018-03-01"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 21,
+     "wins": 5,
+     "win_rate": 0.2381,
+     "profit_factor": 0.477,
+     "p_value": 0.0266,
+     "net_base": -494.02,
+     "tested_from": "2018-03-01"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:NIFTYBEES": {
+   "symbol": "NIFTYBEES",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 23,
+     "wins": 7,
+     "win_rate": 0.3043,
+     "profit_factor": 0.162,
+     "p_value": 0.0931,
+     "net_base": -2953.72,
+     "tested_from": "2017-11-06"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 7,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 5,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:NMDC": {
+   "symbol": "NMDC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 54,
+     "wins": 24,
+     "win_rate": 0.4444,
+     "profit_factor": 0.87,
+     "p_value": 0.4966,
+     "net_base": -230.23,
+     "tested_from": "2017-06-08"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 35,
+     "wins": 15,
+     "win_rate": 0.4286,
+     "profit_factor": 0.79,
+     "p_value": 0.4996,
+     "net_base": -242.65,
+     "tested_from": "2017-06-08"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:NTPC": {
+   "symbol": "NTPC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 73,
+     "wins": 44,
+     "win_rate": 0.6027,
+     "profit_factor": 2.101,
+     "p_value": 0.1006,
+     "net_base": 1898.52,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 30,
+     "wins": 10,
+     "win_rate": 0.3333,
+     "profit_factor": 0.721,
+     "p_value": 0.0987,
+     "net_base": -262.18,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:NYKAA": {
+   "symbol": "NYKAA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 18,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 7,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 5,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:OBEROIRLTY": {
+   "symbol": "OBEROIRLTY",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 47,
+     "wins": 26,
+     "win_rate": 0.5532,
+     "profit_factor": 1.315,
+     "p_value": 0.5601,
+     "net_base": 466.46,
+     "tested_from": "2018-09-25"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 19,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:OFSS": {
+   "symbol": "OFSS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 56,
+     "wins": 32,
+     "win_rate": 0.5714,
+     "profit_factor": 1.275,
+     "p_value": 0.3497,
+     "net_base": 438.73,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 30,
+     "wins": 12,
+     "win_rate": 0.4,
+     "profit_factor": 0.704,
+     "p_value": 0.3616,
+     "net_base": -326.21,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:OIL": {
+   "symbol": "OIL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 56,
+     "wins": 33,
+     "win_rate": 0.5893,
+     "profit_factor": 1.815,
+     "p_value": 0.2288,
+     "net_base": 1329.67,
+     "tested_from": "2018-03-16"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 20,
+     "wins": 10,
+     "win_rate": 0.5,
+     "profit_factor": 1.286,
+     "p_value": 1.0,
+     "net_base": 213.93,
+     "tested_from": "2018-03-16"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 8,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ONGC": {
+   "symbol": "ONGC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 55,
+     "wins": 30,
+     "win_rate": 0.5455,
+     "profit_factor": 1.428,
+     "p_value": 0.5901,
+     "net_base": 830.67,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 34,
+     "wins": 12,
+     "win_rate": 0.3529,
+     "profit_factor": 0.62,
+     "p_value": 0.1214,
+     "net_base": -562.07,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:PAGEIND": {
+   "symbol": "PAGEIND",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 60,
+     "wins": 26,
+     "win_rate": 0.4333,
+     "profit_factor": 0.797,
+     "p_value": 0.3663,
+     "net_base": -387.48,
+     "tested_from": "2016-12-12"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 25,
+     "wins": 11,
+     "win_rate": 0.44,
+     "profit_factor": 0.941,
+     "p_value": 0.69,
+     "net_base": -38.56,
+     "tested_from": "2016-12-12"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 3,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:PAYTM": {
+   "symbol": "PAYTM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 20,
+     "wins": 13,
+     "win_rate": 0.65,
+     "profit_factor": 2.591,
+     "p_value": 0.2632,
+     "net_base": 650.63,
+     "tested_from": "2024-04-09"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 11,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 3,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:PERSISTENT": {
+   "symbol": "PERSISTENT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 50,
+     "wins": 25,
+     "win_rate": 0.5,
+     "profit_factor": 1.434,
+     "p_value": 1.0,
+     "net_base": 689.59,
+     "tested_from": "2018-06-14"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 39,
+     "wins": 22,
+     "win_rate": 0.5641,
+     "profit_factor": 1.305,
+     "p_value": 0.5224,
+     "net_base": 384.55,
+     "tested_from": "2018-06-14"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 12,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:PETRONET": {
+   "symbol": "PETRONET",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 57,
+     "wins": 32,
+     "win_rate": 0.5614,
+     "profit_factor": 1.7,
+     "p_value": 0.427,
+     "net_base": 1311.31,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 16,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 8,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:PFC": {
+   "symbol": "PFC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 56,
+     "wins": 29,
+     "win_rate": 0.5179,
+     "profit_factor": 1.441,
+     "p_value": 0.8939,
+     "net_base": 820.99,
+     "tested_from": "2016-12-02"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 31,
+     "wins": 15,
+     "win_rate": 0.4839,
+     "profit_factor": 1.682,
+     "p_value": 1.0,
+     "net_base": 578.66,
+     "tested_from": "2016-12-02"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:PHOENIXLTD": {
+   "symbol": "PHOENIXLTD",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 82,
+     "wins": 49,
+     "win_rate": 0.5976,
+     "profit_factor": 1.988,
+     "p_value": 0.097,
+     "net_base": 1803.03,
+     "tested_from": "2016-12-28"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 22,
+     "wins": 7,
+     "win_rate": 0.3182,
+     "profit_factor": 0.589,
+     "p_value": 0.1338,
+     "net_base": -386.91,
+     "tested_from": "2016-12-28"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:PIDILITIND": {
+   "symbol": "PIDILITIND",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 74,
+     "wins": 34,
+     "win_rate": 0.4595,
+     "profit_factor": 0.893,
+     "p_value": 0.5614,
+     "net_base": -294.57,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 36,
+     "wins": 15,
+     "win_rate": 0.4167,
+     "profit_factor": 0.791,
+     "p_value": 0.405,
+     "net_base": -245.19,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:PIIND": {
+   "symbol": "PIIND",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 51,
+     "wins": 25,
+     "win_rate": 0.4902,
+     "profit_factor": 0.997,
+     "p_value": 1.0,
+     "net_base": -7.12,
+     "tested_from": "2019-01-24"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 17,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 11,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:PNB": {
+   "symbol": "PNB",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 63,
+     "wins": 29,
+     "win_rate": 0.4603,
+     "profit_factor": 1.145,
+     "p_value": 0.6147,
+     "net_base": 351.49,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 36,
+     "wins": 16,
+     "win_rate": 0.4444,
+     "profit_factor": 0.931,
+     "p_value": 0.6177,
+     "net_base": -93.23,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:POLICYBZR": {
+   "symbol": "POLICYBZR",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 16,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 4,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 4,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:POLYCAB": {
+   "symbol": "POLYCAB",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 32,
+     "wins": 14,
+     "win_rate": 0.4375,
+     "profit_factor": 0.776,
+     "p_value": 0.5966,
+     "net_base": -335.58,
+     "tested_from": "2022-12-20"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 16,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 7,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:POWERGRID": {
+   "symbol": "POWERGRID",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 58,
+     "wins": 34,
+     "win_rate": 0.5862,
+     "profit_factor": 2.007,
+     "p_value": 0.237,
+     "net_base": 1494.55,
+     "tested_from": "2017-03-24"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 25,
+     "wins": 6,
+     "win_rate": 0.24,
+     "profit_factor": 0.137,
+     "p_value": 0.0146,
+     "net_base": -938.82,
+     "tested_from": "2017-03-24"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:PRESTIGE": {
+   "symbol": "PRESTIGE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 57,
+     "wins": 32,
+     "win_rate": 0.5614,
+     "profit_factor": 1.684,
+     "p_value": 0.427,
+     "net_base": 1170.6,
+     "tested_from": "2018-09-28"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 31,
+     "wins": 14,
+     "win_rate": 0.4516,
+     "profit_factor": 0.805,
+     "p_value": 0.7201,
+     "net_base": -219.07,
+     "tested_from": "2018-09-28"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 8,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:PVRINOX": {
+   "symbol": "PVRINOX",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 68,
+     "wins": 33,
+     "win_rate": 0.4853,
+     "profit_factor": 0.892,
+     "p_value": 0.9036,
+     "net_base": -284.86,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 19,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:RECLTD": {
+   "symbol": "RECLTD",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 45,
+     "wins": 19,
+     "win_rate": 0.4222,
+     "profit_factor": 1.013,
+     "p_value": 0.3713,
+     "net_base": 21.78,
+     "tested_from": "2017-06-13"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 25,
+     "wins": 13,
+     "win_rate": 0.52,
+     "profit_factor": 1.5,
+     "p_value": 1.0,
+     "net_base": 539.65,
+     "tested_from": "2017-06-13"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:RELIANCE": {
+   "symbol": "RELIANCE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 91,
+     "wins": 44,
+     "win_rate": 0.4835,
+     "profit_factor": 1.285,
+     "p_value": 0.8341,
+     "net_base": 824.54,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 28,
+     "wins": 15,
+     "win_rate": 0.5357,
+     "profit_factor": 1.131,
+     "p_value": 0.8506,
+     "net_base": 82.16,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:RVNL": {
+   "symbol": "RVNL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 26,
+     "wins": 16,
+     "win_rate": 0.6154,
+     "profit_factor": 2.036,
+     "p_value": 0.3269,
+     "net_base": 902.64,
+     "tested_from": "2022-12-16"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 13,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 4,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:SAIL": {
+   "symbol": "SAIL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 64,
+     "wins": 29,
+     "win_rate": 0.4531,
+     "profit_factor": 0.836,
+     "p_value": 0.5323,
+     "net_base": -392.09,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 25,
+     "wins": 13,
+     "win_rate": 0.52,
+     "profit_factor": 1.17,
+     "p_value": 1.0,
+     "net_base": 139.93,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:SBILIFE": {
+   "symbol": "SBILIFE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 26,
+     "wins": 11,
+     "win_rate": 0.4231,
+     "profit_factor": 0.765,
+     "p_value": 0.5572,
+     "net_base": -179.77,
+     "tested_from": "2022-03-15"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 13,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:SBIN": {
+   "symbol": "SBIN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 79,
+     "wins": 35,
+     "win_rate": 0.443,
+     "profit_factor": 0.998,
+     "p_value": 0.3682,
+     "net_base": -6.75,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 37,
+     "wins": 10,
+     "win_rate": 0.2703,
+     "profit_factor": 0.416,
+     "p_value": 0.0076,
+     "net_base": -969.42,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:SHREECEM": {
+   "symbol": "SHREECEM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 69,
+     "wins": 25,
+     "win_rate": 0.3623,
+     "profit_factor": 0.648,
+     "p_value": 0.0295,
+     "net_base": -894.01,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 19,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 15,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:SHRIRAMFIN": {
+   "symbol": "SHRIRAMFIN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 70,
+     "wins": 38,
+     "win_rate": 0.5429,
+     "profit_factor": 1.496,
+     "p_value": 0.5504,
+     "net_base": 1234.21,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 27,
+     "wins": 15,
+     "win_rate": 0.5556,
+     "profit_factor": 1.8,
+     "p_value": 0.7011,
+     "net_base": 434.86,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:SIEMENS": {
+   "symbol": "SIEMENS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 78,
+     "wins": 42,
+     "win_rate": 0.5385,
+     "profit_factor": 1.368,
+     "p_value": 0.5716,
+     "net_base": 827.47,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 30,
+     "wins": 18,
+     "win_rate": 0.6,
+     "profit_factor": 1.637,
+     "p_value": 0.3616,
+     "net_base": 454.11,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 15,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:SRF": {
+   "symbol": "SRF",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 75,
+     "wins": 33,
+     "win_rate": 0.44,
+     "profit_factor": 0.81,
+     "p_value": 0.3557,
+     "net_base": -574.72,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 38,
+     "wins": 18,
+     "win_rate": 0.4737,
+     "profit_factor": 1.102,
+     "p_value": 0.8714,
+     "net_base": 128.11,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 3,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:SUNPHARMA": {
+   "symbol": "SUNPHARMA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 58,
+     "wins": 32,
+     "win_rate": 0.5517,
+     "profit_factor": 1.13,
+     "p_value": 0.5118,
+     "net_base": 223.99,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 23,
+     "wins": 9,
+     "win_rate": 0.3913,
+     "profit_factor": 1.21,
+     "p_value": 0.4049,
+     "net_base": 95.14,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 1,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:SUNTV": {
+   "symbol": "SUNTV",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 55,
+     "wins": 25,
+     "win_rate": 0.4545,
+     "profit_factor": 0.818,
+     "p_value": 0.5901,
+     "net_base": -385.0,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 25,
+     "wins": 6,
+     "win_rate": 0.24,
+     "profit_factor": 0.418,
+     "p_value": 0.0146,
+     "net_base": -529.41,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:SUPREMEIND": {
+   "symbol": "SUPREMEIND",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 77,
+     "wins": 34,
+     "win_rate": 0.4416,
+     "profit_factor": 1.057,
+     "p_value": 0.362,
+     "net_base": 152.48,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 26,
+     "wins": 11,
+     "win_rate": 0.4231,
+     "profit_factor": 0.851,
+     "p_value": 0.5572,
+     "net_base": -113.84,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 8,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:TATACHEM": {
+   "symbol": "TATACHEM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 67,
+     "wins": 30,
+     "win_rate": 0.4478,
+     "profit_factor": 0.728,
+     "p_value": 0.4638,
+     "net_base": -791.11,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 30,
+     "wins": 13,
+     "win_rate": 0.4333,
+     "profit_factor": 1.259,
+     "p_value": 0.5847,
+     "net_base": 251.83,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:TATACONSUM": {
+   "symbol": "TATACONSUM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 73,
+     "wins": 41,
+     "win_rate": 0.5616,
+     "profit_factor": 1.523,
+     "p_value": 0.3492,
+     "net_base": 1265.42,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 39,
+     "wins": 19,
+     "win_rate": 0.4872,
+     "profit_factor": 0.92,
+     "p_value": 1.0,
+     "net_base": -83.75,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 3,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:TATAELXSI": {
+   "symbol": "TATAELXSI",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 62,
+     "wins": 28,
+     "win_rate": 0.4516,
+     "profit_factor": 0.722,
+     "p_value": 0.5258,
+     "net_base": -721.43,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 40,
+     "wins": 13,
+     "win_rate": 0.325,
+     "profit_factor": 0.64,
+     "p_value": 0.0385,
+     "net_base": -657.03,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:TATAPOWER": {
+   "symbol": "TATAPOWER",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 67,
+     "wins": 35,
+     "win_rate": 0.5224,
+     "profit_factor": 1.208,
+     "p_value": 0.8072,
+     "net_base": 400.19,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 29,
+     "wins": 11,
+     "win_rate": 0.3793,
+     "profit_factor": 0.848,
+     "p_value": 0.2649,
+     "net_base": -165.85,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:TATASTEEL": {
+   "symbol": "TATASTEEL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 83,
+     "wins": 43,
+     "win_rate": 0.5181,
+     "profit_factor": 0.977,
+     "p_value": 0.8264,
+     "net_base": -76.22,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 33,
+     "wins": 15,
+     "win_rate": 0.4545,
+     "profit_factor": 0.904,
+     "p_value": 0.7283,
+     "net_base": -109.76,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:TCS": {
+   "symbol": "TCS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 70,
+     "wins": 31,
+     "win_rate": 0.4429,
+     "profit_factor": 0.808,
+     "p_value": 0.403,
+     "net_base": -571.61,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 25,
+     "wins": 7,
+     "win_rate": 0.28,
+     "profit_factor": 0.389,
+     "p_value": 0.0433,
+     "net_base": -525.9,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 14,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:TECHM": {
+   "symbol": "TECHM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 65,
+     "wins": 33,
+     "win_rate": 0.5077,
+     "profit_factor": 1.031,
+     "p_value": 1.0,
+     "net_base": 78.17,
+     "tested_from": "2016-08-31"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 23,
+     "wins": 8,
+     "win_rate": 0.3478,
+     "profit_factor": 0.641,
+     "p_value": 0.21,
+     "net_base": -294.42,
+     "tested_from": "2016-08-31"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 5,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:THERMAX": {
+   "symbol": "THERMAX",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 69,
+     "wins": 35,
+     "win_rate": 0.5072,
+     "profit_factor": 1.231,
+     "p_value": 1.0,
+     "net_base": 409.74,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 30,
+     "wins": 9,
+     "win_rate": 0.3,
+     "profit_factor": 0.462,
+     "p_value": 0.0428,
+     "net_base": -738.32,
+     "tested_from": "2016-08-26"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 3,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:TITAN": {
+   "symbol": "TITAN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 85,
+     "wins": 46,
+     "win_rate": 0.5412,
+     "profit_factor": 1.227,
+     "p_value": 0.5154,
+     "net_base": 771.33,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 43,
+     "wins": 27,
+     "win_rate": 0.6279,
+     "profit_factor": 1.783,
+     "p_value": 0.1263,
+     "net_base": 807.66,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:TMPV": {
+   "symbol": "TMPV",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 47,
+     "wins": 26,
+     "win_rate": 0.5532,
+     "profit_factor": 1.431,
+     "p_value": 0.5601,
+     "net_base": 642.86,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 35,
+     "wins": 17,
+     "win_rate": 0.4857,
+     "profit_factor": 1.343,
+     "p_value": 1.0,
+     "net_base": 345.21,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:TORNTPHARM": {
+   "symbol": "TORNTPHARM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 68,
+     "wins": 42,
+     "win_rate": 0.6176,
+     "profit_factor": 1.858,
+     "p_value": 0.0681,
+     "net_base": 1377.73,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 28,
+     "wins": 10,
+     "win_rate": 0.3571,
+     "profit_factor": 0.467,
+     "p_value": 0.1849,
+     "net_base": -468.89,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:TORNTPOWER": {
+   "symbol": "TORNTPOWER",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 79,
+     "wins": 34,
+     "win_rate": 0.4304,
+     "profit_factor": 0.686,
+     "p_value": 0.2604,
+     "net_base": -936.23,
+     "tested_from": "2016-10-20"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 29,
+     "wins": 13,
+     "win_rate": 0.4483,
+     "profit_factor": 0.82,
+     "p_value": 0.7111,
+     "net_base": -158.46,
+     "tested_from": "2016-10-20"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:TRENT": {
+   "symbol": "TRENT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 84,
+     "wins": 46,
+     "win_rate": 0.5476,
+     "profit_factor": 1.156,
+     "p_value": 0.4452,
+     "net_base": 455.27,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 41,
+     "wins": 16,
+     "win_rate": 0.3902,
+     "profit_factor": 0.815,
+     "p_value": 0.211,
+     "net_base": -328.41,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:TVSMOTOR": {
+   "symbol": "TVSMOTOR",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 80,
+     "wins": 41,
+     "win_rate": 0.5125,
+     "profit_factor": 1.346,
+     "p_value": 0.9111,
+     "net_base": 1104.42,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 39,
+     "wins": 20,
+     "win_rate": 0.5128,
+     "profit_factor": 0.87,
+     "p_value": 1.0,
+     "net_base": -151.86,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 14,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ULTRACEMCO": {
+   "symbol": "ULTRACEMCO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 69,
+     "wins": 36,
+     "win_rate": 0.5217,
+     "profit_factor": 1.458,
+     "p_value": 0.8099,
+     "net_base": 868.61,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 31,
+     "wins": 16,
+     "win_rate": 0.5161,
+     "profit_factor": 0.907,
+     "p_value": 1.0,
+     "net_base": -75.16,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 2,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:UNIONBANK": {
+   "symbol": "UNIONBANK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 67,
+     "wins": 28,
+     "win_rate": 0.4179,
+     "profit_factor": 1.057,
+     "p_value": 0.2215,
+     "net_base": 152.69,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 35,
+     "wins": 16,
+     "win_rate": 0.4571,
+     "profit_factor": 0.99,
+     "p_value": 0.7359,
+     "net_base": -14.47,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:UPL": {
+   "symbol": "UPL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 62,
+     "wins": 30,
+     "win_rate": 0.4839,
+     "profit_factor": 0.981,
+     "p_value": 0.8991,
+     "net_base": -44.4,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 20,
+     "wins": 6,
+     "win_rate": 0.3,
+     "profit_factor": 0.54,
+     "p_value": 0.1153,
+     "net_base": -240.27,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:VEDL": {
+   "symbol": "VEDL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 62,
+     "wins": 32,
+     "win_rate": 0.5161,
+     "profit_factor": 0.72,
+     "p_value": 0.8991,
+     "net_base": -910.47,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "profitable_but_unproven",
+     "trades": 26,
+     "wins": 14,
+     "win_rate": 0.5385,
+     "profit_factor": 2.01,
+     "p_value": 0.845,
+     "net_base": 659.92,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 10,
+     "needed": 20
+    }
+   ],
+   "best": "breakout",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:VOLTAS": {
+   "symbol": "VOLTAS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 70,
+     "wins": 37,
+     "win_rate": 0.5286,
+     "profit_factor": 1.072,
+     "p_value": 0.7202,
+     "net_base": 186.77,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 30,
+     "wins": 13,
+     "win_rate": 0.4333,
+     "profit_factor": 0.875,
+     "p_value": 0.5847,
+     "net_base": -122.37,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:WHIRLPOOL": {
+   "symbol": "WHIRLPOOL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 59,
+     "wins": 25,
+     "win_rate": 0.4237,
+     "profit_factor": 0.85,
+     "p_value": 0.2976,
+     "net_base": -363.03,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 28,
+     "wins": 10,
+     "win_rate": 0.3571,
+     "profit_factor": 0.53,
+     "p_value": 0.1849,
+     "net_base": -470.65,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 7,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:WIPRO": {
+   "symbol": "WIPRO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 52,
+     "wins": 21,
+     "win_rate": 0.4038,
+     "profit_factor": 0.921,
+     "p_value": 0.2116,
+     "net_base": -139.67,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 33,
+     "wins": 14,
+     "win_rate": 0.4242,
+     "profit_factor": 0.688,
+     "p_value": 0.4869,
+     "net_base": -444.72,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:YESBANK": {
+   "symbol": "YESBANK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "no_edge",
+     "trades": 60,
+     "wins": 28,
+     "win_rate": 0.4667,
+     "profit_factor": 0.67,
+     "p_value": 0.6989,
+     "net_base": -918.27,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 38,
+     "wins": 11,
+     "win_rate": 0.2895,
+     "profit_factor": 0.639,
+     "p_value": 0.0139,
+     "net_base": -588.76,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "IN:ZEEL": {
+   "symbol": "ZEEL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 44,
+     "wins": 24,
+     "win_rate": 0.5455,
+     "profit_factor": 1.419,
+     "p_value": 0.6516,
+     "net_base": 562.18,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 22,
+     "wins": 10,
+     "win_rate": 0.4545,
+     "profit_factor": 0.669,
+     "p_value": 0.8318,
+     "net_base": -227.06,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
+  },
+  "IN:ZYDUSLIFE": {
+   "symbol": "ZYDUSLIFE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "profitable_but_unproven",
+     "trades": 51,
+     "wins": 27,
+     "win_rate": 0.5294,
+     "profit_factor": 1.106,
+     "p_value": 0.7798,
+     "net_base": 168.83,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "breakout",
+     "verdict": "no_edge",
+     "trades": 30,
+     "wins": 11,
+     "win_rate": 0.3667,
+     "profit_factor": 0.599,
+     "p_value": 0.2005,
+     "net_base": -395.06,
+     "tested_from": "2016-08-29"
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 8,
+     "needed": 20
+    }
+   ],
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
   },
   "US:AAPL": {
    "symbol": "AAPL",
@@ -622,8 +6077,8 @@
    "best": null,
    "best_verdict": "none"
   },
-  "US:AMZN": {
-   "symbol": "AMZN",
+  "US:GOOGL": {
+   "symbol": "GOOGL",
    "logics": [
     {
      "logic": "pullback",
@@ -647,8 +6102,8 @@
    "best": null,
    "best_verdict": "none"
   },
-  "US:GOOGL": {
-   "symbol": "GOOGL",
+  "US:AMZN": {
+   "symbol": "AMZN",
    "logics": [
     {
      "logic": "pullback",
@@ -722,6 +6177,731 @@
    "best": null,
    "best_verdict": "none"
   },
+  "US:AVGO": {
+   "symbol": "AVGO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:ORCL": {
+   "symbol": "ORCL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:CRM": {
+   "symbol": "CRM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:AMD": {
+   "symbol": "AMD",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:ADBE": {
+   "symbol": "ADBE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:NFLX": {
+   "symbol": "NFLX",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:INTC": {
+   "symbol": "INTC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:CSCO": {
+   "symbol": "CSCO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:QCOM": {
+   "symbol": "QCOM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:TXN": {
+   "symbol": "TXN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:IBM": {
+   "symbol": "IBM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:NOW": {
+   "symbol": "NOW",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:INTU": {
+   "symbol": "INTU",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:AMAT": {
+   "symbol": "AMAT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:MU": {
+   "symbol": "MU",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:LRCX": {
+   "symbol": "LRCX",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:KLAC": {
+   "symbol": "KLAC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:ADI": {
+   "symbol": "ADI",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:PANW": {
+   "symbol": "PANW",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:SNOW": {
+   "symbol": "SNOW",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:UBER": {
+   "symbol": "UBER",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:ABNB": {
+   "symbol": "ABNB",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:SHOP": {
+   "symbol": "SHOP",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:PLTR": {
+   "symbol": "PLTR",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:CRWD": {
+   "symbol": "CRWD",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:DDOG": {
+   "symbol": "DDOG",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:MDB": {
+   "symbol": "MDB",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:TEAM": {
+   "symbol": "TEAM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:WDAY": {
+   "symbol": "WDAY",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
   "US:JPM": {
    "symbol": "JPM",
    "logics": [
@@ -747,8 +6927,8 @@
    "best": null,
    "best_verdict": "none"
   },
-  "US:UNH": {
-   "symbol": "UNH",
+  "US:BAC": {
+   "symbol": "BAC",
    "logics": [
     {
      "logic": "pullback",
@@ -772,8 +6952,158 @@
    "best": null,
    "best_verdict": "none"
   },
-  "US:XOM": {
-   "symbol": "XOM",
+  "US:WFC": {
+   "symbol": "WFC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:GS": {
+   "symbol": "GS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:MS": {
+   "symbol": "MS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:C": {
+   "symbol": "C",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:BLK": {
+   "symbol": "BLK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:SCHW": {
+   "symbol": "SCHW",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:AXP": {
+   "symbol": "AXP",
    "logics": [
     {
      "logic": "pullback",
@@ -822,8 +7152,858 @@
    "best": null,
    "best_verdict": "none"
   },
-  "US:PG": {
-   "symbol": "PG",
+  "US:MA": {
+   "symbol": "MA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:PYPL": {
+   "symbol": "PYPL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:COF": {
+   "symbol": "COF",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:SPGI": {
+   "symbol": "SPGI",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:CME": {
+   "symbol": "CME",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:ICE": {
+   "symbol": "ICE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:BRK-B": {
+   "symbol": "BRK-B",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:JNJ": {
+   "symbol": "JNJ",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:UNH": {
+   "symbol": "UNH",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:LLY": {
+   "symbol": "LLY",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:PFE": {
+   "symbol": "PFE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:ABBV": {
+   "symbol": "ABBV",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:MRK": {
+   "symbol": "MRK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:TMO": {
+   "symbol": "TMO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:ABT": {
+   "symbol": "ABT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:DHR": {
+   "symbol": "DHR",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:BMY": {
+   "symbol": "BMY",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:AMGN": {
+   "symbol": "AMGN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:GILD": {
+   "symbol": "GILD",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:CVS": {
+   "symbol": "CVS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:ISRG": {
+   "symbol": "ISRG",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:VRTX": {
+   "symbol": "VRTX",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:REGN": {
+   "symbol": "REGN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:MDT": {
+   "symbol": "MDT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:XOM": {
+   "symbol": "XOM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:CVX": {
+   "symbol": "CVX",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:COP": {
+   "symbol": "COP",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:SLB": {
+   "symbol": "SLB",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:EOG": {
+   "symbol": "EOG",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:PSX": {
+   "symbol": "PSX",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:MPC": {
+   "symbol": "MPC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:VLO": {
+   "symbol": "VLO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:OXY": {
+   "symbol": "OXY",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:KMI": {
+   "symbol": "KMI",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:WMT": {
+   "symbol": "WMT",
    "logics": [
     {
      "logic": "pullback",
@@ -872,8 +8052,1458 @@
    "best": null,
    "best_verdict": "none"
   },
-  "US:AVGO": {
-   "symbol": "AVGO",
+  "US:PG": {
+   "symbol": "PG",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:KO": {
+   "symbol": "KO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:PEP": {
+   "symbol": "PEP",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:MCD": {
+   "symbol": "MCD",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:NKE": {
+   "symbol": "NKE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:SBUX": {
+   "symbol": "SBUX",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:TGT": {
+   "symbol": "TGT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:HD": {
+   "symbol": "HD",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:LOW": {
+   "symbol": "LOW",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:CL": {
+   "symbol": "CL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:MDLZ": {
+   "symbol": "MDLZ",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:MO": {
+   "symbol": "MO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:PM": {
+   "symbol": "PM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:KHC": {
+   "symbol": "KHC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:GIS": {
+   "symbol": "GIS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:CAT": {
+   "symbol": "CAT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:BA": {
+   "symbol": "BA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:HON": {
+   "symbol": "HON",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:GE": {
+   "symbol": "GE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:UNP": {
+   "symbol": "UNP",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:UPS": {
+   "symbol": "UPS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:RTX": {
+   "symbol": "RTX",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:LMT": {
+   "symbol": "LMT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:DE": {
+   "symbol": "DE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:MMM": {
+   "symbol": "MMM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:EMR": {
+   "symbol": "EMR",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:ETN": {
+   "symbol": "ETN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:NOC": {
+   "symbol": "NOC",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:GD": {
+   "symbol": "GD",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:CSX": {
+   "symbol": "CSX",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:FDX": {
+   "symbol": "FDX",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:T": {
+   "symbol": "T",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:VZ": {
+   "symbol": "VZ",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:TMUS": {
+   "symbol": "TMUS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:CMCSA": {
+   "symbol": "CMCSA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:DIS": {
+   "symbol": "DIS",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:WBD": {
+   "symbol": "WBD",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:NEE": {
+   "symbol": "NEE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:DUK": {
+   "symbol": "DUK",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:SO": {
+   "symbol": "SO",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:D": {
+   "symbol": "D",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:AEP": {
+   "symbol": "AEP",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:LIN": {
+   "symbol": "LIN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:APD": {
+   "symbol": "APD",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:SHW": {
+   "symbol": "SHW",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:ECL": {
+   "symbol": "ECL",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:DOW": {
+   "symbol": "DOW",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:FCX": {
+   "symbol": "FCX",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:NEM": {
+   "symbol": "NEM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:NUE": {
+   "symbol": "NUE",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:AMT": {
+   "symbol": "AMT",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:PLD": {
+   "symbol": "PLD",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:EQIX": {
+   "symbol": "EQIX",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:SPG": {
+   "symbol": "SPG",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:O": {
+   "symbol": "O",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:F": {
+   "symbol": "F",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:GM": {
+   "symbol": "GM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:RIVN": {
+   "symbol": "RIVN",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:LCID": {
+   "symbol": "LCID",
    "logics": [
     {
      "logic": "pullback",
@@ -949,6 +9579,56 @@
   },
   "US:IWM": {
    "symbol": "IWM",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:DIA": {
+   "symbol": "DIA",
+   "logics": [
+    {
+     "logic": "pullback",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "breakout",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    },
+    {
+     "logic": "momentum",
+     "verdict": "insufficient",
+     "trades": 0,
+     "needed": 20
+    }
+   ],
+   "best": null,
+   "best_verdict": "none"
+  },
+  "US:VTI": {
+   "symbol": "VTI",
    "logics": [
     {
      "logic": "pullback",

@@ -147,11 +147,20 @@ class ShortTermStrategy(Strategy):
     ) -> Signal | None:
         cfg = self.config
         bars = window.bars(cfg.required_bars)
-        closes = [b.close for b in bars]
-        highs = [b.high for b in bars]
-        lows = [b.low for b in bars]
-        volumes = [b.volume for b in bars]
-        price = closes[-1]
+        price = bars[-1].close
+        # Converted once, here, rather than inside every indicator call.
+        # This runs at each session for each instrument, and the indicators
+        # below re-derive the same series repeatedly -- over 325 instruments
+        # that was 580,000 Decimal-to-float conversions of the same few
+        # hundred numbers per run, a quarter of the whole signal build.
+        #
+        # Only the indicator inputs become float. `price` and the ATR stay
+        # Decimal, because the stop and target computed from them are money
+        # and must not inherit binary rounding.
+        closes = [float(b.close) for b in bars]
+        highs = [float(b.high) for b in bars]
+        lows = [float(b.low) for b in bars]
+        volumes = [float(b.volume) for b in bars]
 
         atr_value = atr(highs, lows, closes, cfg.atr_period)[-1]
         if atr_value is None or atr_value <= 0:

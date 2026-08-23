@@ -547,9 +547,13 @@ class TestRenderWithSignals(unittest.TestCase):
             ], "best": "pullback", "best_verdict": "profitable_but_unproven"}},
         }
         html = render_dashboard(self.report, signals=self.signals, fitness=fitness)
-        self.assertIn("0 rule beat chance on any single name", html)
-        # The false-positive budget must be stated, not hidden.
-        self.assertIn("5.1", html)
+        # The count of passes and the count expected from luck are stated
+        # together in the lead sentence. Either alone misleads: a bare "0"
+        # hides how much power the study had, and a bare "3" reads as three
+        # rules that work.
+        lead = html.split('class="findingline"', 1)[1].split("</p>", 1)[0]
+        self.assertIn("0", lead)
+        self.assertIn("5.1", lead)
         self.assertIn("luck alone", html)
         self.assertIn("Made money, unproven", html)
         self.assertIn("Too few trades", html)
@@ -581,7 +585,15 @@ class TestRenderWithSignals(unittest.TestCase):
         )
         self.assertIn('class="sparkwrap openable" data-stock=', html)
         self.assertIn('class="cellspark openable" data-stock=', html)
-        self.assertIn('class="screenrow openable"', html)
+        # The screener's cards are delivered as a sidecar now -- half a
+        # megabyte of markup for a tab most visitors never open -- so the page
+        # carries the mount and the cards are checked where they are built.
+        self.assertIn("data-screenmount", html)
+        from autotrader.web.render import _screener_section
+
+        cards = _screener_section(screener, cards_only=True)
+        self.assertIn('class="screenrow openable"', cards)
+        self.assertIn("data-stock=", cards)
 
     def test_computed_indicators_are_not_left_unshown(self):
         """Anything the engine bothers to compute should be readable.

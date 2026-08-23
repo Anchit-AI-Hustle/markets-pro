@@ -22,6 +22,26 @@ Result = list[float | None]
 
 
 def _f(values: Series) -> list[float]:
+    """A series as floats.
+
+    The fast path matters more than it looks. This is called around 700,000
+    times in a single signal run over 325 instruments — the strategies
+    re-evaluate their indicators at every session — and rebuilding a list of
+    several hundred floats each time was a quarter of the whole run. When the
+    caller already holds a list of floats there is nothing to convert, so the
+    same list is returned rather than a copy of it.
+
+    The scan is O(n) but allocates nothing and calls nothing; the conversion
+    it replaces did both. Callers must treat the result as read-only, which
+    every function in this module already does — none of them assign into a
+    converted series.
+    """
+    if type(values) is list:
+        for value in values:
+            if type(value) is not float:
+                break
+        else:
+            return values
     return [float(v) for v in values]
 
 

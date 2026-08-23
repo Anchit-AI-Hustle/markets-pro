@@ -23,6 +23,7 @@ from .auth import (
     auth_slot,
 )
 from .broker_ui import BROKER_CSS, BROKER_JS, broker_section
+from .pulse_ui import PULSE_JS
 from .search_ui import (
     SEARCH_CSS,
     SEARCH_JS,
@@ -412,6 +413,31 @@ SPARK_DEFS = """<svg width="0" height="0" aria-hidden="true"
 </defs></svg>"""
 
 
+#: Points kept when a sparkline is drawn at table size. The series arrives
+#: with a couple of hundred; at 240x56 they land well under a pixel apart, so
+#: the extra ones cost bytes and draw nothing. Downsampling to this took the
+#: watchlist from 479 KB of SVG to about a fifth of that, with no visible
+#: difference — the shape of a sparkline survives it, which is the whole
+#: content of a sparkline.
+SPARK_POINTS = 32
+
+
+def _downsample(values: Sequence[float], target: int) -> list[float]:
+    """At most ``target`` points, evenly spaced, always keeping both ends.
+
+    The last point especially: it is the current price, and a sparkline whose
+    right edge is a few sessions stale disagrees with the number printed
+    beside it.
+    """
+    series = list(values)
+    if len(series) <= target or target < 2:
+        return series
+    step = (len(series) - 1) / (target - 1)
+    picked = [series[round(i * step)] for i in range(target - 1)]
+    picked.append(series[-1])
+    return picked
+
+
 def sparkline_svg(
     values: Sequence[float],
     *,
@@ -419,6 +445,7 @@ def sparkline_svg(
     target: object = None,
     width: int = 240,
     height: int = 56,
+    points: int | None = SPARK_POINTS,
 ) -> str:
     """Recent price as inline SVG, with the trade's own levels drawn in.
 
@@ -430,6 +457,7 @@ def sparkline_svg(
     The y-range spans the price history *and* both levels, so the gaps you see
     are the real ones rather than an artefact of clipping.
     """
+    values = _downsample(values, points) if points else list(values)
     points = [float(v) for v in values if v is not None]
     if len(points) < 2:
         return ""
@@ -805,14 +833,22 @@ def _hero(signals: dict, fitness: dict | None) -> str:
     tests = (fitness or {}).get("tests_run") or 0
     proven = (fitness or {}).get("instruments_with_evidence")
 
+    luck = (fitness or {}).get("false_positives_expected")
     if tests:
-        # Stated as what was found, not as a score. The point of running 102
-        # tests and reporting zero is that the reader can trust the ones that
-        # would have been reported had any passed.
-        evidence = (
-            f"<b>{tests}</b> rule tests over 20 years"
-            + (f" &middot; <b>{proven}</b> beat chance" if proven is not None else "")
-        )
+        # A count of passes on its own is the most misleading number this
+        # study produces. Three passes sounds like three rules that work; set
+        # against the ~49 that this many tests would hand out on luck alone,
+        # it is the opposite. The two numbers only mean anything together, so
+        # they are never shown apart.
+        if proven is None:
+            evidence = f"<b>{tests}</b> rule tests over 20 years"
+        elif luck:
+            evidence = (
+                f"<b>{tests}</b> rule tests &middot; <b>{proven}</b> passed, "
+                f"<b>~{luck:.0f}</b> expected by luck"
+            )
+        else:
+            evidence = f"<b>{tests}</b> rule tests &middot; <b>{proven}</b> beat chance"
     else:
         evidence = "every rule scored against its own history"
 
@@ -2452,7 +2488,7 @@ def _reading(reading: dict, key: str, places: int) -> str:
     return f"{float(value):,.{places}f}"
 
 
-def _screener_section(screener: dict | None) -> str:
+def _screener_section(screener: dict | None, *, cards_only: bool = False) -> str:
     """The whole universe ranked by the screener, with its reasoning shown.
 
     A score with no rationale is an oracle, and an oracle is not something a
@@ -2462,8 +2498,9 @@ def _screener_section(screener: dict | None) -> str:
     """
     rows = (screener or {}).get("results") or []
     if not rows:
-        return ('<p class="empty">The screener has not run for this build. It '
-                "runs on every data refresh, after each market close.</p>")
+        return "" if cards_only else (
+            '<p class="empty">The screener has not run for this build. It '
+            "runs on every data refresh, after each market close.</p>")
 
     counts: dict[str, int] = {}
     for row in rows:
@@ -2532,6 +2569,12 @@ def _screener_section(screener: dict | None) -> str:
   <p class="screenind">Indicators weighted: {_esc(indicators)}</p>
 </article>"""
 
+    if cards_only:
+        return body
+
+    # The cards are half a megabyte of markup for a tab most visitors never
+    # open, so the page ships the controls and an empty mount and fetches the
+    # rest on first open. Same generator, later delivery.
     return f"""<div class="wbar">
   <label class="wsearch">
     <span class="sr-only">Filter the screener</span>
@@ -2543,7 +2586,9 @@ def _screener_section(screener: dict | None) -> str:
       <span class="wcount">{len(rows)}</span></button>
   </div>
 </div>
-<div class="screenlist">{body}</div>
+<div class="screenlist" data-screenmount>
+  <p class="empty" data-screenloading>Loading the ranking&hellip;</p>
+</div>
 <p class="wempty" data-sempty hidden>Nothing matches that.</p>
 <div class="wpager">
   <span class="sigmeta" data-stally></span>
@@ -2858,7 +2903,9 @@ def _evidence_section(fitness: dict | None) -> str:
 
     return f"""<div class="finding">
   <p class="findingline"><strong>Across {tests} tests over about twenty years,
-  {with_evidence} rule beat chance on any single name.</strong></p>
+  {with_evidence} {'rule' if with_evidence == 1 else 'rules'} cleared the bar on a
+  single name &mdash; against roughly {expected_luck} that this many tests hand
+  out on luck alone.</strong></p>
   <p>Each of the three rules was run against each instrument's own history,
   alone. The first half of that history is thrown away before scoring, because
   the rules were designed against data like it and measuring there measures the
@@ -2866,9 +2913,12 @@ def _evidence_section(fitness: dict | None) -> str:
   {fitness.get('min_trades', 20)} of them.</p>
   <p>A win rate is then compared with a coin flip using an exact binomial test.
   At {tests} tests and a {fitness.get('alpha', 0.05)} threshold, roughly
-  <strong>{expected_luck}</strong> would clear the bar on luck alone &mdash; so
-  a single 'beat chance' result here would be worth less than it looks, and
-  there are none.</p>
+  <strong>{expected_luck}</strong> clear the bar on luck alone. {
+  "Fewer passed than noise alone would produce, which is not a near miss "
+  "&mdash; it is the absence of an edge, measured."
+  if with_evidence < expected_luck else
+  "Read every pass below against that number before believing any of them."
+  }</p>
 </div>
 <div class="verdictcounts">
   {''.join(
@@ -3664,6 +3714,37 @@ WATCH_NEWS_JS = """
   }
 
   function srefilter() { slimit = SPAGE; applyScreen(); }
+
+  // The ranking arrives on first open of this tab rather than in the page.
+  // Half a megabyte of cards is not something to charge every visitor for,
+  // and most never open the Screener at all.
+  var screenMount = document.querySelector('[data-screenmount]');
+  var screenLoaded = false;
+  function loadScreener() {
+    if (screenLoaded || !screenMount) return;
+    screenLoaded = true;
+    var base = (window.__mpCfg || {}).data_base || '/markets-pro/';
+    fetch(base + 'screener-cards.html')
+      .then(function (r) { return r.ok ? r.text() : null; })
+      .then(function (markup) {
+        if (!markup) throw new Error('unavailable');
+        // Same-origin markup this build generated and already escaped.
+        screenMount.innerHTML = markup;
+        srows = [].slice.call(document.querySelectorAll('[data-srow]'));
+        srefilter();
+      })
+      .catch(function () {
+        screenMount.innerHTML = '<p class="empty">The ranking could not be ' +
+          'loaded. It is a separate file; a refresh usually fixes it.</p>';
+      });
+  }
+  var screenTab = document.querySelector('[data-tabbtn="screener"]');
+  if (screenTab) screenTab.addEventListener('click', loadScreener);
+  // A #screener link or a reload on that tab arrives without a click.
+  if (location.hash.replace('#', '') === 'screener') loadScreener();
+  window.addEventListener('hashchange', function () {
+    if (location.hash.replace('#', '') === 'screener') loadScreener();
+  });
   if (smore) {
     smore.addEventListener('click', function () { slimit += SPAGE * 3; applyScreen(); });
   }
@@ -6665,5 +6746,6 @@ def render_dashboard(
 <script>{AUTH_JS}</script>
 <script>{BROKER_JS}</script>
 <script>{SEARCH_JS}</script>
+<script>{PULSE_JS}</script>
 </body>
 </html>"""

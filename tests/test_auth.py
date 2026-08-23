@@ -336,6 +336,60 @@ class PayloadWeightTest(unittest.TestCase):
                 self.assertNotIn(illegal, name, f"{key} -> {name} is not a safe filename")
 
 
+class PulseTest(unittest.TestCase):
+    """Usage counting that cannot become user tracking.
+
+    The value of this telemetry is that it answers "does anyone open the
+    Evidence tab" without answering "who". These assert the second half stays
+    true, because the drift from counting to tracking is a one-line change
+    nobody notices in review.
+    """
+
+    def setUp(self):
+        import importlib.util
+
+        from autotrader.web.pulse_ui import PULSE_JS
+
+        self.js = PULSE_JS
+        spec = importlib.util.spec_from_file_location(
+            "mp_pulse_api",
+            Path(__file__).resolve().parent.parent / "api" / "pulse.py")
+        self.api = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.api)
+
+    def test_it_collects_nothing_that_identifies_a_reader(self):
+        for forbidden in ("location.href", "location.pathname", "document.cookie",
+                          "localStorage", "sessionStorage", "referrer",
+                          "screen.width", "timezone"):
+            self.assertNotIn(forbidden, self.js,
+                             f"{forbidden} would make this tracking, not counting")
+
+    def test_event_names_are_a_closed_grammar(self):
+        # An unbounded event name is a free-text field, and a free-text field
+        # reaching a telemetry table is how person-shaped data arrives.
+        for good in ("visit", "tab.evidence", "find.open", "error.js"):
+            self.assertRegex(good, self.api.EVENT_RE)
+        for bad in ("", "a" * 65, "user@example.com", "tab evidence",
+                    "../etc", "<script>", "IN:RELIANCE"):
+            self.assertNotRegex(bad, self.api.EVENT_RE, f"{bad!r} should not be storable")
+
+    def test_the_batch_is_bounded(self):
+        self.assertLessEqual(self.api.MAX_EVENTS, 64)
+        self.assertLessEqual(self.api.MAX_BODY, 64 * 1024)
+        self.assertLessEqual(self.api.MAX_MESSAGE, 500)
+
+    def test_it_sends_once_on_the_way_out(self):
+        # A request per interaction would be visible in the network panel of a
+        # page that otherwise makes almost none.
+        self.assertIn("keepalive", self.js)
+        self.assertIn("pagehide", self.js)
+        self.assertIn("var sent = false", self.js)
+
+    def test_telemetry_failure_never_disturbs_the_page(self):
+        self.assertIn(".catch(", self.js)
+        self.assertIn("try {", self.js)
+
+
 class ShippedConfigTest(unittest.TestCase):
     """The two committed files that have to agree, checked against each other.
 
