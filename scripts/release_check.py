@@ -106,17 +106,26 @@ def check_git() -> tuple[Step, str | None]:
     return Step("Pushed to remote", OK, detail), local
 
 
-def _gh_runs(sha: str) -> list[dict]:
+def _gh_runs(sha: str) -> tuple[list[dict], str]:
+    """Runs for a commit, and why the answer is unknown when it is.
+
+    An empty list has to mean one thing only: GitHub was asked and said there
+    are no runs yet. When ``gh`` is missing, unauthenticated or erroring we
+    have not learned that CI is pending, we have learned nothing — and
+    returning the same empty list for both reads "cannot check" as "still
+    running", which is the silent pass this script exists to stop.
+    """
     code, out = _run(
         ["gh", "run", "list", "--commit", sha, "--limit", "20",
          "--json", "name,status,conclusion,databaseId,workflowName"],
         timeout=180)
     if code != 0:
-        return []
+        first = out.strip().splitlines()[0] if out.strip() else ""
+        return [], (first or f"gh exited {code}")
     try:
-        return json.loads(out)
+        return json.loads(out), ""
     except ValueError:
-        return []
+        return [], "gh returned output that is not the JSON it was asked for"
 
 
 def _blocked_reason(run_id: int) -> str:
@@ -137,7 +146,16 @@ def check_ci(sha: str | None, wait: int) -> list[Step]:
         return [Step("GitHub Actions", SKIP, "no commit to check")]
     deadline = time.time() + wait
     while True:
-        runs = _gh_runs(sha)
+        runs, unknown = _gh_runs(sha)
+        # Waiting cannot resolve this: an uninstalled CLI is still uninstalled
+        # in ten minutes. Report it now, and as a block rather than a pause —
+        # a chain nobody could verify must not read as one that passed.
+        if unknown:
+            return [Step("GitHub Actions", BLOCKED,
+                         f"cannot read CI status: {unknown}"[:150],
+                         fix="Install and authenticate the GitHub CLI "
+                             "(`gh auth login`), or open the commit's checks "
+                             "on GitHub. Unverified is not green.")]
         if not runs:
             if time.time() < deadline:
                 time.sleep(10)

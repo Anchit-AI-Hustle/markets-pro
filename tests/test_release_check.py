@@ -51,6 +51,60 @@ class ClassificationTest(unittest.TestCase):
                              f"{message!r} must stay a failure")
 
 
+class UnreadableCiTest(unittest.TestCase):
+    """The checker must never call an unverified chain a quiet one.
+
+    `gh` missing or logged out is the ordinary case on a fresh machine, and it
+    is precisely when someone most wants to know whether the push landed. If
+    that reads as "still running" the report says "Nothing has failed" and
+    exits 2, which is the same false assurance that let eight red builds
+    through -- only now printed by the tool written to catch them.
+    """
+
+    def setUp(self):
+        self._real_run = rc._run
+        self.addCleanup(lambda: setattr(rc, "_run", self._real_run))
+
+    def _fake_run(self, code, out):
+        rc._run = lambda cmd, **kw: (code, out)
+
+    def test_a_missing_gh_is_reported_as_blocked_not_pending(self):
+        self._fake_run(127, "gh not installed")
+        steps = rc.check_ci("deadbeef", wait=0)
+        self.assertEqual([s.status for s in steps], [rc.BLOCKED])
+        self.assertEqual(rc.report(steps), 1, "an unreadable chain must not exit 0 or 2")
+
+    def test_an_unauthenticated_gh_is_blocked_too(self):
+        self._fake_run(4, "gh: To get started with GitHub CLI, please run: gh auth login")
+        steps = rc.check_ci("deadbeef", wait=0)
+        self.assertEqual([s.status for s in steps], [rc.BLOCKED])
+
+    def test_unparseable_output_is_blocked_rather_than_read_as_no_runs(self):
+        self._fake_run(0, "<html>proxy error</html>")
+        steps = rc.check_ci("deadbeef", wait=0)
+        self.assertEqual([s.status for s in steps], [rc.BLOCKED])
+
+    def test_gh_answering_with_no_runs_stays_pending(self):
+        # The other direction: when GitHub really was asked and really has no
+        # run yet, that is a wait, not a block. Collapsing the two would make
+        # the block meaningless.
+        self._fake_run(0, "[]")
+        steps = rc.check_ci("deadbeef", wait=0)
+        self.assertEqual([s.status for s in steps], [rc.PENDING])
+
+    def test_a_successful_run_is_still_reported_green(self):
+        self._fake_run(0, '[{"workflowName":"CI","status":"completed",'
+                          '"conclusion":"success","databaseId":1}]')
+        steps = rc.check_ci("deadbeef", wait=0)
+        self.assertEqual([s.status for s in steps], [rc.OK])
+
+    def test_the_reason_reaches_the_reader(self):
+        self._fake_run(127, "gh not installed")
+        step = rc.check_ci("deadbeef", wait=0)[0]
+        self.assertIn("gh not installed", step.detail)
+        self.assertTrue(step.fix, "a block the reader can act on needs a fix line")
+
+
 class ReportTest(unittest.TestCase):
     def test_any_failure_makes_the_exit_code_non_zero(self):
         for status in (rc.FAIL, rc.BLOCKED):
