@@ -1509,22 +1509,10 @@ tr.openable:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
 .detailverdict .screensig{margin-left:0;align-self:center;font-size:12px;
   padding:6px 12px}
 .detailverdict .dstat{flex:1 1 110px}
-.techtable{border:1px solid var(--line);border-radius:9px;overflow:hidden}
-.techrow{display:grid;grid-template-columns:130px 78px 96px 1fr;gap:12px;
-  align-items:baseline;padding:10px 13px;border-bottom:1px solid var(--line);
-  font-size:12.5px}
-.techrow:last-child{border-bottom:none}
-.techlabel{font-weight:600}
-.techval{font-variant-numeric:tabular-nums;color:var(--ink)}
-.techword{font-weight:700;font-size:11.5px;color:var(--accent)}
-.techsay{color:var(--muted);font-size:12px}
 @media (max-width:640px){
   .detailhead{flex-direction:column}
   .detailprice{text-align:left}
-  .techrow{grid-template-columns:1fr auto;gap:4px 10px}
-  .techword{grid-column:1}
-  .techsay{grid-column:1 / -1}
-}
+      }
 
 /* --- evidence ------------------------------------------------------------- */
 .finding{border:1px solid var(--accent);border-radius:9px;padding:14px 16px;
@@ -3947,55 +3935,6 @@ DETAIL_JS = """
     if (v == null || v === '') return 'flat';
     return Number(v) > 0 ? 'pos' : (Number(v) < 0 ? 'neg' : 'flat');
   }
-
-  // Plain-language readings. Thresholds match the strategies' own config so
-  // the words cannot contradict the rules on the Invest tab.
-  function readRSI(v) {
-    if (v == null) return null;
-    if (v >= 70) return ['Overbought', 'has run hard and often pauses or pulls back from here'];
-    if (v <= 30) return ['Oversold', 'has fallen hard — the dip strategy looks for entries here'];
-    if (v >= 55) return ['Firm', 'buyers have had the upper hand recently'];
-    if (v <= 45) return ['Soft', 'sellers have had the upper hand recently'];
-    return ['Balanced', 'neither side is in control'];
-  }
-  function readADX(v) {
-    if (v == null) return null;
-    if (v >= 25) return ['Trending',
-      'the move has real direction, so trend rules carry the weight'];
-    if (v >= 20) return ['Firming', 'a trend may be forming but is not established'];
-    return ['Ranging', 'no clear direction — oscillators carry the weight instead'];
-  }
-  function readST(v) {
-    if (v == null) return null;
-    return Number(v) > 0
-      ? ['Bullish', 'price is above the supertrend line']
-      : ['Bearish', 'price is below the supertrend line'];
-  }
-  function readMACD(v) {
-    if (v == null) return null;
-    return Number(v) > 0
-      ? ['Positive', 'short-term momentum is above the longer trend']
-      : ['Negative', 'short-term momentum has fallen below the longer trend'];
-  }
-
-  function readBollinger(v) {
-    if (v == null) return null;
-    var pctb = Number(v);
-    if (pctb >= 1) return ['Above the band', 'stretched above its normal range'];
-    if (pctb >= 0.8) return ['Upper band', 'near the top of its normal range'];
-    if (pctb <= 0) return ['Below the band', 'stretched below its normal range'];
-    if (pctb <= 0.2) return ['Lower band', 'near the bottom of its normal range'];
-    return ['Mid-band', 'inside its normal range'];
-  }
-
-  function techRow(label, value, read) {
-    if (!read) return '';
-    return '<div class="techrow"><span class="techlabel">' + esc(label) + '</span>' +
-      '<span class="techval">' + esc(value) + '</span>' +
-      '<span class="techword">' + esc(read[0]) + '</span>' +
-      '<span class="techsay">' + esc(read[1]) + '</span></div>';
-  }
-
 
   function money(v) {
     if (v == null || v === '') return '—';
