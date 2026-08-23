@@ -50,6 +50,7 @@ MODULES = [
     ("tests.test_tab_data", "Tab data correctness"),
     ("tests.test_dead_code", "No dead code shipped"),
     ("tests.test_pages", "Disclosures & indexing"),
+    ("tests.test_release_check", "Release verification"),
 ]
 
 BAR = "=" * 74

@@ -1,4 +1,4 @@
-.PHONY: test verify lint demo serve screen quality clean
+.PHONY: test verify lint demo serve screen quality clean release-check
 
 PY ?= python3
 
@@ -10,6 +10,12 @@ verify:              ## Run the suite and print the accuracy report
 
 lint:
 	ruff check src tests
+
+release-check:       ## Verify local gate, git, CI, Vercel and the live site
+	$(PY) scripts/release_check.py --wait 600
+
+release-check-fast:  ## Same, without re-running the local suite
+	$(PY) scripts/release_check.py --skip-local --wait 600
 
 quality:             ## Verify live cache freshness & sanity
 	PYTHONPATH=src $(PY) -m autotrader.data.quality --data data/live
