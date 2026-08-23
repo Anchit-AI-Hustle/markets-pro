@@ -971,11 +971,13 @@ def _setup_section(signals: dict) -> str:
   </div>
   <div class="tier">
     <h3>US executor via Alpaca <span class="state off">armed in Vercel env</span></h3>
-    <p>The Alpaca button relays through <code>/markets-pro/api/execute</code>, which refuses
-    every order until <code>ALPACA_KEY_ID</code> and <code>ALPACA_SECRET_KEY</code> are set,
-    trades paper unless <code>ALPACA_LIVE=true</code>, and enforces
-    <code>DAILY_CAP_USD</code> against the broker's own order log &mdash; never against
-    what the page claims.</p>
+    <p>The Alpaca button relays through <code>/markets-pro/api/broker/link</code>,
+    the same authenticated route every other broker uses: you must be signed in,
+    and the order is placed against your own account. It refuses every order until
+    <code>ALPACA_KEY_ID</code> and <code>ALPACA_SECRET_KEY</code> are set and
+    <code>BROKER_ORDERS_LIVE=true</code>, trades paper unless <code>ALPACA_LIVE=true</code>,
+    and reserves against <code>DAILY_CAP_USD</code> in the order journal <em>before</em>
+    contacting the broker &mdash; never against what the page claims.</p>
   </div>
   <div class="tier">
     <h3>Capped auto-invest CLI <span class="state off">opt-in</span></h3>
@@ -4844,18 +4846,43 @@ SIGNALS_JS = """
     form.remove();
   }
 
+  // Every order goes through the broker relay, which is the only path that
+  // checks who is asking. This used to post to a second endpoint that read the
+  // deployment's Alpaca keys and placed the order without authenticating the
+  // caller at all, so anyone who could reach the URL could trade the account.
+  // That endpoint is gone; this is the only route now.
   function usExecute(order, statusEl) {
     if (statusEl) statusEl.textContent = 'sending…';
-    fetch(API + '/execute', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ orders: [order.alpaca], notional: order.notional })
+    // One key per intended order, generated at the press and reused if the
+    // request is retried, so a double-tap cannot become two positions.
+    if (!order.__key) {
+      order.__key = (window.crypto && window.crypto.randomUUID)
+        ? window.crypto.randomUUID()
+        : String(Date.now()) + '-' + Math.random().toString(16).slice(2);
+    }
+    var tokenPromise = window.__mpAuthToken
+      ? window.__mpAuthToken() : Promise.resolve(null);
+    tokenPromise.then(function (token) {
+      if (!token) throw new Error('sign in to place an order');
+      return fetch(API + '/broker/link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({
+          action: 'order', provider: 'alpaca',
+          symbol: order.alpaca.symbol, qty: order.alpaca.qty, side: order.alpaca.side,
+          price: order.price, idempotency_key: order.__key
+        })
+      });
     }).then(function (res) {
-      return res.json().then(function (body) { return { ok: res.ok, body: body }; });
+      return res.text().then(function (text) {
+        var body = {};
+        try { body = text ? JSON.parse(text) : {}; } catch (e) { body = {}; }
+        return { ok: res.ok, body: body };
+      });
     }).then(function (res) {
       if (statusEl) statusEl.textContent = res.body.message || (res.ok ? 'sent' : 'refused');
-    }).catch(function () {
-      if (statusEl) statusEl.textContent = 'executor unreachable';
+    }).catch(function (err) {
+      if (statusEl) statusEl.textContent = (err && err.message) || 'executor unreachable';
     });
   }
 

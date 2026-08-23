@@ -119,6 +119,7 @@ class handler(BaseHTTPRequestHandler):
                     user_id, str(body.get("provider", "")), body.get("symbol", ""),
                     body.get("qty"), body.get("side"), body.get("price"),
                     str(body.get("exchange", "")),
+                    str(body.get("idempotency_key", ""))[:64],
                 ))
             else:
                 raise relay.RelayError(400, "unknown action")
