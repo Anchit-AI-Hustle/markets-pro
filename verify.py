@@ -49,6 +49,7 @@ MODULES = [
     ("tests.test_broker_link", "Broker links & order guards"),
     ("tests.test_tab_data", "Tab data correctness"),
     ("tests.test_dead_code", "No dead code shipped"),
+    ("tests.test_pages", "Disclosures & indexing"),
 ]
 
 BAR = "=" * 74

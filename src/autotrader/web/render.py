@@ -6482,6 +6482,7 @@ def render_dashboard(
     funds: dict | None = None,
     fitness: dict | None = None,
     supabase: dict | None = None,
+    site: dict | None = None,
 ) -> str:
     """Return a complete, self-contained HTML document for ``report``.
 
@@ -6648,6 +6649,21 @@ def render_dashboard(
             f"<script>{JOURNEY_JS}</script>"
         )
 
+    settings = site or {}
+    robots_meta = (
+        '<meta name="robots" content="index,follow">'
+        if settings.get("indexable")
+        else '<meta name="robots" content="noindex">'
+    )
+    # Linked from the footer rather than given a tab: read once, not daily.
+    # Absent from the page entirely if the build did not write them, so a
+    # footer never points at a document that does not exist.
+    legal_links = (
+        ' &middot; <a href="about.html">About</a>'
+        ' &middot; <a href="disclosures.html">Disclosures &amp; terms</a>'
+        ' &middot; <a href="privacy.html">Privacy</a>'
+    )
+
     dash_label = _tab_label("Today", "Dashboard")
     record_label = _tab_label("Record", "Track record")
     setup_label = _tab_label("Setup", "Settings")
@@ -6669,7 +6685,7 @@ def render_dashboard(
      the whole page stays available. That is an accessibility requirement; the
      chart's own pinch handler is additive, not a replacement. -->
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex">
+{robots_meta}
 <title>{_esc(title)}</title>
 <style>{CSS}{SIGNALS_CSS}{JOURNEY_CSS}{AUTH_CSS}{BROKER_CSS}{SEARCH_CSS}</style>
 </head>
@@ -6736,6 +6752,8 @@ def render_dashboard(
   <footer>
     {verified}Prices refresh automatically after each market close.
     Your amounts and paper trades are stored only in this browser.
+    <br>Not investment advice and not registered research &mdash; the rules
+    published here have no demonstrated edge.{legal_links}
   </footer>
 </div>
 {auth_dialog()}

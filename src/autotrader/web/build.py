@@ -171,12 +171,14 @@ def build_static(
     funds_source: Path | None = None,
     fitness: dict | None = None,
     supabase: dict | None = None,
+    site: dict | None = None,
 ) -> Path:
     """Write ``out_dir/markets-pro/index.html`` and return its path."""
     report = report or run_demo_backtest()
     target_dir = out_dir / "markets-pro"
     target_dir.mkdir(parents=True, exist_ok=True)
     target = target_dir / "index.html"
+    write_pages(target_dir, site or {})
     html = render_dashboard(
         report,
         title="Markets Pro",
@@ -193,6 +195,7 @@ def build_static(
         funds=funds,
         fitness=fitness,
         supabase=supabase,
+        site=site,
     )
     target.write_text(html, encoding="utf-8")
 
@@ -230,6 +233,49 @@ def build_static(
                 funds_source.read_text(), encoding="utf-8"
             )
     return target
+
+
+#: Pages published beside the app. Separate documents rather than tabs: they
+#: are read once rather than daily, and a disclosure page that can be linked to
+#: on its own is worth more than one buried behind a click.
+STATIC_PAGES = ("disclosures.html", "privacy.html", "about.html")
+
+
+def site_settings(config_path: Path) -> dict:
+    """Author, contact, repo and the indexable switch, from the build config.
+
+    Every field is optional and each omits its own section when absent. A
+    placeholder contact address on a published legal page is worse than no
+    contact section at all.
+    """
+    if not config_path.exists():
+        return {}
+    try:
+        return json.loads(config_path.read_text()).get("site") or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def write_pages(target_dir: Path, config: dict) -> list[str]:
+    """The disclosure surface, plus robots and a sitemap that agree with it."""
+    from .pages import about, disclosures, privacy, robots, sitemap
+
+    site = (config.get("url") or "https://markets-pro.anchit-tandon.com").rstrip("/")
+    # Off unless the config says otherwise. Two audits flagged this site both
+    # for being unfindable and for carrying no regulatory disclosure; becoming
+    # findable first would have made the second finding worse, so the switch is
+    # deliberate rather than a default.
+    indexable = bool(config.get("indexable"))
+
+    (target_dir / "disclosures.html").write_text(disclosures(config), encoding="utf-8")
+    (target_dir / "privacy.html").write_text(privacy(config), encoding="utf-8")
+    (target_dir / "about.html").write_text(about(config), encoding="utf-8")
+    (target_dir / "robots.txt").write_text(
+        robots(indexable=indexable, site=site), encoding="utf-8")
+    (target_dir / "sitemap.xml").write_text(
+        sitemap(site=site, pages=("/", "/about.html", "/disclosures.html",
+                                  "/privacy.html")), encoding="utf-8")
+    return [*STATIC_PAGES, "robots.txt", "sitemap.xml"]
 
 
 def supabase_settings(config_path: Path) -> dict | None:
@@ -407,9 +453,13 @@ def main(argv: list[str] | None = None) -> int:
     else:
         print("no supabase project configured; the page ships without sign-in")
 
+    site = site_settings(args.live_config)
+    print("indexable" if site.get("indexable")
+          else "not indexable — disclosures publish either way")
+
     path = build_static(
         args.out, report=report, screener=screener, funds=funds, fitness=fitness,
-        supabase=supabase,
+        supabase=supabase, site=site,
         funds_source=(args.live / "funds.json") if args.live else None,
         tests_passed=args.tests_passed, tests_total=args.tests_total,
         signals=signals, subtitle=subtitle,

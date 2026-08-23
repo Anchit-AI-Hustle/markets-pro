@@ -25,6 +25,26 @@
       "destination": "/markets-pro/watchlist-rows.html"
     },
     {
+      "source": "/about.html",
+      "destination": "/markets-pro/about.html"
+    },
+    {
+      "source": "/disclosures.html",
+      "destination": "/markets-pro/disclosures.html"
+    },
+    {
+      "source": "/privacy.html",
+      "destination": "/markets-pro/privacy.html"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/markets-pro/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/markets-pro/sitemap.xml"
+    },
+    {
       "source": "/",
       "destination": "/markets-pro/index.html"
     }

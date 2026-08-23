@@ -11,5 +11,12 @@
   "supabase": {
     "url": "https://wvnqyegqxgvjbgqujyom.supabase.co",
     "anon_key": "sb_publishable_Wm9gogIObnIllMqFfIlK-g_873t47b_"
+  },
+  "site": {
+    "url": "https://markets-pro.anchit-tandon.com",
+    "indexable": false,
+    "author": "",
+    "contact": "",
+    "repo": ""
   }
 }
