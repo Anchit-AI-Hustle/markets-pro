@@ -1595,6 +1595,11 @@ tr.openable:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
   color:var(--ink)}
 .wsearch input:focus{outline:2px solid var(--accent);outline-offset:1px}
 .wfilters{display:flex;gap:6px;flex-wrap:wrap}
+/* The table shows a page at a time; this row says how much of the list
+   that is, because a truncated table with no count reads as a bug. */
+.wpager{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  flex-wrap:wrap;margin-top:12px;padding-top:11px;border-top:1px solid var(--line)}
+.wpager button{width:auto;flex:0 0 auto}
 .wfilter{appearance:none;font:inherit;font-size:12px;font-weight:600;
   padding:7px 11px;border-radius:999px;border:1px solid var(--line);
   background:var(--panel);color:var(--muted);cursor:pointer;
@@ -2255,6 +2260,10 @@ def _watchlist_section(signals: dict) -> str:
   <tbody>{body}</tbody>
 </table></div>
 <p class="wempty" data-wempty hidden>Nothing on the watchlist matches that.</p>
+<div class="wpager">
+  <span class="sigmeta" data-wtally></span>
+  <button type="button" class="exec" data-wmore hidden></button>
+</div>
 <p class="caption">Sorted by today's move, biggest first. Changes are measured
 between closing prices, so a name that has not traded for a session shows the
 same figure until it does. Being on this list is not a recommendation &mdash;
@@ -2514,6 +2523,10 @@ def _screener_section(screener: dict | None) -> str:
 </div>
 <div class="screenlist">{body}</div>
 <p class="wempty" data-sempty hidden>Nothing matches that.</p>
+<div class="wpager">
+  <span class="sigmeta" data-stally></span>
+  <button type="button" class="exec" data-smore hidden></button>
+</div>
 <p class="caption">Ranked highest score first. The screener weights its
 indicators by the regime it detects &mdash; trend-following ones when a name is
 trending, oscillators when it is ranging &mdash; and says which it used on every
@@ -3525,17 +3538,48 @@ WATCH_NEWS_JS = """
   var empty = document.querySelector('[data-wempty]');
   var active = 'all';
 
+  var PAGE = 25;
+  var limit = PAGE;
+  var more = document.querySelector('[data-wmore]');
+  var tally = document.querySelector('[data-wtally]');
+
   function applyFilter() {
     var term = (search && search.value || '').trim().toLowerCase();
-    var shown = 0;
+    var matched = 0, shown = 0;
     rows.forEach(function (row) {
       var okStatus = active === 'all' || row.getAttribute('data-wstatus') === active;
       var okTerm = !term || row.getAttribute('data-wsearch').indexOf(term) >= 0;
-      var show = okStatus && okTerm;
-      row.hidden = !show;
-      if (show) shown++;
+      var matches = okStatus && okTerm;
+      if (matches) matched++;
+      // Beyond the limit the row stays in the document -- filtering needs it
+      // there -- but it is not rendered until asked for.
+      var visible = matches && shown < limit;
+      if (visible) shown++;
+      row.hidden = !visible;
     });
-    if (empty) empty.hidden = shown > 0;
+    if (empty) empty.hidden = matched > 0;
+    if (tally) {
+      tally.textContent = matched
+        ? 'Showing ' + shown + ' of ' + matched +
+          (matched === rows.length ? '' : ' matching') + ' \u00b7 ' +
+          rows.length + ' tracked'
+        : '';
+    }
+    if (more) {
+      more.hidden = shown >= matched;
+      more.textContent = 'Show ' + Math.min(PAGE * 4, matched - shown) + ' more';
+    }
+  }
+
+  // A new filter starts from the top again; keeping a deep limit would show
+  // 200 rows of a three-row result set's worth of scrollbar.
+  function refilter() { limit = PAGE; applyFilter(); }
+
+  if (more) {
+    more.addEventListener('click', function () {
+      limit += PAGE * 4;
+      applyFilter();
+    });
   }
 
   chips.forEach(function (chip) {
@@ -3544,10 +3588,13 @@ WATCH_NEWS_JS = """
       chips.forEach(function (other) {
         other.setAttribute('aria-pressed', other === chip ? 'true' : 'false');
       });
-      applyFilter();
+      refilter();
     });
   });
-  if (search) search.addEventListener('input', applyFilter);
+  if (search) search.addEventListener('input', refilter);
+  // The rows arrive visible from the server render, so the first page has to
+  // be applied on load rather than only when someone filters.
+  applyFilter();
 
   // --- screener filtering --------------------------------------------------
   var srows = [].slice.call(document.querySelectorAll('[data-srow]'));
@@ -3556,17 +3603,40 @@ WATCH_NEWS_JS = """
   var sempty = document.querySelector('[data-sempty]');
   var sactive = 'all';
 
+  // Same page-at-a-time treatment as the watchlist, and for the same reason:
+  // a ranked list is only useful if the top of it is reachable.
+  var SPAGE = 20;
+  var slimit = SPAGE;
+  var smore = document.querySelector('[data-smore]');
+  var stally = document.querySelector('[data-stally]');
+
   function applyScreen() {
     var term = (ssearch && ssearch.value || '').trim().toLowerCase();
-    var shown = 0;
+    var matched = 0, shown = 0;
     srows.forEach(function (row) {
       var okSignal = sactive === 'all' || row.getAttribute('data-ssignal') === sactive;
       var okTerm = !term || row.getAttribute('data-ssearch').indexOf(term) >= 0;
-      var show = okSignal && okTerm;
-      row.hidden = !show;
-      if (show) shown++;
+      var matches = okSignal && okTerm;
+      if (matches) matched++;
+      var visible = matches && shown < slimit;
+      if (visible) shown++;
+      row.hidden = !visible;
     });
-    if (sempty) sempty.hidden = shown > 0;
+    if (sempty) sempty.hidden = matched > 0;
+    if (stally) {
+      stally.textContent = matched
+        ? 'Showing ' + shown + ' of ' + matched + ' \u00b7 ranked by score'
+        : '';
+    }
+    if (smore) {
+      smore.hidden = shown >= matched;
+      smore.textContent = 'Show ' + Math.min(SPAGE * 3, matched - shown) + ' more';
+    }
+  }
+
+  function srefilter() { slimit = SPAGE; applyScreen(); }
+  if (smore) {
+    smore.addEventListener('click', function () { slimit += SPAGE * 3; applyScreen(); });
   }
 
   schips.forEach(function (chip) {
@@ -3575,10 +3645,11 @@ WATCH_NEWS_JS = """
       schips.forEach(function (other) {
         other.setAttribute('aria-pressed', other === chip ? 'true' : 'false');
       });
-      applyScreen();
+      srefilter();
     });
   });
-  if (ssearch) ssearch.addEventListener('input', applyScreen);
+  if (ssearch) ssearch.addEventListener('input', srefilter);
+  applyScreen();
 
   // --- headlines -----------------------------------------------------------
   var cfg = window.__mpCfg;
