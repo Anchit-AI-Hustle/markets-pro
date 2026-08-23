@@ -37,6 +37,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import uuid
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal, InvalidOperation
@@ -367,6 +368,29 @@ def journal(user_id: str, provider: str, symbol: str, side: str, qty: int,
     }])
 
 
+def release(key: str, reason: str) -> None:
+    """Free a reservation whose order the broker refused.
+
+    Stamping the reason rather than deleting the row keeps the refusal
+    visible — spent_today() counts only rows with no error, so writing one
+    both releases the cap and leaves the attempt on the record.
+    """
+    _supabase(
+        f"/rest/v1/mp_broker_order?broker_order_id=eq.{urllib.parse.quote(key)}",
+        method="PATCH", prefer="return=minimal",
+        body={"error": reason, "notional": "0"},
+    )
+
+
+def confirm(key: str, order_id: str) -> None:
+    """Replace the reservation key with the id the broker actually assigned."""
+    _supabase(
+        f"/rest/v1/mp_broker_order?broker_order_id=eq.{urllib.parse.quote(key)}",
+        method="PATCH", prefer="return=minimal",
+        body={"broker_order_id": order_id},
+    )
+
+
 def validate_order(symbol: str, qty: object, side: object) -> tuple[str, int, str]:
     """Coerce and bound an order, or refuse it."""
     symbol = str(symbol).upper().strip()
@@ -391,12 +415,18 @@ def validate_order(symbol: str, qty: object, side: object) -> tuple[str, int, st
 
 
 def place_order(user_id: str, provider_name: str, symbol: str, qty: object,
-                side: object, price: object, exchange: str = "") -> dict:
+                side: object, price: object, exchange: str = "",
+                idempotency_key: str = "") -> dict:
     """Place one order, if every guard allows it.
 
     The guards run before the broker is contacted, in increasing order of what
     they cost to check, and the cap is the last of them because it is the one
     that needs a round trip.
+
+    ``idempotency_key`` is supplied by the caller — one value per intended
+    order, reused verbatim on a retry. It reaches the broker as its own
+    duplicate-suppression id and identifies the reservation row here, so a
+    request that is sent twice results in one position and one journal entry.
     """
     provider = PROVIDERS.get(provider_name)
     if provider is None or provider.order is None:
@@ -411,14 +441,40 @@ def place_order(user_id: str, provider_name: str, symbol: str, qty: object,
         )
 
     symbol, quantity, direction = validate_order(symbol, qty, side)
-    link = read_link(user_id, provider_name)
-    if link is None:
-        raise RelayError(403, f"connect {provider.label} first")
-    if link.stale():
-        raise RelayError(
-            403,
-            f"{provider.label} access has expired — reconnect. {provider.token_note}",
-        )
+
+    # Alpaca is armed by the deployment's own keys rather than by a reader
+    # logging in, so there is no link to read and nothing that can go stale.
+    # Every other guard below still applies to it.
+    deployment_armed = provider.name == "alpaca"
+    link = None if deployment_armed else read_link(user_id, provider_name)
+    if not deployment_armed:
+        if link is None:
+            raise RelayError(403, f"connect {provider.label} first")
+        if link.stale():
+            raise RelayError(
+                403,
+                f"{provider.label} access has expired — reconnect. {provider.token_note}",
+            )
+
+    # A SELL of something you do not hold is not a reduction, it is a SHORT —
+    # and a short has unbounded loss. The cap bounds what a buy can spend; it
+    # says nothing about a sell, so nothing bounded this at all. Read the
+    # position first and refuse to sell more than exists.
+    if direction == "sell":
+        held = Decimal("0")
+        for holding in holdings_for(provider, link):
+            if holding.symbol.upper() == symbol:
+                held += holding.quantity
+        if held <= 0:
+            raise RelayError(403, (
+                f"you hold no {symbol} at {provider.label} — refusing, because "
+                f"this would open a short position rather than close a long one"
+            ))
+        if quantity > held:
+            raise RelayError(403, (
+                f"you hold {held:,.0f} {symbol}; selling {quantity:,.0f} would "
+                f"leave a short position of {quantity - held:,.0f}"
+            ))
 
     try:
         estimate = Decimal(str(price)) * quantity
@@ -428,6 +484,21 @@ def place_order(user_id: str, provider_name: str, symbol: str, qty: object,
         raise RelayError(400, "a reference price is required to size against the cap")
 
     currency = provider.currency
+    reserved = estimate if direction == "buy" else Decimal("0")
+
+    # RESERVE BEFORE PLACING, not after.
+    #
+    # Reading the journal, deciding, and only then writing to it leaves a
+    # window in which a second request reads the same total and reaches the
+    # same verdict. Both pass the cap; together they breach it. That window is
+    # milliseconds on a fast path and wide open on a slow one, and a serverless
+    # function holds nothing in memory to close it with.
+    #
+    # Writing the intent first makes the journal the reservation: the row is
+    # already there, already counted by spent_today(), before the broker is
+    # contacted. If the order is refused the row is released, which is the only
+    # branch where the cap frees up again.
+    key = idempotency_key or uuid.uuid4().hex
     if direction == "buy":
         cap = daily_cap(currency)
         if cap <= 0:
@@ -438,25 +509,38 @@ def place_order(user_id: str, provider_name: str, symbol: str, qty: object,
                 f"daily cap: {spent:,.0f} already committed + {estimate:,.0f} "
                 f"estimated exceeds {cap:,.0f} {currency}"
             ))
+    journal(user_id, provider_name, symbol, direction, quantity,
+            reserved, currency, order_id=key)
 
-    request = provider.order(
-        os.environ.get(provider.key_env, ""), link.access_token,
-        symbol, quantity, direction, exchange,
-    )
-    status, payload = fetch(request)
+    credential = (os.environ.get(provider.secret_env, "") if deployment_armed
+                  else (link.access_token if link else ""))
+    try:
+        request = provider.order(
+            os.environ.get(provider.key_env, ""), credential,
+            symbol, quantity, direction, exchange, key,
+        )
+        status, payload = fetch(request)
+    except TypeError:
+        # A provider whose order builder predates the idempotency argument.
+        request = provider.order(
+            os.environ.get(provider.key_env, ""), credential,
+            symbol, quantity, direction, exchange,
+        )
+        status, payload = fetch(request)
+
     if status not in (200, 201) or not isinstance(payload, dict):
         detail = payload.get("message") if isinstance(payload, dict) else str(payload)
-        # Journalled even though it failed: a rejection the reader cannot see
-        # looks identical to an order that was never sent.
-        journal(user_id, provider_name, symbol, direction, quantity,
-                estimate, currency, error=str(detail)[:200])
+        # Release the reservation — the money was never committed — while
+        # keeping the row, because a rejection the reader cannot see looks
+        # identical to an order that was never sent.
+        release(key, str(detail)[:200] or "order rejected")
         raise RelayError(502, f"{provider.label}: {detail or 'order rejected'}")
 
     order_id = provider.parse_order(payload) if provider.parse_order else ""
-    journal(user_id, provider_name, symbol, direction, quantity,
-            estimate if direction == "buy" else Decimal("0"), currency, order_id=order_id)
+    if order_id:
+        confirm(key, order_id)
     return {
         "message": f"{direction} {quantity} {symbol} accepted by {provider.label}",
-        "order_id": order_id,
+        "order_id": order_id or key,
         "provider": provider_name,
     }

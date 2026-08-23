@@ -51,15 +51,27 @@ Setup (once):
 
 ## Tier 2 — Capped US auto-executor (Alpaca) — free, off by default
 
-The **Alpaca** button posts the order to `/markets-pro/api/execute`, which:
+The **Alpaca** button posts the order to `/markets-pro/api/broker/link` — the
+same authenticated relay every other broker uses — which:
 
+- **requires you to be signed in.** The request carries your Supabase access
+  token and the relay exchanges it for your user id. There is no unauthenticated
+  route to a broker; an earlier build had one, and anyone who could reach the URL
+  could have traded the account;
 - refuses everything until you add `ALPACA_KEY_ID` and `ALPACA_SECRET_KEY`
-  to the Vercel project's environment variables;
+  to the Vercel project's environment variables **and** set
+  `BROKER_ORDERS_LIVE=true`;
 - trades **paper by default**; real money additionally requires
   `ALPACA_LIVE=true`;
-- enforces `DAILY_CAP_USD` **against Alpaca's own order log** — it sums what
-  you have already bought today at the broker before accepting a new buy, so
-  the cap holds even across devices and page reloads.
+- **reserves against `DAILY_CAP_USD` before contacting the broker.** The intent
+  is written to the order journal first, so a second request already counts it.
+  Checking a total and only then writing to it leaves a window where two
+  requests both pass and together breach the cap;
+- **refuses a sell of stock you do not hold**, because that is a short position
+  and a short has unbounded loss;
+- carries a **`client_order_id`**, so a retried request — a double-tap, a flaky
+  network, a re-invoked function — is refused by Alpaca rather than becoming a
+  second position.
 
 ## Tier 3 — Capped India auto-invest (Kite Connect) — paid, opt-in
 

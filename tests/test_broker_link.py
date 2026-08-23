@@ -331,5 +331,124 @@ class HoldingTest(unittest.TestCase):
         self.assertEqual(h.pnl, Decimal("-100"))
 
 
+class SellGuardTest(unittest.TestCase):
+    """A sell of what you do not hold is a short, and a short is unbounded.
+
+    The daily cap bounds what a BUY can spend. Nothing bounded a sell, so a
+    sell of a symbol with no position opened a short position with unbounded
+    loss — the worst reachable state in a system whose whole claim is that
+    losses are bounded by design.
+    """
+
+    ARMED = {"BROKER_ORDERS_LIVE": "true", "DAILY_CAP_INR": "10000",
+             "KITE_API_KEY": KEY, "KITE_API_SECRET": SECRET}
+
+    def _sell(self, held, qty=5):
+        holdings = ([Holding("TCS", Decimal(str(held)), Decimal("100"),
+                             Decimal("100"), "INR")] if held else [])
+        with mock.patch.dict("os.environ", self.ARMED, clear=False), \
+             mock.patch.object(relay, "read_link",
+                               return_value=relay.Link("kite", "tok", "A1", None)), \
+             mock.patch.object(relay, "holdings_for", return_value=holdings):
+            return relay.place_order(user_id="u", provider_name="kite", symbol="TCS",
+                                     qty=qty, side="sell", price="100")
+
+    def test_selling_what_you_do_not_hold_is_refused(self):
+        with self.assertRaises(relay.RelayError) as raised:
+            self._sell(held=0)
+        self.assertEqual(raised.exception.status, 403)
+        self.assertIn("short", raised.exception.message)
+
+    def test_selling_more_than_you_hold_is_refused(self):
+        with self.assertRaises(relay.RelayError) as raised:
+            self._sell(held=2, qty=5)
+        self.assertEqual(raised.exception.status, 403)
+        self.assertIn("short", raised.exception.message)
+
+    def test_selling_what_you_hold_passes_the_guard(self):
+        # It gets past the sell guard and fails later, at the network — which
+        # is the proof the guard let it through rather than the proof of a fill.
+        with self.assertRaises(Exception) as raised:
+            self._sell(held=10, qty=5)
+        self.assertNotIn("short", str(raised.exception))
+
+
+class ReservationTest(unittest.TestCase):
+    """The cap is reserved before the broker is called, not after.
+
+    Reading the journal, deciding, and only then writing to it leaves a window
+    in which a second request reads the same total and reaches the same
+    verdict. Both pass; together they breach the cap.
+    """
+
+    ARMED = {"BROKER_ORDERS_LIVE": "true", "DAILY_CAP_USD": "1000",
+             "ALPACA_KEY_ID": KEY, "ALPACA_SECRET_KEY": SECRET}
+
+    def test_the_journal_is_written_before_the_broker_is_contacted(self):
+        order_of_events = []
+        with mock.patch.dict("os.environ", self.ARMED, clear=False), \
+             mock.patch.object(relay, "spent_today", return_value=Decimal("0")), \
+             mock.patch.object(relay, "journal",
+                               side_effect=lambda *a, **k: order_of_events.append("journal")), \
+             mock.patch.object(relay, "release"), \
+             mock.patch.object(relay, "fetch",
+                               side_effect=lambda *a, **k: (order_of_events.append("broker"),
+                                                            (500, {"message": "no"}))[1]):
+            with self.assertRaises(relay.RelayError):
+                relay.place_order(user_id="u", provider_name="alpaca", symbol="AAPL",
+                                  qty=1, side="buy", price="100")
+        self.assertEqual(order_of_events, ["journal", "broker"])
+
+    def test_a_refused_order_releases_its_reservation(self):
+        released = []
+        with mock.patch.dict("os.environ", self.ARMED, clear=False), \
+             mock.patch.object(relay, "spent_today", return_value=Decimal("0")), \
+             mock.patch.object(relay, "journal"), \
+             mock.patch.object(relay, "release",
+                               side_effect=lambda key, reason: released.append(key)), \
+             mock.patch.object(relay, "fetch", return_value=(500, {"message": "rejected"})):
+            with self.assertRaises(relay.RelayError):
+                relay.place_order(user_id="u", provider_name="alpaca", symbol="AAPL",
+                                  qty=1, side="buy", price="100",
+                                  idempotency_key="key-1")
+        self.assertEqual(released, ["key-1"])
+
+
+class IdempotencyTest(unittest.TestCase):
+    """A retried request must not become a second position."""
+
+    def test_the_key_reaches_alpaca_as_client_order_id(self):
+        request = PROVIDERS["alpaca"].order(KEY, SECRET, "AAPL", 1, "buy", "", "key-1")
+        self.assertEqual(request.body["client_order_id"], "key-1")
+
+    def test_no_key_sends_no_client_order_id(self):
+        # An empty id would be sent verbatim and collide with every other
+        # order that also omitted one.
+        request = PROVIDERS["alpaca"].order(KEY, SECRET, "AAPL", 1, "buy", "", "")
+        self.assertNotIn("client_order_id", request.body)
+
+    def test_alpaca_can_place_orders_at_all(self):
+        # It could not. The provider had no order builder, which is why a
+        # second, unauthenticated endpoint existed to do it instead.
+        self.assertIsNotNone(PROVIDERS["alpaca"].order)
+        self.assertIsNotNone(PROVIDERS["alpaca"].parse_order)
+
+
+class NoSecondOrderPathTest(unittest.TestCase):
+    """There is exactly one route to a broker, and it authenticates."""
+
+    def test_the_unauthenticated_execute_endpoint_is_gone(self):
+        import pathlib
+        root = pathlib.Path(__file__).resolve().parents[1]
+        self.assertFalse((root / "api" / "execute.py").exists(),
+                         "api/execute.py places orders without authenticating the caller")
+
+    def test_nothing_still_posts_to_it(self):
+        import pathlib
+        root = pathlib.Path(__file__).resolve().parents[1]
+        source = (root / "src" / "autotrader" / "web" / "render.py").read_text()
+        self.assertNotIn("'/execute'", source)
+
+
 if __name__ == "__main__":
     unittest.main()

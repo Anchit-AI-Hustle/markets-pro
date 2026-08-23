@@ -392,6 +392,33 @@ def _alpaca_parse_holdings(payload: Any) -> list[Holding]:
     ]
 
 
+def _alpaca_order(key: str, secret: str, symbol: str, qty: int, side: str,
+                  _exchange: str, idempotency_key: str = "") -> Request:
+    """One Alpaca market order.
+
+    ``client_order_id`` is the whole point of ``idempotency_key``. Alpaca
+    refuses a second order carrying an id it has already accepted, which turns
+    a retried request — a double-tap, a flaky network, a serverless
+    re-invocation — into a rejection instead of a second position. Without it,
+    the only evidence a trade was duplicated is the position size.
+    """
+    body: dict[str, Any] = {
+        "symbol": symbol,
+        "qty": str(qty),
+        "side": side,
+        "type": "market",
+        "time_in_force": "day",
+    }
+    if idempotency_key:
+        body["client_order_id"] = idempotency_key
+    return Request("POST", _alpaca_base() + "/v2/orders",
+                   headers=_alpaca_headers(key, secret), body=body)
+
+
+def _alpaca_order_id(payload: dict) -> str:
+    return str(payload.get("id", ""))
+
+
 @dataclass(frozen=True)
 class Provider:
     """One broker, reduced to the five things the relay needs from it."""
@@ -492,6 +519,8 @@ PROVIDERS: dict[str, Provider] = {
         authorize=lambda *_: "",
         holdings=_alpaca_holdings,
         parse_holdings=_alpaca_parse_holdings,
+        order=_alpaca_order,
+        parse_order=_alpaca_order_id,
         token_note="Armed by this deployment's Alpaca keys; no sign-in needed.",
     ),
 }
