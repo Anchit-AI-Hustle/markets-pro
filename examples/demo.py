@@ -14,14 +14,13 @@ from __future__ import annotations
 
 import sys
 from collections import Counter, defaultdict
-from decimal import Decimal
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from autotrader.persistence.store import RunMetadata, report_to_rows  # noqa: E402
-from autotrader.web.build import build_static, run_demo_backtest      # noqa: E402
+from autotrader.web.build import build_static, run_demo_backtest  # noqa: E402
 
 
 def main() -> int:

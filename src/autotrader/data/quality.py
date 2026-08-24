@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
@@ -138,6 +139,21 @@ def verify_livefeed(
     return issues
 
 
+def format_issues(issues: Sequence[QualityIssue]) -> list[str]:
+    """One line per issue, columns sized to the rows actually being printed.
+
+    A fixed 12-wide symbol column ran 64 of the 325 live symbols straight into
+    their own detail text -- "IN:ZYDUSLIFE2025-03-18" reads as neither a symbol
+    nor a date. This report exists to say which instrument is broken, so the
+    instrument has to survive being printed next to anything else.
+    """
+    kind_width = max((len(i.kind) for i in issues), default=0) + 2
+    key_width = max((len(i.key) for i in issues), default=0) + 2
+    return [
+        f"{i.kind:<{kind_width}}{i.key:<{key_width}}{i.detail}" for i in issues
+    ]
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Verify freshness and sanity of the live daily-bar cache"
@@ -158,8 +174,8 @@ def main(argv: list[str] | None = None) -> int:
         max_stale_sessions=args.max_stale_sessions,
         max_daily_move=args.max_daily_move,
     )
-    for issue in issues:
-        print(f"{issue.kind:<12}{issue.key:<12}{issue.detail}", file=sys.stderr)
+    for line in format_issues(issues):
+        print(line, file=sys.stderr)
 
     hard = [i for i in issues if i.kind in HARD_FAILURE_KINDS]
     print(

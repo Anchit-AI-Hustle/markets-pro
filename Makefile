@@ -1,4 +1,5 @@
-.PHONY: test verify lint demo serve screen quality clean release-check
+.PHONY: test verify lint demo serve screen quality clean release-check \
+        release-check-fast dashboard
 
 PY ?= python3
 
@@ -9,7 +10,7 @@ verify:              ## Run the suite and print the accuracy report
 	$(PY) verify.py
 
 lint:
-	ruff check src tests
+	ruff check src tests api scripts examples
 
 release-check:       ## Verify local gate, git, CI, Vercel and the live site
 	$(PY) scripts/release_check.py --wait 600
@@ -27,7 +28,7 @@ demo:                ## Run the multi-region backtest demo
 	PYTHONPATH=src $(PY) examples/demo.py
 
 dashboard:           ## Build the static dashboard into out/
-	PYTHONPATH=src $(PY) examples/build_dashboard.py
+	PYTHONPATH=src $(PY) -m autotrader.web.build --out out --live data/live
 
 serve:               ## Serve the dashboard at http://localhost:8000/markets-pro
 	PYTHONPATH=src $(PY) -m autotrader.web.server
