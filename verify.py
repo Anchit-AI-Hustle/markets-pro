@@ -51,6 +51,7 @@ MODULES = [
     ("tests.test_dead_code", "No dead code shipped"),
     ("tests.test_pages", "Disclosures & indexing"),
     ("tests.test_release_check", "Release verification"),
+    ("tests.test_repo_entrypoints", "Makefile & build entry points"),
 ]
 
 BAR = "=" * 74

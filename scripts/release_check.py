@@ -76,7 +76,8 @@ def check_local_gate(skip: bool) -> list[Step]:
     steps = [Step("Local test gate", OK if code == 0 else FAIL,
                   total or "verify.py produced no summary",
                   fix="" if code == 0 else "read the failure above before pushing")]
-    code, out = _run(["ruff", "check", "src", "tests", "api"], timeout=300)
+    code, out = _run(
+        ["ruff", "check", "src", "tests", "api", "scripts", "examples"], timeout=300)
     if code == 127:
         steps.append(Step("Lint", SKIP, "ruff not installed locally"))
     else:

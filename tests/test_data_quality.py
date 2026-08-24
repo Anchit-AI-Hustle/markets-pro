@@ -10,8 +10,10 @@ from autotrader.data.bars import Bar, BarSeries, MarketDataSet
 from autotrader.data.livefeed import LiveFeed
 from autotrader.data.quality import (
     HARD_FAILURE_KINDS,
+    QualityIssue,
     check_freshness,
     check_sanity,
+    format_issues,
     verify_livefeed,
 )
 from autotrader.data.universe import UniverseEntry
@@ -138,6 +140,34 @@ class TestVerifyLivefeed(unittest.TestCase):
             kinds_by_key.setdefault(issue.key, set()).add(issue.kind)
         self.assertNotIn(fresh_entry.key, kinds_by_key)
         self.assertIn("stale", kinds_by_key[stale_entry.key])
+
+    def test_a_long_symbol_does_not_collide_with_its_detail(self):
+        """64 of the 325 live symbols are 12 characters or more. At a fixed
+        12-wide column they printed as "IN:ZYDUSLIFE2025-03-18" -- the one
+        thing the reader needs, welded to the next field."""
+        issues = [
+            QualityIssue("IN:ZYDUSLIFE", "zero_volume", "2025-03-18: zero reported volume"),
+            QualityIssue("IN:JUNIORBEES", "outlier", "2026-05-28: close moved 36%"),
+            QualityIssue("US:F", "stale", "4 sessions behind"),
+        ]
+        for line, issue in zip(format_issues(issues), issues, strict=True):
+            self.assertIn(f"{issue.key} ", line, f"{issue.key} must be followed by a space")
+            self.assertTrue(line.endswith(issue.detail))
+            head = line[: line.index(issue.detail)]
+            self.assertIn(f"{issue.kind} ", head)
+
+    def test_columns_line_up_across_rows(self):
+        # A report whose columns jitter per row is no easier to scan than one
+        # with none, so the width is shared, not per-line.
+        issues = [
+            QualityIssue("IN:ZYDUSLIFE", "zero_volume", "a"),
+            QualityIssue("US:F", "stale", "b"),
+        ]
+        lines = format_issues(issues)
+        self.assertEqual(*[len(line) - len(i.detail) for line, i in zip(lines, issues, strict=True)])
+
+    def test_no_issues_formats_to_nothing(self):
+        self.assertEqual(format_issues([]), [])
 
     def test_hard_failure_kinds_are_no_data_and_stale(self):
         self.assertEqual(HARD_FAILURE_KINDS, frozenset({"no_data", "stale"}))
