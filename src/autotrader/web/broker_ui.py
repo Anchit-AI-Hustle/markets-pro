@@ -178,9 +178,11 @@ BROKER_JS = """
       if (!account.holdings.length) return;
       var table = document.createElement('table');
       table.className = 'tbl';
-      table.innerHTML = '<thead><tr><th>Symbol</th><th class="num">Qty</th>' +
-        '<th class="num">Avg</th><th class="num">Last</th><th class="num">Value</th>' +
-        '<th class="num">P&amp;L</th></tr></thead>';
+      table.innerHTML = '<thead><tr><th scope="col">Symbol</th>' +
+        '<th class="num" scope="col">Qty</th>' +
+        '<th class="num" scope="col">Avg</th><th class="num" scope="col">Last</th>' +
+        '<th class="num" scope="col">Value</th>' +
+        '<th class="num" scope="col">P&amp;L</th></tr></thead>';
       var body = document.createElement('tbody');
       account.holdings.forEach(function (holding) {
         var tr = document.createElement('tr');
