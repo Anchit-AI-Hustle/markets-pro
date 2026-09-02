@@ -280,8 +280,8 @@ def _region_table(report: PerformanceReport) -> str:
             f"<td class='num {_tone(pnl)}'>{pnl:+,.2f}</td></tr>"
         )
     return f"""<table>
-  <thead><tr><th>Market</th><th class="num">Trades</th>
-  <th class="num">Win rate</th><th class="num">Net P&amp;L</th></tr></thead>
+  <thead><tr><th scope="col">Market</th><th class="num" scope="col">Trades</th>
+  <th class="num" scope="col">Win rate</th><th class="num" scope="col">Net P&amp;L</th></tr></thead>
   <tbody>{''.join(rows)}</tbody>
 </table>"""
 
@@ -300,8 +300,8 @@ def _horizon_table(report: PerformanceReport) -> str:
             f"<td class='num {_tone(pnl)}'>{pnl:+,.2f}</td></tr>"
         )
     return f"""<table>
-  <thead><tr><th>Book</th><th class="num">Trades</th>
-  <th class="num">Win rate</th><th class="num">Net P&amp;L</th></tr></thead>
+  <thead><tr><th scope="col">Book</th><th class="num" scope="col">Trades</th>
+  <th class="num" scope="col">Win rate</th><th class="num" scope="col">Net P&amp;L</th></tr></thead>
   <tbody>{''.join(rows)}</tbody>
 </table>"""
 
@@ -323,8 +323,8 @@ def _exit_breakdown(report: PerformanceReport) -> str:
             f"<td class='num'>{_pct(share, 1)}</td></tr>"
         )
     return f"""<table>
-  <thead><tr><th>Exit reason</th><th class="num">Count</th>
-  <th>Share</th><th class="num">%</th></tr></thead>
+  <thead><tr><th scope="col">Exit reason</th><th class="num" scope="col">Count</th>
+  <th scope="col">Share</th><th class="num" scope="col">%</th></tr></thead>
   <tbody>{''.join(rows)}</tbody>
 </table>"""
 
@@ -385,10 +385,12 @@ def _trades_table(report: PerformanceReport, limit: int = 25) -> str:
         f"column is comparable across markets."
     )
     return f"""<table>
-  <thead><tr><th>Instrument</th><th>Entry</th><th>Exit</th>
-  <th class="num">In</th><th class="num">Out</th><th class="num">Qty</th>
-  <th class="num">Net P&amp;L (local)</th>
-  <th class="num">Net P&amp;L ({_esc(base)})</th><th>Reason</th></tr></thead>
+  <thead><tr><th scope="col">Instrument</th><th scope="col">Entry</th><th scope="col">Exit</th>
+  <th class="num" scope="col">In</th><th class="num" scope="col">Out</th>
+  <th class="num" scope="col">Qty</th>
+  <th class="num" scope="col">Net P&amp;L (local)</th>
+  <th class="num" scope="col">Net P&amp;L ({_esc(base)})</th>
+  <th scope="col">Reason</th></tr></thead>
   <tbody>{''.join(rows)}</tbody>
 </table>
 <p class="caption">{_esc(caption)}</p>"""
@@ -801,11 +803,12 @@ def _positions_section(signals: dict) -> str:
         "Long-term holdings carry no stop by design."
     )
     return f"""<table>
-  <thead><tr><th>Instrument</th><th>Book</th><th class="num">Qty</th>
-  <th class="num">Avg cost</th><th class="num">Live price</th>
-  <th class="num">Profit / loss now</th>
-  <th class="num">If target hits</th><th class="num">If stop hits</th>
-  <th class="num">Held</th><th>Status</th></tr></thead>
+  <thead><tr><th scope="col">Instrument</th><th scope="col">Book</th>
+  <th class="num" scope="col">Qty</th>
+  <th class="num" scope="col">Avg cost</th><th class="num" scope="col">Live price</th>
+  <th class="num" scope="col">Profit / loss now</th>
+  <th class="num" scope="col">If target hits</th><th class="num" scope="col">If stop hits</th>
+  <th class="num" scope="col">Held</th><th scope="col">Status</th></tr></thead>
   <tbody>{''.join(rows)}</tbody>
 </table>
 <p class="caption">{caption}</p>"""
@@ -1676,6 +1679,10 @@ tr.openable:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
 .wstatus.resting{background:color-mix(in srgb,var(--ink) 8%,var(--tag))}
 .wnote{display:block;font-size:10.5px;color:var(--muted);margin-top:3px}
 .wempty{color:var(--muted);font-size:13px;margin:14px 0 0}
+.skip{position:absolute;left:-9999px;top:0;z-index:100;padding:.6rem 1rem;
+background:var(--card,#fff);color:inherit;border:2px solid currentColor;
+border-radius:6px}
+.skip:focus{left:.5rem;top:.5rem}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
@@ -2308,10 +2315,14 @@ def _watchlist_section(signals: dict, *, rows_only: bool = False) -> str:
   </div>
 </div>
 <div class="wtablewrap"><table class="wtable">
-  <thead><tr><th>Instrument</th><th>60 sessions</th><th class="num">Last close</th>
-  <th class="num">1 day</th><th class="num">1 week</th><th class="num">1 month</th>
-  <th class="num">3 months</th><th class="num">52w low</th><th class="num">52w high</th>
-  <th class="num">In range</th><th class="num">Avg volume</th><th>Status</th></tr></thead>
+  <thead><tr><th scope="col">Instrument</th><th scope="col">60 sessions</th>
+  <th class="num" scope="col">Last close</th>
+  <th class="num" scope="col">1 day</th><th class="num" scope="col">1 week</th>
+  <th class="num" scope="col">1 month</th>
+  <th class="num" scope="col">3 months</th><th class="num" scope="col">52w low</th>
+  <th class="num" scope="col">52w high</th>
+  <th class="num" scope="col">In range</th><th class="num" scope="col">Avg volume</th>
+  <th scope="col">Status</th></tr></thead>
   <tbody data-watchmount></tbody>
 </table></div>
 <p class="wempty" data-wempty hidden>Nothing on the watchlist matches that.</p>
@@ -2924,8 +2935,9 @@ def _evidence_section(fitness: dict | None) -> str:
   )}
 </div>
 <div class="wtablewrap"><table class="wtable evidencetable">
-  <thead><tr><th>Instrument</th>
-  <th>Buy the dip</th><th>Buy the breakout</th><th>Hold the riser</th></tr></thead>
+  <thead><tr><th scope="col">Instrument</th>
+  <th scope="col">Buy the dip</th><th scope="col">Buy the breakout</th>
+  <th scope="col">Hold the riser</th></tr></thead>
   <tbody>{rows}</tbody>
 </table></div>
 <p class="caption">"Made money, unproven" means the rule finished ahead but its
@@ -3173,9 +3185,11 @@ PAPER_JS = """
           '<td class="num"><button type="button" class="exec" data-paper-sell="' + esc(k) +
             '">Sell</button></td></tr>';
       }).join('');
-      posEl.innerHTML = '<table><thead><tr><th>Instrument</th><th class="num">Qty</th>' +
-        '<th class="num">Paper cost</th><th class="num">Live price</th>' +
-        '<th class="num">Profit / loss</th><th>Status</th><th class="num">Close</th>' +
+      posEl.innerHTML = '<table><thead><tr><th scope="col">Instrument</th>
+      <th class="num" scope="col">Qty</th>' +
+        '<th class="num" scope="col">Paper cost</th><th class="num" scope="col">Live price</th>' +
+        '<th class="num" scope="col">Profit / loss</th><th scope="col">Status</th>' +
+        '<th class="num" scope="col">Close</th>' +
         '</tr></thead><tbody>' + rows + '</tbody></table>';
     }
 
@@ -3197,8 +3211,10 @@ PAPER_JS = """
             esc(row.currency) + '</span></td>' +
           '<td class="num">' + pnl + '</td></tr>';
       }).join('');
-      logEl.innerHTML = '<table><thead><tr><th>When</th><th>Action</th><th>Instrument</th>' +
-        '<th class="num">Qty</th><th class="num">Price</th><th class="num">Realised</th>' +
+      logEl.innerHTML = '<table><thead><tr><th scope="col">When</th><th scope="col">Action</th>
+      <th scope="col">Instrument</th>' +
+        '<th class="num" scope="col">Qty</th><th class="num" scope="col">Price</th>' +
+        '<th class="num" scope="col">Realised</th>' +
         '</tr></thead><tbody>' + entries + '</tbody></table>';
     }
 
@@ -4011,7 +4027,7 @@ DETAIL_JS = """
 
     if ((a.dividends || []).length) {
       html += '<div class="fundwrap"><table class="fundtable"><thead><tr>' +
-        '<th>Ex-date</th><th class="num">Amount</th></tr></thead><tbody>' +
+        '<th scope="col">Ex-date</th><th class="num" scope="col">Amount</th></tr></thead><tbody>' +
         a.dividends.map(function (d) {
           return '<tr><td>' + esc(d.date) + '</td><td class="num">' +
             num(d.amount) + ' <span class="ccy">' + esc(stock.currency || '') +
@@ -4090,8 +4106,8 @@ DETAIL_JS = """
     ];
     var years = (s.revenue || s.net_income || []).map(function (y) { return y.year; });
     if (years.length) {
-      var head = '<tr><th>Figure</th>' + years.map(function (y) {
-        return '<th class="num">FY' + esc(y) + '</th>';
+      var head = '<tr><th scope="col">Figure</th>' + years.map(function (y) {
+        return '<th class="num" scope="col">FY' + esc(y) + '</th>';
       }).join('') + '</tr>';
       // Built section by section rather than filtered afterwards. The
       // previous version stripped empty headings with a regex whose lazy
@@ -4303,8 +4319,9 @@ DETAIL_JS = """
         '</b> simple and exponential averages &mdash; read as <b class="' +
         verdictClass(ma.bias === 'bullish' ? 'bullish' : ma.bias === 'bearish' ? 'bearish' : '') +
         '">' + esc(ma.bias) + '</b>.</p>' +
-        '<div class="tblwrap"><table class="tbl mini"><thead><tr><th>Period</th>' +
-        '<th class="num">Simple</th><th class="num">Exponential</th><th>Price is</th>' +
+        '<div class="tblwrap"><table class="tbl mini"><thead><tr><th scope="col">Period</th>' +
+        '<th class="num" scope="col">Simple</th><th class="num" scope="col">Exponential</th>' +
+        '<th scope="col">Price is</th>' +
         '</tr></thead><tbody>' +
         ma.rows.map(function (r) {
           return '<tr><td>' + r.period + '-day</td><td class="num">' + n(r.sma) +
@@ -4389,10 +4406,12 @@ DETAIL_JS = """
     var pv = t.pivots || {};
     if (pv.classic) {
       out += '<h3 class="detailsub">Pivot levels</h3>' +
-        '<div class="tblwrap"><table class="tbl mini"><thead><tr><th>Method</th>' +
-        '<th class="num">S3</th><th class="num">S2</th><th class="num">S1</th>' +
-        '<th class="num">Pivot</th><th class="num">R1</th><th class="num">R2</th>' +
-        '<th class="num">R3</th></tr></thead><tbody>' +
+        '<div class="tblwrap"><table class="tbl mini"><thead><tr><th scope="col">Method</th>' +
+        '<th class="num" scope="col">S3</th><th class="num" scope="col">S2</th>' +
+        '<th class="num" scope="col">S1</th>' +
+        '<th class="num" scope="col">Pivot</th><th class="num" scope="col">R1</th>' +
+        '<th class="num" scope="col">R2</th>' +
+        '<th class="num" scope="col">R3</th></tr></thead><tbody>' +
         ['classic', 'fibonacci', 'camarilla'].map(function (name) {
           var p = pv[name] || {};
           return '<tr><td>' + name.charAt(0).toUpperCase() + name.slice(1) + '</td>' +
@@ -4718,8 +4737,8 @@ FUNDS_JS = """
     }
     var table = document.createElement('table');
     table.className = 'fundstable';
-    table.innerHTML = '<thead><tr><th>Scheme</th><th>Plan</th>' +
-      '<th class="num">NAV</th><th class="num">As of</th></tr></thead>';
+    table.innerHTML = '<thead><tr><th scope="col">Scheme</th><th scope="col">Plan</th>' +
+      '<th class="num" scope="col">NAV</th><th class="num" scope="col">As of</th></tr></thead>';
     var body = document.createElement('tbody');
     rows.forEach(function (s) {
       var tr = document.createElement('tr');
@@ -6691,6 +6710,7 @@ def render_dashboard(
 </head>
 <body>
 {SPARK_DEFS}
+<a class="skip" href="#content">Skip to content</a>
 <div class="wrap">
   <header>
     <h1>{_esc(title)}</h1>
@@ -6701,6 +6721,7 @@ def render_dashboard(
 
   {tab_bar}
 
+  <main id="content">
   <section class="tabpanel" id="panel-dashboard" data-tab="dashboard" role="tabpanel">
     {glance}
     <div class="notice">
@@ -6748,6 +6769,8 @@ def render_dashboard(
     <h2>Execution setup</h2>
     {_setup_section(signals or {})}
   </section>
+
+  </main>
 
   <footer>
     {verified}Prices refresh automatically after each market close.
