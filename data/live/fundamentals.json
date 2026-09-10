@@ -11682,16 +11682,9 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000006281&type=10-K"
   },
   "US:PANW": {
-   "entity": "PALO ALTO NETWORKS, INC",
+   "entity": "Palo Alto Networks, Inc",
    "series": {
     "revenue": [
-     {
-      "year": 2020,
-      "end": "2020-07-31",
-      "value": 3408400000,
-      "form": "10-K",
-      "filed": "2020-09-04"
-     },
      {
       "year": 2021,
       "end": "2021-07-31",
@@ -11726,16 +11719,16 @@
       "value": 9221500000,
       "form": "10-K",
       "filed": "2025-08-29"
+     },
+     {
+      "year": 2026,
+      "end": "2026-07-31",
+      "value": 11480000000,
+      "form": "10-K",
+      "filed": "2026-09-10"
      }
     ],
     "net_income": [
-     {
-      "year": 2020,
-      "end": "2020-07-31",
-      "value": -267000000,
-      "form": "10-K",
-      "filed": "2020-09-04"
-     },
      {
       "year": 2021,
       "end": "2021-07-31",
@@ -11770,16 +11763,16 @@
       "value": 1133900000,
       "form": "10-K",
       "filed": "2025-08-29"
+     },
+     {
+      "year": 2026,
+      "end": "2026-07-31",
+      "value": 307000000,
+      "form": "10-K",
+      "filed": "2026-09-10"
      }
     ],
     "operating_income": [
-     {
-      "year": 2020,
-      "end": "2020-07-31",
-      "value": -179000000,
-      "form": "10-K",
-      "filed": "2020-09-04"
-     },
      {
       "year": 2021,
       "end": "2021-07-31",
@@ -11814,6 +11807,13 @@
       "value": 1242900000,
       "form": "10-K",
       "filed": "2025-08-29"
+     },
+     {
+      "year": 2026,
+      "end": "2026-07-31",
+      "value": 695000000,
+      "form": "10-K",
+      "filed": "2026-09-10"
      }
     ],
     "eps_diluted": [
@@ -11851,16 +11851,16 @@
       "value": 1.6,
       "form": "10-K",
       "filed": "2025-08-29"
+     },
+     {
+      "year": 2026,
+      "end": "2026-07-31",
+      "value": 0.4,
+      "form": "10-K",
+      "filed": "2026-09-10"
      }
     ],
     "assets": [
-     {
-      "year": 2020,
-      "end": "2020-07-31",
-      "value": 9065400000,
-      "form": "10-K",
-      "filed": "2020-09-04"
-     },
      {
       "year": 2021,
       "end": "2021-07-31",
@@ -11895,6 +11895,13 @@
       "value": 23576200000,
       "form": "10-K",
       "filed": "2025-08-29"
+     },
+     {
+      "year": 2026,
+      "end": "2026-07-31",
+      "value": 48460000000,
+      "form": "10-K",
+      "filed": "2026-09-10"
      }
     ],
     "liabilities": [
@@ -11925,16 +11932,16 @@
       "value": 15751800000,
       "form": "10-K",
       "filed": "2025-08-29"
+     },
+     {
+      "year": 2026,
+      "end": "2026-07-31",
+      "value": 20968000000,
+      "form": "10-K",
+      "filed": "2026-09-10"
      }
     ],
     "equity": [
-     {
-      "year": 2020,
-      "end": "2020-07-31",
-      "value": 1101800000,
-      "form": "10-K",
-      "filed": "2020-09-04"
-     },
      {
       "year": 2021,
       "end": "2021-07-31",
@@ -11969,16 +11976,16 @@
       "value": 7824400000,
       "form": "10-K",
       "filed": "2025-08-29"
+     },
+     {
+      "year": 2026,
+      "end": "2026-07-31",
+      "value": 27492000000,
+      "form": "10-K",
+      "filed": "2026-09-10"
      }
     ],
     "cash": [
-     {
-      "year": 2020,
-      "end": "2020-07-31",
-      "value": 2958000000,
-      "form": "10-K",
-      "filed": "2020-09-04"
-     },
      {
       "year": 2021,
       "end": "2021-07-31",
@@ -12013,16 +12020,16 @@
       "value": 2268600000,
       "form": "10-K",
       "filed": "2025-08-29"
+     },
+     {
+      "year": 2026,
+      "end": "2026-07-31",
+      "value": 2514000000,
+      "form": "10-K",
+      "filed": "2026-09-10"
      }
     ],
     "operating_cash_flow": [
-     {
-      "year": 2020,
-      "end": "2020-07-31",
-      "value": 1035700000,
-      "form": "10-K",
-      "filed": "2020-09-04"
-     },
      {
       "year": 2021,
       "end": "2021-07-31",
@@ -12057,6 +12064,13 @@
       "value": 3716000000,
       "form": "10-K",
       "filed": "2025-08-29"
+     },
+     {
+      "year": 2026,
+      "end": "2026-07-31",
+      "value": 4553000000,
+      "form": "10-K",
+      "filed": "2026-09-10"
      }
     ],
     "shares": [
@@ -12094,6 +12108,13 @@
       "value": 709300000,
       "form": "10-K",
       "filed": "2025-08-29"
+     },
+     {
+      "year": 2026,
+      "end": "2026-07-31",
+      "value": 764000000,
+      "form": "10-K",
+      "filed": "2026-09-10"
      }
     ],
     "long_term_debt": [
@@ -21046,7 +21067,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001633917&type=10-K"
   },
   "US:COF": {
-   "entity": "CAPITAL\u00a0ONE\u00a0FINANCIAL\u00a0CORP",
+   "entity": "CAPITAL ONE FINANCIAL CORP",
    "series": {
     "revenue": [
      {
@@ -58316,7 +58337,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000073309&type=10-K"
   },
   "US:AMT": {
-   "entity": "AMERICAN TOWER CORPORATION",
+   "entity": "AMERICAN TOWER CORP /MA/",
    "series": {
     "revenue": [
      {
