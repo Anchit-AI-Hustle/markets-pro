@@ -12599,7 +12599,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001640147&type=10-K"
   },
   "US:UBER": {
-   "entity": "UBER TECHNOLOGIES, INC.",
+   "entity": "Uber Technologies, Inc",
    "series": {
     "revenue": [
      {
@@ -14081,7 +14081,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001321655&type=10-K"
   },
   "US:CRWD": {
-   "entity": "CROWDSTRIKE HOLDINGS, INC.",
+   "entity": "CrowdStrike Holdings, Inc.",
    "series": {
     "net_income": [
      {
@@ -49504,7 +49504,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000277948&type=10-K"
   },
   "US:FDX": {
-   "entity": "FedEx Corporation",
+   "entity": "FEDEX CORP",
    "series": {
     "revenue": [
      {
