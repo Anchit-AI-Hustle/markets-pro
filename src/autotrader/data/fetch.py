@@ -35,6 +35,19 @@ def fetch_usdinr() -> str:
     return rows[-1].close
 
 
+def _prefer_fresher_series(
+    previous: dict | None, candidate: dict
+) -> tuple[dict, bool]:
+    """Return the candidate unless it moves a benchmark's date horizon backward."""
+    if not previous:
+        return candidate, False
+    previous_days = previous.get("days") or []
+    candidate_days = candidate.get("days") or []
+    if previous_days and (not candidate_days or candidate_days[-1] < previous_days[-1]):
+        return previous, True
+    return candidate, False
+
+
 def fetch_benchmarks(root: Path, *, range_: str = "2y", pause: float = 0.3) -> list[str]:
     """Cache the indices, commodities and FX the market page quotes.
 
@@ -44,6 +57,14 @@ def fetch_benchmarks(root: Path, *, range_: str = "2y", pause: float = 0.3) -> l
     inventing a level for it.
     """
     from .universe import BENCHMARKS
+
+    path = root / "benchmarks.json"
+    previous_series: dict = {}
+    if path.exists():
+        try:
+            previous_series = (json.loads(path.read_text()).get("series") or {})
+        except (OSError, json.JSONDecodeError, TypeError):
+            previous_series = {}
 
     document: dict = {"version": 1, "series": {}}
     failed: list[str] = []
@@ -58,7 +79,7 @@ def fetch_benchmarks(root: Path, *, range_: str = "2y", pause: float = 0.3) -> l
             )
             if len(rows) < 2:
                 raise FetchError("not enough completed sessions")
-            document["series"][mark.yahoo] = {
+            candidate = {
                 "label": mark.label,
                 "group": mark.group,
                 "kind": mark.kind,
@@ -66,14 +87,28 @@ def fetch_benchmarks(root: Path, *, range_: str = "2y", pause: float = 0.3) -> l
                 "closes": [row.close for row in rows[-520:]],
                 "days": [row.day.isoformat() for row in rows[-520:]],
             }
-            print(f"benchmark {mark.yahoo}: {len(rows)} sessions")
+            selected, regressed = _prefer_fresher_series(
+                previous_series.get(mark.yahoo), candidate
+            )
+            document["series"][mark.yahoo] = selected
+            if regressed:
+                failed.append(mark.yahoo)
+                candidate_day = candidate["days"][-1] if candidate["days"] else "no data"
+                print(
+                    f"benchmark {mark.yahoo}: FAILED — provider response regressed "
+                    f"from {selected['days'][-1]} to {candidate_day}; kept previous series",
+                    file=sys.stderr,
+                )
+            else:
+                print(f"benchmark {mark.yahoo}: {len(rows)} sessions")
         except FetchError as error:
             failed.append(mark.yahoo)
+            if mark.yahoo in previous_series:
+                document["series"][mark.yahoo] = previous_series[mark.yahoo]
             print(f"benchmark {mark.yahoo}: FAILED — {error}", file=sys.stderr)
         time.sleep(pause)
 
     document["fetched_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    path = root / "benchmarks.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(document, indent=1) + "\n")
     return failed
