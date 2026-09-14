@@ -118,6 +118,25 @@ def fetch_daily(entry: UniverseEntry, *, range_: str = "2y") -> tuple[list[Daily
 # --- cache -----------------------------------------------------------------
 
 
+def _last_cached_day(path: Path) -> date | None:
+    """Newest valid session already on disk, when the cache can be read.
+
+    A provider can temporarily return a shorter series while still answering
+    successfully.  Treating that response as fresh used to delete a completed
+    session from the committed cache.  The refresh may correct values for the
+    same day or append a newer day, but it must never move the horizon backward.
+    """
+    if not path.exists():
+        return None
+    try:
+        document = json.loads(path.read_text())
+        bars = document.get("bars") or []
+        raw_day = bars[-1].get("day") if bars and isinstance(bars[-1], dict) else None
+        return date.fromisoformat(raw_day) if raw_day else None
+    except (OSError, json.JSONDecodeError, TypeError, ValueError):
+        return None
+
+
 def cache_path(root: Path, entry: UniverseEntry) -> Path:
     return root / entry.region / f"{entry.symbol}.json"
 
@@ -125,6 +144,14 @@ def cache_path(root: Path, entry: UniverseEntry) -> Path:
 def write_cache(root: Path, entry: UniverseEntry, rows: Sequence[DailyRow], currency: str) -> Path:
     path = cache_path(root, entry)
     path.parent.mkdir(parents=True, exist_ok=True)
+    if rows:
+        cached_day = _last_cached_day(path)
+        incoming_day = rows[-1].day
+        if cached_day is not None and incoming_day < cached_day:
+            raise FetchError(
+                f"refusing to regress {entry.symbol} cache from {cached_day} "
+                f"to {incoming_day}"
+            )
     document = {
         "version": _CACHE_VERSION,
         "symbol": entry.symbol,

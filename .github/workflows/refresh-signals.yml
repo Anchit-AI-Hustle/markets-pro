@@ -37,8 +37,7 @@ jobs:
       # the screener and signals silently unless something says so out loud.
       - name: Verify cache freshness and sanity
         run: |
-          PYTHONPATH=src python3 -m autotrader.data.quality --data data/live --regions india us \
-            || echo "::warning::data quality check found hard failures — see job log"
+          PYTHONPATH=src python3 -m autotrader.data.quality --data data/live --regions india us
       # Filings change only when a company files, so a failure here is not
       # worth blocking the deploy over — the page shows the previous cache.
       - name: Refresh SEC fundamentals
