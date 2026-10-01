@@ -10779,7 +10779,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000707549&type=10-K"
   },
   "US:KLAC": {
-   "entity": "KLA CORP",
+   "entity": "KLA Corporation",
    "series": {
     "revenue": [
      {
@@ -11256,7 +11256,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000319201&type=10-K"
   },
   "US:ADI": {
-   "entity": "Analog Devices, Inc.",
+   "entity": "ANALOG DEVICES INC",
    "series": {
     "revenue": [
      {
@@ -30909,7 +30909,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001613103&type=10-K"
   },
   "US:XOM": {
-   "entity": "Exxon Mobil Corporation",
+   "entity": "ExxonMobil Holdings Corp",
    "series": {},
    "cik": 2115436,
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0002115436&type=10-K"
@@ -42241,7 +42241,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001637459&type=10-K"
   },
   "US:GIS": {
-   "entity": "General Mills, Inc.",
+   "entity": "GENERAL MILLS, INC.",
    "series": {
     "revenue": [
      {
@@ -62726,7 +62726,7 @@
  },
  "unavailable": {
   "US:SPY": "GET https://data.sec.gov/api/xbrl/companyfacts/CIK0000884394.json failed: HTTP Error 404: Not Found",
-  "US:QQQ": "GET https://data.sec.gov/api/xbrl/companyfacts/CIK0001067839.json failed: HTTP Error 404: Not Found",
+  "US:QQQ": "no SEC filer matches this ticker",
   "US:IWM": "no SEC filer matches this ticker",
   "US:DIA": "GET https://data.sec.gov/api/xbrl/companyfacts/CIK0001041130.json failed: HTTP Error 404: Not Found",
   "US:VTI": "no SEC filer matches this ticker",
