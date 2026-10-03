@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generated_at": "2026-10-02T18:34:56+00:00",
+ "generated_at": "2026-10-03T00:54:49+00:00",
  "count": 325,
  "top_stocks": [
   {
@@ -2705,39 +2705,6 @@
    }
   },
   {
-   "key": "IN:ITBEES",
-   "symbol": "ITBEES",
-   "name": "Nippon Nifty IT ETF",
-   "region": "india",
-   "sector": "index",
-   "regime": "ranging",
-   "signal": "bullish",
-   "signal_strength": 0.5526,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.014,
-   "relative_momentum_long": 0.0264,
-   "score": 0.4209,
-   "rationale": "ADX 12 (ranging) -> weighting rsi, bollinger_pct_b; +1.2% over ~63d; ATR 3.0% of price",
-   "reading": {
-    "price": 30.86,
-    "rsi": 29.96,
-    "macd_hist": -0.1322,
-    "supertrend_direction": -1,
-    "sma_fast": 33.3772,
-    "sma_slow": 34.5714,
-    "bollinger_pct_b": 0.1477,
-    "adx": 11.58,
-    "atr_pct": 0.0298,
-    "momentum_short": -0.113,
-    "momentum_long": 0.0125,
-    "annualised_volatility": 0.2214
-   }
-  },
-  {
    "key": "US:WMT",
    "symbol": "WMT",
    "name": "Walmart",
@@ -2969,39 +2936,6 @@
    }
   },
   {
-   "key": "IN:GOLDBEES",
-   "symbol": "GOLDBEES",
-   "name": "Nippon Gold ETF",
-   "region": "india",
-   "sector": "index",
-   "regime": "ranging",
-   "signal": "bullish",
-   "signal_strength": 0.5361,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.014,
-   "relative_momentum_long": 0.0246,
-   "score": 0.4059,
-   "rationale": "ADX 20 (ranging) -> weighting rsi, bollinger_pct_b; +1.1% over ~63d; ATR 1.4% of price",
-   "reading": {
-    "price": 121.59,
-    "rsi": 40.64,
-    "macd_hist": -0.5719,
-    "supertrend_direction": -1,
-    "sma_fast": 124.3458,
-    "sma_slow": 123.3468,
-    "bollinger_pct_b": 0.0575,
-    "adx": 19.96,
-    "atr_pct": 0.0145,
-    "momentum_short": -0.0299,
-    "momentum_long": 0.0106,
-    "annualised_volatility": 0.1784
-   }
-  },
-  {
    "key": "US:COP",
    "symbol": "COP",
    "name": "ConocoPhillips",
@@ -3134,6 +3068,39 @@
    }
   },
   {
+   "key": "IN:GOLDBEES",
+   "symbol": "GOLDBEES",
+   "name": "Nippon Gold ETF",
+   "region": "india",
+   "sector": "index",
+   "regime": "ranging",
+   "signal": "bullish",
+   "signal_strength": 0.4681,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0155,
+   "relative_momentum_long": 0.0395,
+   "score": 0.3965,
+   "rationale": "ADX 21 (ranging) -> weighting rsi, bollinger_pct_b; +2.4% over ~63d; ATR 1.3% of price",
+   "reading": {
+    "price": 121.43,
+    "rsi": 40.22,
+    "macd_hist": -0.478,
+    "supertrend_direction": -1,
+    "sma_fast": 124.471,
+    "sma_slow": 123.4633,
+    "bollinger_pct_b": 0.1297,
+    "adx": 21.48,
+    "atr_pct": 0.0132,
+    "momentum_short": -0.038,
+    "momentum_long": 0.024,
+    "annualised_volatility": 0.1771
+   }
+  },
+  {
    "key": "IN:CDSL",
    "symbol": "CDSL",
    "name": "Central Depository Services",
@@ -3164,39 +3131,6 @@
     "momentum_short": -0.0899,
     "momentum_long": -0.0855,
     "annualised_volatility": 0.2806
-   }
-  },
-  {
-   "key": "IN:NIFTYBEES",
-   "symbol": "NIFTYBEES",
-   "name": "Nippon Nifty 50 ETF",
-   "region": "india",
-   "sector": "index",
-   "regime": "ranging",
-   "signal": "bullish",
-   "signal_strength": 0.7787,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.014,
-   "relative_momentum_long": -0.0491,
-   "score": 0.3915,
-   "rationale": "ADX 9 (ranging) -> weighting rsi, bollinger_pct_b; -6.3% over ~63d; ATR 1.4% of price",
-   "reading": {
-    "price": 258.5,
-    "rsi": 22.13,
-    "macd_hist": -0.6399,
-    "supertrend_direction": -1,
-    "sma_fast": 272.497,
-    "sma_slow": 276.142,
-    "bollinger_pct_b": -0.0149,
-    "adx": 8.69,
-    "atr_pct": 0.0145,
-    "momentum_short": -0.054,
-    "momentum_long": -0.0631,
-    "annualised_volatility": 0.088
    }
   },
   {
@@ -3332,6 +3266,72 @@
    }
   },
   {
+   "key": "IN:NIFTYBEES",
+   "symbol": "NIFTYBEES",
+   "name": "Nippon Nifty 50 ETF",
+   "region": "india",
+   "sector": "index",
+   "regime": "ranging",
+   "signal": "bullish",
+   "signal_strength": 0.7974,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0155,
+   "relative_momentum_long": -0.0587,
+   "score": 0.3814,
+   "rationale": "ADX 9 (ranging) -> weighting rsi, bollinger_pct_b; -7.4% over ~63d; ATR 1.4% of price",
+   "reading": {
+    "price": 256.5,
+    "rsi": 19.68,
+    "macd_hist": -0.7977,
+    "supertrend_direction": -1,
+    "sma_fast": 271.8932,
+    "sma_slow": 275.7852,
+    "bollinger_pct_b": 0.0058,
+    "adx": 9.5,
+    "atr_pct": 0.0138,
+    "momentum_short": -0.0592,
+    "momentum_long": -0.0742,
+    "annualised_volatility": 0.088
+   }
+  },
+  {
+   "key": "US:GLD",
+   "symbol": "GLD",
+   "name": "SPDR Gold Shares",
+   "region": "us",
+   "sector": "index",
+   "regime": "ranging",
+   "signal": "bullish",
+   "signal_strength": 0.539,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0155,
+   "relative_momentum_long": 0.0083,
+   "score": 0.3697,
+   "rationale": "ADX 18 (ranging) -> weighting rsi, bollinger_pct_b; -0.7% over ~63d; ATR 1.8% of price",
+   "reading": {
+    "price": 379.3766,
+    "rsi": 38.34,
+    "macd_hist": -1.9968,
+    "supertrend_direction": -1,
+    "sma_fast": 396.2773,
+    "sma_slow": 416.1515,
+    "bollinger_pct_b": 0.0776,
+    "adx": 17.85,
+    "atr_pct": 0.0184,
+    "momentum_short": -0.0581,
+    "momentum_long": -0.0072,
+    "annualised_volatility": 0.2453
+   }
+  },
+  {
    "key": "US:INTC",
    "symbol": "INTC",
    "name": "Intel",
@@ -3363,39 +3363,6 @@
     "momentum_short": 0.3311,
     "momentum_long": -0.0191,
     "annualised_volatility": 0.7302
-   }
-  },
-  {
-   "key": "US:GLD",
-   "symbol": "GLD",
-   "name": "SPDR Gold Shares",
-   "region": "us",
-   "sector": "index",
-   "regime": "ranging",
-   "signal": "bullish",
-   "signal_strength": 0.539,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.014,
-   "relative_momentum_long": 0.0068,
-   "score": 0.3661,
-   "rationale": "ADX 18 (ranging) -> weighting rsi, bollinger_pct_b; -0.7% over ~63d; ATR 1.8% of price",
-   "reading": {
-    "price": 379.3766,
-    "rsi": 38.34,
-    "macd_hist": -1.9968,
-    "supertrend_direction": -1,
-    "sma_fast": 396.2773,
-    "sma_slow": 416.1515,
-    "bollinger_pct_b": 0.0776,
-    "adx": 17.85,
-    "atr_pct": 0.0184,
-    "momentum_short": -0.0581,
-    "momentum_long": -0.0072,
-    "annualised_volatility": 0.2453
    }
   },
   {
@@ -3928,39 +3895,6 @@
    }
   },
   {
-   "key": "IN:BANKBEES",
-   "symbol": "BANKBEES",
-   "name": "Nippon Bank Nifty ETF",
-   "region": "india",
-   "sector": "index",
-   "regime": "ranging",
-   "signal": "bullish",
-   "signal_strength": 0.6176,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.014,
-   "relative_momentum_long": -0.0405,
-   "score": 0.3069,
-   "rationale": "ADX 21 (ranging) -> weighting rsi, bollinger_pct_b; -5.4% over ~63d; ATR 1.4% of price",
-   "reading": {
-    "price": 567.42,
-    "rsi": 31.2,
-    "macd_hist": -1.8433,
-    "supertrend_direction": -1,
-    "sma_fast": 589.8504,
-    "sma_slow": 589.9857,
-    "bollinger_pct_b": 0.0704,
-    "adx": 20.77,
-    "atr_pct": 0.0135,
-    "momentum_short": -0.0444,
-    "momentum_long": -0.0545,
-    "annualised_volatility": 0.1129
-   }
-  },
-  {
    "key": "US:CVX",
    "symbol": "CVX",
    "name": "Chevron",
@@ -4057,6 +3991,39 @@
     "momentum_short": -0.1008,
     "momentum_long": -0.0821,
     "annualised_volatility": 0.232
+   }
+  },
+  {
+   "key": "IN:BANKBEES",
+   "symbol": "BANKBEES",
+   "name": "Nippon Bank Nifty ETF",
+   "region": "india",
+   "sector": "index",
+   "regime": "ranging",
+   "signal": "bullish",
+   "signal_strength": 0.6112,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0155,
+   "relative_momentum_long": -0.0481,
+   "score": 0.2851,
+   "rationale": "ADX 24 (ranging) -> weighting rsi, bollinger_pct_b; -6.4% over ~63d; ATR 1.3% of price",
+   "reading": {
+    "price": 565.03,
+    "rsi": 29.48,
+    "macd_hist": -1.6553,
+    "supertrend_direction": -1,
+    "sma_fast": 588.962,
+    "sma_slow": 589.548,
+    "bollinger_pct_b": 0.094,
+    "adx": 23.78,
+    "atr_pct": 0.013,
+    "momentum_short": -0.052,
+    "momentum_long": -0.0636,
+    "annualised_volatility": 0.1125
    }
   },
   {
@@ -4355,6 +4322,39 @@
     "momentum_short": -0.0133,
     "momentum_long": -0.0273,
     "annualised_volatility": 0.2109
+   }
+  },
+  {
+   "key": "IN:ITBEES",
+   "symbol": "ITBEES",
+   "name": "Nippon Nifty IT ETF",
+   "region": "india",
+   "sector": "index",
+   "regime": "ranging",
+   "signal": "bullish",
+   "signal_strength": 0.3044,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0155,
+   "relative_momentum_long": 0.0284,
+   "score": 0.2642,
+   "rationale": "ADX 10 (ranging) -> weighting rsi, bollinger_pct_b; +1.3% over ~63d; ATR 2.7% of price",
+   "reading": {
+    "price": 31.38,
+    "rsi": 38.7,
+    "macd_hist": -0.0377,
+    "supertrend_direction": -1,
+    "sma_fast": 33.3576,
+    "sma_slow": 34.467,
+    "bollinger_pct_b": 0.3085,
+    "adx": 10.06,
+    "atr_pct": 0.0271,
+    "momentum_short": -0.0849,
+    "momentum_long": 0.0129,
+    "annualised_volatility": 0.2187
    }
   },
   {
@@ -4722,6 +4722,39 @@
    }
   },
   {
+   "key": "US:DIA",
+   "symbol": "DIA",
+   "name": "SPDR Dow Jones Industrial ETF",
+   "region": "us",
+   "sector": "index",
+   "regime": "ranging",
+   "signal": "bullish",
+   "signal_strength": 0.4181,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0155,
+   "relative_momentum_long": -0.0216,
+   "score": 0.2215,
+   "rationale": "ADX 23 (ranging) -> weighting rsi, bollinger_pct_b; -3.7% over ~63d; ATR 1.0% of price",
+   "reading": {
+    "price": 510.44,
+    "rsi": 38.07,
+    "macd_hist": -0.7362,
+    "supertrend_direction": -1,
+    "sma_fast": 526.6914,
+    "sma_slow": 502.7104,
+    "bollinger_pct_b": 0.2012,
+    "adx": 23.41,
+    "atr_pct": 0.0098,
+    "momentum_short": -0.038,
+    "momentum_long": -0.0371,
+    "annualised_volatility": 0.1153
+   }
+  },
+  {
    "key": "US:SPGI",
    "symbol": "SPGI",
    "name": "S&P Global",
@@ -4752,39 +4785,6 @@
     "momentum_short": -0.1182,
     "momentum_long": -0.1176,
     "annualised_volatility": 0.2644
-   }
-  },
-  {
-   "key": "US:DIA",
-   "symbol": "DIA",
-   "name": "SPDR Dow Jones Industrial ETF",
-   "region": "us",
-   "sector": "index",
-   "regime": "ranging",
-   "signal": "bullish",
-   "signal_strength": 0.4181,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.014,
-   "relative_momentum_long": -0.0231,
-   "score": 0.2178,
-   "rationale": "ADX 23 (ranging) -> weighting rsi, bollinger_pct_b; -3.7% over ~63d; ATR 1.0% of price",
-   "reading": {
-    "price": 510.44,
-    "rsi": 38.07,
-    "macd_hist": -0.7362,
-    "supertrend_direction": -1,
-    "sma_fast": 526.6914,
-    "sma_slow": 502.7104,
-    "bollinger_pct_b": 0.2012,
-    "adx": 23.41,
-    "atr_pct": 0.0098,
-    "momentum_short": -0.038,
-    "momentum_long": -0.0371,
-    "annualised_volatility": 0.1153
    }
   },
   {
@@ -6551,6 +6551,39 @@
    }
   },
   {
+   "key": "US:VTI",
+   "symbol": "VTI",
+   "name": "Vanguard Total Stock Market ETF",
+   "region": "us",
+   "sector": "index",
+   "regime": "ranging",
+   "signal": "neutral",
+   "signal_strength": -0.1415,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0155,
+   "relative_momentum_long": 0.0318,
+   "score": -0.0178,
+   "rationale": "ADX 13 (ranging) -> weighting rsi, bollinger_pct_b; +1.6% over ~63d; ATR 0.9% of price",
+   "reading": {
+    "price": 377.71,
+    "rsi": 52.09,
+    "macd_hist": -0.1489,
+    "supertrend_direction": -1,
+    "sma_fast": 376.5502,
+    "sma_slow": 355.3817,
+    "bollinger_pct_b": 0.6206,
+    "adx": 12.59,
+    "atr_pct": 0.009,
+    "momentum_short": 0.0022,
+    "momentum_long": 0.0163,
+    "annualised_volatility": 0.1119
+   }
+  },
+  {
    "key": "IN:INDUSTOWER",
    "symbol": "INDUSTOWER",
    "name": "Indus Towers",
@@ -6581,39 +6614,6 @@
     "momentum_short": -0.0073,
     "momentum_long": -0.0266,
     "annualised_volatility": 0.2731
-   }
-  },
-  {
-   "key": "US:VTI",
-   "symbol": "VTI",
-   "name": "Vanguard Total Stock Market ETF",
-   "region": "us",
-   "sector": "index",
-   "regime": "ranging",
-   "signal": "neutral",
-   "signal_strength": -0.1415,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.014,
-   "relative_momentum_long": 0.0302,
-   "score": -0.0215,
-   "rationale": "ADX 13 (ranging) -> weighting rsi, bollinger_pct_b; +1.6% over ~63d; ATR 0.9% of price",
-   "reading": {
-    "price": 377.71,
-    "rsi": 52.09,
-    "macd_hist": -0.1489,
-    "supertrend_direction": -1,
-    "sma_fast": 376.5502,
-    "sma_slow": 355.3817,
-    "bollinger_pct_b": 0.6206,
-    "adx": 12.59,
-    "atr_pct": 0.009,
-    "momentum_short": 0.0022,
-    "momentum_long": 0.0163,
-    "annualised_volatility": 0.1119
    }
   },
   {
@@ -6818,6 +6818,39 @@
    }
   },
   {
+   "key": "US:SPY",
+   "symbol": "SPY",
+   "name": "SPDR S&P 500 ETF",
+   "region": "us",
+   "sector": "index",
+   "regime": "ranging",
+   "signal": "bearish",
+   "signal_strength": -0.2387,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0155,
+   "relative_momentum_long": 0.0389,
+   "score": -0.0644,
+   "rationale": "ADX 10 (ranging) -> weighting rsi, bollinger_pct_b; +2.3% over ~63d; ATR 0.9% of price",
+   "reading": {
+    "price": 768.85,
+    "rsi": 53.86,
+    "macd_hist": -0.1079,
+    "supertrend_direction": -1,
+    "sma_fast": 763.6864,
+    "sma_slow": 720.467,
+    "bollinger_pct_b": 0.7001,
+    "adx": 10.23,
+    "atr_pct": 0.0088,
+    "momentum_short": 0.0048,
+    "momentum_long": 0.0234,
+    "annualised_volatility": 0.11
+   }
+  },
+  {
    "key": "IN:PHOENIXLTD",
    "symbol": "PHOENIXLTD",
    "name": "Phoenix Mills",
@@ -6848,39 +6881,6 @@
     "momentum_short": 0.0052,
     "momentum_long": -0.0835,
     "annualised_volatility": 0.2429
-   }
-  },
-  {
-   "key": "US:SPY",
-   "symbol": "SPY",
-   "name": "SPDR S&P 500 ETF",
-   "region": "us",
-   "sector": "index",
-   "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.2387,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.014,
-   "relative_momentum_long": 0.0373,
-   "score": -0.068,
-   "rationale": "ADX 10 (ranging) -> weighting rsi, bollinger_pct_b; +2.3% over ~63d; ATR 0.9% of price",
-   "reading": {
-    "price": 768.85,
-    "rsi": 53.86,
-    "macd_hist": -0.1079,
-    "supertrend_direction": -1,
-    "sma_fast": 763.6864,
-    "sma_slow": 720.467,
-    "bollinger_pct_b": 0.7001,
-    "adx": 10.23,
-    "atr_pct": 0.0088,
-    "momentum_short": 0.0048,
-    "momentum_long": 0.0234,
-    "annualised_volatility": 0.11
    }
   },
   {
@@ -7868,9 +7868,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.014,
-   "relative_momentum_long": 0.0497,
-   "score": -0.2057,
+   "sector_momentum_long": -0.0155,
+   "relative_momentum_long": 0.0512,
+   "score": -0.2021,
    "rationale": "ADX 14 (ranging) -> weighting rsi, bollinger_pct_b; +3.6% over ~63d; ATR 1.3% of price",
    "reading": {
     "price": 748.6199,
@@ -8361,40 +8361,6 @@
    }
   },
   {
-   "key": "IN:JUNIORBEES",
-   "symbol": "JUNIORBEES",
-   "name": "Nippon Nifty Next 50 ETF",
-   "region": "india",
-   "sector": "index",
-   "regime": "trending",
-   "signal": "bearish",
-   "signal_strength": -0.3333,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.014,
-   "relative_momentum_long": -0.0173,
-   "score": -0.257,
-   "rationale": "ADX 36 (trending) -> weighting supertrend, macd, sma_cross; -3.1% over ~63d; ATR 1.8% of price",
-   "reading": {
-    "price": 756.31,
-    "rsi": 32.29,
-    "macd_hist": -1.8385,
-    "supertrend_direction": -1,
-    "sma_fast": 789.9344,
-    "sma_slow": 756.3318,
-    "bollinger_pct_b": -0.0047,
-    "adx": 35.62,
-    "atr_pct": 0.018,
-    "momentum_short": -0.0404,
-    "momentum_long": -0.0313,
-    "annualised_volatility": 0.1133
-   }
-  },
-  {
    "key": "US:D",
    "symbol": "D",
    "name": "Dominion Energy",
@@ -8631,6 +8597,40 @@
    }
   },
   {
+   "key": "IN:JUNIORBEES",
+   "symbol": "JUNIORBEES",
+   "name": "Nippon Nifty Next 50 ETF",
+   "region": "india",
+   "sector": "index",
+   "regime": "trending",
+   "signal": "bearish",
+   "signal_strength": -0.3333,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0155,
+   "relative_momentum_long": -0.0265,
+   "score": -0.2784,
+   "rationale": "ADX 36 (trending) -> weighting supertrend, macd, sma_cross; -4.2% over ~63d; ATR 1.9% of price",
+   "reading": {
+    "price": 747.52,
+    "rsi": 28.45,
+    "macd_hist": -2.8321,
+    "supertrend_direction": -1,
+    "sma_fast": 788.7844,
+    "sma_slow": 756.4655,
+    "bollinger_pct_b": 0.0009,
+    "adx": 35.62,
+    "atr_pct": 0.019,
+    "momentum_short": -0.0523,
+    "momentum_long": -0.042,
+    "annualised_volatility": 0.1144
+   }
+  },
+  {
    "key": "IN:COALINDIA",
    "symbol": "COALINDIA",
    "name": "Coal India",
@@ -8778,9 +8778,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.014,
-   "relative_momentum_long": -0.0449,
-   "score": -0.3214,
+   "sector_momentum_long": -0.0155,
+   "relative_momentum_long": -0.0433,
+   "score": -0.3178,
    "rationale": "ADX 38 (trending) -> weighting supertrend, macd, sma_cross; -5.9% over ~63d; ATR 1.3% of price",
    "reading": {
     "price": 281.31,
@@ -11583,8 +11583,8 @@
   {
    "sector": "index",
    "count": 11,
-   "avg_momentum_long": -0.014,
-   "avg_score": 0.1123
+   "avg_momentum_long": -0.0155,
+   "avg_score": 0.0944
   },
   {
    "sector": "industrials",
