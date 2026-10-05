@@ -17,11 +17,13 @@ from __future__ import annotations
 
 import argparse
 import json
+from copy import deepcopy
 from datetime import date, datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 
 from ..data.livefeed import LiveFeed, load_livefeed
+from ..data.quality import check_sanity
 from ..data.universe import UniverseEntry, entry_for_key, universe
 from ..data.yahoo import FetchError, read_cache
 from ..engine.backtest import BacktestConfig, BacktestEngine
@@ -29,9 +31,21 @@ from ..engine.metrics import PerformanceReport
 from ..execution.costs import SlippageModel
 from ..execution.orders import Horizon, Order
 from ..execution.simulator import ExecutionConfig
+from ..governance import (
+    CapitalFloorConfig,
+    CapitalFloorKernel,
+    ConsensusKernel,
+    Decision,
+    DeskVote,
+    Side as GovernanceSide,
+    Stance,
+    TradePlan,
+    TradePlanGate,
+    VoteState,
+)
 from ..portfolio.sizing import SizingConfig
 from ..risk.exits import effective_stop
-from ..risk.limits import RiskConfig
+from ..risk.limits import RiskConfig, RiskManager
 from ..strategy.long_term import LongTermConfig, LongTermStrategy
 from ..strategy.short_term import ShortTermConfig, ShortTermStrategy
 
@@ -47,6 +61,14 @@ DEFAULT_LIVE_CONFIG: dict = {
     "starting_cash": {"INR": "500000", "USD": "10000"},
     "daily_cap": {"INR": "20000", "USD": "250"},
     "kite_api_key": "",
+    "governance": {
+        "enabled": True,
+        "protected_fraction": "0.90",
+        "max_risk_sleeve_fraction": "0.05",
+        "profit_lock_fraction": "0.75",
+        "minimum_confidence": "0.70",
+        "minimum_reward_risk": "1.50",
+    },
 }
 
 
@@ -54,7 +76,12 @@ def load_live_config(path: Path | None) -> dict:
     """Merge the user's config file over the defaults; missing file is fine."""
     config = json.loads(json.dumps(DEFAULT_LIVE_CONFIG))
     if path is not None and path.exists():
-        config.update(json.loads(path.read_text()))
+        supplied = json.loads(path.read_text())
+        for key, value in supplied.items():
+            if key == "governance" and isinstance(value, dict):
+                config["governance"].update(value)
+            else:
+                config[key] = value
     return config
 
 
@@ -267,6 +294,7 @@ def _order_row(
     notional = None if last_price is None else (quantity * last_price)
     meta = getattr(engine, "_pending_meta", {}).get(key)
     trailing = meta[3] if meta is not None and len(meta) > 3 else None
+    signal_meta = getattr(engine, "_pending_signal_meta", {}).get(key, {})
     series = feed.data.get(key)
     fresh = series is not None and order.created_on == series.last_day
     side = "BUY" if order.side.name == "BUY" else "SELL"
@@ -293,6 +321,9 @@ def _order_row(
         "trailing_stop_pct": _s(trailing),
         "history": stats.get(order.horizon.value, {}),
         "spark": _spark(feed, key),
+        "signal_strength": _s(signal_meta.get("strength")),
+        "signal_score": _s(signal_meta.get("score")),
+        "signal_diagnostics": signal_meta.get("diagnostics") or {},
     }
     row.update(
         _economics(
@@ -313,6 +344,300 @@ def _order_row(
         row["weight"] = _s(Decimal(row["invested_base"]) / equity_base)
     row.update(_broker_payloads(entry, side, quantity))
     return row
+
+
+def _govern_orders(
+    rows: list[dict],
+    engine: BacktestEngine,
+    feed: LiveFeed,
+    live_config: dict,
+) -> dict:
+    """Attach a fail-closed governance packet to every pending order.
+
+    The strategy remains the research source. Independent permission comes from
+    deterministic desk checks, the strict trade-plan gate and the capital floor.
+    This is deliberately a preflight for paper trading; it does not arm a broker.
+    """
+    settings = live_config.get("governance") or {}
+    enabled = bool(settings.get("enabled", True))
+    protected_fraction = Decimal(str(settings.get("protected_fraction", "0.90")))
+    max_sleeve = Decimal(str(settings.get("max_risk_sleeve_fraction", "0.05")))
+    profit_lock = Decimal(str(settings.get("profit_lock_fraction", "0.75")))
+    min_confidence = Decimal(str(settings.get("minimum_confidence", "0.70")))
+    min_rr = Decimal(str(settings.get("minimum_reward_risk", "1.50")))
+
+    starting_nav = sum(
+        (
+            Decimal(str(amount)) * feed.fx.rate(currency, engine.config.base_currency)
+            for currency, amount in live_config.get("starting_cash", {}).items()
+        ),
+        Decimal("0"),
+    )
+    protected_floor = starting_nav * protected_fraction
+    floor = CapitalFloorKernel(
+        CapitalFloorConfig(
+            protected_floor=protected_floor,
+            max_risk_sleeve_fraction=max_sleeve,
+            profit_lock_fraction=profit_lock,
+        )
+    )
+    consensus = ConsensusKernel()
+    plan_gate = TradePlanGate(
+        minimum_confidence=min_confidence,
+        minimum_reward_risk=min_rr,
+    )
+    by_key = {order.instrument.key: order for order in engine.pending_orders}
+    committed_risk = Decimal("0")
+    approved = 0
+
+    for row in rows:
+        order = by_key.get(row["key"])
+        reasons: list[str] = []
+        desks: list[DeskVote] = []
+        if order is None:
+            row["governance"] = {
+                "eligible": False,
+                "status": "WAIT",
+                "code": "order_missing",
+                "reasons": ["pending order not found"],
+                "desks": [],
+            }
+            continue
+
+        entry = Decimal(str(row["reference_price"])) if row.get("reference_price") else Decimal("0")
+        quantity = Decimal(str(row["quantity"]))
+        confidence = Decimal(str(row.get("signal_strength") or "0"))
+        series = feed.data.get(row["key"])
+        latest_day = series.last_day.isoformat() if series is not None and len(series) else ""
+        warnings = [
+            issue.detail
+            for issue in check_sanity(entry_for_key(row["key"]), series)
+            if latest_day and latest_day in issue.detail
+        ]
+        data_ok = bool(row.get("fresh")) and not warnings
+        desks.append(DeskVote(
+            "data",
+            VoteState.PASS if data_ok else VoteState.FAIL,
+            reason="; ".join(warnings) or ("fresh" if data_ok else "stale signal"),
+        ))
+
+        risk_ok = not engine.risk.entries_halted
+        desks.append(DeskVote(
+            "risk",
+            VoteState.PASS if risk_ok else VoteState.FAIL,
+            reason="" if risk_ok else engine.risk.state.halt_reason,
+        ))
+
+        probe = RiskManager(engine.config.risk)
+        probe.state = deepcopy(engine.risk.state)
+        market = engine.market_for(order.instrument)
+        is_exit = order.reason.startswith("exit:") or engine._is_reducing(order)
+        portfolio_decision = probe.check(
+            order,
+            day=order.created_on,
+            portfolio=engine.portfolio,
+            market=market,
+            price=entry,
+            prices=engine.last_prices,
+            fx=feed.fx,
+            is_exit=is_exit,
+        )
+        desks.append(DeskVote(
+            "portfolio",
+            VoteState.PASS if portfolio_decision.allowed else VoteState.FAIL,
+            reason=portfolio_decision.detail,
+        ))
+
+        average_volume = engine._average_volume(row["key"], order.created_on)
+        participation = (
+            quantity / average_volume
+            if average_volume is not None and average_volume > 0
+            else None
+        )
+        liquidity_limit = min(
+            engine.config.sizing.max_volume_participation,
+            engine.config.execution.max_volume_participation,
+        )
+        liquidity_ok = participation is not None and participation <= liquidity_limit
+        desks.append(DeskVote(
+            "liquidity",
+            VoteState.PASS if liquidity_ok else VoteState.FAIL,
+            reason=(
+                f"participation {participation:.4%} <= {liquidity_limit:.4%}"
+                if participation is not None
+                else "average volume unavailable"
+            ),
+        ))
+
+        execution_ok = (
+            entry > 0
+            and quantity > 0
+            and bool(row.get("alpaca") or row.get("kite"))
+        )
+        desks.append(DeskVote(
+            "execution",
+            VoteState.PASS if execution_ok else VoteState.FAIL,
+            reason="" if execution_ok else "order cannot be executed from snapshot",
+        ))
+
+        history = row.get("history") or {}
+        rr_value = Decimal(str(row["reward_risk"])) if row.get("reward_risk") else None
+        win_rate = history.get("win_rate")
+        trades = int(history.get("trades") or 0)
+        red_team_ok = True
+        red_reason = "no deterministic objection"
+        if warnings:
+            red_team_ok = False
+            red_reason = "latest data carries a sanity warning"
+        elif rr_value is not None and win_rate is not None and trades >= 20:
+            expectancy_r = Decimal(str(win_rate)) * rr_value - (
+                Decimal("1") - Decimal(str(win_rate))
+            )
+            if expectancy_r <= 0:
+                red_team_ok = False
+                red_reason = f"historical expectancy <= 0R across {trades} trades"
+        desks.append(DeskVote(
+            "red_team",
+            VoteState.PASS if red_team_ok else VoteState.FAIL,
+            reason=red_reason,
+        ))
+
+        proposed_stance = Stance.BUY if row["side"] == "BUY" else Stance.SELL
+        consensus_decision = consensus.evaluate(desks, proposed_action=proposed_stance)
+        research_decision = Decision.TRADE if row.get("fresh") else Decision.WAIT
+        independent_decision = (
+            Decision.TRADE if consensus_decision.allowed else Decision.WAIT
+        )
+
+        plan_result = None
+        plan_reasons: list[str] = []
+        stop = Decimal(str(row["stop_loss"])) if row.get("stop_loss") else None
+        target = Decimal(str(row["take_profit"])) if row.get("take_profit") else None
+        if stop is None or target is None or entry <= 0:
+            plan_reasons.append("entry, stop and target must all be fixed before execution")
+        else:
+            plan = TradePlan(
+                symbol=row["symbol"],
+                side=GovernanceSide.LONG if row["side"] == "BUY" else GovernanceSide.SHORT,
+                entry=entry,
+                stop=stop,
+                target=target,
+                quantity=int(quantity),
+                confidence=confidence,
+                thesis=row.get("reason") or "strategy signal",
+            )
+            plan_result = plan_gate.evaluate(
+                plan,
+                research_decision=research_decision,
+                independent_decision=independent_decision,
+            )
+            plan_reasons.extend(plan_result.reasons)
+
+        floor_result = None
+        proposed_loss_base = Decimal("0")
+        if plan_result is not None and plan_result.allowed and consensus_decision.allowed:
+            proposed_loss_base = (
+                plan_result.maximum_planned_loss
+                * feed.fx.rate(row["currency"], engine.config.base_currency)
+            )
+            floor_result = floor.capacity(
+                nav=starting_nav,
+                protected_value=protected_floor,
+                committed_risk=committed_risk,
+                proposed_loss=proposed_loss_base,
+            )
+
+        eligible = bool(
+            enabled
+            and consensus_decision.allowed
+            and plan_result is not None
+            and plan_result.allowed
+            and floor_result is not None
+            and floor_result.allowed
+        )
+        if eligible:
+            committed_risk += proposed_loss_base
+            approved += 1
+
+        reasons.extend(consensus_decision.reasons)
+        reasons.extend(plan_reasons)
+        if floor_result is not None and not floor_result.allowed:
+            reasons.append(floor_result.detail)
+        if not enabled:
+            reasons.append("governance disabled in configuration")
+
+        row["governance"] = {
+            "eligible": eligible,
+            "status": "APPROVED" if eligible else "WAIT",
+            "code": (
+                "ok"
+                if eligible
+                else (
+                    consensus_decision.code
+                    if not consensus_decision.allowed
+                    else (
+                        plan_result.code
+                        if plan_result is not None and not plan_result.allowed
+                        else (
+                            floor_result.code
+                            if floor_result is not None and not floor_result.allowed
+                            else "missing_strict_plan"
+                        )
+                    )
+                )
+            ),
+            "reasons": reasons,
+            "confidence": _s(confidence),
+            "desks": [
+                {
+                    "desk": vote.desk,
+                    "state": vote.state.value,
+                    "stance": vote.stance.value,
+                    "reason": vote.reason,
+                }
+                for vote in desks
+            ],
+            "plan": {
+                "reward_risk": (
+                    _s(plan_result.reward_risk) if plan_result is not None else None
+                ),
+                "risk_per_unit": (
+                    _s(plan_result.risk_per_unit) if plan_result is not None else None
+                ),
+                "maximum_planned_loss": (
+                    _s(plan_result.maximum_planned_loss)
+                    if plan_result is not None
+                    else None
+                ),
+                "maximum_planned_loss_base": (
+                    _s(proposed_loss_base) if proposed_loss_base > 0 else None
+                ),
+            },
+            "floor": {
+                "available_risk_base": (
+                    _s(floor_result.available_risk) if floor_result is not None else None
+                ),
+                "committed_before_base": _s(committed_risk - proposed_loss_base)
+                if eligible
+                else _s(committed_risk),
+            },
+        }
+
+    return {
+        "enabled": enabled,
+        "approved": approved,
+        "reviewed": len(rows),
+        "policy": {
+            "protected_fraction": _s(protected_fraction),
+            "max_risk_sleeve_fraction": _s(max_sleeve),
+            "profit_lock_fraction": _s(profit_lock),
+            "minimum_confidence": _s(min_confidence),
+            "minimum_reward_risk": _s(min_rr),
+        },
+        "starting_nav_base": _s(starting_nav),
+        "protected_floor_base": _s(protected_floor),
+        "committed_risk_base": _s(committed_risk),
+    }
 
 
 def _totals(rows: list[dict], *, only_fresh: bool) -> dict:
@@ -781,6 +1106,7 @@ def build_snapshot(
         _order_row(o, engine, feed, stats, equity_base) for o in engine.pending_orders
     ]
     orders.sort(key=lambda r: (not r["fresh"], r["region"], r["symbol"]))
+    governance = _govern_orders(orders, engine, feed, live_config)
 
     positions = []
     for key, position in sorted(engine.portfolio.open_positions().items()):
@@ -869,6 +1195,7 @@ def build_snapshot(
         ),
         "mechanics": _mechanics(engine, feed),
         "technicals": _technicals(data_root or Path("data/live")),
+        "governance": governance,
         "totals": {
             "signals": _totals(orders, only_fresh=True),
             "positions": _totals(positions, only_fresh=False),
