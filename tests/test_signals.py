@@ -105,6 +105,23 @@ class TestGenerate(unittest.TestCase):
         self.assertEqual(mechanics["daily_loss_limit"], "0.06")
         self.assertGreater(mechanics["sessions"], 0)
 
+    def test_governance_reports_floor_and_existing_risk_budget(self):
+        governance = self.snapshot["governance"]
+        self.assertTrue(governance["enabled"])
+        for field in (
+            "starting_nav_base",
+            "current_nav_base",
+            "protected_floor_base",
+            "existing_committed_risk_base",
+            "committed_risk_base",
+        ):
+            self.assertIn(field, governance)
+            self.assertGreaterEqual(Decimal(governance[field]), Decimal("0"))
+        self.assertLessEqual(
+            Decimal(governance["protected_floor_base"]),
+            Decimal(governance["starting_nav_base"]),
+        )
+
     def test_orders_carry_broker_payloads_for_their_region(self):
         for order in self.snapshot["orders"]:
             self.assertIn(order["side"], ("BUY", "SELL"))
