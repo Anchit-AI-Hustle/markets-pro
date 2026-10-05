@@ -7,6 +7,7 @@ from autotrader.governance.review import (
     ThesisOutcome,
     TradeOutcome,
     review_trade,
+    summarize_reviews,
 )
 from autotrader.governance.trade_plan import Side, TradePlan
 
@@ -82,6 +83,35 @@ class PostTradeReviewTest(unittest.TestCase):
                 self.plan,
                 TradeOutcome(Decimal("100"), Decimal("105"), 0),
             )
+
+
+    def test_single_trade_never_auto_changes_rules(self):
+        review = review_trade(
+            self.plan,
+            TradeOutcome(Decimal("100"), Decimal("90"), 10),
+        )
+        summary = summarize_reviews([review], minimum_sample=20)
+        self.assertEqual(summary.recommendation, "COLLECT_MORE_DATA")
+
+    def test_negative_average_r_after_sample_flags_strategy_review(self):
+        reviews = [
+            review_trade(
+                self.plan,
+                TradeOutcome(Decimal("100"), Decimal("95"), 10),
+            )
+            for _ in range(20)
+        ]
+        summary = summarize_reviews(reviews, minimum_sample=20)
+        self.assertEqual(summary.average_r, Decimal("-1"))
+        self.assertEqual(summary.recommendation, "STRATEGY_REVIEW")
+
+    def test_size_violation_has_execution_priority(self):
+        review = review_trade(
+            self.plan,
+            TradeOutcome(Decimal("100"), Decimal("105"), 11),
+        )
+        summary = summarize_reviews([review])
+        self.assertEqual(summary.recommendation, "HALT_EXECUTION_REVIEW")
 
 
 if __name__ == "__main__":
