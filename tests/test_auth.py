@@ -151,6 +151,22 @@ class ModuleTest(unittest.TestCase):
         self.assertNotIn("localStorage.removeItem('markets-pro.paper.v1')", AUTH_JS)
         self.assertNotIn("localStorage.removeItem('markets-pro.settings.v1')", AUTH_JS)
 
+    def test_paper_buy_fails_closed_without_governance_approval(self):
+        self.assertIn("governance.eligible !== true", PAPER_JS)
+        self.assertIn("WAIT —", PAPER_JS)
+
+    def test_paper_book_enforces_capital_floor_on_reader_sized_order(self):
+        self.assertIn("protected_extra_base", PAPER_JS)
+        self.assertIn("availableLoss", PAPER_JS)
+        self.assertIn("planned loss", PAPER_JS)
+        self.assertIn("deployedNotionalBase", PAPER_JS)
+
+    def test_paper_profit_lock_and_review_are_persisted(self):
+        self.assertIn("profit_lock_fraction", PAPER_JS)
+        self.assertIn("profit_locked_base", PAPER_JS)
+        self.assertIn("r_multiple", PAPER_JS)
+        self.assertIn("thesis_outcome", PAPER_JS)
+
 
 class PageTest(unittest.TestCase):
     def test_page_renders_without_a_project(self):
