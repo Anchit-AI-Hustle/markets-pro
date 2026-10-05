@@ -575,27 +575,42 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
     region_label = REGION_NAMES.get(region_code, order["region"])
     history = order.get("history") or {}
     win_rate = history.get("win_rate")
+    governance = order.get("governance") or {}
+    eligible = governance.get("eligible") is True
+    governance_reasons = governance.get("reasons") or []
+    governance_note = (
+        governance_reasons[0]
+        if governance_reasons
+        else governance.get("code", "governance approval missing")
+    )
 
     # Paper leads deliberately: the reversible, no-credential action is the one
-    # that should be easiest to reach, and the real-money path sits behind it.
-    paper = (
-        f'<button type="button" class="exec big" data-paper-buy="{index}">Paper buy</button>'
-    )
-    if order["region"] == "india":
-        disabled = "" if has_kite_key else (
-            ' disabled title="Add your Kite Publisher api_key to'
-            ' config/live.json to enable one-tap handoff"'
+    # that should be easiest to reach. But governance is fail-closed: a signal
+    # without explicit approval is research output, not an executable order.
+    if eligible:
+        paper = (
+            f'<button type="button" class="exec big" data-paper-buy="{index}">Paper buy</button>'
         )
-        real = (
-            f'<button type="button" class="exec ghost" data-exec="kite:{index}"{disabled}>'
-            "Real &middot; Kite</button>"
-        )
+        if order["region"] == "india":
+            disabled = "" if has_kite_key else (
+                ' disabled title="Add your Kite Publisher api_key to'
+                ' config/live.json to enable one-tap handoff"'
+            )
+            real = (
+                f'<button type="button" class="exec ghost" data-exec="kite:{index}"{disabled}>'
+                "Real &middot; Kite</button>"
+            )
+        else:
+            real = (
+                f'<button type="button" class="exec ghost" data-exec="us:{index}">'
+                "Real &middot; Alpaca</button>"
+            )
+        action = paper + real
     else:
-        real = (
-            f'<button type="button" class="exec ghost" data-exec="us:{index}">'
-            "Real &middot; Alpaca</button>"
+        action = (
+            '<button type="button" class="exec big" disabled>WAIT</button>'
+            '<button type="button" class="exec ghost" disabled>Not approved</button>'
         )
-    action = paper + real
     status = f'<span class="execstatus" data-exec-status="{index}" aria-live="polite"></span>'
 
     hold = order.get("max_holding_days")
@@ -680,6 +695,9 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
   <strong>How long:</strong> {window}{typical_note}.
   <strong>Track record:</strong> {rate_note}{', ' + rr_note if rr_note else ''}.</p>
   <p class="sigtech">Signal detail: {_esc(order.get('reason') or '')}</p>
+  <p class="sigtech"><strong>Governance:</strong> {
+      "APPROVED" if eligible else "WAIT"
+  } &middot; {_esc(governance_note)}</p>
 </article>"""
 
 
@@ -716,7 +734,11 @@ def _signals_section(signals: dict) -> str:
 </div>"""
 
     has_kite_key = bool(signals.get("kite_api_key"))
-    india_fresh = sum(1 for o in orders if o["region"] == "india" and o["fresh"])
+    india_fresh = sum(
+        1 for o in orders
+        if o["region"] == "india" and o["fresh"]
+        and (o.get("governance") or {}).get("eligible") is True
+    )
     basket_all = ""
     if india_fresh >= 2 and has_kite_key:
         basket_all = (
