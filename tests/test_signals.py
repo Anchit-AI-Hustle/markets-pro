@@ -377,6 +377,21 @@ class TestRenderWithSignals(unittest.TestCase):
         html = render_dashboard(self.report, signals=self.signals)
         self.assertIn("resting", html)
 
+    def test_governance_veto_removes_every_execution_action(self):
+        self.signals["orders"][0]["governance"] = {
+            "eligible": False,
+            "status": "WAIT",
+            "code": "veto",
+            "reasons": ["red_team: fail"],
+            "confidence": "0.9",
+        }
+        html = render_dashboard(self.report, signals=self.signals)
+        card = html[html.index('data-sigcard="0"'):html.index("</article>", html.index('data-sigcard="0"'))]
+        self.assertNotIn('data-paper-buy="0"', card)
+        self.assertNotIn('data-exec="kite:0"', card)
+        self.assertIn("WAIT", card)
+        self.assertIn("red_team: fail", card)
+
     def test_reason_text_is_escaped(self):
         self.signals["orders"][0]["reason"] = "<script>alert(1)</script>"
         html = render_dashboard(self.report, signals=self.signals)
