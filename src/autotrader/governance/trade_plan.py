@@ -136,7 +136,10 @@ class TradePlanGate:
             elif any(
                 key in reason
                 for reason in reasons
-                for key in ("entry", "stop", "target", "quantity", "symbol", "thesis", "reward/risk")
+                for key in (
+                    "entry", "stop", "target", "quantity",
+                    "symbol", "thesis", "reward/risk",
+                )
             ):
                 code = "invalid_trade_plan"
             return PlanDecision(
