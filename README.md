@@ -18,8 +18,8 @@ make serve                                         # dashboard at /markets-pro
 ## What is claimed
 
 **Every implemented behaviour is verified correct against hand-computed expected
-values, at a 100% pass rate.** `python verify.py` runs 745 checks and exits
-non-zero if a single one fails. Specifically:
+values, at a 100% pass rate.** `python verify.py` runs the registered verification suite and exits
+non-zero if a single check fails. Specifically:
 
 | Area | What is verified |
 |---|---|
@@ -157,7 +157,7 @@ src/autotrader/
   engine/        the backtest event loop and performance metrics
   persistence/   Postgres/Supabase row mapping and writer
   web/           dashboard rendering and the /markets-pro route
-tests/           745 checks
+tests/           verification suite
 verify.py        the accuracy gate
 ```
 
