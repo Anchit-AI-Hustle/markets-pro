@@ -3027,7 +3027,7 @@ PAPER_JS = """
     var source = (settings && settings.capital) || cfg.starting_cash || {};
     var cash = {};
     Object.keys(source).forEach(function (c) { cash[c] = Number(source[c]) || 0; });
-    return { v: 1, cash: cash, positions: {}, log: [] };
+    return { v: 1, cash: cash, positions: {}, log: [], protected_extra_base: 0 };
   }
 
   function load() {
@@ -3036,6 +3036,7 @@ PAPER_JS = """
       if (!raw) return fresh();
       var state = JSON.parse(raw);
       if (!state || state.v !== 1 || !state.cash) return fresh();
+      if (state.protected_extra_base == null) state.protected_extra_base = 0;
       return state;
     } catch (e) { return fresh(); }
   }
@@ -3055,6 +3056,57 @@ PAPER_JS = """
   }
   function today() { return new Date().toISOString().slice(0, 10); }
 
+  function baseUsd(amount, currency) {
+    if (currency === 'USD') return Number(amount) || 0;
+    var usdinr = Number(cfg.usdinr) || 0;
+    return usdinr ? (Number(amount) || 0) / usdinr : 0;
+  }
+
+  function startingBase(settings) {
+    var capital = (settings && settings.capital) || cfg.starting_cash || {};
+    var total = 0;
+    Object.keys(capital).forEach(function (ccy) {
+      total += baseUsd(capital[ccy], ccy);
+    });
+    return total;
+  }
+
+  function currentNavBase(state) {
+    var total = 0;
+    Object.keys(state.cash || {}).forEach(function (ccy) {
+      total += baseUsd(state.cash[ccy], ccy);
+    });
+    Object.keys(state.positions || {}).forEach(function (key) {
+      var pos = state.positions[key];
+      var mark = Number(livePrice(pos.yahoo) || pos.cost);
+      total += baseUsd(mark * pos.qty, pos.currency);
+    });
+    return total;
+  }
+
+  function committedRiskBase(state) {
+    var total = 0;
+    Object.keys(state.positions || {}).forEach(function (key) {
+      var pos = state.positions[key];
+      if (!pos.stop) return;
+      total += baseUsd(Math.abs(Number(pos.cost) - Number(pos.stop)) * pos.qty, pos.currency);
+    });
+    return total;
+  }
+
+  function deployedNotionalBase(state) {
+    var total = 0;
+    Object.keys(state.positions || {}).forEach(function (key) {
+      var pos = state.positions[key];
+      total += baseUsd(Number(pos.cost) * pos.qty, pos.currency);
+    });
+    return total;
+  }
+
+  function governancePolicy() {
+    return ((cfg.governance || {}).policy || {});
+  }
+
   // Cap check runs against this browser's own paper log for today, mirroring
   // how the live executors check the broker's order log.
   function spentToday(state, currency) {
@@ -3068,6 +3120,11 @@ PAPER_JS = """
   }
 
   function buy(order) {
+    var governance = order.governance || {};
+    if (governance.eligible !== true) {
+      var why = (governance.reasons || [governance.code || 'approval missing'])[0];
+      return {ok: false, message: 'WAIT — ' + why};
+    }
     var settings = window.__mpSettings && window.__mpSettings.read();
     if (!settings) {
       return {ok: false, message: 'set how much you invest with first'};
@@ -3082,6 +3139,33 @@ PAPER_JS = """
     }
     var cost = price * qty;
     var cap = window.__mpSettings.capFor(settings, ccy);
+    var stop = Number(order.stop_loss || 0);
+    if (!stop || stop <= 0) {
+      return {ok: false, message: 'WAIT — no fixed stop, so maximum planned loss is unknown'};
+    }
+
+    var policy = governancePolicy();
+    var protectedFraction = Number(policy.protected_fraction || 0.90);
+    var sleeveFraction = Number(policy.max_risk_sleeve_fraction || 0.05);
+    var initialBase = startingBase(settings);
+    var navBase = currentNavBase(state);
+    var protectedFloor = initialBase * protectedFraction +
+      Number(state.protected_extra_base || 0);
+    var freeSurplus = Math.max(0, navBase - protectedFloor);
+    var availableLoss = Math.max(
+      0,
+      Math.min(freeSurplus, navBase * sleeveFraction) - committedRiskBase(state)
+    );
+    var proposedLossBase = baseUsd(Math.abs(price - stop) * qty, ccy);
+    if (proposedLossBase > availableLoss + 1e-9) {
+      return {ok: false, message: 'WAIT — planned loss ' + money(proposedLossBase) +
+        ' USD exceeds available risk ' + money(availableLoss) + ' USD'};
+    }
+
+    var proposedNotionalBase = baseUsd(cost, ccy);
+    if (deployedNotionalBase(state) + proposedNotionalBase > freeSurplus + 1e-9) {
+      return {ok: false, message: 'WAIT — this would use capital inside the protected floor'};
+    }
 
     if (cap > 0 && spentToday(state, ccy) + cost > cap) {
       return {ok: false, message: 'that is ' + money(cost) + ' ' + ccy +
@@ -3101,11 +3185,24 @@ PAPER_JS = """
       state.positions[order.key] = {
         key: order.key, symbol: order.symbol, name: order.name, yahoo: order.yahoo,
         region: order.region, currency: ccy, qty: qty, cost: price,
-        stop: order.stop_loss, target: order.take_profit, opened: today()
+        stop: order.stop_loss, target: order.take_profit, opened: today(),
+        plan: {
+          entry: price,
+          stop: Number(order.stop_loss),
+          target: Number(order.take_profit),
+          quantity: qty,
+          thesis: order.reason || '',
+          confidence: governance.confidence || null,
+          planned_loss_base: proposedLossBase
+        },
+        governance: governance
       };
     }
     state.log.push({ts: new Date().toISOString(), action: 'buy', key: order.key,
-                    symbol: order.symbol, qty: qty, price: price, currency: ccy});
+                    symbol: order.symbol, qty: qty, price: price, currency: ccy,
+                    governance: governance.status || 'APPROVED',
+                    planned_loss_base: proposedLossBase,
+                    thesis: order.reason || ''});
     save(state);
     render();
     return {ok: true, message: 'paper bought ' + qty + ' ' + order.symbol};
@@ -3116,10 +3213,35 @@ PAPER_JS = """
     var pos = state.positions[key];
     if (!pos) return;
     var price = Number(livePrice(pos.yahoo) || pos.cost);
+    var pnl = (price - pos.cost) * pos.qty;
+    var pnlBase = baseUsd(pnl, pos.currency);
+    var policy = governancePolicy();
+    var lockFraction = Number(policy.profit_lock_fraction || 0.75);
+    if (pnlBase > 0) {
+      state.protected_extra_base = Number(state.protected_extra_base || 0) +
+        pnlBase * lockFraction;
+    }
+    var plannedRiskBase = pos.plan ? Number(pos.plan.planned_loss_base || 0) : 0;
+    var thesisOutcome = 'unresolved';
+    if (pos.target && price >= Number(pos.target)) thesisOutcome = 'confirmed';
+    if (pos.stop && price <= Number(pos.stop)) thesisOutcome = 'invalidated';
+    var review = {
+      thesis: pos.plan ? pos.plan.thesis : '',
+      planned_entry: pos.plan ? pos.plan.entry : pos.cost,
+      actual_exit: price,
+      planned_stop: pos.stop || null,
+      planned_target: pos.target || null,
+      planned_quantity: pos.plan ? pos.plan.quantity : pos.qty,
+      actual_quantity: pos.qty,
+      net_pnl_base: pnlBase,
+      r_multiple: plannedRiskBase > 0 ? pnlBase / plannedRiskBase : null,
+      thesis_outcome: thesisOutcome,
+      profit_locked_base: pnlBase > 0 ? pnlBase * lockFraction : 0
+    };
     state.cash[pos.currency] = (state.cash[pos.currency] || 0) + price * pos.qty;
     state.log.push({ts: new Date().toISOString(), action: 'sell', key: key, symbol: pos.symbol,
-                    qty: pos.qty, price: price, currency: pos.currency,
-                    pnl: (price - pos.cost) * pos.qty});
+                    qty: pos.qty, price: price, currency: pos.currency, pnl: pnl,
+                    review: review});
     delete state.positions[key];
     save(state);
     render();
@@ -3174,7 +3296,9 @@ PAPER_JS = """
       tcell('Holdings at market', marketValue,
             keys.length + (keys.length === 1 ? ' position' : ' positions'), '') +
       tcell('Open profit / loss', openPnl, 'unrealised', tone(openPnl), true) +
-      tcell('Realised profit / loss', realised, 'from closed paper trades', tone(realised), true);
+      tcell('Realised profit / loss', realised, 'from closed paper trades', tone(realised), true) +
+      tcell('Protected profit', Number(state.protected_extra_base || 0),
+            'locked from future paper risk', '');
 
     var posEl = document.querySelector('[data-paper-positions]');
     if (!keys.length) {
@@ -3224,6 +3348,14 @@ PAPER_JS = """
           ? '<span class="' + tone(row.pnl) + '">' + (row.pnl >= 0 ? '+' : '\\u2212') +
             money(Math.abs(row.pnl)) + '</span>'
           : '&mdash;';
+        var review = '&mdash;';
+        if (row.review) {
+          var r = row.review.r_multiple;
+          review = esc(row.review.thesis_outcome || 'unresolved') +
+            (r == null ? '' : ' &middot; ' + Number(r).toFixed(2) + 'R');
+        } else if (row.governance) {
+          review = esc(row.governance);
+        }
         return '<tr><td>' + esc(row.ts.replace('T', ' ').slice(0, 16)) + '</td>' +
           '<td><span class="tag ' + (row.action === 'buy' ? 'side-buy' : 'side-sell') + '">' +
             row.action.toUpperCase() + '</span></td>' +
@@ -3231,12 +3363,12 @@ PAPER_JS = """
           '<td class="num">' + row.qty + '</td>' +
           '<td class="num">' + money(row.price) + ' <span class="ccy">' +
             esc(row.currency) + '</span></td>' +
-          '<td class="num">' + pnl + '</td></tr>';
+          '<td class="num">' + pnl + '</td><td>' + review + '</td></tr>';
       }).join('');
       logEl.innerHTML = '<table><thead><tr><th scope="col">When</th><th scope="col">Action</th>
       <th scope="col">Instrument</th>' +
         '<th class="num" scope="col">Qty</th><th class="num" scope="col">Price</th>' +
-        '<th class="num" scope="col">Realised</th>' +
+        '<th class="num" scope="col">Realised</th><th scope="col">Review</th>' +
         '</tr></thead><tbody>' + entries + '</tbody></table>';
     }
 
