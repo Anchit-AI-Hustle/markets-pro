@@ -142,17 +142,47 @@ first write auditable votes and run through paper/execution simulation. Only a
 separate, explicit deployment decision may expose an approved order to the
 existing broker layer.
 
-## Next integration steps
+## What is wired now
 
-1. Generate a signed/auditable desk-vote packet for every candidate.
-2. Feed the current data-quality result into the mandatory data vote.
-3. Feed portfolio heat, drawdown and concentration into the mandatory risk
-   votes.
-4. Calculate proposed maximum loss before quantity is released.
-5. Run the capital-floor kernel before the existing RiskManager.
-6. Persist every veto/approval so rejected trades are as visible as fills.
-7. Persist the immutable pre-trade thesis/plan and mandatory post-trade review.
-8. Calibrate the confidence threshold from out-of-sample/paper results rather
+The live snapshot now carries a governance packet for every pending order. It
+uses the strategy signal as research input and independently checks data
+freshness/sanity, the existing risk state, portfolio rules, liquidity,
+executability and an adversarial red-team rule. Missing or failed mandatory
+checks produce WAIT.
+
+For new risk, the strict plan gate requires entry, stop, target, size, thesis
+and minimum confidence, then computes planned loss before the capital-floor
+kernel can release risk capacity. Risk-reducing exits bypass entry-only thesis,
+reward/risk and capital-floor gates; they remain subject to data/venue/execution
+constraints so a safety system cannot accidentally prevent a close.
+
+The browser paper book re-evaluates the capital floor using the reader's own
+capital and already-open paper positions. Positive realised paper P&L is split
+according to the configured profit-lock fraction, and every paper close records
+the original thesis/plan beside the actual outcome and R-multiple.
+
+Signal cards fail closed: an unapproved order exposes no paper or real execution
+button. An approved SELL signal closes an existing paper holding rather than
+opening the opposite direction.
+
+## Boundary before real-money automation
+
+The broker relay remains a separate server-side safety boundary and live orders
+remain off by default. The dashboard will not expose an execution button for an
+unapproved snapshot order, but browser state is not a security credential and
+must never be treated as one.
+
+Therefore **do not enable BROKER_ORDERS_LIVE for autonomous use** until a
+server-side approval ticket can be recomputed or cryptographically verified
+against the canonical decision packet. Paper trading is the governed execution
+path in this implementation.
+
+Before that live boundary is crossed:
+
+1. Forward-test the full governed paper path and record approvals, vetoes,
+   realised outcomes, slippage assumptions and drawdown.
+2. Calibrate confidence thresholds from out-of-sample/paper evidence rather
    than treating model confidence as a probability of profit.
-9. Backtest and then paper-trade the entire governance path before considering
-   any live execution.
+3. Add a server-generated, expiring approval token bound to user, symbol,
+   direction, quantity and decision version before a broker BUY can be routed.
+4. Keep exits risk-reducing and non-overridable by research agents.
