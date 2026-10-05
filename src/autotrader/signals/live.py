@@ -445,14 +445,9 @@ def _govern_orders(
             }
             continue
 
-        entry = (
-            Decimal(str(row["reference_price"]))
-            if row.get("reference_price")
-            else Decimal("0")
-        )
+        entry = Decimal(str(row["reference_price"])) if row.get("reference_price") else Decimal("0")
         quantity = Decimal(str(row["quantity"]))
         confidence = Decimal(str(row.get("signal_strength") or "0"))
-        is_exit = order.reason.startswith("exit:") or engine._is_reducing(order)
         series = feed.data.get(row["key"])
         latest_day = series.last_day.isoformat() if series is not None and len(series) else ""
         warnings = [
@@ -460,17 +455,14 @@ def _govern_orders(
             for issue in check_sanity(entry_for_key(row["key"]), series)
             if latest_day and latest_day in issue.detail
         ]
-        data_ok = is_exit or (bool(row.get("fresh")) and not warnings)
+        data_ok = bool(row.get("fresh")) and not warnings
         desks.append(DeskVote(
             "data",
             VoteState.PASS if data_ok else VoteState.FAIL,
-            reason=(
-                "risk-reducing exit; stale research cannot veto a close"
-                if is_exit
-                else ("; ".join(warnings) or ("fresh" if data_ok else "stale signal"))
-            ),
+            reason="; ".join(warnings) or ("fresh" if data_ok else "stale signal"),
         ))
 
+        is_exit = order.reason.startswith("exit:") or engine._is_reducing(order)
         risk_ok = is_exit or not engine.risk.entries_halted
         desks.append(DeskVote(
             "risk",
