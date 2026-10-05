@@ -588,9 +588,17 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
     # that should be easiest to reach. But governance is fail-closed: a signal
     # without explicit approval is research output, not an executable order.
     if eligible:
-        paper = (
-            f'<button type="button" class="exec big" data-paper-buy="{index}">Paper buy</button>'
-        )
+        if side == "BUY":
+            paper = (
+                f'<button type="button" class="exec big" '
+                f'data-paper-buy="{index}">Paper buy</button>'
+            )
+        else:
+            paper = (
+                f'<button type="button" class="exec big" '
+                f'data-paper-signal-sell="{_esc(order.get("key", ""))}">'
+                "Paper close</button>"
+            )
         if order["region"] == "india":
             disabled = "" if has_kite_key else (
                 ' disabled title="Add your Kite Publisher api_key to'
@@ -3211,7 +3219,7 @@ PAPER_JS = """
   function sell(key) {
     var state = load();
     var pos = state.positions[key];
-    if (!pos) return;
+    if (!pos) return {ok: false, message: 'no open paper position to close'};
     var price = Number(livePrice(pos.yahoo) || pos.cost);
     var pnl = (price - pos.cost) * pos.qty;
     var pnlBase = baseUsd(pnl, pos.currency);
@@ -3245,6 +3253,7 @@ PAPER_JS = """
     delete state.positions[key];
     save(state);
     render();
+    return {ok: true, message: 'paper closed ' + pos.symbol};
   }
 
   function livePrice(yahoo) {
@@ -3453,6 +3462,13 @@ PAPER_JS = """
       var result = buy(order);
       var status = buyBtn.parentNode.querySelector('.execstatus');
       if (status) status.textContent = result.message;
+      return;
+    }
+    var signalSell = event.target.closest('[data-paper-signal-sell]');
+    if (signalSell) {
+      var closeResult = sell(signalSell.getAttribute('data-paper-signal-sell'));
+      var closeStatus = signalSell.parentNode.querySelector('.execstatus');
+      if (closeStatus) closeStatus.textContent = closeResult.message;
       return;
     }
     var sellBtn = event.target.closest('[data-paper-sell]');
