@@ -3233,11 +3233,9 @@ PAPER_JS = """
     return {ok: true, message: 'paper bought ' + qty + ' ' + order.symbol};
   }
 
-  function sell(key) {
-    var state = load();
+  function closePosition(state, key, price, trigger) {
     var pos = state.positions[key];
-    if (!pos) return {ok: false, message: 'no open paper position to close'};
-    var price = Number(livePrice(pos.yahoo) || pos.cost);
+    if (!pos) return null;
     var pnl = (price - pos.cost) * pos.qty;
     var pnlBase = baseUsd(pnl, pos.currency);
     var policy = governancePolicy();
@@ -3261,16 +3259,50 @@ PAPER_JS = """
       net_pnl_base: pnlBase,
       r_multiple: plannedRiskBase > 0 ? pnlBase / plannedRiskBase : null,
       thesis_outcome: thesisOutcome,
+      exit_trigger: trigger || 'manual',
       profit_locked_base: pnlBase > 0 ? pnlBase * lockFraction : 0
     };
     state.cash[pos.currency] = (state.cash[pos.currency] || 0) + price * pos.qty;
-    state.log.push({ts: new Date().toISOString(), action: 'sell', key: key, symbol: pos.symbol,
-                    qty: pos.qty, price: price, currency: pos.currency, pnl: pnl,
-                    review: review});
+    state.log.push({ts: new Date().toISOString(), action: 'sell', key: key,
+                    symbol: pos.symbol, qty: pos.qty, price: price,
+                    currency: pos.currency, pnl: pnl, review: review});
     delete state.positions[key];
+    return pos;
+  }
+
+  function sell(key, trigger) {
+    var state = load();
+    var pos = state.positions[key];
+    if (!pos) return {ok: false, message: 'no open paper position to close'};
+    var price = Number(livePrice(pos.yahoo) || pos.cost);
+    closePosition(state, key, price, trigger || 'manual');
     save(state);
     render();
     return {ok: true, message: 'paper closed ' + pos.symbol};
+  }
+
+  function riskSweep() {
+    var state = load();
+    var keys = Object.keys(state.positions || {});
+    var closed = 0;
+    keys.forEach(function (key) {
+      var pos = state.positions[key];
+      if (!pos) return;
+      var price = Number(livePrice(pos.yahoo));
+      if (!price) return;
+      if (pos.stop && price <= Number(pos.stop)) {
+        closePosition(state, key, price, 'stop');
+        closed += 1;
+      } else if (pos.target && price >= Number(pos.target)) {
+        closePosition(state, key, price, 'target');
+        closed += 1;
+      }
+    });
+    if (closed) {
+      save(state);
+      render();
+    }
+    return closed;
   }
 
   function livePrice(yahoo) {
@@ -3483,7 +3515,9 @@ PAPER_JS = """
     }
     var signalSell = event.target.closest('[data-paper-signal-sell]');
     if (signalSell) {
-      var closeResult = sell(signalSell.getAttribute('data-paper-signal-sell'));
+      var closeResult = sell(
+        signalSell.getAttribute('data-paper-signal-sell'), 'signal_exit'
+      );
       var closeStatus = signalSell.parentNode.querySelector('.execstatus');
       if (closeStatus) closeStatus.textContent = closeResult.message;
       return;
@@ -3500,6 +3534,7 @@ PAPER_JS = """
   });
 
   window.__mpPaperRender = render;
+  window.__mpPaperRiskSweep = riskSweep;
   render();
 })();
 """
@@ -5226,8 +5261,15 @@ SIGNALS_JS = """
       .then(function (body) {
         if (!body || !body.quotes) return;
         applyQuotes(body.quotes);
-        // Re-render the paper book so its marks and stop flags use these prices.
-        if (window.__mpPaperRender) { window.__mpPaperRender(); applyQuotes(body.quotes); }
+        // Risk is allowed to act without a second opinion in the paper book.
+        // A delayed quote through a stop closes at the observed quote, not at
+        // the prettier stop price, so gaps/slippage remain visible.
+        if (window.__mpPaperRiskSweep) window.__mpPaperRiskSweep();
+        // Re-render marks after any automatic close.
+        if (window.__mpPaperRender) {
+          window.__mpPaperRender();
+          applyQuotes(body.quotes);
+        }
       })
       .catch(function () { /* offline or proxy down: last close already shown */ });
   }
