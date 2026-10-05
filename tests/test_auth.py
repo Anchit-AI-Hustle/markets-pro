@@ -167,6 +167,12 @@ class ModuleTest(unittest.TestCase):
         self.assertIn("r_multiple", PAPER_JS)
         self.assertIn("thesis_outcome", PAPER_JS)
 
+    def test_paper_risk_can_auto_close_stop_or_target(self):
+        self.assertIn("__mpPaperRiskSweep", PAPER_JS)
+        self.assertIn("closePosition(state, key, price, 'stop')", PAPER_JS)
+        self.assertIn("closePosition(state, key, price, 'target')", PAPER_JS)
+        self.assertIn("exit_trigger", PAPER_JS)
+
 
     def test_real_execution_handler_rechecks_governance(self):
         self.assertIn("order.governance.eligible !== true", SIGNALS_JS)
