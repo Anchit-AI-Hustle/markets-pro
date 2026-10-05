@@ -421,17 +421,21 @@ def _govern_orders(
             reason="; ".join(warnings) or ("fresh" if data_ok else "stale signal"),
         ))
 
-        risk_ok = not engine.risk.entries_halted
+        is_exit = order.reason.startswith("exit:") or engine._is_reducing(order)
+        risk_ok = is_exit or not engine.risk.entries_halted
         desks.append(DeskVote(
             "risk",
             VoteState.PASS if risk_ok else VoteState.FAIL,
-            reason="" if risk_ok else engine.risk.state.halt_reason,
+            reason=(
+                "risk-reducing exit"
+                if is_exit
+                else ("" if risk_ok else engine.risk.state.halt_reason)
+            ),
         ))
 
         probe = RiskManager(engine.config.risk)
         probe.state = deepcopy(engine.risk.state)
         market = engine.market_for(order.instrument)
-        is_exit = order.reason.startswith("exit:") or engine._is_reducing(order)
         portfolio_decision = probe.check(
             order,
             day=order.created_on,
@@ -458,14 +462,21 @@ def _govern_orders(
             engine.config.sizing.max_volume_participation,
             engine.config.execution.max_volume_participation,
         )
-        liquidity_ok = participation is not None and participation <= liquidity_limit
+        liquidity_ok = (
+            is_exit
+            or (participation is not None and participation <= liquidity_limit)
+        )
         desks.append(DeskVote(
             "liquidity",
             VoteState.PASS if liquidity_ok else VoteState.FAIL,
             reason=(
-                f"participation {participation:.4%} <= {liquidity_limit:.4%}"
-                if participation is not None
-                else "average volume unavailable"
+                "risk-reducing exit; liquidity does not veto"
+                if is_exit
+                else (
+                    f"participation {participation:.4%} <= {liquidity_limit:.4%}"
+                    if participation is not None
+                    else "average volume unavailable"
+                )
             ),
         ))
 
@@ -485,11 +496,20 @@ def _govern_orders(
         win_rate = history.get("win_rate")
         trades = int(history.get("trades") or 0)
         red_team_ok = True
-        red_reason = "no deterministic objection"
-        if warnings:
+        red_reason = (
+            "risk-reducing exit; thesis veto not applicable"
+            if is_exit
+            else "no deterministic objection"
+        )
+        if warnings and not is_exit:
             red_team_ok = False
             red_reason = "latest data carries a sanity warning"
-        elif rr_value is not None and win_rate is not None and trades >= 20:
+        elif (
+            not is_exit
+            and rr_value is not None
+            and win_rate is not None
+            and trades >= 20
+        ):
             expectancy_r = Decimal(str(win_rate)) * rr_value - (
                 Decimal("1") - Decimal(str(win_rate))
             )
@@ -504,6 +524,38 @@ def _govern_orders(
 
         proposed_stance = Stance.BUY if row["side"] == "BUY" else Stance.SELL
         consensus_decision = consensus.evaluate(desks, proposed_action=proposed_stance)
+
+        # A risk-reducing exit is never forced back through entry-thesis,
+        # reward/risk or capital-floor gates. Those controls exist to stop new
+        # risk; using them to block a close would invert their purpose.
+        if is_exit:
+            eligible = bool(enabled and consensus_decision.allowed)
+            reasons.extend(consensus_decision.reasons)
+            if not enabled:
+                reasons.append("governance disabled in configuration")
+            if eligible:
+                approved += 1
+            row["governance"] = {
+                "eligible": eligible,
+                "status": "APPROVED" if eligible else "WAIT",
+                "code": "risk_reduction" if eligible else consensus_decision.code,
+                "reasons": reasons,
+                "confidence": None,
+                "desks": [
+                    {
+                        "desk": vote.desk,
+                        "state": vote.state.value,
+                        "stance": vote.stance.value,
+                        "reason": vote.reason,
+                    }
+                    for vote in desks
+                ],
+                "plan": None,
+                "floor": None,
+                "risk_reducing_exit": True,
+            }
+            continue
+
         research_decision = Decision.TRADE if row.get("fresh") else Decision.WAIT
         independent_decision = (
             Decision.TRADE if consensus_decision.allowed else Decision.WAIT
