@@ -5117,7 +5117,10 @@ SIGNALS_JS = """
       if (target === 'kite:all') {
         var basket = [];
         (cfg.orders || []).forEach(function (order) {
-          if (order.region === 'india' && order.fresh && order.kite) basket.push(order.kite);
+          var approved = order.governance && order.governance.eligible === true;
+          if (approved && order.region === 'india' && order.fresh && order.kite) {
+            basket.push(order.kite);
+          }
         });
         kiteBasket(basket);
         return;
@@ -5125,6 +5128,11 @@ SIGNALS_JS = """
       var parts = target.split(':');
       var order = (cfg.orders || [])[Number(parts[1])];
       if (!order) return;
+      if (!order.governance || order.governance.eligible !== true) {
+        var denied = document.querySelector('[data-exec-status="' + parts[1] + '"]');
+        if (denied) denied.textContent = 'WAIT — governance approval missing';
+        return;
+      }
       if (parts[0] === 'kite' && order.kite) kiteBasket([order.kite]);
       if (parts[0] === 'us' && order.alpaca) {
         usExecute(order, document.querySelector('[data-exec-status="' + parts[1] + '"]'));
