@@ -18,8 +18,8 @@ make serve                                         # dashboard at /markets-pro
 ## What is claimed
 
 **Every implemented behaviour is verified correct against hand-computed expected
-values, at a 100% pass rate.** `python verify.py` runs 715 checks and exits
-non-zero if a single one fails. Specifically:
+values, at a 100% pass rate.** `python verify.py` runs the registered verification suite and exits
+non-zero if a single check fails. Specifically:
 
 | Area | What is verified |
 |---|---|
@@ -106,6 +106,21 @@ signals, unless rejections are visible.
 
 ---
 
+## Capital-floor governance
+
+A deterministic governance layer can sit above the existing strategy/risk stack.
+It has two jobs: keep segregated protected capital outside the trading sleeve,
+and fail closed when mandatory research/risk desks are missing, degraded, veto
+a candidate, or disagree on direction. AI-generated confidence never overrides
+either rule.
+
+This layer does **not** turn trading into a zero-loss activity and does not enable
+live broker execution. It makes the loss budget and decision permissions
+explicit and testable. Research and the independent decision component must both
+say TRADE; low confidence, disagreement, or an invalid entry/stop/target/size
+returns WAIT. Every closed trade can then be reviewed against the immutable
+pre-trade thesis and plan. See [docs/AGENT-FLOOR.md](docs/AGENT-FLOOR.md).
+
 ## Regional rules modelled
 
 | | India | United States | China | Russia |
@@ -137,11 +152,12 @@ src/autotrader/
                  relative momentum, independent of either trading book
   portfolio/     FIFO positions, multi-currency ledger, position sizing
   risk/          pre-trade limits, kill-switches, exit engine
+  governance/    capital floor, independent decision, strict plan gate, review
   execution/     orders, regional cost models, slippage, fill simulator
   engine/        the backtest event loop and performance metrics
   persistence/   Postgres/Supabase row mapping and writer
   web/           dashboard rendering and the /markets-pro route
-tests/           715 checks
+tests/           verification suite
 verify.py        the accuracy gate
 ```
 

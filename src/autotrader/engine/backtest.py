@@ -134,6 +134,10 @@ class BacktestEngine:
         self._pending_exit_reason: dict[str, str] = {}
         #: Protective levels for an entry order, held until its fill arrives.
         self._pending_meta: dict[str, tuple] = {}
+        #: Research metadata for pending signals. This is deliberately separate
+        #: from execution metadata so governance can audit why a trade existed
+        #: without changing how fills or exits behave.
+        self._pending_signal_meta: dict[str, dict] = {}
 
     # -- helpers ----------------------------------------------------------
     def fx_on(self, day: date) -> FXRates:
@@ -568,6 +572,13 @@ class BacktestEngine:
                 signal.max_holding_days,
                 signal.trailing_stop_pct,
             )
+
+        self._pending_signal_meta[key] = {
+            "strength": signal.strength,
+            "score": signal.score,
+            "diagnostics": dict(signal.diagnostics),
+            "strategy": getattr(signal, "strategy", None),
+        }
 
         return Order(
             instrument=instrument,

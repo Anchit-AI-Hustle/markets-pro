@@ -17,7 +17,7 @@ from autotrader.web.auth import (
     auth_slot,
 )
 from autotrader.web.build import check_csp_allows, supabase_settings
-from autotrader.web.render import PAPER_JS, SETTINGS_JS, render_dashboard
+from autotrader.web.render import PAPER_JS, SETTINGS_JS, SIGNALS_JS, render_dashboard
 
 from .test_web import make_report
 
@@ -150,6 +150,39 @@ class ModuleTest(unittest.TestCase):
     def test_sign_out_does_not_delete_the_reader_state(self):
         self.assertNotIn("localStorage.removeItem('markets-pro.paper.v1')", AUTH_JS)
         self.assertNotIn("localStorage.removeItem('markets-pro.settings.v1')", AUTH_JS)
+
+    def test_paper_buy_fails_closed_without_governance_approval(self):
+        self.assertIn("governance.eligible !== true", PAPER_JS)
+        self.assertIn("WAIT —", PAPER_JS)
+
+    def test_paper_book_enforces_capital_floor_on_reader_sized_order(self):
+        self.assertIn("protected_extra_base", PAPER_JS)
+        self.assertIn("availableLoss", PAPER_JS)
+        self.assertIn("planned loss", PAPER_JS)
+        self.assertIn("deployedNotionalBase", PAPER_JS)
+
+    def test_paper_profit_lock_and_review_are_persisted(self):
+        self.assertIn("profit_lock_fraction", PAPER_JS)
+        self.assertIn("profit_locked_base", PAPER_JS)
+        self.assertIn("r_multiple", PAPER_JS)
+        self.assertIn("thesis_outcome", PAPER_JS)
+
+    def test_paper_risk_can_auto_close_stop_or_target(self):
+        self.assertIn("__mpPaperRiskSweep", PAPER_JS)
+        self.assertIn("closePosition(state, key, price, 'stop')", PAPER_JS)
+        self.assertIn("closePosition(state, key, price, 'target')", PAPER_JS)
+        self.assertIn("exit_trigger", PAPER_JS)
+
+
+    def test_real_execution_handler_rechecks_governance(self):
+        self.assertIn("order.governance.eligible !== true", SIGNALS_JS)
+        self.assertIn("governance approval missing", SIGNALS_JS)
+
+    def test_kite_basket_contains_only_governance_approved_orders(self):
+        self.assertIn(
+            "order.governance && order.governance.eligible === true",
+            SIGNALS_JS,
+        )
 
 
 class PageTest(unittest.TestCase):

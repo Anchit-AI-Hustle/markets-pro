@@ -575,27 +575,50 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
     region_label = REGION_NAMES.get(region_code, order["region"])
     history = order.get("history") or {}
     win_rate = history.get("win_rate")
+    governance = order.get("governance") or {}
+    eligible = governance.get("eligible") is True
+    governance_reasons = governance.get("reasons") or []
+    governance_note = (
+        governance_reasons[0]
+        if governance_reasons
+        else governance.get("code", "governance approval missing")
+    )
 
     # Paper leads deliberately: the reversible, no-credential action is the one
-    # that should be easiest to reach, and the real-money path sits behind it.
-    paper = (
-        f'<button type="button" class="exec big" data-paper-buy="{index}">Paper buy</button>'
-    )
-    if order["region"] == "india":
-        disabled = "" if has_kite_key else (
-            ' disabled title="Add your Kite Publisher api_key to'
-            ' config/live.json to enable one-tap handoff"'
-        )
-        real = (
-            f'<button type="button" class="exec ghost" data-exec="kite:{index}"{disabled}>'
-            "Real &middot; Kite</button>"
-        )
+    # that should be easiest to reach. But governance is fail-closed: a signal
+    # without explicit approval is research output, not an executable order.
+    if eligible:
+        if side == "BUY":
+            paper = (
+                f'<button type="button" class="exec big" '
+                f'data-paper-buy="{index}">Paper buy</button>'
+            )
+        else:
+            paper = (
+                f'<button type="button" class="exec big" '
+                f'data-paper-signal-sell="{_esc(order.get("key", ""))}">'
+                "Paper close</button>"
+            )
+        if order["region"] == "india":
+            disabled = "" if has_kite_key else (
+                ' disabled title="Add your Kite Publisher api_key to'
+                ' config/live.json to enable one-tap handoff"'
+            )
+            real = (
+                f'<button type="button" class="exec ghost" data-exec="kite:{index}"{disabled}>'
+                "Real &middot; Kite</button>"
+            )
+        else:
+            real = (
+                f'<button type="button" class="exec ghost" data-exec="us:{index}">'
+                "Real &middot; Alpaca</button>"
+            )
+        action = paper + real
     else:
-        real = (
-            f'<button type="button" class="exec ghost" data-exec="us:{index}">'
-            "Real &middot; Alpaca</button>"
+        action = (
+            '<button type="button" class="exec big" disabled>WAIT</button>'
+            '<button type="button" class="exec ghost" disabled>Not approved</button>'
         )
-    action = paper + real
     status = f'<span class="execstatus" data-exec-status="{index}" aria-live="polite"></span>'
 
     hold = order.get("max_holding_days")
@@ -680,6 +703,9 @@ def _signal_card(index: int, order: dict, has_kite_key: bool) -> str:
   <strong>How long:</strong> {window}{typical_note}.
   <strong>Track record:</strong> {rate_note}{', ' + rr_note if rr_note else ''}.</p>
   <p class="sigtech">Signal detail: {_esc(order.get('reason') or '')}</p>
+  <p class="sigtech"><strong>Governance:</strong> {
+      "APPROVED" if eligible else "WAIT"
+  } &middot; {_esc(governance_note)}</p>
 </article>"""
 
 
@@ -700,10 +726,27 @@ def _signals_section(signals: dict) -> str:
   <span>{as_of}</span>
 </div>"""
 
+    governance = signals.get("governance") or {}
+    guardbar = ""
+    if governance:
+        approved = int(governance.get("approved") or 0)
+        reviewed = int(governance.get("reviewed") or 0)
+        base = signals.get("base_currency") or "USD"
+        floor = governance.get("protected_floor_base")
+        nav = governance.get("current_nav_base")
+        risk = governance.get("committed_risk_base")
+        guardbar = f"""<div class="notice">
+  <p><strong>Governance gate:</strong> {approved}/{reviewed} pending orders approved.
+  Strategy-book NAV {_money_line(nav, base)} &middot; protected floor
+  {_money_line(floor, base)} &middot; committed stop-risk {_money_line(risk, base)}.
+  The floor is a software risk budget, not a guarantee against gaps, broker failure
+  or market loss.</p>
+</div>"""
+
     if not orders:
         # The commonest state by far: these strategies are meant to sit still.
         # It should read as the system working, with something to do next.
-        return meta + """<div class="quietday">
+        return meta + guardbar + """<div class="quietday">
   <h3>Nothing to buy today</h3>
   <p>This is the normal state, not a fault. These strategies wait for specific
   setups &mdash; a breakout on heavy volume, or a sharp dip inside an uptrend &mdash;
@@ -716,7 +759,11 @@ def _signals_section(signals: dict) -> str:
 </div>"""
 
     has_kite_key = bool(signals.get("kite_api_key"))
-    india_fresh = sum(1 for o in orders if o["region"] == "india" and o["fresh"])
+    india_fresh = sum(
+        1 for o in orders
+        if o["region"] == "india" and o["fresh"]
+        and (o.get("governance") or {}).get("eligible") is True
+    )
     basket_all = ""
     if india_fresh >= 2 and has_kite_key:
         basket_all = (
@@ -736,7 +783,7 @@ def _signals_section(signals: dict) -> str:
         "still confirm it yourself. Live prices are delayed. Nothing here is "
         "advice, and no outcome is guaranteed."
     )
-    return f"""{meta}{basket_all}{cards}
+    return f"""{meta}{guardbar}{basket_all}{cards}
 <p class="caption">{caption}</p>"""
 
 
@@ -3005,7 +3052,7 @@ PAPER_JS = """
     var source = (settings && settings.capital) || cfg.starting_cash || {};
     var cash = {};
     Object.keys(source).forEach(function (c) { cash[c] = Number(source[c]) || 0; });
-    return { v: 1, cash: cash, positions: {}, log: [] };
+    return { v: 1, cash: cash, positions: {}, log: [], protected_extra_base: 0 };
   }
 
   function load() {
@@ -3014,6 +3061,7 @@ PAPER_JS = """
       if (!raw) return fresh();
       var state = JSON.parse(raw);
       if (!state || state.v !== 1 || !state.cash) return fresh();
+      if (state.protected_extra_base == null) state.protected_extra_base = 0;
       return state;
     } catch (e) { return fresh(); }
   }
@@ -3033,6 +3081,57 @@ PAPER_JS = """
   }
   function today() { return new Date().toISOString().slice(0, 10); }
 
+  function baseUsd(amount, currency) {
+    if (currency === 'USD') return Number(amount) || 0;
+    var usdinr = Number(cfg.usdinr) || 0;
+    return usdinr ? (Number(amount) || 0) / usdinr : 0;
+  }
+
+  function startingBase(settings) {
+    var capital = (settings && settings.capital) || cfg.starting_cash || {};
+    var total = 0;
+    Object.keys(capital).forEach(function (ccy) {
+      total += baseUsd(capital[ccy], ccy);
+    });
+    return total;
+  }
+
+  function currentNavBase(state) {
+    var total = 0;
+    Object.keys(state.cash || {}).forEach(function (ccy) {
+      total += baseUsd(state.cash[ccy], ccy);
+    });
+    Object.keys(state.positions || {}).forEach(function (key) {
+      var pos = state.positions[key];
+      var mark = Number(livePrice(pos.yahoo) || pos.cost);
+      total += baseUsd(mark * pos.qty, pos.currency);
+    });
+    return total;
+  }
+
+  function committedRiskBase(state) {
+    var total = 0;
+    Object.keys(state.positions || {}).forEach(function (key) {
+      var pos = state.positions[key];
+      if (!pos.stop) return;
+      total += baseUsd(Math.abs(Number(pos.cost) - Number(pos.stop)) * pos.qty, pos.currency);
+    });
+    return total;
+  }
+
+  function deployedNotionalBase(state) {
+    var total = 0;
+    Object.keys(state.positions || {}).forEach(function (key) {
+      var pos = state.positions[key];
+      total += baseUsd(Number(pos.cost) * pos.qty, pos.currency);
+    });
+    return total;
+  }
+
+  function governancePolicy() {
+    return ((cfg.governance || {}).policy || {});
+  }
+
   // Cap check runs against this browser's own paper log for today, mirroring
   // how the live executors check the broker's order log.
   function spentToday(state, currency) {
@@ -3046,6 +3145,11 @@ PAPER_JS = """
   }
 
   function buy(order) {
+    var governance = order.governance || {};
+    if (governance.eligible !== true) {
+      var why = (governance.reasons || [governance.code || 'approval missing'])[0];
+      return {ok: false, message: 'WAIT — ' + why};
+    }
     var settings = window.__mpSettings && window.__mpSettings.read();
     if (!settings) {
       return {ok: false, message: 'set how much you invest with first'};
@@ -3060,6 +3164,33 @@ PAPER_JS = """
     }
     var cost = price * qty;
     var cap = window.__mpSettings.capFor(settings, ccy);
+    var stop = Number(order.stop_loss || 0);
+    if (!stop || stop <= 0) {
+      return {ok: false, message: 'WAIT — no fixed stop, so maximum planned loss is unknown'};
+    }
+
+    var policy = governancePolicy();
+    var protectedFraction = Number(policy.protected_fraction || 0.90);
+    var sleeveFraction = Number(policy.max_risk_sleeve_fraction || 0.05);
+    var initialBase = startingBase(settings);
+    var navBase = currentNavBase(state);
+    var protectedFloor = initialBase * protectedFraction +
+      Number(state.protected_extra_base || 0);
+    var freeSurplus = Math.max(0, navBase - protectedFloor);
+    var availableLoss = Math.max(
+      0,
+      Math.min(freeSurplus, navBase * sleeveFraction) - committedRiskBase(state)
+    );
+    var proposedLossBase = baseUsd(Math.abs(price - stop) * qty, ccy);
+    if (proposedLossBase > availableLoss + 1e-9) {
+      return {ok: false, message: 'WAIT — planned loss ' + money(proposedLossBase) +
+        ' USD exceeds available risk ' + money(availableLoss) + ' USD'};
+    }
+
+    var proposedNotionalBase = baseUsd(cost, ccy);
+    if (deployedNotionalBase(state) + proposedNotionalBase > freeSurplus + 1e-9) {
+      return {ok: false, message: 'WAIT — this would use capital inside the protected floor'};
+    }
 
     if (cap > 0 && spentToday(state, ccy) + cost > cap) {
       return {ok: false, message: 'that is ' + money(cost) + ' ' + ccy +
@@ -3079,28 +3210,99 @@ PAPER_JS = """
       state.positions[order.key] = {
         key: order.key, symbol: order.symbol, name: order.name, yahoo: order.yahoo,
         region: order.region, currency: ccy, qty: qty, cost: price,
-        stop: order.stop_loss, target: order.take_profit, opened: today()
+        stop: order.stop_loss, target: order.take_profit, opened: today(),
+        plan: {
+          entry: price,
+          stop: Number(order.stop_loss),
+          target: Number(order.take_profit),
+          quantity: qty,
+          thesis: order.reason || '',
+          confidence: governance.confidence || null,
+          planned_loss_base: proposedLossBase
+        },
+        governance: governance
       };
     }
     state.log.push({ts: new Date().toISOString(), action: 'buy', key: order.key,
-                    symbol: order.symbol, qty: qty, price: price, currency: ccy});
+                    symbol: order.symbol, qty: qty, price: price, currency: ccy,
+                    governance: governance.status || 'APPROVED',
+                    planned_loss_base: proposedLossBase,
+                    thesis: order.reason || ''});
     save(state);
     render();
     return {ok: true, message: 'paper bought ' + qty + ' ' + order.symbol};
   }
 
-  function sell(key) {
+  function closePosition(state, key, price, trigger) {
+    var pos = state.positions[key];
+    if (!pos) return null;
+    var pnl = (price - pos.cost) * pos.qty;
+    var pnlBase = baseUsd(pnl, pos.currency);
+    var policy = governancePolicy();
+    var lockFraction = Number(policy.profit_lock_fraction || 0.75);
+    if (pnlBase > 0) {
+      state.protected_extra_base = Number(state.protected_extra_base || 0) +
+        pnlBase * lockFraction;
+    }
+    var plannedRiskBase = pos.plan ? Number(pos.plan.planned_loss_base || 0) : 0;
+    var thesisOutcome = 'unresolved';
+    if (pos.target && price >= Number(pos.target)) thesisOutcome = 'confirmed';
+    if (pos.stop && price <= Number(pos.stop)) thesisOutcome = 'invalidated';
+    var review = {
+      thesis: pos.plan ? pos.plan.thesis : '',
+      planned_entry: pos.plan ? pos.plan.entry : pos.cost,
+      actual_exit: price,
+      planned_stop: pos.stop || null,
+      planned_target: pos.target || null,
+      planned_quantity: pos.plan ? pos.plan.quantity : pos.qty,
+      actual_quantity: pos.qty,
+      net_pnl_base: pnlBase,
+      r_multiple: plannedRiskBase > 0 ? pnlBase / plannedRiskBase : null,
+      thesis_outcome: thesisOutcome,
+      exit_trigger: trigger || 'manual',
+      profit_locked_base: pnlBase > 0 ? pnlBase * lockFraction : 0
+    };
+    state.cash[pos.currency] = (state.cash[pos.currency] || 0) + price * pos.qty;
+    state.log.push({ts: new Date().toISOString(), action: 'sell', key: key,
+                    symbol: pos.symbol, qty: pos.qty, price: price,
+                    currency: pos.currency, pnl: pnl, review: review});
+    delete state.positions[key];
+    return pos;
+  }
+
+  function sell(key, trigger) {
     var state = load();
     var pos = state.positions[key];
-    if (!pos) return;
+    if (!pos) return {ok: false, message: 'no open paper position to close'};
     var price = Number(livePrice(pos.yahoo) || pos.cost);
-    state.cash[pos.currency] = (state.cash[pos.currency] || 0) + price * pos.qty;
-    state.log.push({ts: new Date().toISOString(), action: 'sell', key: key, symbol: pos.symbol,
-                    qty: pos.qty, price: price, currency: pos.currency,
-                    pnl: (price - pos.cost) * pos.qty});
-    delete state.positions[key];
+    closePosition(state, key, price, trigger || 'manual');
     save(state);
     render();
+    return {ok: true, message: 'paper closed ' + pos.symbol};
+  }
+
+  function riskSweep() {
+    var state = load();
+    var keys = Object.keys(state.positions || {});
+    var closed = 0;
+    keys.forEach(function (key) {
+      var pos = state.positions[key];
+      if (!pos) return;
+      var price = Number(livePrice(pos.yahoo));
+      if (!price) return;
+      if (pos.stop && price <= Number(pos.stop)) {
+        closePosition(state, key, price, 'stop');
+        closed += 1;
+      } else if (pos.target && price >= Number(pos.target)) {
+        closePosition(state, key, price, 'target');
+        closed += 1;
+      }
+    });
+    if (closed) {
+      save(state);
+      render();
+    }
+    return closed;
   }
 
   function livePrice(yahoo) {
@@ -3152,7 +3354,9 @@ PAPER_JS = """
       tcell('Holdings at market', marketValue,
             keys.length + (keys.length === 1 ? ' position' : ' positions'), '') +
       tcell('Open profit / loss', openPnl, 'unrealised', tone(openPnl), true) +
-      tcell('Realised profit / loss', realised, 'from closed paper trades', tone(realised), true);
+      tcell('Realised profit / loss', realised, 'from closed paper trades', tone(realised), true) +
+      tcell('Protected profit', Number(state.protected_extra_base || 0),
+            'locked from future paper risk', '');
 
     var posEl = document.querySelector('[data-paper-positions]');
     if (!keys.length) {
@@ -3202,6 +3406,14 @@ PAPER_JS = """
           ? '<span class="' + tone(row.pnl) + '">' + (row.pnl >= 0 ? '+' : '\\u2212') +
             money(Math.abs(row.pnl)) + '</span>'
           : '&mdash;';
+        var review = '&mdash;';
+        if (row.review) {
+          var r = row.review.r_multiple;
+          review = esc(row.review.thesis_outcome || 'unresolved') +
+            (r == null ? '' : ' &middot; ' + Number(r).toFixed(2) + 'R');
+        } else if (row.governance) {
+          review = esc(row.governance);
+        }
         return '<tr><td>' + esc(row.ts.replace('T', ' ').slice(0, 16)) + '</td>' +
           '<td><span class="tag ' + (row.action === 'buy' ? 'side-buy' : 'side-sell') + '">' +
             row.action.toUpperCase() + '</span></td>' +
@@ -3209,12 +3421,12 @@ PAPER_JS = """
           '<td class="num">' + row.qty + '</td>' +
           '<td class="num">' + money(row.price) + ' <span class="ccy">' +
             esc(row.currency) + '</span></td>' +
-          '<td class="num">' + pnl + '</td></tr>';
+          '<td class="num">' + pnl + '</td><td>' + review + '</td></tr>';
       }).join('');
       logEl.innerHTML = '<table><thead><tr><th scope="col">When</th><th scope="col">Action</th>
       <th scope="col">Instrument</th>' +
         '<th class="num" scope="col">Qty</th><th class="num" scope="col">Price</th>' +
-        '<th class="num" scope="col">Realised</th>' +
+        '<th class="num" scope="col">Realised</th><th scope="col">Review</th>' +
         '</tr></thead><tbody>' + entries + '</tbody></table>';
     }
 
@@ -3301,6 +3513,15 @@ PAPER_JS = """
       if (status) status.textContent = result.message;
       return;
     }
+    var signalSell = event.target.closest('[data-paper-signal-sell]');
+    if (signalSell) {
+      var closeResult = sell(
+        signalSell.getAttribute('data-paper-signal-sell'), 'signal_exit'
+      );
+      var closeStatus = signalSell.parentNode.querySelector('.execstatus');
+      if (closeStatus) closeStatus.textContent = closeResult.message;
+      return;
+    }
     var sellBtn = event.target.closest('[data-paper-sell]');
     if (sellBtn) { sell(sellBtn.getAttribute('data-paper-sell')); return; }
     var reset = event.target.closest('[data-paper-reset]');
@@ -3313,6 +3534,7 @@ PAPER_JS = """
   });
 
   window.__mpPaperRender = render;
+  window.__mpPaperRiskSweep = riskSweep;
   render();
 })();
 """
@@ -4930,7 +5152,10 @@ SIGNALS_JS = """
       if (target === 'kite:all') {
         var basket = [];
         (cfg.orders || []).forEach(function (order) {
-          if (order.region === 'india' && order.fresh && order.kite) basket.push(order.kite);
+          var approved = order.governance && order.governance.eligible === true;
+          if (approved && order.region === 'india' && order.fresh && order.kite) {
+            basket.push(order.kite);
+          }
         });
         kiteBasket(basket);
         return;
@@ -4938,6 +5163,11 @@ SIGNALS_JS = """
       var parts = target.split(':');
       var order = (cfg.orders || [])[Number(parts[1])];
       if (!order) return;
+      if (!order.governance || order.governance.eligible !== true) {
+        var denied = document.querySelector('[data-exec-status="' + parts[1] + '"]');
+        if (denied) denied.textContent = 'WAIT — governance approval missing';
+        return;
+      }
       if (parts[0] === 'kite' && order.kite) kiteBasket([order.kite]);
       if (parts[0] === 'us' && order.alpaca) {
         usExecute(order, document.querySelector('[data-exec-status="' + parts[1] + '"]'));
@@ -5031,8 +5261,15 @@ SIGNALS_JS = """
       .then(function (body) {
         if (!body || !body.quotes) return;
         applyQuotes(body.quotes);
-        // Re-render the paper book so its marks and stop flags use these prices.
-        if (window.__mpPaperRender) { window.__mpPaperRender(); applyQuotes(body.quotes); }
+        // Risk is allowed to act without a second opinion in the paper book.
+        // A delayed quote through a stop closes at the observed quote, not at
+        // the prettier stop price, so gaps/slippage remain visible.
+        if (window.__mpPaperRiskSweep) window.__mpPaperRiskSweep();
+        // Re-render marks after any automatic close.
+        if (window.__mpPaperRender) {
+          window.__mpPaperRender();
+          applyQuotes(body.quotes);
+        }
       })
       .catch(function () { /* offline or proxy down: last close already shown */ });
   }

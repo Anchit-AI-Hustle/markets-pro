@@ -62,7 +62,7 @@ class TestGenerate(unittest.TestCase):
 
     def test_snapshot_carries_the_contract_fields(self):
         for field in ("version", "generated_at", "as_of", "equity", "cash",
-                      "daily_cap", "orders", "positions", "usdinr"):
+                      "daily_cap", "orders", "positions", "usdinr", "governance"):
             self.assertIn(field, self.snapshot)
         self.assertEqual(self.snapshot["as_of"]["india"], self.last_day.isoformat())
         self.assertEqual(self.snapshot["usdinr"], "88.0")
@@ -105,6 +105,23 @@ class TestGenerate(unittest.TestCase):
         self.assertEqual(mechanics["daily_loss_limit"], "0.06")
         self.assertGreater(mechanics["sessions"], 0)
 
+    def test_governance_reports_floor_and_existing_risk_budget(self):
+        governance = self.snapshot["governance"]
+        self.assertTrue(governance["enabled"])
+        for field in (
+            "starting_nav_base",
+            "current_nav_base",
+            "protected_floor_base",
+            "existing_committed_risk_base",
+            "committed_risk_base",
+        ):
+            self.assertIn(field, governance)
+            self.assertGreaterEqual(Decimal(governance[field]), Decimal("0"))
+        self.assertLessEqual(
+            Decimal(governance["protected_floor_base"]),
+            Decimal(governance["starting_nav_base"]),
+        )
+
     def test_orders_carry_broker_payloads_for_their_region(self):
         for order in self.snapshot["orders"]:
             self.assertIn(order["side"], ("BUY", "SELL"))
@@ -123,6 +140,10 @@ class TestGenerate(unittest.TestCase):
     def test_default_config_used_when_path_missing(self):
         config = load_live_config(Path("/nonexistent/live.json"))
         self.assertEqual(config["daily_cap"], DEFAULT_LIVE_CONFIG["daily_cap"])
+        self.assertEqual(
+            config["governance"]["protected_fraction"],
+            DEFAULT_LIVE_CONFIG["governance"]["protected_fraction"],
+        )
 
 
 class TestEconomics(unittest.TestCase):
@@ -277,6 +298,14 @@ class TestRenderWithSignals(unittest.TestCase):
             "as_of": {"india": "2026-07-31", "us": "2026-07-31"},
             "daily_cap": {"INR": "20000", "USD": "250"},
             "kite_api_key": "demo_key",
+            "governance": {
+                "enabled": True,
+                "policy": {
+                    "protected_fraction": "0.90",
+                    "max_risk_sleeve_fraction": "0.05",
+                    "profit_lock_fraction": "0.75",
+                },
+            },
             "orders": [
                 {
                     "key": "IN:RELIANCE", "symbol": "RELIANCE", "name": "Reliance Industries",
@@ -297,6 +326,10 @@ class TestRenderWithSignals(unittest.TestCase):
                     "kite": {"exchange": "NSE", "tradingsymbol": "RELIANCE",
                              "transaction_type": "BUY", "quantity": 10,
                              "order_type": "MARKET", "product": "CNC", "readonly": False},
+                    "governance": {
+                        "eligible": True, "status": "APPROVED", "code": "ok",
+                        "reasons": [], "confidence": "0.8",
+                    },
                 },
                 {
                     "key": "US:AAPL", "symbol": "AAPL", "name": "Apple",
@@ -314,6 +347,10 @@ class TestRenderWithSignals(unittest.TestCase):
                     "history": {"trades": 154, "win_rate": 0.44, "median_days_held": 8},
                     "alpaca": {"symbol": "AAPL", "qty": "5", "side": "buy",
                                "type": "market", "time_in_force": "day"},
+                    "governance": {
+                        "eligible": False, "status": "WAIT", "code": "stale",
+                        "reasons": ["stale signal"], "confidence": "0.8",
+                    },
                 },
             ],
             "positions": [
@@ -346,7 +383,9 @@ class TestRenderWithSignals(unittest.TestCase):
         self.assertIn("Your paper portfolio", html)
         self.assertIn("RELIANCE", html)
         self.assertIn('data-exec="kite:0"', html)
-        self.assertIn('data-exec="us:1"', html)
+        self.assertNotIn('data-exec="us:1"', html)
+        self.assertIn("Governance:", html)
+        self.assertIn("WAIT", html)
         self.assertIn('data-quote="NVDA"', html)
         self.assertIn("signals-data", html)
         self.assertIn("STOP HIT", html)  # overlay JS shipped
@@ -354,6 +393,40 @@ class TestRenderWithSignals(unittest.TestCase):
     def test_stale_orders_are_marked(self):
         html = render_dashboard(self.report, signals=self.signals)
         self.assertIn("resting", html)
+
+    def test_governance_veto_removes_every_execution_action(self):
+        self.signals["orders"][0]["governance"] = {
+            "eligible": False,
+            "status": "WAIT",
+            "code": "veto",
+            "reasons": ["red_team: fail"],
+            "confidence": "0.9",
+        }
+        html = render_dashboard(self.report, signals=self.signals)
+        card = html[html.index('data-sigcard="0"'):html.index("</article>", html.index('data-sigcard="0"'))]
+        self.assertNotIn('data-paper-buy="0"', card)
+        self.assertNotIn('data-exec="kite:0"', card)
+        self.assertIn("WAIT", card)
+        self.assertIn("red_team: fail", card)
+
+    def test_approved_exit_uses_paper_close_not_paper_buy(self):
+        order = self.signals["orders"][0]
+        order["side"] = "SELL"
+        order["reason"] = "exit:stop_loss"
+        order["governance"] = {
+            "eligible": True,
+            "status": "APPROVED",
+            "code": "risk_reduction",
+            "reasons": [],
+            "confidence": None,
+            "risk_reducing_exit": True,
+        }
+        html = render_dashboard(self.report, signals=self.signals)
+        card_start = html.index('data-sigcard="0"')
+        card = html[card_start:html.index("</article>", card_start)]
+        self.assertIn('data-paper-signal-sell="IN:RELIANCE"', card)
+        self.assertIn("Paper close", card)
+        self.assertNotIn('data-paper-buy="0"', card)
 
     def test_reason_text_is_escaped(self):
         self.signals["orders"][0]["reason"] = "<script>alert(1)</script>"

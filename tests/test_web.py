@@ -270,6 +270,14 @@ def make_signals(**overrides):
         "kite_api_key": "",
         "daily_cap": {"INR": "20000", "USD": "250"},
         "starting_cash": {"INR": "500000", "USD": "10000"},
+        "governance": {
+            "enabled": True,
+            "policy": {
+                "protected_fraction": "0.90",
+                "max_risk_sleeve_fraction": "0.05",
+                "profit_lock_fraction": "0.75",
+            },
+        },
         "watchlist": [
             {"key": "IN:RELIANCE", "symbol": "RELIANCE", "name": "Reliance Industries",
              "region": "india", "sector": "energy"},
