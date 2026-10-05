@@ -18,15 +18,26 @@ from .floor import (
     FloorDecision,
     ProfitSplit,
 )
+from .review import PostTradeReview, ThesisOutcome, TradeOutcome, review_trade
+from .trade_plan import Decision, PlanDecision, Side, TradePlan, TradePlanGate
 
 __all__ = [
     "CapitalFloorConfig",
     "CapitalFloorKernel",
     "ConsensusDecision",
     "ConsensusKernel",
+    "Decision",
     "DeskVote",
     "FloorDecision",
+    "PlanDecision",
+    "PostTradeReview",
     "ProfitSplit",
+    "Side",
     "Stance",
+    "ThesisOutcome",
+    "TradeOutcome",
+    "TradePlan",
+    "TradePlanGate",
     "VoteState",
+    "review_trade",
 ]
