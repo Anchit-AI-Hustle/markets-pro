@@ -30,8 +30,20 @@ CONSENSUS KERNEL                   <- deterministic code
   conflicting signal -> WAIT
             |
             v
+INDEPENDENT DECISION + PLAN GATE
+  research != TRADE  -> WAIT
+  decider != TRADE   -> WAIT
+  low confidence     -> WAIT
+  invalid plan       -> WAIT
+  entry/stop/target/size fixed before execution
+            |
+            v
 EXISTING MARKETS PRO STACK
   strategy -> sizing -> RiskManager -> execution simulator / broker guard
+            |
+            v
+POST-TRADE REVIEW
+  original thesis vs decision vs execution vs outcome
             |
             v
 AUDIT + PROFIT LOCK
@@ -77,6 +89,30 @@ Any directional conflict also means WAIT.
 
 The kernel approves only a proposed BUY or SELL; it does not invent a trade.
 
+### Independent decision + strict trade plan
+
+The carousel's useful "one system researches, another decides" pattern is kept
+provider-agnostic. Markets Pro should not depend on a particular model vendor.
+
+A candidate can proceed only when the research component and independent
+decision component both return TRADE. The plan must already contain symbol,
+side, entry, stop, target, quantity, thesis and confidence. The gate computes
+planned loss and reward/risk before execution.
+
+Low confidence is a reason to refuse a trade. High confidence is **not** a
+reason to enlarge the risk budget: it cannot override the capital floor,
+consensus veto, or RiskManager.
+
+### Post-trade review
+
+Every closed trade should produce a factual review that preserves the original
+pre-trade thesis and plan, then compares them with actual entry, exit, size,
+fees, slippage, net P&L, R-multiple and thesis outcome. This prevents hindsight
+from rewriting what the system believed before the trade.
+
+The review record is learning/audit input; it has no authority to retroactively
+change fills or automatically loosen risk limits.
+
 ## Mapping the 10-agent concept onto Markets Pro
 
 | Trading-floor role | Markets Pro responsibility |
@@ -115,5 +151,8 @@ existing broker layer.
 4. Calculate proposed maximum loss before quantity is released.
 5. Run the capital-floor kernel before the existing RiskManager.
 6. Persist every veto/approval so rejected trades are as visible as fills.
-7. Backtest and then paper-trade the entire governance path before considering
+7. Persist the immutable pre-trade thesis/plan and mandatory post-trade review.
+8. Calibrate the confidence threshold from out-of-sample/paper results rather
+   than treating model confidence as a probability of profit.
+9. Backtest and then paper-trade the entire governance path before considering
    any live execution.
