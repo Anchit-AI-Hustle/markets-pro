@@ -200,10 +200,32 @@ def horizon_stats(report: PerformanceReport) -> dict[str, dict]:
             if trade.horizon == horizon
         ]
         trades = int(bucket.get("trades", 0))
+        closed = [trade for trade in report.trades if trade.horizon == horizon]
+        gains = sum(
+            (trade.net_pnl_base for trade in closed if trade.net_pnl_base > 0),
+            Decimal("0"),
+        )
+        losses = -sum(
+            (trade.net_pnl_base for trade in closed if trade.net_pnl_base < 0),
+            Decimal("0"),
+        )
+        profit_factor = (
+            gains / losses
+            if losses > 0
+            else (Decimal("Infinity") if gains > 0 else Decimal("0"))
+        )
+        expectancy = (
+            sum((trade.net_pnl_base for trade in closed), Decimal("0"))
+            / Decimal(len(closed))
+            if closed
+            else None
+        )
         stats[horizon] = {
             "trades": trades,
             "win_rate": bucket.get("win_rate") if trades else None,
             "median_days_held": sorted(held)[len(held) // 2] if held else None,
+            "profit_factor": _s(profit_factor) if closed else None,
+            "expectancy_base": _s(expectancy) if expectancy is not None else None,
         }
     return stats
 
@@ -511,9 +533,17 @@ def _govern_orders(
         ))
 
         history = row.get("history") or {}
-        rr_value = Decimal(str(row["reward_risk"])) if row.get("reward_risk") else None
-        win_rate = history.get("win_rate")
         trades = int(history.get("trades") or 0)
+        historical_expectancy = (
+            Decimal(str(history["expectancy_base"]))
+            if history.get("expectancy_base") is not None
+            else None
+        )
+        historical_pf = (
+            Decimal(str(history["profit_factor"]))
+            if history.get("profit_factor") not in (None, "Infinity")
+            else None
+        )
         red_team_ok = True
         red_reason = (
             "risk-reducing exit; thesis veto not applicable"
@@ -525,16 +555,17 @@ def _govern_orders(
             red_reason = "latest data carries a sanity warning"
         elif (
             not is_exit
-            and rr_value is not None
-            and win_rate is not None
             and trades >= 20
-        ):
-            expectancy_r = Decimal(str(win_rate)) * rr_value - (
-                Decimal("1") - Decimal(str(win_rate))
+            and (
+                (historical_expectancy is not None and historical_expectancy <= 0)
+                or (historical_pf is not None and historical_pf <= 1)
             )
-            if expectancy_r <= 0:
-                red_team_ok = False
-                red_reason = f"historical expectancy <= 0R across {trades} trades"
+        ):
+            red_team_ok = False
+            red_reason = (
+                f"historical money expectancy/profit factor fails across "
+                f"{trades} trades"
+            )
         desks.append(DeskVote(
             "red_team",
             VoteState.PASS if red_team_ok else VoteState.FAIL,
