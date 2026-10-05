@@ -373,6 +373,9 @@ def _govern_orders(
         ),
         Decimal("0"),
     )
+    current_nav = engine.portfolio.total_equity(
+        engine.last_prices, feed.fx
+    ).amount
     protected_floor = starting_nav * protected_fraction
     floor = CapitalFloorKernel(
         CapitalFloorConfig(
@@ -387,7 +390,23 @@ def _govern_orders(
         minimum_reward_risk=min_rr,
     )
     by_key = {order.instrument.key: order for order in engine.pending_orders}
-    committed_risk = Decimal("0")
+
+    # Existing positions consume the loss budget before a new order gets a
+    # dollar. Heat is measured to each position's effective stop, using the
+    # exact same RiskManager logic as the engine.
+    stops: dict[str, Decimal] = {}
+    for trade in engine.trades.all():
+        position = engine.portfolio.get_position(trade.key)
+        if position is None:
+            continue
+        stop = effective_stop(trade, position.is_long)
+        if stop is not None:
+            stops[trade.key] = stop
+    heat = engine.risk.portfolio_heat(
+        engine.portfolio, stops, engine.last_prices, feed.fx
+    )
+    committed_risk = current_nav * heat
+    existing_committed_risk = committed_risk
     approved = 0
 
     for row in rows:
@@ -593,7 +612,7 @@ def _govern_orders(
                 * feed.fx.rate(row["currency"], engine.config.base_currency)
             )
             floor_result = floor.capacity(
-                nav=starting_nav,
+                nav=current_nav,
                 protected_value=protected_floor,
                 committed_risk=committed_risk,
                 proposed_loss=proposed_loss_base,
@@ -687,7 +706,9 @@ def _govern_orders(
             "minimum_reward_risk": _s(min_rr),
         },
         "starting_nav_base": _s(starting_nav),
+        "current_nav_base": _s(current_nav),
         "protected_floor_base": _s(protected_floor),
+        "existing_committed_risk_base": _s(existing_committed_risk),
         "committed_risk_base": _s(committed_risk),
     }
 
