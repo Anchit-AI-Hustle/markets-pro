@@ -37,12 +37,12 @@ from ..governance import (
     ConsensusKernel,
     Decision,
     DeskVote,
-    Side as GovernanceSide,
     Stance,
     TradePlan,
     TradePlanGate,
     VoteState,
 )
+from ..governance import Side as GovernanceSide
 from ..portfolio.sizing import SizingConfig
 from ..risk.exits import effective_stop
 from ..risk.limits import RiskConfig, RiskManager
