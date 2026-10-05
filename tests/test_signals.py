@@ -392,6 +392,25 @@ class TestRenderWithSignals(unittest.TestCase):
         self.assertIn("WAIT", card)
         self.assertIn("red_team: fail", card)
 
+    def test_approved_exit_uses_paper_close_not_paper_buy(self):
+        order = self.signals["orders"][0]
+        order["side"] = "SELL"
+        order["reason"] = "exit:stop_loss"
+        order["governance"] = {
+            "eligible": True,
+            "status": "APPROVED",
+            "code": "risk_reduction",
+            "reasons": [],
+            "confidence": None,
+            "risk_reducing_exit": True,
+        }
+        html = render_dashboard(self.report, signals=self.signals)
+        card_start = html.index('data-sigcard="0"')
+        card = html[card_start:html.index("</article>", card_start)]
+        self.assertIn('data-paper-signal-sell="IN:RELIANCE"', card)
+        self.assertIn("Paper close", card)
+        self.assertNotIn('data-paper-buy="0"', card)
+
     def test_reason_text_is_escaped(self):
         self.signals["orders"][0]["reason"] = "<script>alert(1)</script>"
         html = render_dashboard(self.report, signals=self.signals)
