@@ -94,3 +94,79 @@ def review_trade(plan: TradePlan, outcome: TradeOutcome) -> PostTradeReview:
         thesis_outcome=outcome.thesis_outcome,
         size_violation=outcome.quantity > plan.quantity,
     )
+
+
+@dataclass(frozen=True)
+class ReviewSummary:
+    """Batch review used to decide whether a rule deserves investigation.
+
+    It deliberately returns a recommendation, never a parameter mutation. One
+    trade is not evidence for retuning a strategy.
+    """
+
+    trades: int
+    win_rate: Decimal
+    average_r: Decimal | None
+    thesis_confirmed: int
+    thesis_invalidated: int
+    size_violations: int
+    recommendation: str
+
+
+def summarize_reviews(
+    reviews: list[PostTradeReview] | tuple[PostTradeReview, ...],
+    *,
+    minimum_sample: int = 20,
+) -> ReviewSummary:
+    """Summarize closed trades without auto-optimizing from hindsight."""
+
+    if minimum_sample < 1:
+        raise ValueError("minimum_sample must be positive")
+
+    count = len(reviews)
+    if count == 0:
+        return ReviewSummary(
+            trades=0,
+            win_rate=Decimal("0"),
+            average_r=None,
+            thesis_confirmed=0,
+            thesis_invalidated=0,
+            size_violations=0,
+            recommendation="COLLECT_MORE_DATA",
+        )
+
+    wins = sum(1 for review in reviews if review.net_pnl > 0)
+    confirmed = sum(
+        1 for review in reviews
+        if review.thesis_outcome is ThesisOutcome.CONFIRMED
+    )
+    invalidated = sum(
+        1 for review in reviews
+        if review.thesis_outcome is ThesisOutcome.INVALIDATED
+    )
+    violations = sum(1 for review in reviews if review.size_violation)
+    r_values = [review.r_multiple for review in reviews if review.r_multiple is not None]
+    average_r = (
+        sum(r_values, Decimal("0")) / Decimal(len(r_values))
+        if r_values
+        else None
+    )
+
+    if violations:
+        recommendation = "HALT_EXECUTION_REVIEW"
+    elif count < minimum_sample:
+        recommendation = "COLLECT_MORE_DATA"
+    elif average_r is not None and average_r <= 0:
+        recommendation = "STRATEGY_REVIEW"
+    else:
+        recommendation = "NO_RULE_CHANGE"
+
+    return ReviewSummary(
+        trades=count,
+        win_rate=Decimal(wins) / Decimal(count),
+        average_r=average_r,
+        thesis_confirmed=confirmed,
+        thesis_invalidated=invalidated,
+        size_violations=violations,
+        recommendation=recommendation,
+    )
