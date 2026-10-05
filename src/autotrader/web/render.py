@@ -726,10 +726,27 @@ def _signals_section(signals: dict) -> str:
   <span>{as_of}</span>
 </div>"""
 
+    governance = signals.get("governance") or {}
+    guardbar = ""
+    if governance:
+        approved = int(governance.get("approved") or 0)
+        reviewed = int(governance.get("reviewed") or 0)
+        base = signals.get("base_currency") or "USD"
+        floor = governance.get("protected_floor_base")
+        nav = governance.get("current_nav_base")
+        risk = governance.get("committed_risk_base")
+        guardbar = f"""<div class="notice">
+  <p><strong>Governance gate:</strong> {approved}/{reviewed} pending orders approved.
+  Strategy-book NAV {_money_line(nav, base)} &middot; protected floor
+  {_money_line(floor, base)} &middot; committed stop-risk {_money_line(risk, base)}.
+  The floor is a software risk budget, not a guarantee against gaps, broker failure
+  or market loss.</p>
+</div>"""
+
     if not orders:
         # The commonest state by far: these strategies are meant to sit still.
         # It should read as the system working, with something to do next.
-        return meta + """<div class="quietday">
+        return meta + guardbar + """<div class="quietday">
   <h3>Nothing to buy today</h3>
   <p>This is the normal state, not a fault. These strategies wait for specific
   setups &mdash; a breakout on heavy volume, or a sharp dip inside an uptrend &mdash;
@@ -766,7 +783,7 @@ def _signals_section(signals: dict) -> str:
         "still confirm it yourself. Live prices are delayed. Nothing here is "
         "advice, and no outcome is guaranteed."
     )
-    return f"""{meta}{basket_all}{cards}
+    return f"""{meta}{guardbar}{basket_all}{cards}
 <p class="caption">{caption}</p>"""
 
 
