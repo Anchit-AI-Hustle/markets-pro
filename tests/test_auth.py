@@ -17,7 +17,7 @@ from autotrader.web.auth import (
     auth_slot,
 )
 from autotrader.web.build import check_csp_allows, supabase_settings
-from autotrader.web.render import PAPER_JS, SETTINGS_JS, render_dashboard
+from autotrader.web.render import PAPER_JS, SETTINGS_JS, SIGNALS_JS, render_dashboard
 
 from .test_web import make_report
 
@@ -166,6 +166,17 @@ class ModuleTest(unittest.TestCase):
         self.assertIn("profit_locked_base", PAPER_JS)
         self.assertIn("r_multiple", PAPER_JS)
         self.assertIn("thesis_outcome", PAPER_JS)
+
+
+    def test_real_execution_handler_rechecks_governance(self):
+        self.assertIn("order.governance.eligible !== true", SIGNALS_JS)
+        self.assertIn("governance approval missing", SIGNALS_JS)
+
+    def test_kite_basket_contains_only_governance_approved_orders(self):
+        self.assertIn(
+            "order.governance && order.governance.eligible === true",
+            SIGNALS_JS,
+        )
 
 
 class PageTest(unittest.TestCase):
