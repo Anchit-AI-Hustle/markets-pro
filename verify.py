@@ -31,6 +31,8 @@ MODULES = [
     ("tests.test_costs", "Regional costs & slippage"),
     ("tests.test_sizing", "Position sizing"),
     ("tests.test_risk", "Risk limits & kill-switches"),
+    ("tests.test_floor", "Protected-capital floor"),
+    ("tests.test_governance", "Independent-desk governance"),
     ("tests.test_exits", "Stops, targets, trailing, time"),
     ("tests.test_simulator", "Order fill simulation"),
     ("tests.test_metrics", "Performance metrics"),
