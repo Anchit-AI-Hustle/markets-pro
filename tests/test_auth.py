@@ -103,6 +103,15 @@ class MarkupTest(unittest.TestCase):
     def test_dialog_states_what_the_account_is_not(self):
         self.assertIn("not a broker login", auth_dialog())
 
+    def test_dialog_offers_mobile_pin_auth(self):
+        dialog = auth_dialog()
+        self.assertIn("data-authpin", dialog)
+        self.assertIn("data-pinmobile", dialog)
+        self.assertIn("data-pincode", dialog)
+        self.assertIn("data-authtab", dialog)
+        self.assertIn("markets-pro.users.v1", AUTH_JS)
+        self.assertIn("handlePinAuth", AUTH_JS)
+
     def test_slot_and_account_are_script_filled(self):
         self.assertIn("data-authslot", auth_slot())
         self.assertIn("data-authacct", auth_account_section())

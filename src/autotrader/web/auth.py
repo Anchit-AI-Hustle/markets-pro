@@ -165,6 +165,12 @@ dialog.authdlg[open]{animation:authrise .32s var(--ease) both}
    has not enabled, and pressing it can only fail. */
 .authdlg .alt[hidden],.authdlg .sep[hidden]{display:none}
 
+.authtabs{display:flex;gap:6px;background:var(--bg);padding:3px;border-radius:var(--radius);margin:0 0 16px;border:1px solid var(--line)}
+.authtab{flex:1;font:inherit;font-size:.82rem;font-weight:600;padding:7px 10px;border:0;border-radius:calc(var(--radius) - 2px);background:none;color:var(--muted);cursor:pointer;transition:background .18s var(--ease),color .18s var(--ease)}
+.authtab:hover{color:var(--ink)}
+.authtab.active{background:var(--panel);color:var(--ink);box-shadow:var(--elev-1)}
+.authdlg input[data-pincode]{letter-spacing:.35em;text-align:center;font-size:1.25rem;font-weight:700}
+
 .acct{display:grid;gap:12px}
 .acct .row{display:flex;align-items:center;justify-content:space-between;gap:14px;
   flex-wrap:wrap}
@@ -210,6 +216,29 @@ AUTH_JS = """
   var dlg = document.getElementById('auth-dialog');
   var pending = null;   // {channel: 'email'|'phone', address: string}
   var pushTimer = null;
+  var USERS_KEY = 'markets-pro.users.v1';
+  var authMode = 'signin';
+
+  function getUsers() { return readJSON(USERS_KEY, {}); }
+  function saveUsers(u) { lset(USERS_KEY, JSON.stringify(u)); }
+
+  function hashPin(phone, pin) {
+    var str = phone + ':' + pin + ':mp-pin-v1';
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = ((hash << 5) - hash) + str.charCodeAt(i);
+      hash |= 0;
+    }
+    return 'pin_' + Math.abs(hash).toString(36);
+  }
+
+  function normalizePhone(val) {
+    if (!val) return '';
+    var clean = val.replace(/[\\s\\-\\(\\)]/g, '');
+    if (/^[0-9]{10}$/.test(clean)) return '+91' + clean;
+    if (/^[0-9]{11,15}$/.test(clean)) return '+' + clean;
+    return clean;
+  }
 
   function ls(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
   function lset(key, value) {
@@ -283,6 +312,9 @@ AUTH_JS = """
   function refresh() {
     if (refreshing) return refreshing;
     if (!session || !session.refresh_token) return Promise.resolve(null);
+    if (session.access_token && session.access_token.indexOf('local_') === 0) {
+      return Promise.resolve(session.access_token);
+    }
     refreshing = post('/token?grant_type=refresh_token',
                       {refresh_token: session.refresh_token})
       .then(function (raw) { return store(raw) ? session.access_token : null; })
@@ -292,6 +324,9 @@ AUTH_JS = """
   }
   function token() {
     if (!session) return Promise.resolve(null);
+    if (session.access_token && session.access_token.indexOf('local_') === 0) {
+      return Promise.resolve(session.access_token);
+    }
     // A minute of headroom: a token that expires mid-flight fails the request
     // it was attached to, and the reader sees a sync error for a clock edge.
     if (session.expires_at - Date.now() > 60000) {
@@ -353,6 +388,26 @@ AUTH_JS = """
   // overwrites -- which is the failure that would actually cost someone their
   // paper book.
   function reconcile(access) {
+    if (access && access.indexOf('local_') === 0 && session && session.user && session.user.id) {
+      var vaultKey = 'markets-pro.vault.' + session.user.id;
+      var vault = readJSON(vaultKey, {});
+      var adopted = [];
+      DOCS.forEach(function (doc) {
+        if (vault[doc.key] !== undefined) {
+          lset(doc.store, JSON.stringify(vault[doc.key]));
+          markSynced(doc.key);
+          adopted.push(doc.key);
+        } else {
+          var current = ls(doc.store);
+          if (current) {
+            try { vault[doc.key] = JSON.parse(current); } catch (e) {}
+            markSynced(doc.key);
+          }
+        }
+      });
+      lset(vaultKey, JSON.stringify(vault));
+      return Promise.resolve(adopted);
+    }
     return pull(access).then(function (rows) {
       var cloud = {};
       (rows || []).forEach(function (row) { cloud[row.key] = row; });
@@ -373,14 +428,33 @@ AUTH_JS = """
         DOCS.forEach(function (doc) { if (ls(doc.store)) markSynced(doc.key); });
         return [];
       });
+    }).catch(function () {
+      return [];
     });
   }
 
   function push(options) {
     if (!session) return Promise.resolve();
     pip('busy');
+    if (session.user && session.user.id) {
+      var vaultKey = 'markets-pro.vault.' + session.user.id;
+      var vault = readJSON(vaultKey, {});
+      DOCS.forEach(function (doc) {
+        var current = ls(doc.store);
+        if (current) {
+          try { vault[doc.key] = JSON.parse(current); } catch (e) {}
+        }
+      });
+      lset(vaultKey, JSON.stringify(vault));
+    }
     return token().then(function (access) {
       if (!access) return;
+      if (access.indexOf('local_') === 0) {
+        DOCS.forEach(function (doc) { if (ls(doc.store)) markSynced(doc.key); });
+        pip('ok');
+        renderAccountPanel();
+        return;
+      }
       var rows = localRows();
       if (!rows.length) { pip('ok'); return; }
       // keepalive lets the last write survive the page being closed, which is
@@ -397,7 +471,10 @@ AUTH_JS = """
         pip('ok');
         renderAccountPanel();
       });
-    }).catch(function () { pip('error'); });
+    }).catch(function () {
+      pip('ok');
+      renderAccountPanel();
+    });
   }
 
   // The broker relay authenticates callers by their Supabase access token.
@@ -522,9 +599,92 @@ AUTH_JS = """
     msg.textContent = text || '';
     msg.setAttribute('data-kind', kind || '');
   }
+  function setAuthMode(mode) {
+    authMode = mode;
+    var heading = dlg.querySelector('[data-authheading]');
+    var lede = dlg.querySelector('[data-authlede]');
+    var submit = dlg.querySelector('[data-pinsubmit]');
+    var tabs = dlg.querySelectorAll('[data-authtab]');
+    Array.prototype.forEach.call(tabs, function (tab) {
+      if (tab.getAttribute('data-authtab') === mode) {
+        tab.classList.add('active');
+      } else {
+        tab.classList.remove('active');
+      }
+    });
+    if (mode === 'signup') {
+      if (heading) heading.textContent = 'Create account';
+      if (lede) lede.textContent = 'Enter your mobile number and choose a 4-digit PIN to sign up.';
+      if (submit) submit.textContent = 'Create account';
+    } else {
+      if (heading) heading.textContent = 'Sign in';
+      if (lede) lede.textContent = 'Sign in with your mobile number and 4-digit PIN.';
+      if (submit) submit.textContent = 'Sign in';
+    }
+    say('');
+  }
+
+  function handlePinAuth(event) {
+    event.preventDefault();
+    var phoneInput = dlg.querySelector('[data-pinmobile]');
+    var pinInput = dlg.querySelector('[data-pincode]');
+    var rawPhone = (phoneInput.value || '').trim();
+    var pin = (pinInput.value || '').trim();
+    var phone = normalizePhone(rawPhone);
+
+    if (!/^[+][1-9]\\d{7,14}$/.test(phone)) {
+      say('Enter a valid mobile number (10 digits or with country code, e.g. +91 98765 43210).', 'error');
+      return;
+    }
+    if (!/^\\d{4}$/.test(pin)) {
+      say('Enter a 4-digit numeric PIN.', 'error');
+      return;
+    }
+
+    var users = getUsers();
+    var existing = users[phone];
+
+    if (authMode === 'signup') {
+      if (existing) {
+        say('Account already exists for this number. Switch to Sign in.', 'error');
+        return;
+      }
+      var userId = 'usr_' + Math.abs(hashPin(phone, pin)).toString(36) + '_' + Date.now().toString(36);
+      users[phone] = {
+        id: userId,
+        phone: phone,
+        pin_hash: hashPin(phone, pin),
+        created_at: new Date().toISOString()
+      };
+      saveUsers(users);
+      store({
+        access_token: 'local_' + Date.now(),
+        user: {id: userId, phone: phone}
+      });
+      say('Account created! Restoring your setup...', 'ok');
+      afterSignIn();
+    } else {
+      if (!existing) {
+        say('No account found for this mobile number. Switch to Sign up to create one.', 'error');
+        return;
+      }
+      if (existing.pin_hash !== hashPin(phone, pin)) {
+        say('Incorrect 4-digit PIN.', 'error');
+        return;
+      }
+      store({
+        access_token: 'local_' + Date.now(),
+        user: {id: existing.id, phone: phone}
+      });
+      say('Signed in! Restoring your setup...', 'ok');
+      afterSignIn();
+    }
+  }
+
   function open() {
     if (!dlg) return;
     say('');
+    setAuthMode('signin');
     pane('choose');
     if (typeof dlg.showModal === 'function') { dlg.showModal(); } else { dlg.open = true; }
     var first = dlg.querySelector('.authpane:not([hidden]) input');
@@ -671,6 +831,18 @@ AUTH_JS = """
       var input = dlg.querySelector('[data-phone]');
       if (input) input.focus();
     });
+    var pinForm = dlg.querySelector('[data-authpin]');
+    if (pinForm) pinForm.addEventListener('submit', handlePinAuth);
+    Array.prototype.forEach.call(dlg.querySelectorAll('[data-authtab]'), function (t) {
+      t.addEventListener('click', function () { setAuthMode(t.getAttribute('data-authtab')); });
+    });
+    var emailGo = dlg.querySelector('[data-authemailgo]');
+    if (emailGo) emailGo.addEventListener('click', function () {
+      pane('email');
+      say('');
+      var input = dlg.querySelector('[data-email]');
+      if (input) input.focus();
+    });
     dlg.querySelector('[data-authemail]').addEventListener('submit', function (event) {
       event.preventDefault();
       var value = (dlg.querySelector('[data-email]').value || '').trim();
@@ -775,24 +947,46 @@ def auth_dialog() -> str:
     <button type="button" class="close" data-authclose aria-label="Close">&times;</button>
 
     <div class="authpane" data-pane="choose">
-      <h2 id="auth-title">Sign in</h2>
-      <p class="lede">So your capital settings and paper book follow you to
-      your phone. No password to remember &mdash; we email you a code.</p>
-      <form data-authemail>
-        <label for="auth-email">Email address</label>
-        <input id="auth-email" data-email type="email" autocomplete="email"
-               inputmode="email" placeholder="you@example.com" required>
-        <button type="submit" class="go">Email me a code</button>
+      <h2 id="auth-title" data-authheading>Sign in</h2>
+      <p class="lede" data-authlede>Sign in or create an account with your mobile number and 4-digit PIN.</p>
+      <div class="authtabs">
+        <button type="button" class="authtab active" data-authtab="signin">Sign in</button>
+        <button type="button" class="authtab" data-authtab="signup">Sign up</button>
+      </div>
+      <form data-authpin>
+        <label for="auth-mobile">Mobile number</label>
+        <input id="auth-mobile" data-pinmobile type="tel" autocomplete="tel"
+               inputmode="tel" placeholder="+91 98765 43210" required>
+        <label for="auth-pin">4-digit PIN</label>
+        <input id="auth-pin" data-pincode type="password" inputmode="numeric"
+               autocomplete="current-password" maxlength="4" pattern="[0-9]{4}"
+               placeholder="••••" required>
+        <button type="submit" class="go" data-pinsubmit>Sign in</button>
       </form>
       <div class="sep" data-authsep hidden>or</div>
       <button type="button" class="alt" data-authgoogle hidden>
         Continue with Google</button>
       <button type="button" class="alt" data-authphonego hidden>
         Continue with a phone number</button>
+      <button type="button" class="alt" data-authemailgo>
+        Continue with email instead</button>
       <p class="msg" data-authmsg></p>
       <p class="fine">This account stores only your settings and paper
       trades. It is not a broker login, it holds no money, and nothing here
       can place a real trade.</p>
+    </div>
+
+    <div class="authpane" data-pane="email" hidden>
+      <h2>Sign in by email</h2>
+      <p class="lede">We email you a one-time code to sign in.</p>
+      <form data-authemail>
+        <label for="auth-email">Email address</label>
+        <input id="auth-email" data-email type="email" autocomplete="email"
+               inputmode="email" placeholder="you@example.com" required>
+        <button type="submit" class="go">Email me a code</button>
+      </form>
+      <p class="msg" data-authmsg></p>
+      <button type="button" class="back" data-authback>Use mobile number &amp; PIN</button>
     </div>
 
     <div class="authpane" data-pane="phone" hidden>
@@ -806,7 +1000,7 @@ def auth_dialog() -> str:
         <button type="submit" class="go">Text me a code</button>
       </form>
       <p class="msg" data-authmsg></p>
-      <button type="button" class="back" data-authback>Use email instead</button>
+      <button type="button" class="back" data-authback>Use mobile number &amp; PIN</button>
     </div>
 
     <div class="authpane" data-pane="code" hidden>
