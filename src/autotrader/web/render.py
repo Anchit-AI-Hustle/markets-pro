@@ -737,15 +737,16 @@ def _signals_section(signals: dict) -> str:
         risk = governance.get("committed_risk_base")
         positions_count = len(signals.get("positions", []))
         orders_count = len(orders)
+        plural = "s" if orders_count != 1 else ""
         guardbar = f"""<div class="notice">
   <p><strong>Governance gate:</strong> {approved}/{reviewed} pending orders approved.
   Strategy-book NAV {_money_line(nav, base)} &middot; protected floor
   {_money_line(floor, base)} &middot; committed stop-risk {_money_line(risk, base)}.
   The floor is a software risk budget, not a guarantee against gaps, broker failure
   or market loss.</p>
-  <p><strong>Allocation capacity:</strong> {orders_count} new trade suggested today &middot;
-  {positions_count} active positions held in strategy book (max 5 concurrent).
-  Strict limits prevent overconcentration and forced liquidations.</p>
+  <p><strong>Allocation capacity:</strong> {orders_count} trade suggestion{plural} today &middot;
+  {positions_count} active positions held in strategy book.
+  Strict risk limits prevent overconcentration and forced liquidations.</p>
 </div>"""
 
     if not orders:

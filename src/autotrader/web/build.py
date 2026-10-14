@@ -150,7 +150,7 @@ def run_demo_backtest(*, sessions: int = 750) -> PerformanceReport:
         strategies=[
             LongTermStrategy(LongTermConfig(max_holdings=6,
                                             total_allocation=Decimal("0.55"))),
-            ShortTermStrategy(ShortTermConfig(max_concurrent=5)),
+            ShortTermStrategy(ShortTermConfig(max_concurrent=8)),
         ],
         config=config,
         fx=FX,

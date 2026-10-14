@@ -124,7 +124,7 @@ def run_live(feed: LiveFeed, live_config: dict) -> tuple[BacktestEngine, Perform
     )
     strategies = [
         LongTermStrategy(LongTermConfig(max_holdings=6, total_allocation=Decimal("0.55"))),
-        ShortTermStrategy(ShortTermConfig(max_concurrent=5)),
+        ShortTermStrategy(ShortTermConfig(max_concurrent=8)),
     ]
     engine = BacktestEngine(
         instruments=list(feed.instruments),
