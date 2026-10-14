@@ -165,11 +165,15 @@ dialog.authdlg[open]{animation:authrise .32s var(--ease) both}
    has not enabled, and pressing it can only fail. */
 .authdlg .alt[hidden],.authdlg .sep[hidden]{display:none}
 
-.authtabs{display:flex;gap:6px;background:var(--bg);padding:3px;border-radius:var(--radius);margin:0 0 16px;border:1px solid var(--line)}
-.authtab{flex:1;font:inherit;font-size:.82rem;font-weight:600;padding:7px 10px;border:0;border-radius:calc(var(--radius) - 2px);background:none;color:var(--muted);cursor:pointer;transition:background .18s var(--ease),color .18s var(--ease)}
+.authtabs{display:flex;gap:6px;background:var(--bg);padding:3px;
+  border-radius:var(--radius);margin:0 0 16px;border:1px solid var(--line)}
+.authtab{flex:1;font:inherit;font-size:.82rem;font-weight:600;padding:7px 10px;
+  border:0;border-radius:calc(var(--radius) - 2px);background:none;color:var(--muted);
+  cursor:pointer;transition:background .18s var(--ease),color .18s var(--ease)}
 .authtab:hover{color:var(--ink)}
 .authtab.active{background:var(--panel);color:var(--ink);box-shadow:var(--elev-1)}
-.authdlg input[data-pincode]{letter-spacing:.35em;text-align:center;font-size:1.25rem;font-weight:700}
+.authdlg input[data-pincode]{letter-spacing:.35em;text-align:center;
+  font-size:1.25rem;font-weight:700}
 
 .acct{display:grid;gap:12px}
 .acct .row{display:flex;align-items:center;justify-content:space-between;gap:14px;
@@ -633,7 +637,8 @@ AUTH_JS = """
     var phone = normalizePhone(rawPhone);
 
     if (!/^[+][1-9]\\d{7,14}$/.test(phone)) {
-      say('Enter a valid mobile number (10 digits or with country code, e.g. +91 98765 43210).', 'error');
+      say('Enter a valid mobile number (10 digits or with country code).',
+          'error');
       return;
     }
     if (!/^\\d{4}$/.test(pin)) {
@@ -649,7 +654,8 @@ AUTH_JS = """
         say('Account already exists for this number. Switch to Sign in.', 'error');
         return;
       }
-      var userId = 'usr_' + Math.abs(hashPin(phone, pin)).toString(36) + '_' + Date.now().toString(36);
+      var pinH = Math.abs(hashPin(phone, pin)).toString(36);
+      var userId = 'usr_' + pinH + '_' + Date.now().toString(36);
       users[phone] = {
         id: userId,
         phone: phone,
@@ -948,7 +954,8 @@ def auth_dialog() -> str:
 
     <div class="authpane" data-pane="choose">
       <h2 id="auth-title" data-authheading>Sign in</h2>
-      <p class="lede" data-authlede>Sign in or create an account with your mobile number and 4-digit PIN.</p>
+      <p class="lede" data-authlede>Sign in or create an account with your
+      mobile number and 4-digit PIN.</p>
       <div class="authtabs">
         <button type="button" class="authtab active" data-authtab="signin">Sign in</button>
         <button type="button" class="authtab" data-authtab="signup">Sign up</button>
