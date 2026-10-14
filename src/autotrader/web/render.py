@@ -735,12 +735,17 @@ def _signals_section(signals: dict) -> str:
         floor = governance.get("protected_floor_base")
         nav = governance.get("current_nav_base")
         risk = governance.get("committed_risk_base")
+        positions_count = len(signals.get("positions", []))
+        orders_count = len(orders)
         guardbar = f"""<div class="notice">
   <p><strong>Governance gate:</strong> {approved}/{reviewed} pending orders approved.
   Strategy-book NAV {_money_line(nav, base)} &middot; protected floor
   {_money_line(floor, base)} &middot; committed stop-risk {_money_line(risk, base)}.
   The floor is a software risk budget, not a guarantee against gaps, broker failure
   or market loss.</p>
+  <p><strong>Allocation capacity:</strong> {orders_count} new trade suggested today &middot;
+  {positions_count} active positions held in strategy book (max 5 concurrent).
+  Strict limits prevent overconcentration and forced liquidations.</p>
 </div>"""
 
     if not orders:
@@ -6815,7 +6820,13 @@ def render_dashboard(
     <h2>Today's suggested trades</h2>
     <div class="panel">{_signals_section(signals)}</div>
     <p class="caption">Your own holdings and profit/loss are under
-    <button type="button" class="linkish" data-tabgo="paper">Paper</button>.</p>
+    <button type="button" class="linkish" data-tabgo="paper">Paper</button>.
+    Explore all 325 universe stocks in the
+    <button type="button" class="linkish" data-tabgo="screener">Screener</button>,
+    track candidates under
+    <button type="button" class="linkish" data-tabgo="watchlist">Watchlist</button>,
+    or review active strategy holdings under
+    <button type="button" class="linkish" data-tabgo="performance">Track record</button>.</p>
   </section>
 
   {detail_shell}
