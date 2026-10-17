@@ -58,6 +58,7 @@ MODULES = [
     ("tests.test_repo_entrypoints", "Makefile & build entry points"),
     ("tests.test_a11y", "Landmarks & table semantics"),
     ("tests.test_loss_streak", "Consecutive-loss breaker"),
+    ("tests.test_evidence_gate", "Evidence gate on suggestions"),
 ]
 
 BAR = "=" * 74

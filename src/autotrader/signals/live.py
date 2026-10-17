@@ -44,6 +44,7 @@ from ..governance import (
 )
 from ..governance import Side as GovernanceSide
 from ..portfolio.sizing import SizingConfig
+from ..research.evidence_gate import EvidenceGate
 from ..risk.exits import effective_stop
 from ..risk.limits import RiskConfig, RiskManager
 from ..strategy.long_term import LongTermConfig, LongTermStrategy
@@ -387,6 +388,15 @@ def _govern_orders(
     profit_lock = Decimal(str(settings.get("profit_lock_fraction", "0.75")))
     min_confidence = Decimal(str(settings.get("minimum_confidence", "0.70")))
     min_rr = Decimal(str(settings.get("minimum_reward_risk", "1.50")))
+    # The evidence study is the one measurement this product rests on. Until
+    # now nothing read it: the Evidence tab said "no demonstrated edge" while
+    # the dashboard suggested trades from the very rules that earned it.
+    ev_settings = settings.get("evidence_gate") or {}
+    evidence_gate = EvidenceGate.from_study(
+        ev_settings.get("study", "data/research/fitness.json"),
+        minimum=ev_settings.get("minimum", "evidence"),
+        enabled=bool(ev_settings.get("enabled", True)),
+    )
 
     starting_nav = sum(
         (
@@ -570,6 +580,24 @@ def _govern_orders(
             "red_team",
             VoteState.PASS if red_team_ok else VoteState.FAIL,
             reason=red_reason,
+        ))
+
+        # An exit reduces risk and is never blocked for lack of evidence:
+        # the study is about whether to open a position, not whether to be
+        # allowed out of one.
+        if is_exit:
+            ev_ok, ev_reason = True, "risk-reducing exit; evidence gate not applicable"
+        else:
+            ev = evidence_gate.evaluate(
+                row.get("key") or row.get("symbol") or "",
+                str(row.get("horizon") or ""),
+                str(row.get("reason") or ""),
+            )
+            ev_ok, ev_reason = ev.allowed, ev.reason
+        desks.append(DeskVote(
+            "evidence",
+            VoteState.PASS if ev_ok else VoteState.FAIL,
+            reason=ev_reason,
         ))
 
         proposed_stance = Stance.BUY if row["side"] == "BUY" else Stance.SELL
