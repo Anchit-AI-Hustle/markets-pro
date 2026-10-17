@@ -352,7 +352,7 @@ def _ticker(key: str, label: str, *, cls: str = "") -> str:
     )
 
 
-def _trades_table(report: PerformanceReport, limit: int = 25) -> str:
+def _trades_table(report: PerformanceReport, limit: int = 100) -> str:
     if not report.trades:
         return '<p class="empty">No completed round trips.</p>'
     recent = sorted(report.trades, key=lambda t: t.exit_day, reverse=True)[:limit]
@@ -3858,7 +3858,7 @@ WATCH_NEWS_JS = """
   var empty = document.querySelector('[data-wempty]');
   var active = 'all';
 
-  var PAGE = 25;
+  var PAGE = 50;
   var limit = PAGE;
   var more = document.querySelector('[data-wmore]');
   var tally = document.querySelector('[data-wtally]');
@@ -3954,7 +3954,7 @@ WATCH_NEWS_JS = """
 
   // Same page-at-a-time treatment as the watchlist, and for the same reason:
   // a ranked list is only useful if the top of it is reachable.
-  var SPAGE = 20;
+  var SPAGE = 50;
   var slimit = SPAGE;
   var smore = document.querySelector('[data-smore]');
   var stally = document.querySelector('[data-stally]');

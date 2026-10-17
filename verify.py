@@ -57,6 +57,7 @@ MODULES = [
     ("tests.test_release_check", "Release verification"),
     ("tests.test_repo_entrypoints", "Makefile & build entry points"),
     ("tests.test_a11y", "Landmarks & table semantics"),
+    ("tests.test_loss_streak", "Consecutive-loss breaker"),
 ]
 
 BAR = "=" * 74
