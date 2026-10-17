@@ -361,8 +361,7 @@ class BacktestEngine:
         # rouble and dollar trades together in a single currency.
         base = self.config.base_currency
         fx_rate = self.fx_on(day).rate(record.currency, base)
-        self.round_trips.append(
-            RoundTrip(
+        trip = RoundTrip(
                 key=key,
                 region=record.region,
                 horizon=record.horizon,
@@ -377,8 +376,11 @@ class BacktestEngine:
                 currency=record.currency,
                 base_currency=base,
                 fx_rate=fx_rate,
-            )
         )
+        self.round_trips.append(trip)
+        # Feed the streak breaker the net result, in base currency so trades
+        # from different markets are counted on the same scale.
+        self.risk.record_round_trip(trip.net_pnl_base)
 
     # -- step 3: exits ----------------------------------------------------
     def _process_exits(self, day: date, fx: FXRates) -> None:

@@ -55,6 +55,11 @@ class RiskConfig:
     daily_loss_limit: Decimal = Decimal("0.05")
     #: Total capital at risk across all open short-term stops.
     max_portfolio_heat: Decimal = Decimal("0.06")
+    #: Halt new entries for the rest of the day after this many losing round
+    #: trips in a row. Catches a streak of small losses that never trips
+    #: ``daily_loss_limit`` -- the two answer different questions, so both
+    #: run. 0 disables it.
+    max_consecutive_losses: int = 3
     allow_short: bool = False
 
     def __post_init__(self) -> None:
@@ -66,6 +71,8 @@ class RiskConfig:
             setattr(self, name, to_decimal(getattr(self, name)))
         if self.max_open_positions < 1:
             raise ValueError("max_open_positions must be at least 1")
+        if self.max_consecutive_losses < 0:
+            raise ValueError("max_consecutive_losses must be 0 or more")
 
 
 @dataclass
@@ -77,6 +84,8 @@ class RiskState:
     current_equity: Decimal = Decimal("0")
     halted: bool = False
     halt_reason: str = ""
+    #: Losing round trips closed back-to-back, reset by a win or a new day.
+    consecutive_losses: int = 0
     rejections: list[tuple[date, str, str, str]] = field(default_factory=list)
 
     @property
@@ -107,10 +116,12 @@ class RiskManager:
         self.state.current_equity = equity
         if equity > self.state.equity_peak:
             self.state.equity_peak = equity
-        # A new day clears a daily-loss halt but not a drawdown halt.
-        if self.state.halt_reason == "daily_loss_limit":
+        # A new day clears the intraday halts but not a drawdown halt: a
+        # drawdown is a statement about the whole account, not about today.
+        if self.state.halt_reason in ("daily_loss_limit", "max_consecutive_losses"):
             self.state.halted = False
             self.state.halt_reason = ""
+        self.state.consecutive_losses = 0
 
     def update_equity(self, equity: Decimal) -> None:
         """Mark equity and trip the kill-switches if a threshold is breached."""
@@ -125,6 +136,30 @@ class RiskManager:
         elif -self.state.daily_return > self.config.daily_loss_limit:
             self.state.halted = True
             self.state.halt_reason = "daily_loss_limit"
+
+    def record_round_trip(self, net_pnl: Decimal) -> None:
+        """Count a closed trade, and trip the streak breaker on a bad run.
+
+        Counted on the round trip's *net* result, after costs, because a
+        trade that only lost to brokerage is still a loss to the account.
+        A break-even trade is not a loss and does not extend the streak,
+        but it does not clear it either -- it is simply not evidence
+        either way.
+        """
+        if self.config.max_consecutive_losses <= 0:
+            return
+        net_pnl = to_decimal(net_pnl)
+        if net_pnl > 0:
+            self.state.consecutive_losses = 0
+            return
+        if net_pnl == 0:
+            return
+        self.state.consecutive_losses += 1
+        if self.state.consecutive_losses >= self.config.max_consecutive_losses:
+            # Never downgrade a drawdown halt, which outlives the day.
+            if self.state.halt_reason != "max_drawdown_halt":
+                self.state.halted = True
+                self.state.halt_reason = "max_consecutive_losses"
 
     @property
     def entries_halted(self) -> bool:
