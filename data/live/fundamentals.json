@@ -493,7 +493,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000320193&type=10-K"
   },
   "US:MSFT": {
-   "entity": "MICROSOFT CORPORATION",
+   "entity": "Microsoft Corporation",
    "series": {
     "revenue": [
      {
@@ -5538,7 +5538,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000796343&type=10-K"
   },
   "US:NFLX": {
-   "entity": "NETFLIX INC",
+   "entity": "Netflix, Inc.",
    "series": {
     "revenue": [
      {
@@ -7949,7 +7949,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000097476&type=10-K"
   },
   "US:IBM": {
-   "entity": "INTERNATIONAL BUSINESS MACHINES CORP",
+   "entity": "INTERNATIONAL BUSINESS MACHINES CORPORATION",
    "series": {
     "revenue": [
      {
@@ -15691,7 +15691,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001650372&type=10-K"
   },
   "US:WDAY": {
-   "entity": "WORKDAY, INC.",
+   "entity": "Workday, Inc.",
    "series": {
     "revenue": [
      {
@@ -19338,7 +19338,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000316709&type=10-K"
   },
   "US:AXP": {
-   "entity": "AMERICAN EXPRESS CO",
+   "entity": "AMERICAN EXPRESS COMPANY",
    "series": {
     "revenue": [
      {
@@ -34870,7 +34870,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001506307&type=10-K"
   },
   "US:WMT": {
-   "entity": "WALMART INC.",
+   "entity": "Walmart Inc.",
    "series": {
     "revenue": [
      {
@@ -35808,7 +35808,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000909832&type=10-K"
   },
   "US:PG": {
-   "entity": "The Procter & Gamble Company",
+   "entity": "PROCTER & GAMBLE CO",
    "series": {
     "revenue": [
      {
@@ -36746,7 +36746,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000021344&type=10-K"
   },
   "US:PEP": {
-   "entity": "PepsiCo, Inc.",
+   "entity": "PEPSICO INC",
    "series": {
     "revenue": [
      {
@@ -44035,7 +44035,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000773840&type=10-K"
   },
   "US:GE": {
-   "entity": "GENERAL ELECTRIC CO",
+   "entity": "GENERAL ELECTRIC COMPANY",
    "series": {
     "revenue": [
      {
@@ -46776,7 +46776,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000315189&type=10-K"
   },
   "US:MMM": {
-   "entity": "3M CO",
+   "entity": "3M COMPANY",
    "series": {
     "revenue": [
      {
@@ -52040,497 +52040,6 @@
    "cik": 1744489,
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001744489&type=10-K"
   },
-  "US:WBD": {
-   "entity": "Warner Bros. Discovery, Inc.",
-   "series": {
-    "revenue": [
-     {
-      "year": 2020,
-      "end": "2020-12-31",
-      "value": 10671000000,
-      "form": "10-K",
-      "filed": "2021-02-22"
-     },
-     {
-      "year": 2021,
-      "end": "2021-12-31",
-      "value": 12191000000,
-      "form": "10-K",
-      "filed": "2022-02-24"
-     },
-     {
-      "year": 2022,
-      "end": "2022-12-31",
-      "value": 33817000000,
-      "form": "10-K",
-      "filed": "2023-02-24"
-     },
-     {
-      "year": 2023,
-      "end": "2023-12-31",
-      "value": 41321000000,
-      "form": "10-K",
-      "filed": "2024-02-23"
-     },
-     {
-      "year": 2024,
-      "end": "2024-12-31",
-      "value": 39321000000,
-      "form": "10-K",
-      "filed": "2025-02-27"
-     },
-     {
-      "year": 2025,
-      "end": "2025-12-31",
-      "value": 37296000000,
-      "form": "10-K",
-      "filed": "2026-02-27"
-     }
-    ],
-    "net_income": [
-     {
-      "year": 2020,
-      "end": "2020-12-31",
-      "value": 1219000000,
-      "form": "10-K",
-      "filed": "2021-02-22"
-     },
-     {
-      "year": 2021,
-      "end": "2021-12-31",
-      "value": 1006000000,
-      "form": "10-K",
-      "filed": "2022-02-24"
-     },
-     {
-      "year": 2022,
-      "end": "2022-12-31",
-      "value": -7371000000,
-      "form": "10-K",
-      "filed": "2023-02-24"
-     },
-     {
-      "year": 2023,
-      "end": "2023-12-31",
-      "value": -3126000000,
-      "form": "10-K",
-      "filed": "2024-02-23"
-     },
-     {
-      "year": 2024,
-      "end": "2024-12-31",
-      "value": -11311000000,
-      "form": "10-K",
-      "filed": "2025-02-27"
-     },
-     {
-      "year": 2025,
-      "end": "2025-12-31",
-      "value": 727000000,
-      "form": "10-K",
-      "filed": "2026-02-27"
-     }
-    ],
-    "operating_income": [
-     {
-      "year": 2020,
-      "end": "2020-12-31",
-      "value": 2515000000,
-      "form": "10-K",
-      "filed": "2021-02-22"
-     },
-     {
-      "year": 2021,
-      "end": "2021-12-31",
-      "value": 2012000000,
-      "form": "10-K",
-      "filed": "2022-02-24"
-     },
-     {
-      "year": 2022,
-      "end": "2022-12-31",
-      "value": -7370000000,
-      "form": "10-K",
-      "filed": "2023-02-24"
-     },
-     {
-      "year": 2023,
-      "end": "2023-12-31",
-      "value": -1548000000,
-      "form": "10-K",
-      "filed": "2024-02-23"
-     },
-     {
-      "year": 2024,
-      "end": "2024-12-31",
-      "value": -10032000000,
-      "form": "10-K",
-      "filed": "2025-02-27"
-     },
-     {
-      "year": 2025,
-      "end": "2025-12-31",
-      "value": 738000000,
-      "form": "10-K",
-      "filed": "2026-02-27"
-     }
-    ],
-    "eps_diluted": [
-     {
-      "year": 2012,
-      "end": "2012-12-31",
-      "value": 2.48,
-      "form": "10-K",
-      "filed": "2013-02-14"
-     },
-     {
-      "year": 2013,
-      "end": "2013-12-31",
-      "value": 2.97,
-      "form": "10-K",
-      "filed": "2014-02-20"
-     },
-     {
-      "year": 2022,
-      "end": "2022-12-31",
-      "value": -3.82,
-      "form": "10-K",
-      "filed": "2023-02-24"
-     },
-     {
-      "year": 2023,
-      "end": "2023-12-31",
-      "value": -1.28,
-      "form": "10-K",
-      "filed": "2024-02-23"
-     },
-     {
-      "year": 2024,
-      "end": "2024-12-31",
-      "value": -4.62,
-      "form": "10-K",
-      "filed": "2025-02-27"
-     },
-     {
-      "year": 2025,
-      "end": "2025-12-31",
-      "value": 0.29,
-      "form": "10-K",
-      "filed": "2026-02-27"
-     }
-    ],
-    "assets": [
-     {
-      "year": 2020,
-      "end": "2020-12-31",
-      "value": 34087000000,
-      "form": "10-K",
-      "filed": "2021-02-22"
-     },
-     {
-      "year": 2021,
-      "end": "2021-12-31",
-      "value": 34427000000,
-      "form": "10-K",
-      "filed": "2022-02-24"
-     },
-     {
-      "year": 2022,
-      "end": "2022-12-31",
-      "value": 134001000000,
-      "form": "10-K",
-      "filed": "2023-02-24"
-     },
-     {
-      "year": 2023,
-      "end": "2023-12-31",
-      "value": 122757000000,
-      "form": "10-K",
-      "filed": "2024-02-23"
-     },
-     {
-      "year": 2024,
-      "end": "2024-12-31",
-      "value": 104560000000,
-      "form": "10-K",
-      "filed": "2025-02-27"
-     },
-     {
-      "year": 2025,
-      "end": "2025-12-31",
-      "value": 100085000000,
-      "form": "10-K",
-      "filed": "2026-02-27"
-     }
-    ],
-    "liabilities": [
-     {
-      "year": 2020,
-      "end": "2020-12-31",
-      "value": 21704000000,
-      "form": "10-K",
-      "filed": "2021-02-22"
-     },
-     {
-      "year": 2021,
-      "end": "2021-12-31",
-      "value": 21031000000,
-      "form": "10-K",
-      "filed": "2022-02-24"
-     },
-     {
-      "year": 2022,
-      "end": "2022-12-31",
-      "value": 85334000000,
-      "form": "10-K",
-      "filed": "2023-02-24"
-     },
-     {
-      "year": 2023,
-      "end": "2023-12-31",
-      "value": 76285000000,
-      "form": "10-K",
-      "filed": "2024-02-23"
-     },
-     {
-      "year": 2024,
-      "end": "2024-12-31",
-      "value": 69622000000,
-      "form": "10-K",
-      "filed": "2025-02-27"
-     },
-     {
-      "year": 2025,
-      "end": "2025-12-31",
-      "value": 62919000000,
-      "form": "10-K",
-      "filed": "2026-02-27"
-     }
-    ],
-    "equity": [
-     {
-      "year": 2020,
-      "end": "2020-12-31",
-      "value": 10464000000,
-      "form": "10-K",
-      "filed": "2021-02-22"
-     },
-     {
-      "year": 2021,
-      "end": "2021-12-31",
-      "value": 11599000000,
-      "form": "10-K",
-      "filed": "2022-02-24"
-     },
-     {
-      "year": 2022,
-      "end": "2022-12-31",
-      "value": 47095000000,
-      "form": "10-K",
-      "filed": "2023-02-24"
-     },
-     {
-      "year": 2023,
-      "end": "2023-12-31",
-      "value": 45226000000,
-      "form": "10-K",
-      "filed": "2024-02-23"
-     },
-     {
-      "year": 2024,
-      "end": "2024-12-31",
-      "value": 34037000000,
-      "form": "10-K",
-      "filed": "2025-02-27"
-     },
-     {
-      "year": 2025,
-      "end": "2025-12-31",
-      "value": 35919000000,
-      "form": "10-K",
-      "filed": "2026-02-27"
-     }
-    ],
-    "cash": [
-     {
-      "year": 2020,
-      "end": "2020-12-31",
-      "value": 2091000000,
-      "form": "10-K",
-      "filed": "2021-02-22"
-     },
-     {
-      "year": 2021,
-      "end": "2021-12-31",
-      "value": 3905000000,
-      "form": "10-K",
-      "filed": "2022-02-24"
-     },
-     {
-      "year": 2022,
-      "end": "2022-12-31",
-      "value": 3731000000,
-      "form": "10-K",
-      "filed": "2023-02-24"
-     },
-     {
-      "year": 2023,
-      "end": "2023-12-31",
-      "value": 3780000000,
-      "form": "10-K",
-      "filed": "2024-02-23"
-     },
-     {
-      "year": 2024,
-      "end": "2024-12-31",
-      "value": 5312000000,
-      "form": "10-K",
-      "filed": "2025-02-27"
-     },
-     {
-      "year": 2025,
-      "end": "2025-12-31",
-      "value": 4566000000,
-      "form": "10-K",
-      "filed": "2026-02-27"
-     }
-    ],
-    "operating_cash_flow": [
-     {
-      "year": 2020,
-      "end": "2020-12-31",
-      "value": 2739000000,
-      "form": "10-K",
-      "filed": "2021-02-22"
-     },
-     {
-      "year": 2021,
-      "end": "2021-12-31",
-      "value": 2798000000,
-      "form": "10-K",
-      "filed": "2022-02-24"
-     },
-     {
-      "year": 2022,
-      "end": "2022-12-31",
-      "value": 4304000000,
-      "form": "10-K",
-      "filed": "2023-02-24"
-     },
-     {
-      "year": 2023,
-      "end": "2023-12-31",
-      "value": 7477000000,
-      "form": "10-K",
-      "filed": "2024-02-23"
-     },
-     {
-      "year": 2024,
-      "end": "2024-12-31",
-      "value": 5375000000,
-      "form": "10-K",
-      "filed": "2025-02-27"
-     },
-     {
-      "year": 2025,
-      "end": "2025-12-31",
-      "value": 4319000000,
-      "form": "10-K",
-      "filed": "2026-02-27"
-     }
-    ],
-    "shares": [
-     {
-      "year": 2012,
-      "end": "2012-12-31",
-      "value": 380000000,
-      "form": "10-K",
-      "filed": "2013-02-14"
-     },
-     {
-      "year": 2013,
-      "end": "2013-12-31",
-      "value": 361000000,
-      "form": "10-K",
-      "filed": "2014-02-20"
-     },
-     {
-      "year": 2022,
-      "end": "2022-12-31",
-      "value": 1940000000,
-      "form": "10-K",
-      "filed": "2023-02-24"
-     },
-     {
-      "year": 2023,
-      "end": "2023-12-31",
-      "value": 2436000000,
-      "form": "10-K",
-      "filed": "2024-02-23"
-     },
-     {
-      "year": 2024,
-      "end": "2024-12-31",
-      "value": 2450000000,
-      "form": "10-K",
-      "filed": "2025-02-27"
-     },
-     {
-      "year": 2025,
-      "end": "2025-12-31",
-      "value": 2530000000,
-      "form": "10-K",
-      "filed": "2026-02-27"
-     }
-    ],
-    "long_term_debt": [
-     {
-      "year": 2020,
-      "end": "2020-12-31",
-      "value": 15404000000,
-      "form": "10-K",
-      "filed": "2021-02-22"
-     },
-     {
-      "year": 2021,
-      "end": "2021-12-31",
-      "value": 14759000000,
-      "form": "10-K",
-      "filed": "2022-02-24"
-     },
-     {
-      "year": 2022,
-      "end": "2022-12-31",
-      "value": 48999000000,
-      "form": "10-K",
-      "filed": "2023-02-24"
-     },
-     {
-      "year": 2023,
-      "end": "2023-12-31",
-      "value": 43669000000,
-      "form": "10-K",
-      "filed": "2024-02-23"
-     },
-     {
-      "year": 2024,
-      "end": "2024-12-31",
-      "value": 39505000000,
-      "form": "10-K",
-      "filed": "2025-02-27"
-     },
-     {
-      "year": 2025,
-      "end": "2025-12-31",
-      "value": 32567000000,
-      "form": "10-K",
-      "filed": "2026-02-27"
-     }
-    ]
-   },
-   "cik": 1437107,
-   "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001437107&type=10-K"
-  },
   "US:NEE": {
    "entity": "NEXTERA ENERGY INC",
    "series": {
@@ -56651,7 +56160,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000031462&type=10-K"
   },
   "US:DOW": {
-   "entity": "DOW INC.",
+   "entity": "Dow Inc.",
    "series": {
     "revenue": [
      {
@@ -62725,6 +62234,7 @@
   }
  },
  "unavailable": {
+  "US:WBD": "no SEC filer matches this ticker",
   "US:SPY": "GET https://data.sec.gov/api/xbrl/companyfacts/CIK0000884394.json failed: HTTP Error 404: Not Found",
   "US:QQQ": "no SEC filer matches this ticker",
   "US:IWM": "no SEC filer matches this ticker",
