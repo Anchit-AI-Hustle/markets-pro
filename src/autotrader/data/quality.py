@@ -25,6 +25,7 @@ import sys
 from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import date
+from math import ceil
 from pathlib import Path
 
 from ..core.calendar import TradingCalendar
@@ -53,10 +54,29 @@ class QualityIssue:
     key: str
     kind: str  # "no_data" | "stale" | "outlier" | "zero_volume"
     detail: str
+    #: Completed sessions missing, on a "stale" issue. The extent of a gap
+    #: decides whether it is a dead symbol or a broken fetch, and parsing it
+    #: back out of ``detail`` would make that decision depend on wording.
+    sessions: int | None = None
 
 
 #: Kinds that mean the pipeline itself failed, not just an unusual session.
 HARD_FAILURE_KINDS = frozenset({"no_data", "stale"})
+
+#: Share of the universe that has to be stale before the fetch itself is
+#: judged broken. Below it, a stale symbol is a universe-maintenance item --
+#: a ticker that was renamed, delisted or split -- and one of those must not
+#: be able to speak for the other 324.
+DEFAULT_STALE_SHARE_LIMIT = 0.02
+
+#: Floor under that share, so a tiny universe still needs two symbols to
+#: agree before a fetch is called broken.
+MIN_STALE_FOR_PIPELINE_FAILURE = 2
+
+#: A gap this long is not transient. A symbol still missing after roughly a
+#: quarter needs retiring or renaming, so it escalates on its own instead of
+#: sitting in the log unread forever.
+DEFAULT_DEAD_AFTER_SESSIONS = 60
 
 
 def check_freshness(
@@ -79,6 +99,7 @@ def check_freshness(
             entry.key,
             "stale",
             f"last bar {last_day} is {missed} completed session(s) behind {as_of}",
+            sessions=missed,
         )
     return None
 
@@ -154,6 +175,41 @@ def format_issues(issues: Sequence[QualityIssue]) -> list[str]:
     ]
 
 
+def hard_failures(
+    issues: Sequence[QualityIssue],
+    *,
+    universe_size: int,
+    stale_share_limit: float = DEFAULT_STALE_SHARE_LIMIT,
+    dead_after_sessions: int = DEFAULT_DEAD_AFTER_SESSIONS,
+) -> list[QualityIssue]:
+    """The issues that should fail the run, as opposed to being reported.
+
+    Staleness used to fail the run whatever its extent, and that is what
+    caused a fortnight-long outage: one US ticker stopped reporting, the
+    single stale symbol failed the gate, the gate aborted the job before its
+    commit step, and the cache it was protecting froze. Every instrument then
+    went a session staler each night, so the gate's own verdict grew from one
+    failure to 325 and kept re-arming itself.
+
+    Extent is what decides now. A handful of stale symbols is a universe
+    problem -- renamed, delisted, split -- and gets named in the log. A stale
+    universe is a broken fetch and fails the run. A gap too long to be
+    transient fails on its own however few symbols it affects, so a dead
+    ticker cannot simply be ignored indefinitely either.
+    """
+    no_data = [i for i in issues if i.kind == "no_data"]
+    stale = [i for i in issues if i.kind == "stale"]
+    limit = max(
+        MIN_STALE_FOR_PIPELINE_FAILURE, ceil(universe_size * stale_share_limit)
+    )
+    if len(stale) >= limit:
+        return no_data + stale
+    return no_data + [
+        issue for issue in stale
+        if issue.sessions is not None and issue.sessions > dead_after_sessions
+    ]
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Verify freshness and sanity of the live daily-bar cache"
@@ -177,11 +233,24 @@ def main(argv: list[str] | None = None) -> int:
     for line in format_issues(issues):
         print(line, file=sys.stderr)
 
-    hard = [i for i in issues if i.kind in HARD_FAILURE_KINDS]
+    hard = hard_failures(issues, universe_size=len(feed.entries))
     print(
         f"{len(feed.entries)} instrument(s) checked as of {today}: "
         f"{len(issues)} issue(s), {len(hard)} hard failure(s)"
     )
+    tolerated = [
+        i for i in issues if i.kind in HARD_FAILURE_KINDS and i not in hard
+    ]
+    if tolerated:
+        # Named, not silent: these do not fail the run, and nobody should have
+        # to re-read the whole log to find out which symbols they were.
+        print(
+            f"note: {len(tolerated)} stale symbol(s) tolerated as a universe "
+            f"problem rather than a broken fetch: "
+            f"{', '.join(sorted(i.key for i in tolerated))}. "
+            f"Retire or rename them, or they fail the run once they are more "
+            f"than {DEFAULT_DEAD_AFTER_SESSIONS} sessions behind."
+        )
     return 1 if hard else 0
 
 

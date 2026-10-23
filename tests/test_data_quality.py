@@ -9,11 +9,13 @@ from autotrader.core.money import FXRates
 from autotrader.data.bars import Bar, BarSeries, MarketDataSet
 from autotrader.data.livefeed import LiveFeed
 from autotrader.data.quality import (
+    DEFAULT_DEAD_AFTER_SESSIONS,
     HARD_FAILURE_KINDS,
     QualityIssue,
     check_freshness,
     check_sanity,
     format_issues,
+    hard_failures,
     verify_livefeed,
 )
 from autotrader.data.universe import UniverseEntry
@@ -104,6 +106,74 @@ class TestCheckSanity(unittest.TestCase):
         entry = _entry()
         series = _series(entry, [(date(2026, 8, 18), 100, 1000)])
         self.assertEqual(check_sanity(entry, series), [])
+
+
+class TestWhichIssuesFailTheRun(unittest.TestCase):
+    """The rule that caused a fortnight-long outage, and what replaced it.
+
+    One US ticker stopped reporting. Staleness failed the run whatever its
+    extent, so that single symbol aborted the job before its commit step and
+    froze the cache the gate exists to protect. The frozen cache then went a
+    session staler every night, growing the gate's own verdict from one
+    failure to 325 -- a check that was the sole cause of what it reported.
+    """
+
+    def _stale(self, n: int, sessions: int = 4) -> list[QualityIssue]:
+        return [
+            QualityIssue(f"US:S{i:03d}", "stale", f"{sessions} behind", sessions=sessions)
+            for i in range(n)
+        ]
+
+    def test_one_dead_ticker_does_not_fail_a_healthy_universe(self):
+        self.assertEqual(hard_failures(self._stale(1), universe_size=325), [])
+
+    def test_a_handful_of_dead_tickers_does_not_either(self):
+        self.assertEqual(hard_failures(self._stale(6), universe_size=325), [])
+
+    def test_a_stale_universe_is_a_broken_fetch_and_fails(self):
+        issues = self._stale(325)
+        self.assertEqual(len(hard_failures(issues, universe_size=325)), 325)
+
+    def test_the_threshold_is_a_share_of_the_universe(self):
+        # 2% of 325 is 7 symbols; one short of it is still tolerated.
+        self.assertEqual(hard_failures(self._stale(6), universe_size=325), [])
+        self.assertEqual(len(hard_failures(self._stale(7), universe_size=325)), 7)
+
+    def test_a_small_universe_still_needs_two_symbols_to_agree(self):
+        """A share alone would make a single symbol a broken fetch here."""
+        self.assertEqual(hard_failures(self._stale(1), universe_size=10), [])
+        self.assertEqual(len(hard_failures(self._stale(2), universe_size=10)), 2)
+
+    def test_a_gap_too_long_to_be_transient_fails_on_its_own(self):
+        """So a dead ticker cannot be tolerated forever without anyone acting."""
+        lingering = self._stale(1, sessions=DEFAULT_DEAD_AFTER_SESSIONS + 1)
+        self.assertEqual(len(hard_failures(lingering, universe_size=325)), 1)
+
+    def test_a_gap_at_the_limit_is_still_tolerated(self):
+        at_limit = self._stale(1, sessions=DEFAULT_DEAD_AFTER_SESSIONS)
+        self.assertEqual(hard_failures(at_limit, universe_size=325), [])
+
+    def test_an_uncached_instrument_always_fails(self):
+        """``no_data`` is a configuration error, not a dead symbol: a key in
+        the universe that was never fetched at all."""
+        issues = [QualityIssue("US:NEW", "no_data", "no cached bars at all")]
+        self.assertEqual(len(hard_failures(issues, universe_size=325)), 1)
+
+    def test_warnings_never_fail_the_run(self):
+        issues = [
+            QualityIssue("US:AAA", "outlier", "moved 40%"),
+            QualityIssue("US:BBB", "zero_volume", "silent session"),
+        ]
+        self.assertEqual(hard_failures(issues, universe_size=325), [])
+
+    def test_the_original_outage_would_not_have_happened(self):
+        """The exact shape of run 101: 365 warnings, one stale US ticker."""
+        issues = [
+            *(QualityIssue(f"IN:S{i:03d}", "zero_volume", "silent") for i in range(357)),
+            *(QualityIssue(f"US:O{i}", "outlier", "moved 36%") for i in range(8)),
+            QualityIssue("US:WBD", "stale", "4 behind", sessions=4),
+        ]
+        self.assertEqual(hard_failures(issues, universe_size=325), [])
 
 
 class TestVerifyLivefeed(unittest.TestCase):
