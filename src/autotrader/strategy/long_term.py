@@ -154,8 +154,13 @@ class LongTermStrategy(Strategy):
                 )
             )
 
-        # Exit anything held that no longer qualifies.
-        for key in context.open_keys:
+        # Exit anything held that no longer qualifies. Sorted because
+        # ``open_keys`` is a frozenset: iterating it directly ordered these
+        # exits by string hash, which varies per process. Exits free risk
+        # budget, so their order decided which of the day's entries still
+        # fitted inside it -- the same cache produced one, two or three
+        # pending orders depending on the hash seed.
+        for key in sorted(context.open_keys):
             if key in selected_keys or key in tolerated:
                 continue
             instrument = instruments.get(key)

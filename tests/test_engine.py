@@ -8,6 +8,10 @@ These assert the invariants that make the whole thing trustworthy:
 * venue rules (China T+1) are never violated by the engine.
 """
 
+import hashlib
+import os
+import subprocess
+import sys
 import unittest
 from datetime import date
 from decimal import Decimal
@@ -26,7 +30,7 @@ from autotrader.execution.orders import Horizon
 from autotrader.execution.simulator import ExecutionConfig
 from autotrader.portfolio.sizing import SizingConfig
 from autotrader.risk.limits import RiskConfig
-from autotrader.strategy.base import Direction, Signal, Strategy
+from autotrader.strategy.base import Direction, Signal, Strategy, StrategyContext
 from autotrader.strategy.short_term import ShortTermConfig, ShortTermStrategy
 
 DAYS = business_days(date(2022, 1, 3), 400)
@@ -139,6 +143,51 @@ def build_engine(instruments, series, strategies, *, cash=None, days=DAYS,
         instruments=instruments, data=data, strategies=strategies,
         config=config, fx=FX,
     )
+
+
+def hash_order_probe() -> str:
+    """Digest of one process's output for a fixed input.
+
+    Two parts, because the two fail differently. The strategy call is the
+    sensitive one: its exits walk the set of open positions, so a
+    hash-ordered walk changes the digest from one process to the next while
+    the input is byte-identical. The engine run is the wider net -- it
+    catches an order dependence anywhere else in a full backtest, and does
+    not currently drop a holding, so it cannot carry the test on its own.
+    """
+    from autotrader.strategy.long_term import LongTermConfig, LongTermStrategy
+
+    held = {
+        f"US:{sym}": Instrument(sym, "US", AssetClass.EQUITY, "USD", Decimal("0.01"))
+        for sym in (f"S{i:02d}" for i in range(16))
+    }
+    exits = LongTermStrategy(LongTermConfig(max_holdings=2)).generate(
+        DAYS[-1], {}, held,
+        StrategyContext(
+            day=DAYS[-1], equity=Decimal("1000000"),
+            open_keys=frozenset(held), entries_halted=False,
+        ),
+    )
+
+    symbols = [f"T{i:02d}" for i in range(8)]
+    report = build_engine(
+        [
+            Instrument(sym, "US", AssetClass.EQUITY, "USD", Decimal("0.01"), Decimal("1"))
+            for sym in symbols
+        ],
+        [
+            generate_oscillating_series(f"US:{sym}", DAYS, seed=i + 1)
+            for i, sym in enumerate(symbols)
+        ],
+        [LongTermStrategy(LongTermConfig(max_holdings=3))],
+    ).run()
+
+    payload = "|".join(
+        [f"{s.instrument.key}:{s.direction.name}" for s in exits]
+        + [str(v) for v in report.equity_values]
+        + [str(report.total_trades), str(report.ending_equity)]
+    )
+    return hashlib.sha256(payload.encode()).hexdigest()
 
 
 class TestNoLookahead(unittest.TestCase):
@@ -366,6 +415,40 @@ class TestDeterminism(unittest.TestCase):
         a, b = self._run(), self._run()
         self.assertEqual(a.total_trades, b.total_trades)
         self.assertEqual(a.ending_equity, b.ending_equity)
+
+
+class TestDeterminismAcrossProcesses(unittest.TestCase):
+    """Two runs in one process cannot see a hash-order bug.
+
+    PYTHONHASHSEED is fixed for the life of a process, so the check above
+    iterates every set the same way twice and agrees with itself. A strategy
+    that walked a frozenset of open positions passed it for months while
+    proposing different trades on each restart, so the seed has to change
+    between the runs being compared -- which takes a second process.
+    """
+
+    ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    def _digest(self, seed: str) -> str:
+        proc = subprocess.run(
+            [
+                sys.executable, "-c",
+                "import sys; sys.path.insert(0, sys.argv[1]); "
+                "from tests.test_engine import hash_order_probe; "
+                "print(hash_order_probe())",
+                self.ROOT,
+            ],
+            capture_output=True, text=True, env={**os.environ, "PYTHONHASHSEED": seed},
+        )
+        self.assertEqual(proc.returncode, 0, proc.stderr[-2000:])
+        return proc.stdout.strip()
+
+    def test_the_run_is_identical_under_two_different_hash_seeds(self):
+        self.assertEqual(self._digest("0"), self._digest("1"))
+
+    def test_the_probe_produced_a_digest(self):
+        """A probe that crashed would make the comparison above vacuous."""
+        self.assertRegex(self._digest("0"), r"^[0-9a-f]{64}$")
 
 
 class TestRoundTrips(unittest.TestCase):

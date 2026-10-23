@@ -178,6 +178,40 @@ class TestLongTermStrategy(unittest.TestCase):
             LongTermConfig(max_holdings=0)
 
 
+class TestExitOrderIsStable(unittest.TestCase):
+    """``open_keys`` is a frozenset, so iterating it put the day's exits in
+    string-hash order, which is re-randomised every process. Exits release
+    risk budget, so that order decided which of the day's entries still
+    fitted inside it: on the live cache the same bars produced one, two or
+    three pending orders depending on PYTHONHASHSEED.
+
+    Sixteen keys make a hash order that happens to equal sorted order
+    vanishingly unlikely, so this fails if the sort is dropped again.
+    """
+
+    def setUp(self):
+        self.instruments = {
+            f"US:{sym}": Instrument(sym, "US", AssetClass.EQUITY, "USD", Decimal("0.01"))
+            for sym in (f"S{i:02d}" for i in range(16))
+        }
+        self.day = DAYS[-1]
+
+    def _exits(self):
+        strategy = LongTermStrategy(LongTermConfig(max_holdings=2))
+        # No windows, so nothing qualifies and every holding is dropped.
+        signals = strategy.generate(
+            self.day, {}, self.instruments,
+            context(self.day, open_keys=self.instruments),
+        )
+        return [s.instrument.key for s in signals if s.direction is Direction.FLAT]
+
+    def test_every_holding_that_no_longer_qualifies_is_exited(self):
+        self.assertEqual(len(self._exits()), len(self.instruments))
+
+    def test_exits_come_out_in_sorted_key_order(self):
+        self.assertEqual(self._exits(), sorted(self.instruments))
+
+
 class TestShortTermStrategy(unittest.TestCase):
     def setUp(self):
         self.strategy = ShortTermStrategy(ShortTermConfig())
