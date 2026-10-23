@@ -19,16 +19,73 @@ fail between fetching and committing must either swallow its failure or carry
 
 from __future__ import annotations
 
+import ast
+import re
+import sys
 import unittest
 from pathlib import Path
-
-import yaml
 
 WORKFLOW = Path(__file__).resolve().parent.parent / ".github/workflows/refresh-signals.yml"
 
 
 def _steps() -> list[dict]:
-    return yaml.safe_load(WORKFLOW.read_text())["jobs"]["refresh"]["steps"]
+    """The job's steps, parsed with the standard library only.
+
+    PyYAML is not a dependency of this project and CI installs nothing before
+    running the suite -- "the package has zero runtime dependencies" is the
+    stated reason there is no install step. A test that imported yaml passed
+    locally and failed on all three CI pythons, which is the exact shape of
+    bug this file exists to catch in the workflow, committed in the test.
+
+    So this reads the one structure it needs rather than implementing YAML:
+    steps are a flat list under jobs.refresh.steps, each `- name:` at six
+    spaces with its properties at eight, and `run: |` blocks running until the
+    indentation returns. It is deliberately strict -- an unparsed step would
+    silently weaken every assertion below, so the shape is asserted too.
+    """
+    lines = WORKFLOW.read_text().splitlines()
+    try:
+        start = next(i for i, ln in enumerate(lines) if ln.strip() == "steps:")
+    except StopIteration:  # pragma: no cover - guarded by test_the_parser_works
+        raise AssertionError("no 'steps:' key in the workflow") from None
+
+    steps: list[dict] = []
+    current: dict | None = None
+    block_key: str | None = None
+    block: list[str] = []
+
+    def flush() -> None:
+        nonlocal block_key, block
+        if current is not None and block_key is not None:
+            current[block_key] = "\n".join(block)
+        block_key, block = None, []
+
+    for ln in lines[start + 1:]:
+        if ln.strip() and not ln.startswith(" " * 6):
+            break                                    # left the steps list
+        if block_key is not None:
+            # A run: | block continues while indented past its own key.
+            if not ln.strip() or ln.startswith(" " * 10):
+                block.append(ln[10:] if len(ln) > 10 else "")
+                continue
+            flush()
+        m = re.match(r"^      - (\w[\w-]*): ?(.*)$", ln)
+        if m:                                        # first key of a new step
+            flush()
+            current = {}
+            steps.append(current)
+            key, value = m.group(1), m.group(2).strip()
+        else:
+            m = re.match(r"^        (\w[\w-]*): ?(.*)$", ln)
+            if not m or current is None:
+                continue                             # comment, blank, or nested
+            key, value = m.group(1), m.group(2).strip()
+        if value in ("|", ">-", ">"):
+            block_key = key
+            continue
+        current[key] = {"true": True, "false": False}.get(value, value.strip("'\""))
+    flush()
+    return steps
 
 
 def _index_of(name_fragment: str, steps: list[dict]) -> int:
@@ -36,6 +93,47 @@ def _index_of(name_fragment: str, steps: list[dict]) -> int:
         if name_fragment.lower() in (st.get("name") or "").lower():
             return i
     raise AssertionError(f"no step named like {name_fragment!r}")
+
+
+class ParserTest(unittest.TestCase):
+    """A parser that quietly returned nothing would make every other test
+    in this file pass by vacuity. Assert its output has the shape expected."""
+
+    def setUp(self):
+        self.steps = _steps()
+
+    def test_it_finds_every_step(self):
+        self.assertGreaterEqual(len(self.steps), 10)
+        self.assertTrue(all(isinstance(st, dict) for st in self.steps))
+
+    def test_it_reads_names_runs_and_flags(self):
+        named = [st for st in self.steps if st.get("name")]
+        self.assertGreaterEqual(len(named), 10)
+        self.assertTrue(any((st.get("run") or "") for st in self.steps), "no run: blocks parsed")
+        self.assertTrue(
+            any(st.get("continue-on-error") is True for st in self.steps),
+            "continue-on-error not parsed as a boolean",
+        )
+
+    def test_it_uses_no_third_party_import(self):
+        """CI installs nothing before the suite; this file must stay stdlib.
+
+        Read as syntax, not as text: a grep for the import would match the
+        assertion that greps for it, which is how this test first failed.
+        """
+        tree = ast.parse(Path(__file__).read_text())
+        imported: set[str] = set()
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                imported.update(alias.name.split(".")[0] for alias in node.names)
+            elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
+                imported.add(node.module.split(".")[0])
+        self.assertEqual(
+            sorted(imported - set(sys.stdlib_module_names)),
+            [],
+            "CI runs the suite with no install step, so this file must import "
+            "only the standard library",
+        )
 
 
 class CommitIsReachableTest(unittest.TestCase):
