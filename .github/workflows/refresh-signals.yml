@@ -35,7 +35,21 @@ jobs:
       # Cross-checks the cache against each market's own trading calendar and
       # flags implausible sessions; a stale or corrupt symbol here degrades
       # the screener and signals silently unless something says so out loud.
+      #
+      # `continue-on-error` is load-bearing, not laziness. The step aborting the
+      # job deadlocked this workflow for a fortnight: the fetch above tolerates
+      # a partial failure by design and commits what it got, but an aborted job
+      # skips the commit, so the cache froze; the next night it was a day
+      # staler, which produced MORE stale failures, which aborted again. By the
+      # time it was found every one of the 325 instruments was failing and the
+      # gate that exists to catch a stale cache was the thing causing it.
+      #
+      # Saving the data and judging it are separate questions. The verdict is
+      # re-raised after the commit, so a real problem still turns the run red
+      # without being able to stop the fresh prices from being written.
       - name: Verify cache freshness and sanity
+        id: quality
+        continue-on-error: true
         run: |
           PYTHONPATH=src python3 -m autotrader.data.quality --data data/live --regions india us
       # Filings change only when a company files, so a failure here is not
@@ -63,12 +77,19 @@ jobs:
           PYTHONPATH=src python3 -m autotrader.data.fundamentals_intl \
             --enrich-us --out data/live \
             || echo "::warning::provider enrichment skipped"
+      # Informational only — it prints into the job log. Guarded for the same
+      # reason as the quality gate: nothing between the fetch and the commit
+      # gets to cost a day of prices.
       - name: Preview today's signals in the job log
+        id: preview
+        continue-on-error: true
         run: PYTHONPATH=src python3 -m autotrader.signals.live --data data/live --out /dev/null
       # Re-screens the whole universe on every refresh, same cadence as
       # signals — a screener that only ran on demand would silently drift out
       # of date with the cache it reports on.
       - name: Screen the universe
+        id: screener
+        continue-on-error: true
         run: |
           PYTHONPATH=src python3 -m autotrader.screener.core --data data/live \
             --regions india us --out data/live/screener.json
@@ -92,6 +113,8 @@ jobs:
               || echo "::warning::deep fetch incomplete; the study will cover fewer names"
           fi
       - name: Re-run the evidence study (weekly)
+        id: study
+        continue-on-error: true
         run: |
           if [ ! -f data/research/fitness.json ] || [ "$(date -u +%u)" = "6" ]; then
             # No `|| true` here. A study that cannot run is a finding, not a
@@ -112,3 +135,19 @@ jobs:
             git commit -m "Refresh live market data ($(date -u +%F))"
             git push
           fi
+      # Runs only after the cache is safely committed, so a red run never
+      # costs a day of data.
+      # Every check above defers its verdict to here so that none of them can
+      # skip the commit. The run still goes red; the data is saved first.
+      - name: Fail the run if any check failed
+        if: >-
+          steps.quality.outcome == 'failure' ||
+          steps.preview.outcome == 'failure' ||
+          steps.screener.outcome == 'failure' ||
+          steps.study.outcome == 'failure'
+        run: |
+          echo "::error::a refresh check failed (quality=${{ steps.quality.outcome }}"\
+            " preview=${{ steps.preview.outcome }} screener=${{ steps.screener.outcome }}"\
+            " study=${{ steps.study.outcome }}). The fresh cache was committed first;"\
+            " see the failing step above for what is wrong with it."
+          exit 1

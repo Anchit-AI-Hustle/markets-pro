@@ -59,6 +59,7 @@ MODULES = [
     ("tests.test_a11y", "Landmarks & table semantics"),
     ("tests.test_loss_streak", "Consecutive-loss breaker"),
     ("tests.test_evidence_gate", "Evidence gate on suggestions"),
+    ("tests.test_refresh_workflow", "Nightly refresh reaches its commit"),
 ]
 
 BAR = "=" * 74
