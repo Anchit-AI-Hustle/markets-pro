@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generated_at": "2026-10-26T19:29:27+00:00",
+ "generated_at": "2026-10-27T00:59:35+00:00",
  "count": 325,
  "top_stocks": [
   {
@@ -2425,9 +2425,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0046,
-   "relative_momentum_long": 0.1269,
-   "score": 0.5127,
+   "sector_momentum_long": -0.0034,
+   "relative_momentum_long": 0.1257,
+   "score": 0.5099,
    "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; +12.2% over ~63d; ATR 3.0% of price",
    "reading": {
     "price": 35.62,
@@ -2824,9 +2824,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0046,
-   "relative_momentum_long": 0.0,
-   "score": 0.4196,
+   "sector_momentum_long": -0.0034,
+   "relative_momentum_long": -0.0011,
+   "score": 0.4169,
    "rationale": "ADX 20 (ranging) -> weighting rsi, bollinger_pct_b; -0.5% over ~63d; ATR 1.5% of price",
    "reading": {
     "price": 367.68,
@@ -3680,6 +3680,39 @@
    }
   },
   {
+   "key": "IN:BANKBEES",
+   "symbol": "BANKBEES",
+   "name": "Nippon Bank Nifty ETF",
+   "region": "india",
+   "sector": "index",
+   "regime": "ranging",
+   "signal": "bullish",
+   "signal_strength": 0.6059,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0034,
+   "relative_momentum_long": -0.0408,
+   "score": 0.2986,
+   "rationale": "ADX 17 (ranging) -> weighting rsi, bollinger_pct_b; -4.4% over ~63d; ATR 1.6% of price",
+   "reading": {
+    "price": 560.74,
+    "rsi": 35.69,
+    "macd_hist": 0.0632,
+    "supertrend_direction": -1,
+    "sma_fast": 583.0614,
+    "sma_slow": 587.6029,
+    "bollinger_pct_b": 0.0372,
+    "adx": 17.29,
+    "atr_pct": 0.0156,
+    "momentum_short": -0.039,
+    "momentum_long": -0.0443,
+    "annualised_volatility": 0.1034
+   }
+  },
+  {
    "key": "IN:HDFCBANK",
    "symbol": "HDFCBANK",
    "name": "HDFC Bank",
@@ -3809,39 +3842,6 @@
     "momentum_short": -0.0792,
     "momentum_long": -0.1066,
     "annualised_volatility": 0.3291
-   }
-  },
-  {
-   "key": "IN:BANKBEES",
-   "symbol": "BANKBEES",
-   "name": "Nippon Bank Nifty ETF",
-   "region": "india",
-   "sector": "index",
-   "regime": "ranging",
-   "signal": "bullish",
-   "signal_strength": 0.6059,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0046,
-   "relative_momentum_long": -0.0486,
-   "score": 0.2805,
-   "rationale": "ADX 17 (ranging) -> weighting rsi, bollinger_pct_b; -5.3% over ~63d; ATR 1.6% of price",
-   "reading": {
-    "price": 560.74,
-    "rsi": 35.69,
-    "macd_hist": 0.0602,
-    "supertrend_direction": -1,
-    "sma_fast": 583.0036,
-    "sma_slow": 587.69,
-    "bollinger_pct_b": 0.0372,
-    "adx": 17.07,
-    "atr_pct": 0.0156,
-    "momentum_short": -0.039,
-    "momentum_long": -0.0532,
-    "annualised_volatility": 0.1042
    }
   },
   {
@@ -4357,9 +4357,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0046,
-   "relative_momentum_long": 0.038,
-   "score": 0.2279,
+   "sector_momentum_long": -0.0034,
+   "relative_momentum_long": 0.0368,
+   "score": 0.2252,
    "rationale": "ADX 15 (ranging) -> weighting rsi, bollinger_pct_b; +3.3% over ~63d; ATR 0.9% of price",
    "reading": {
     "price": 765.575,
@@ -4544,39 +4544,6 @@
    }
   },
   {
-   "key": "US:VTI",
-   "symbol": "VTI",
-   "name": "Vanguard Total Stock Market ETF",
-   "region": "us",
-   "sector": "index",
-   "regime": "ranging",
-   "signal": "bullish",
-   "signal_strength": 0.2004,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0046,
-   "relative_momentum_long": 0.0313,
-   "score": 0.2034,
-   "rationale": "ADX 16 (ranging) -> weighting rsi, bollinger_pct_b; +2.7% over ~63d; ATR 1.0% of price",
-   "reading": {
-    "price": 375.765,
-    "rsi": 47.35,
-    "macd_hist": -0.5533,
-    "supertrend_direction": 1,
-    "sma_fast": 377.6577,
-    "sma_slow": 358.6577,
-    "bollinger_pct_b": 0.3261,
-    "adx": 15.82,
-    "atr_pct": 0.0097,
-    "momentum_short": -0.0105,
-    "momentum_long": 0.0267,
-    "annualised_volatility": 0.1146
-   }
-  },
-  {
    "key": "IN:ITC",
    "symbol": "ITC",
    "name": "ITC",
@@ -4640,6 +4607,39 @@
     "momentum_short": -0.1388,
     "momentum_long": -0.144,
     "annualised_volatility": 0.3284
+   }
+  },
+  {
+   "key": "US:VTI",
+   "symbol": "VTI",
+   "name": "Vanguard Total Stock Market ETF",
+   "region": "us",
+   "sector": "index",
+   "regime": "ranging",
+   "signal": "bullish",
+   "signal_strength": 0.2004,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0034,
+   "relative_momentum_long": 0.0302,
+   "score": 0.2006,
+   "rationale": "ADX 16 (ranging) -> weighting rsi, bollinger_pct_b; +2.7% over ~63d; ATR 1.0% of price",
+   "reading": {
+    "price": 375.765,
+    "rsi": 47.35,
+    "macd_hist": -0.5533,
+    "supertrend_direction": 1,
+    "sma_fast": 377.6577,
+    "sma_slow": 358.6577,
+    "bollinger_pct_b": 0.3261,
+    "adx": 15.82,
+    "atr_pct": 0.0097,
+    "momentum_short": -0.0105,
+    "momentum_long": 0.0267,
+    "annualised_volatility": 0.1146
    }
   },
   {
@@ -5891,9 +5891,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0046,
-   "relative_momentum_long": -0.0507,
-   "score": 0.0983,
+   "sector_momentum_long": -0.0034,
+   "relative_momentum_long": -0.0519,
+   "score": 0.0956,
    "rationale": "ADX 37 (trending) -> weighting supertrend, macd, sma_cross; -5.5% over ~63d; ATR 1.3% of price",
    "reading": {
     "price": 277.135,
@@ -6290,9 +6290,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0046,
-   "relative_momentum_long": -0.0497,
-   "score": 0.0511,
+   "sector_momentum_long": -0.0034,
+   "relative_momentum_long": -0.0508,
+   "score": 0.0484,
    "rationale": "ADX 11 (ranging) -> weighting rsi, bollinger_pct_b; -5.4% over ~63d; ATR 1.7% of price",
    "reading": {
     "price": 257.22,
@@ -6973,40 +6973,6 @@
    }
   },
   {
-   "key": "US:QQQ",
-   "symbol": "QQQ",
-   "name": "Invesco QQQ",
-   "region": "us",
-   "sector": "index",
-   "regime": "trending",
-   "signal": "bearish",
-   "signal_strength": -0.3333,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0046,
-   "relative_momentum_long": 0.0609,
-   "score": -0.0745,
-   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; +5.6% over ~63d; ATR 1.6% of price",
-   "reading": {
-    "price": 713.53,
-    "rsi": 42.54,
-    "macd_hist": -4.4075,
-    "supertrend_direction": -1,
-    "sma_fast": 725.4614,
-    "sma_slow": 677.7605,
-    "bollinger_pct_b": 0.208,
-    "adx": 25.86,
-    "atr_pct": 0.0161,
-    "momentum_short": -0.0416,
-    "momentum_long": 0.0563,
-    "annualised_volatility": 0.1898
-   }
-  },
-  {
    "key": "IN:INDHOTEL",
    "symbol": "INDHOTEL",
    "name": "Indian Hotels Company",
@@ -7037,6 +7003,40 @@
     "momentum_short": 0.0618,
     "momentum_long": 0.0797,
     "annualised_volatility": 0.2326
+   }
+  },
+  {
+   "key": "US:QQQ",
+   "symbol": "QQQ",
+   "name": "Invesco QQQ",
+   "region": "us",
+   "sector": "index",
+   "regime": "trending",
+   "signal": "bearish",
+   "signal_strength": -0.3333,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0034,
+   "relative_momentum_long": 0.0598,
+   "score": -0.0772,
+   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; +5.6% over ~63d; ATR 1.6% of price",
+   "reading": {
+    "price": 713.53,
+    "rsi": 42.54,
+    "macd_hist": -4.4075,
+    "supertrend_direction": -1,
+    "sma_fast": 725.4614,
+    "sma_slow": 677.7605,
+    "bollinger_pct_b": 0.208,
+    "adx": 25.86,
+    "atr_pct": 0.0161,
+    "momentum_short": -0.0416,
+    "momentum_long": 0.0563,
+    "annualised_volatility": 0.1898
    }
   },
   {
@@ -7807,39 +7807,6 @@
    }
   },
   {
-   "key": "US:DIA",
-   "symbol": "DIA",
-   "name": "SPDR Dow Jones Industrial ETF",
-   "region": "us",
-   "sector": "index",
-   "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.2895,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0046,
-   "relative_momentum_long": -0.0033,
-   "score": -0.1959,
-   "rationale": "ADX 20 (ranging) -> weighting rsi, bollinger_pct_b; -0.8% over ~63d; ATR 1.0% of price",
-   "reading": {
-    "price": 522.72,
-    "rsi": 53.9,
-    "macd_hist": 1.3636,
-    "supertrend_direction": 1,
-    "sma_fast": 522.5024,
-    "sma_slow": 505.3838,
-    "bollinger_pct_b": 0.7505,
-    "adx": 20.21,
-    "atr_pct": 0.0101,
-    "momentum_short": 0.0101,
-    "momentum_long": -0.0079,
-    "annualised_volatility": 0.1169
-   }
-  },
-  {
    "key": "IN:SBIN",
    "symbol": "SBIN",
    "name": "State Bank of India",
@@ -7904,6 +7871,39 @@
     "momentum_short": 0.1288,
     "momentum_long": 0.1902,
     "annualised_volatility": 0.3096
+   }
+  },
+  {
+   "key": "US:DIA",
+   "symbol": "DIA",
+   "name": "SPDR Dow Jones Industrial ETF",
+   "region": "us",
+   "sector": "index",
+   "regime": "ranging",
+   "signal": "bearish",
+   "signal_strength": -0.2895,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0034,
+   "relative_momentum_long": -0.0045,
+   "score": -0.1986,
+   "rationale": "ADX 20 (ranging) -> weighting rsi, bollinger_pct_b; -0.8% over ~63d; ATR 1.0% of price",
+   "reading": {
+    "price": 522.72,
+    "rsi": 53.9,
+    "macd_hist": 1.3636,
+    "supertrend_direction": 1,
+    "sma_fast": 522.5024,
+    "sma_slow": 505.3838,
+    "bollinger_pct_b": 0.7505,
+    "adx": 20.21,
+    "atr_pct": 0.0101,
+    "momentum_short": 0.0101,
+    "momentum_long": -0.0079,
+    "annualised_volatility": 0.1169
    }
   },
   {
@@ -8222,9 +8222,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0046,
-   "relative_momentum_long": -0.0189,
-   "score": -0.2607,
+   "sector_momentum_long": -0.0034,
+   "relative_momentum_long": -0.0201,
+   "score": -0.2635,
    "rationale": "ADX 28 (trending) -> weighting supertrend, macd, sma_cross; -2.4% over ~63d; ATR 1.3% of price",
    "reading": {
     "price": 115.9,
@@ -9121,6 +9121,40 @@
    }
   },
   {
+   "key": "IN:JUNIORBEES",
+   "symbol": "JUNIORBEES",
+   "name": "Nippon Nifty Next 50 ETF",
+   "region": "india",
+   "sector": "index",
+   "regime": "trending",
+   "signal": "bearish",
+   "signal_strength": -0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0034,
+   "relative_momentum_long": -0.0832,
+   "score": -0.4109,
+   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; -8.7% over ~63d; ATR 2.4% of price",
+   "reading": {
+    "price": 708.96,
+    "rsi": 24.88,
+    "macd_hist": -2.0143,
+    "supertrend_direction": -1,
+    "sma_fast": 774.2292,
+    "sma_slow": 755.8677,
+    "bollinger_pct_b": -0.1297,
+    "adx": 30.47,
+    "atr_pct": 0.0239,
+    "momentum_short": -0.0894,
+    "momentum_long": -0.0867,
+    "annualised_volatility": 0.1348
+   }
+  },
+  {
    "key": "IN:ONGC",
    "symbol": "ONGC",
    "name": "Oil & Natural Gas Corporation",
@@ -9185,40 +9219,6 @@
     "momentum_short": -0.1679,
     "momentum_long": -0.1476,
     "annualised_volatility": 0.3032
-   }
-  },
-  {
-   "key": "IN:JUNIORBEES",
-   "symbol": "JUNIORBEES",
-   "name": "Nippon Nifty Next 50 ETF",
-   "region": "india",
-   "sector": "index",
-   "regime": "trending",
-   "signal": "bearish",
-   "signal_strength": -0.3333,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0046,
-   "relative_momentum_long": -0.086,
-   "score": -0.4173,
-   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; -9.1% over ~63d; ATR 2.4% of price",
-   "reading": {
-    "price": 708.96,
-    "rsi": 24.93,
-    "macd_hist": -2.0204,
-    "supertrend_direction": -1,
-    "sma_fast": 774.3778,
-    "sma_slow": 755.5907,
-    "bollinger_pct_b": -0.1297,
-    "adx": 30.3,
-    "atr_pct": 0.024,
-    "momentum_short": -0.0894,
-    "momentum_long": -0.0906,
-    "annualised_volatility": 0.1349
    }
   },
   {
@@ -11622,7 +11622,7 @@
   {
    "sector": "index",
    "count": 11,
-   "avg_momentum_long": -0.0046,
+   "avg_momentum_long": -0.0034,
    "avg_score": 0.0768
   },
   {
