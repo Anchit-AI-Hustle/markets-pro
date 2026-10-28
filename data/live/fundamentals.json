@@ -11682,7 +11682,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000006281&type=10-K"
   },
   "US:PANW": {
-   "entity": "Palo Alto Networks, Inc",
+   "entity": "Palo Alto Networks, Inc.",
    "series": {
     "revenue": [
      {
@@ -19338,7 +19338,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000316709&type=10-K"
   },
   "US:AXP": {
-   "entity": "AMERICAN EXPRESS COMPANY",
+   "entity": "AMERICAN EXPRESS CO",
    "series": {
     "revenue": [
      {
@@ -57846,7 +57846,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000073309&type=10-K"
   },
   "US:AMT": {
-   "entity": "AMERICAN TOWER CORP /MA/",
+   "entity": "AMERICAN TOWER CORPORATION",
    "series": {
     "revenue": [
      {
