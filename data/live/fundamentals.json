@@ -7458,7 +7458,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000804328&type=10-K"
   },
   "US:TXN": {
-   "entity": "TEXAS INSTRUMENTS INCORPORATED",
+   "entity": "TEXAS INSTRUMENTS INC",
    "series": {
     "revenue": [
      {
