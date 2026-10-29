@@ -22438,7 +22438,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001156375&type=10-K"
   },
   "US:ICE": {
-   "entity": "Intercontinental Exchange, Inc.",
+   "entity": "INTERCONTINENTAL EXCHANGE, INC.",
    "series": {
     "revenue": [
      {
@@ -50351,7 +50351,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000732717&type=10-K"
   },
   "US:VZ": {
-   "entity": "VERIZON COMMUNICATIONS INC",
+   "entity": "Verizon Communications Inc.",
    "series": {
     "revenue": [
      {
