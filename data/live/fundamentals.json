@@ -493,7 +493,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000320193&type=10-K"
   },
   "US:MSFT": {
-   "entity": "Microsoft Corporation",
+   "entity": "MICROSOFT CORPORATION",
    "series": {
     "revenue": [
      {
@@ -8396,7 +8396,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000051143&type=10-K"
   },
   "US:NOW": {
-   "entity": "ServiceNow, Inc.",
+   "entity": "SERVICENOW, INC.",
    "series": {
     "revenue": [
      {
@@ -35808,7 +35808,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000909832&type=10-K"
   },
   "US:PG": {
-   "entity": "PROCTER & GAMBLE CO",
+   "entity": "PROCTER & GAMBLE Co",
    "series": {
     "revenue": [
      {
@@ -49504,7 +49504,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000277948&type=10-K"
   },
   "US:FDX": {
-   "entity": "FEDEX CORP",
+   "entity": "FedEx Corporation",
    "series": {
     "revenue": [
      {
@@ -58828,7 +58828,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001045609&type=10-K"
   },
   "US:EQIX": {
-   "entity": "EQUINIX, INC.",
+   "entity": "EQUINIX INC",
    "series": {
     "revenue": [
      {
