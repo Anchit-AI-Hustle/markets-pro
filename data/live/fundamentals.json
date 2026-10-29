@@ -493,7 +493,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000320193&type=10-K"
   },
   "US:MSFT": {
-   "entity": "Microsoft Corporation",
+   "entity": "MICROSOFT CORPORATION",
    "series": {
     "revenue": [
      {
@@ -7458,7 +7458,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000804328&type=10-K"
   },
   "US:TXN": {
-   "entity": "TEXAS INSTRUMENTS INCORPORATED",
+   "entity": "TEXAS INSTRUMENTS INC",
    "series": {
     "revenue": [
      {
@@ -8396,7 +8396,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000051143&type=10-K"
   },
   "US:NOW": {
-   "entity": "ServiceNow, Inc.",
+   "entity": "SERVICENOW, INC.",
    "series": {
     "revenue": [
      {
@@ -11682,7 +11682,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000006281&type=10-K"
   },
   "US:PANW": {
-   "entity": "Palo Alto Networks, Inc",
+   "entity": "Palo Alto Networks, Inc.",
    "series": {
     "revenue": [
      {
@@ -19338,7 +19338,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000316709&type=10-K"
   },
   "US:AXP": {
-   "entity": "AMERICAN EXPRESS COMPANY",
+   "entity": "AMERICAN EXPRESS CO",
    "series": {
     "revenue": [
      {
@@ -22438,7 +22438,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001156375&type=10-K"
   },
   "US:ICE": {
-   "entity": "Intercontinental Exchange, Inc.",
+   "entity": "INTERCONTINENTAL EXCHANGE, INC.",
    "series": {
     "revenue": [
      {
@@ -35808,7 +35808,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000909832&type=10-K"
   },
   "US:PG": {
-   "entity": "PROCTER & GAMBLE CO",
+   "entity": "PROCTER & GAMBLE Co",
    "series": {
     "revenue": [
      {
@@ -49504,7 +49504,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000277948&type=10-K"
   },
   "US:FDX": {
-   "entity": "FEDEX CORP",
+   "entity": "FedEx Corporation",
    "series": {
     "revenue": [
      {
@@ -50351,7 +50351,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000732717&type=10-K"
   },
   "US:VZ": {
-   "entity": "VERIZON COMMUNICATIONS INC",
+   "entity": "Verizon Communications Inc.",
    "series": {
     "revenue": [
      {
@@ -57846,7 +57846,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000073309&type=10-K"
   },
   "US:AMT": {
-   "entity": "AMERICAN TOWER CORP /MA/",
+   "entity": "AMERICAN TOWER CORPORATION",
    "series": {
     "revenue": [
      {
@@ -58828,7 +58828,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001045609&type=10-K"
   },
   "US:EQIX": {
-   "entity": "EQUINIX, INC.",
+   "entity": "EQUINIX INC",
    "series": {
     "revenue": [
      {
