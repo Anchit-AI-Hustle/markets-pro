@@ -279,11 +279,11 @@ def _region_table(report: PerformanceReport) -> str:
             f"<td class='num'>{_pct(stats.get('win_rate', 0.0), 1)}</td>"
             f"<td class='num {_tone(pnl)}'>{pnl:+,.2f}</td></tr>"
         )
-    return f"""<table>
+    return f"""<div class="tblwrap"><table>
   <thead><tr><th scope="col">Market</th><th class="num" scope="col">Trades</th>
   <th class="num" scope="col">Win rate</th><th class="num" scope="col">Net P&amp;L</th></tr></thead>
   <tbody>{''.join(rows)}</tbody>
-</table>"""
+</table></div>"""
 
 
 def _horizon_table(report: PerformanceReport) -> str:
@@ -299,11 +299,11 @@ def _horizon_table(report: PerformanceReport) -> str:
             f"<td class='num'>{_pct(stats.get('win_rate', 0.0), 1)}</td>"
             f"<td class='num {_tone(pnl)}'>{pnl:+,.2f}</td></tr>"
         )
-    return f"""<table>
+    return f"""<div class="tblwrap"><table>
   <thead><tr><th scope="col">Book</th><th class="num" scope="col">Trades</th>
   <th class="num" scope="col">Win rate</th><th class="num" scope="col">Net P&amp;L</th></tr></thead>
   <tbody>{''.join(rows)}</tbody>
-</table>"""
+</table></div>"""
 
 
 def _exit_breakdown(report: PerformanceReport) -> str:
@@ -322,11 +322,11 @@ def _exit_breakdown(report: PerformanceReport) -> str:
             f"<td><div class='bar'><span style='width:{share * 100:.1f}%'></span></div></td>"
             f"<td class='num'>{_pct(share, 1)}</td></tr>"
         )
-    return f"""<table>
+    return f"""<div class="tblwrap"><table>
   <thead><tr><th scope="col">Exit reason</th><th class="num" scope="col">Count</th>
   <th scope="col">Share</th><th class="num" scope="col">%</th></tr></thead>
   <tbody>{''.join(rows)}</tbody>
-</table>"""
+</table></div>"""
 
 
 def _ticker(key: str, label: str, *, cls: str = "") -> str:
@@ -384,7 +384,7 @@ def _trades_table(report: PerformanceReport, limit: int = 100) -> str:
         f"first. Local P&L is in the instrument's own currency; only the {base} "
         f"column is comparable across markets."
     )
-    return f"""<table>
+    return f"""<div class="tblwrap"><table>
   <thead><tr><th scope="col">Instrument</th><th scope="col">Entry</th><th scope="col">Exit</th>
   <th class="num" scope="col">In</th><th class="num" scope="col">Out</th>
   <th class="num" scope="col">Qty</th>
@@ -406,6 +406,16 @@ def _price(value: object) -> str:
 
 #: Defined once per document and referenced by every sparkline: repeating the
 #: gradient inside each SVG would duplicate the id across the page.
+#: The tab icon, inlined so the document still makes no network request.
+_FAVICON_DATA_URI = (
+    "data:image/svg+xml,"
+    "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E"
+    "%3Crect width='32' height='32' rx='7' fill='%23141413'/%3E"
+    "%3Cpath d='M6 22.5 L12 14.5 L17 18.5 L26 7.5' fill='none' stroke='%235aa87c'"
+    " stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E"
+    "%3Ccircle cx='26' cy='7.5' r='2.6' fill='%235aa87c'/%3E%3C/svg%3E"
+)
+
 SPARK_DEFS = """<svg width="0" height="0" aria-hidden="true"
      style="position:absolute"><defs>
   <linearGradient id="sparkfill" x1="0" y1="0" x2="0" y2="1">
@@ -855,7 +865,7 @@ def _positions_section(signals: dict) -> str:
         "columns are what is still on the table from here, not from your entry. "
         "Long-term holdings carry no stop by design."
     )
-    return f"""<table>
+    return f"""<div class="tblwrap"><table>
   <thead><tr><th scope="col">Instrument</th><th scope="col">Book</th>
   <th class="num" scope="col">Qty</th>
   <th class="num" scope="col">Avg cost</th><th class="num" scope="col">Live price</th>
@@ -1408,7 +1418,13 @@ button.exec.armed{background:var(--accent);color:var(--panel);border-color:var(-
 
 /* Technicals. Dense tables that must stay readable on a phone, so each one
    scrolls inside its own container rather than widening the page. */
-.tblwrap{overflow-x:auto;margin:8px 0 4px;-webkit-overflow-scrolling:touch}
+.tblwrap{overflow-x:auto;margin:8px 0 4px;min-width:0;max-width:100%;
+  -webkit-overflow-scrolling:touch}
+[data-paper-positions],[data-paper-log]{overflow-x:auto;min-width:0;
+  max-width:100%;-webkit-overflow-scrolling:touch}
+/* A panel is a flex/grid item: without this it stretches to its widest
+   child and the whole page scrolls sideways instead of the table. */
+.panel,.tabpanel{min-width:0}
 table.tbl.mini{width:100%;border-collapse:collapse;font-size:12.5px;min-width:420px}
 table.tbl.mini th,table.tbl.mini td{padding:7px 10px;text-align:left;
   border-bottom:1px solid var(--line);white-space:nowrap}
@@ -1491,7 +1507,8 @@ table.tbl.mini td.pivotpp{font-weight:700;color:var(--accent)}
 .nofund strong{color:var(--ink)}
 .nofundfix{display:block;margin-top:7px;padding-top:7px;
   border-top:1px solid var(--line);color:var(--muted)}
-.fundwrap{overflow-x:auto;margin:12px 0 4px}
+.fundwrap{overflow-x:auto;margin:12px 0 4px;min-width:0;max-width:100%;
+  -webkit-overflow-scrolling:touch}
 .fundtable{min-width:520px;font-size:12.5px}
 .fundtable th{font-size:10.5px}
 .fundtable td:first-child,.fundtable th:first-child{font-weight:600}
@@ -1712,7 +1729,8 @@ tr.openable:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
 .wfilter[aria-pressed="true"]{color:var(--accent);border-color:var(--accent);
   background:color-mix(in srgb,var(--accent) 10%,var(--panel))}
 .wcount{font-size:10.5px;opacity:.75;font-variant-numeric:tabular-nums}
-.wtablewrap{overflow-x:auto}
+.wtablewrap{overflow-x:auto;min-width:0;max-width:100%;
+  -webkit-overflow-scrolling:touch}
 .wtable{min-width:1020px}
 .rangebar{display:inline-block;width:38px;height:6px;background:var(--tag);
   border-radius:3px;overflow:hidden;vertical-align:middle;margin-right:5px}
@@ -3395,8 +3413,8 @@ PAPER_JS = """
           '<td class="num"><button type="button" class="exec" data-paper-sell="' + esc(k) +
             '">Sell</button></td></tr>';
       }).join('');
-      posEl.innerHTML = '<table><thead><tr><th scope="col">Instrument</th>
-      <th class="num" scope="col">Qty</th>' +
+      posEl.innerHTML = '<table><thead><tr><th scope="col">Instrument</th>' +
+        '<th class="num" scope="col">Qty</th>' +
         '<th class="num" scope="col">Paper cost</th><th class="num" scope="col">Live price</th>' +
         '<th class="num" scope="col">Profit / loss</th><th scope="col">Status</th>' +
         '<th class="num" scope="col">Close</th>' +
@@ -3429,8 +3447,8 @@ PAPER_JS = """
             esc(row.currency) + '</span></td>' +
           '<td class="num">' + pnl + '</td><td>' + review + '</td></tr>';
       }).join('');
-      logEl.innerHTML = '<table><thead><tr><th scope="col">When</th><th scope="col">Action</th>
-      <th scope="col">Instrument</th>' +
+      logEl.innerHTML = '<table><thead><tr><th scope="col">When</th>' +
+        '<th scope="col">Action</th><th scope="col">Instrument</th>' +
         '<th class="num" scope="col">Qty</th><th class="num" scope="col">Price</th>' +
         '<th class="num" scope="col">Realised</th><th scope="col">Review</th>' +
         '</tr></thead><tbody>' + entries + '</tbody></table>';
@@ -5477,7 +5495,13 @@ CSS = """
 body{margin:0;background:var(--bg);color:var(--ink);
   font:15px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   -webkit-font-smoothing:antialiased}
-.wrap{max-width:1120px;margin:0 auto;padding:32px 20px 64px}
+/* The hero's decorative glow is absolutely positioned at inset -10% on each
+   side, so on a phone it reached ~36px past the page and gave the whole site
+   a horizontal scrollbar. Clip sideways here, at the full-width container, so
+   the glow still bleeds into the gutters as designed and only what leaves the
+   viewport is cut. `clip` rather than `hidden`: hidden on one axis forces the
+   other to `auto`, which would break position:sticky inside the page. */
+.wrap{max-width:1120px;margin:0 auto;padding:32px 20px 64px;overflow-x:clip}
 header{margin-bottom:24px}
 h1{font-size:26px;margin:0 0 4px;letter-spacing:-0.02em}
 .sub{color:var(--muted);font-size:14px;margin:0}
@@ -6923,6 +6947,39 @@ def render_dashboard(
         if settings.get("indexable")
         else '<meta name="robots" content="noindex">'
     )
+    # Shared links were rendering as bare URLs: no title, no summary, no card,
+    # because the page published none of this. The description says what the
+    # thing is and that the record is published whatever it says -- the honesty
+    # is the product, so the preview should not oversell where the page will
+    # not. No figures here: a card is cached by the sharing platform for days
+    # and a stale number is worse than no number.
+    share_url = (settings.get("url") or "https://markets-pro.anchit-tandon.com").rstrip("/")
+    share_desc = (
+        "Rule-based research on Indian and US listings. Entry, target, stop and "
+        "the exact money at risk, written down before you act \u2014 with the "
+        "track record published in full, including when it is negative."
+    )
+    share_meta = "\n".join((
+        f'<meta name="description" content="{_esc(share_desc)}">',
+        '<meta property="og:type" content="website">',
+        '<meta property="og:site_name" content="Markets Pro">',
+        f'<meta property="og:title" content="{_esc(title)}">',
+        f'<meta property="og:description" content="{_esc(share_desc)}">',
+        f'<meta property="og:url" content="{_esc(share_url)}/">',
+        f'<meta property="og:image" content="{_esc(share_url)}/og-card.png">',
+        '<meta property="og:image:width" content="1200">',
+        '<meta property="og:image:height" content="630">',
+        '<meta property="og:image:alt" content="Markets Pro: entry, target, stop '
+        'and the money at risk, written down before you act.">',
+        '<meta name="twitter:card" content="summary_large_image">',
+        f'<meta name="twitter:title" content="{_esc(title)}">',
+        f'<meta name="twitter:description" content="{_esc(share_desc)}">',
+        f'<meta name="twitter:image" content="{_esc(share_url)}/og-card.png">',
+        # Inline, not a file: the page must stay fetch-free so a
+        # CSP-hardened host can serve it offline. Single quotes inside so
+        # the whole thing survives in a double-quoted attribute.
+        f'<link rel="icon" href="{_FAVICON_DATA_URI}">',
+    ))
     # Linked from the footer rather than given a tab: read once, not daily.
     # Absent from the page entirely if the build did not write them, so a
     # footer never points at a document that does not exist.
@@ -6955,6 +7012,7 @@ def render_dashboard(
 <meta name="viewport" content="width=device-width,initial-scale=1">
 {robots_meta}
 <title>{_esc(title)}</title>
+{share_meta}
 <style>{CSS}{SIGNALS_CSS}{JOURNEY_CSS}{AUTH_CSS}{BROKER_CSS}{SEARCH_CSS}</style>
 </head>
 <body>

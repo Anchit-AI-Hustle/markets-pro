@@ -60,6 +60,7 @@ MODULES = [
     ("tests.test_loss_streak", "Consecutive-loss breaker"),
     ("tests.test_evidence_gate", "Evidence gate on suggestions"),
     ("tests.test_refresh_workflow", "Nightly refresh reaches its commit"),
+    ("tests.test_inline_js", "Inline browser scripts parse"),
 ]
 
 BAR = "=" * 74

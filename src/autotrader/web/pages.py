@@ -27,6 +27,11 @@ from .render import CSS, _esc
 CONTACT_REQUIRED = ("contact",)
 
 
+#: Sharing platforms require absolute URLs for a preview image, so these
+#: pages cannot use the relative path the dashboard does.
+_SITE = "https://markets-pro.anchit-tandon.com"
+
+
 def _shell(title: str, subtitle: str, body: str, *, home: str = "/") -> str:
     """One document, sharing the app's stylesheet so it does not look bolted on."""
     return f"""<!doctype html>
@@ -36,6 +41,18 @@ def _shell(title: str, subtitle: str, body: str, *, home: str = "/") -> str:
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{_esc(title)} &middot; Markets Pro</title>
 <meta name="description" content="{_esc(subtitle)}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Markets Pro">
+<meta property="og:title" content="{_esc(title)} &middot; Markets Pro">
+<meta property="og:description" content="{_esc(subtitle)}">
+<meta property="og:image" content="{_SITE}/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{_esc(title)} &middot; Markets Pro">
+<meta name="twitter:description" content="{_esc(subtitle)}">
+<meta name="twitter:image" content="{_SITE}/og-card.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>{CSS}
 .doc{{max-width:74ch;margin:0 auto;padding:48px 24px 96px}}
 .doc h1{{font-size:clamp(1.6rem,4vw,2.3rem);letter-spacing:-.02em;margin:0 0 10px;
@@ -66,8 +83,33 @@ def _shell(title: str, subtitle: str, body: str, *, home: str = "/") -> str:
 </html>"""
 
 
-def disclosures(config: dict | None = None) -> str:
+def _study_claim(fitness: dict | None) -> str:
+    """How the evidence study is described, in the study's own figures."""
+    if not fitness:
+        return (
+            "a programme of statistical tests across the universe over roughly "
+            "twenty years"
+        )
+    tests = fitness.get("tests_run")
+    names = len(fitness.get("results") or {})
+    parts = []
+    if tests:
+        parts.append(f"{tests:,} statistical tests")
+    if names:
+        parts.append(f"across {names:,} instruments")
+    parts.append("over roughly twenty years")
+    return " ".join(parts) if parts else "a programme of statistical tests"
+
+
+def disclosures(config: dict | None = None, fitness: dict | None = None) -> str:
     """The regulatory position, stated plainly rather than implied by absence."""
+    # Described from the study rather than written in by hand. The hand-written
+    # version said "975 statistical tests across 325 instruments" while the
+    # study had run 972 across 324, and the count of rules clearing
+    # significance moved from 4 to 3 on a later weekly run without the page
+    # noticing. A page whose whole argument is "these are the real numbers"
+    # cannot afford to carry numbers that drift.
+    study_claim = _study_claim(fitness)
     contact = (config or {}).get("contact", "")
     contact_line = (
         f'<p>Questions about anything on this page: <a href="mailto:{_esc(contact)}">'
@@ -99,9 +141,9 @@ from the same public price data.</p>
 <p>The strategies' published track record is <strong>negative</strong>. Over the
 period tested they returned less than nothing after costs, with a profit factor
 below 1 and long runs of consecutive losses. Separately, an evidence study ran
-975 statistical tests across 325 instruments over roughly twenty years and found
-fewer rules clearing significance than chance alone would produce &mdash; that is
-the absence of an edge, measured, not a near miss.</p>
+{study_claim} and found fewer rules clearing significance than chance alone
+would produce &mdash; that is the absence of an edge, measured, not a near
+miss.</p>
 <p>Those figures are on the site because they are true, not because they help.
 Anyone using this should assume the rules do not work until evidence says
 otherwise.</p>
@@ -254,6 +296,20 @@ edge is a tab rather than a footnote. That is the whole design.</p>
     return _shell("About", "What this is, how it works, and who built it.", body)
 
 
+#: Crawlers that fetch a page only to build a link-preview card. They are
+#: named explicitly because robots.txt has no wildcard for "previews only",
+#: and a shared link with no card reads as broken.
+PREVIEW_CRAWLERS = (
+    "LinkedInBot",
+    "Twitterbot",
+    "facebookexternalhit",
+    "Slackbot-LinkExpanding",
+    "WhatsApp",
+    "TelegramBot",
+    "Discordbot",
+)
+
+
 def robots(*, indexable: bool, site: str) -> str:
     """Robots policy, matching whatever the build actually decided.
 
@@ -266,6 +322,16 @@ def robots(*, indexable: bool, site: str) -> str:
             "# This build is deliberately not indexed. Disclosures and terms are\n"
             "# published, but the decision to be discoverable has not been taken.\n"
             "User-agent: *\nDisallow: /\n"
+            "\n"
+            "# Link previews are a different question from search indexing.\n"
+            "# When someone shares the URL, these crawlers fetch the page once to\n"
+            "# build the card; a blanket Disallow makes a shared link render as\n"
+            "# bare text. They do not index, so the build stays undiscoverable\n"
+            "# while a shared link still looks like something.\n"
+            + "".join(
+                f"\nUser-agent: {agent}\nAllow: /\n"
+                for agent in PREVIEW_CRAWLERS
+            )
         )
     return (
         "User-agent: *\n"

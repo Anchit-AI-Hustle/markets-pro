@@ -178,7 +178,7 @@ def build_static(
     target_dir = out_dir / "markets-pro"
     target_dir.mkdir(parents=True, exist_ok=True)
     target = target_dir / "index.html"
-    write_pages(target_dir, site or {})
+    write_pages(target_dir, site or {}, fitness)
     html = render_dashboard(
         report,
         title="Markets Pro",
@@ -256,7 +256,8 @@ def site_settings(config_path: Path) -> dict:
         return {}
 
 
-def write_pages(target_dir: Path, config: dict) -> list[str]:
+def write_pages(target_dir: Path, config: dict,
+                fitness: dict | None = None) -> list[str]:
     """The disclosure surface, plus robots and a sitemap that agree with it."""
     from .pages import about, disclosures, privacy, robots, sitemap
 
@@ -267,7 +268,8 @@ def write_pages(target_dir: Path, config: dict) -> list[str]:
     # deliberate rather than a default.
     indexable = bool(config.get("indexable"))
 
-    (target_dir / "disclosures.html").write_text(disclosures(config), encoding="utf-8")
+    (target_dir / "disclosures.html").write_text(
+        disclosures(config, fitness), encoding="utf-8")
     (target_dir / "privacy.html").write_text(privacy(config), encoding="utf-8")
     (target_dir / "about.html").write_text(about(config), encoding="utf-8")
     (target_dir / "robots.txt").write_text(
@@ -275,7 +277,21 @@ def write_pages(target_dir: Path, config: dict) -> list[str]:
     (target_dir / "sitemap.xml").write_text(
         sitemap(site=site, pages=("/", "/about.html", "/disclosures.html",
                                   "/privacy.html")), encoding="utf-8")
-    return [*STATIC_PAGES, "robots.txt", "sitemap.xml"]
+
+    # The share card and icon are committed files, not generated here: a build
+    # dependency on an image library would break the "no install step" rule the
+    # test suite and CI both rely on. Copied rather than linked so the output
+    # directory stays self-contained and deployable on its own.
+    copied = []
+    assets = Path(__file__).resolve().parent / "assets"
+    for name in ("og-card.png", "favicon.svg"):
+        source = assets / name
+        if source.is_file():
+            (target_dir / name).write_bytes(source.read_bytes())
+            copied.append(name)
+        else:                                   # pragma: no cover - packaging
+            print(f"missing share asset {name}; previews will have no image")
+    return [*STATIC_PAGES, "robots.txt", "sitemap.xml", *copied]
 
 
 def supabase_settings(config_path: Path) -> dict | None:
