@@ -240,6 +240,13 @@ def build_static(
 #: on its own is worth more than one buried behind a click.
 STATIC_PAGES = ("disclosures.html", "privacy.html", "about.html")
 
+#: Files a sharing platform or a browser fetches by name from the site root.
+#: Declared here, not just copied, because the subdomain serves the app at "/"
+#: while the build writes under /markets-pro/ -- so each one needs a rewrite,
+#: and the rewrite test reads this tuple. og-card.png was published in an
+#: og:image tag and 404'd in production until it was listed here.
+SHARE_ASSETS = ("og-card.png", "favicon.svg")
+
 
 def site_settings(config_path: Path) -> dict:
     """Author, contact, repo and the indexable switch, from the build config.
@@ -284,7 +291,7 @@ def write_pages(target_dir: Path, config: dict,
     # directory stays self-contained and deployable on its own.
     copied = []
     assets = Path(__file__).resolve().parent / "assets"
-    for name in ("og-card.png", "favicon.svg"):
+    for name in SHARE_ASSETS:
         source = assets / name
         if source.is_file():
             (target_dir / name).write_bytes(source.read_bytes())
