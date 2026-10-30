@@ -1917,7 +1917,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044&type=10-K"
   },
   "US:AMZN": {
-   "entity": "AMAZON COM INC",
+   "entity": "AMAZON.COM, INC.",
    "series": {
     "revenue": [
      {
@@ -6029,7 +6029,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001065280&type=10-K"
   },
   "US:INTC": {
-   "entity": "INTEL CORP",
+   "entity": "Intel Corporation",
    "series": {
     "revenue": [
      {
