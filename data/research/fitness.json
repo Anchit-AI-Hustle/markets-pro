@@ -3,8 +3,8 @@
  "min_trades": 20,
  "in_sample_fraction": 0.5,
  "alpha": 0.05,
- "tests_run": 972,
- "false_positives_expected": 48.6,
+ "tests_run": 969,
+ "false_positives_expected": 48.5,
  "instruments_with_evidence": 3,
  "results": {
   "IN:AARTIIND": {
@@ -12,14 +12,14 @@
    "logics": [
     {
      "logic": "pullback",
-     "verdict": "profitable_but_unproven",
-     "trades": 78,
+     "verdict": "no_edge",
+     "trades": 79,
      "wins": 37,
-     "win_rate": 0.4744,
-     "profit_factor": 1.023,
-     "p_value": 0.7343,
-     "net_base": 63.11,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.4684,
+     "profit_factor": 0.994,
+     "p_value": 0.653,
+     "net_base": -16.75,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -29,8 +29,8 @@
      "win_rate": 0.2759,
      "profit_factor": 0.415,
      "p_value": 0.0241,
-     "net_base": -573.7,
-     "tested_from": "2016-11-01"
+     "net_base": -572.36,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -39,8 +39,8 @@
      "needed": 20
     }
    ],
-   "best": "pullback",
-   "best_verdict": "profitable_but_unproven"
+   "best": null,
+   "best_verdict": "none"
   },
   "IN:ABB": {
    "symbol": "ABB",
@@ -51,10 +51,10 @@
      "trades": 75,
      "wins": 39,
      "win_rate": 0.52,
-     "profit_factor": 1.484,
+     "profit_factor": 1.476,
      "p_value": 0.8176,
-     "net_base": 811.13,
-     "tested_from": "2016-11-01"
+     "net_base": 801.2,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -64,8 +64,8 @@
      "win_rate": 0.4865,
      "profit_factor": 0.951,
      "p_value": 1.0,
-     "net_base": -66.74,
-     "tested_from": "2016-11-01"
+     "net_base": -66.58,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -83,13 +83,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 54,
+     "trades": 53,
      "wins": 26,
-     "win_rate": 0.4815,
-     "profit_factor": 0.926,
-     "p_value": 0.8919,
-     "net_base": -170.36,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.4906,
+     "profit_factor": 0.978,
+     "p_value": 1.0,
+     "net_base": -48.39,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -99,8 +99,8 @@
      "win_rate": 0.55,
      "profit_factor": 1.551,
      "p_value": 0.8238,
-     "net_base": 269.97,
-     "tested_from": "2016-11-01"
+     "net_base": 269.33,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -118,13 +118,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 81,
+     "trades": 82,
      "wins": 37,
-     "win_rate": 0.4568,
-     "profit_factor": 0.972,
-     "p_value": 0.5052,
-     "net_base": -97.83,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.4512,
+     "profit_factor": 0.955,
+     "p_value": 0.4397,
+     "net_base": -159.76,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -134,8 +134,8 @@
      "win_rate": 0.549,
      "profit_factor": 1.464,
      "p_value": 0.5758,
-     "net_base": 773.93,
-     "tested_from": "2016-11-01"
+     "net_base": 772.12,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -153,13 +153,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 25,
-     "wins": 12,
-     "win_rate": 0.48,
-     "profit_factor": 0.999,
-     "p_value": 1.0,
-     "net_base": -0.61,
-     "tested_from": "2022-08-22"
+     "trades": 24,
+     "wins": 11,
+     "win_rate": 0.4583,
+     "profit_factor": 0.867,
+     "p_value": 0.8388,
+     "net_base": -116.97,
+     "tested_from": "2022-08-24"
     },
     {
      "logic": "breakout",
@@ -184,12 +184,12 @@
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
      "trades": 71,
-     "wins": 34,
-     "win_rate": 0.4789,
-     "profit_factor": 1.058,
-     "p_value": 0.8126,
-     "net_base": 155.29,
-     "tested_from": "2017-05-19"
+     "wins": 35,
+     "win_rate": 0.493,
+     "profit_factor": 1.143,
+     "p_value": 1.0,
+     "net_base": 377.73,
+     "tested_from": "2017-05-24"
     },
     {
      "logic": "breakout",
@@ -199,8 +199,8 @@
      "win_rate": 0.5455,
      "profit_factor": 0.858,
      "p_value": 0.8318,
-     "net_base": -90.69,
-     "tested_from": "2017-05-19"
+     "net_base": -90.48,
+     "tested_from": "2017-05-24"
     },
     {
      "logic": "momentum",
@@ -223,8 +223,8 @@
      "win_rate": 0.5833,
      "profit_factor": 1.426,
      "p_value": 0.405,
-     "net_base": 431.5,
-     "tested_from": "2021-05-27"
+     "net_base": 430.49,
+     "tested_from": "2021-05-31"
     },
     {
      "logic": "breakout",
@@ -248,13 +248,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 57,
+     "trades": 56,
      "wins": 26,
-     "win_rate": 0.4561,
-     "profit_factor": 0.867,
-     "p_value": 0.5966,
-     "net_base": -298.32,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.4643,
+     "profit_factor": 0.88,
+     "p_value": 0.6889,
+     "net_base": -265.21,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -264,8 +264,8 @@
      "win_rate": 0.5455,
      "profit_factor": 1.959,
      "p_value": 0.8318,
-     "net_base": 535.97,
-     "tested_from": "2016-11-01"
+     "net_base": 534.71,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -288,8 +288,8 @@
      "win_rate": 0.4545,
      "profit_factor": 0.783,
      "p_value": 0.8318,
-     "net_base": -174.44,
-     "tested_from": "2023-10-11"
+     "net_base": -174.03,
+     "tested_from": "2023-10-13"
     },
     {
      "logic": "breakout",
@@ -313,13 +313,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 64,
-     "wins": 29,
-     "win_rate": 0.4531,
-     "profit_factor": 0.907,
-     "p_value": 0.5323,
-     "net_base": -229.35,
-     "tested_from": "2019-05-27"
+     "trades": 65,
+     "wins": 30,
+     "win_rate": 0.4615,
+     "profit_factor": 0.957,
+     "p_value": 0.6201,
+     "net_base": -105.2,
+     "tested_from": "2019-05-30"
     },
     {
      "logic": "breakout",
@@ -329,8 +329,8 @@
      "win_rate": 0.5357,
      "profit_factor": 1.672,
      "p_value": 0.8506,
-     "net_base": 586.75,
-     "tested_from": "2019-05-27"
+     "net_base": 585.38,
+     "tested_from": "2019-05-30"
     },
     {
      "logic": "momentum",
@@ -351,10 +351,10 @@
      "trades": 85,
      "wins": 41,
      "win_rate": 0.4824,
-     "profit_factor": 1.147,
+     "profit_factor": 1.145,
      "p_value": 0.8284,
-     "net_base": 426.21,
-     "tested_from": "2016-11-01"
+     "net_base": 421.74,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -364,8 +364,8 @@
      "win_rate": 0.5556,
      "profit_factor": 1.269,
      "p_value": 0.7011,
-     "net_base": 194.37,
-     "tested_from": "2016-11-01"
+     "net_base": 193.92,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -388,8 +388,8 @@
      "win_rate": 0.5538,
      "profit_factor": 1.209,
      "p_value": 0.457,
-     "net_base": 511.34,
-     "tested_from": "2016-11-01"
+     "net_base": 510.14,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -399,8 +399,8 @@
      "win_rate": 0.3462,
      "profit_factor": 0.586,
      "p_value": 0.1686,
-     "net_base": -331.14,
-     "tested_from": "2016-11-01"
+     "net_base": -330.36,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -423,8 +423,8 @@
      "win_rate": 0.4416,
      "profit_factor": 0.717,
      "p_value": 0.362,
-     "net_base": -995.34,
-     "tested_from": "2016-11-01"
+     "net_base": -993.01,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -434,8 +434,8 @@
      "win_rate": 0.4857,
      "profit_factor": 0.756,
      "p_value": 1.0,
-     "net_base": -207.78,
-     "tested_from": "2016-11-01"
+     "net_base": -207.3,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -458,8 +458,8 @@
      "win_rate": 0.4932,
      "profit_factor": 1.121,
      "p_value": 1.0,
-     "net_base": 298.07,
-     "tested_from": "2017-01-10"
+     "net_base": 297.37,
+     "tested_from": "2017-01-13"
     },
     {
      "logic": "breakout",
@@ -469,8 +469,8 @@
      "win_rate": 0.5714,
      "profit_factor": 1.674,
      "p_value": 0.5716,
-     "net_base": 423.01,
-     "tested_from": "2017-01-10"
+     "net_base": 422.02,
+     "tested_from": "2017-01-13"
     },
     {
      "logic": "momentum",
@@ -488,13 +488,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 31,
+     "trades": 30,
      "wins": 11,
-     "win_rate": 0.3548,
-     "profit_factor": 0.716,
-     "p_value": 0.1496,
-     "net_base": -311.51,
-     "tested_from": "2022-03-02"
+     "win_rate": 0.3667,
+     "profit_factor": 0.744,
+     "p_value": 0.2005,
+     "net_base": -269.89,
+     "tested_from": "2022-03-07"
     },
     {
      "logic": "breakout",
@@ -518,13 +518,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 53,
+     "trades": 51,
      "wins": 27,
-     "win_rate": 0.5094,
-     "profit_factor": 1.029,
-     "p_value": 1.0,
-     "net_base": 57.86,
-     "tested_from": "2016-10-28"
+     "win_rate": 0.5294,
+     "profit_factor": 1.114,
+     "p_value": 0.7798,
+     "net_base": 209.68,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -534,8 +534,8 @@
      "win_rate": 0.3889,
      "profit_factor": 0.63,
      "p_value": 0.243,
-     "net_base": -494.23,
-     "tested_from": "2016-10-28"
+     "net_base": -493.08,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -558,8 +558,8 @@
      "win_rate": 0.4857,
      "profit_factor": 0.976,
      "p_value": 0.905,
-     "net_base": -68.0,
-     "tested_from": "2016-11-01"
+     "net_base": -67.24,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -583,13 +583,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 71,
-     "wins": 35,
-     "win_rate": 0.493,
-     "profit_factor": 0.914,
-     "p_value": 1.0,
-     "net_base": -232.48,
-     "tested_from": "2016-11-01"
+     "trades": 70,
+     "wins": 34,
+     "win_rate": 0.4857,
+     "profit_factor": 0.898,
+     "p_value": 0.905,
+     "net_base": -273.67,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -599,8 +599,8 @@
      "win_rate": 0.5312,
      "profit_factor": 1.36,
      "p_value": 0.8601,
-     "net_base": 348.55,
-     "tested_from": "2016-11-01"
+     "net_base": 347.74,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -623,8 +623,8 @@
      "win_rate": 0.4598,
      "profit_factor": 0.812,
      "p_value": 0.5203,
-     "net_base": -662.0,
-     "tested_from": "2016-11-01"
+     "net_base": -660.46,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -634,8 +634,8 @@
      "win_rate": 0.5128,
      "profit_factor": 1.221,
      "p_value": 1.0,
-     "net_base": 280.02,
-     "tested_from": "2016-11-01"
+     "net_base": 279.36,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -653,13 +653,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 82,
+     "trades": 81,
      "wins": 40,
-     "win_rate": 0.4878,
-     "profit_factor": 1.035,
-     "p_value": 0.9122,
-     "net_base": 132.04,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.4938,
+     "profit_factor": 1.068,
+     "p_value": 1.0,
+     "net_base": 251.97,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -669,13 +669,13 @@
      "win_rate": 0.3684,
      "profit_factor": 0.461,
      "p_value": 0.1433,
-     "net_base": -770.56,
-     "tested_from": "2016-11-01"
+     "net_base": -768.75,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
      "verdict": "insufficient",
-     "trades": 6,
+     "trades": 5,
      "needed": 20
     }
    ],
@@ -691,10 +691,10 @@
      "trades": 64,
      "wins": 34,
      "win_rate": 0.5312,
-     "profit_factor": 1.113,
+     "profit_factor": 1.112,
      "p_value": 0.708,
-     "net_base": 244.83,
-     "tested_from": "2016-11-01"
+     "net_base": 244.05,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -704,8 +704,8 @@
      "win_rate": 0.4848,
      "profit_factor": 1.062,
      "p_value": 1.0,
-     "net_base": 58.6,
-     "tested_from": "2016-11-01"
+     "net_base": 58.46,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -753,8 +753,8 @@
      "win_rate": 0.386,
      "profit_factor": 0.697,
      "p_value": 0.1112,
-     "net_base": -734.62,
-     "tested_from": "2016-11-01"
+     "net_base": -735.4,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -764,8 +764,8 @@
      "win_rate": 0.5806,
      "profit_factor": 1.651,
      "p_value": 0.4731,
-     "net_base": 425.1,
-     "tested_from": "2016-11-01"
+     "net_base": 424.1,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -813,8 +813,8 @@
      "win_rate": 0.5172,
      "profit_factor": 1.048,
      "p_value": 0.8957,
-     "net_base": 123.42,
-     "tested_from": "2016-11-01"
+     "net_base": 123.13,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -824,8 +824,8 @@
      "win_rate": 0.6,
      "profit_factor": 1.044,
      "p_value": 0.3105,
-     "net_base": 38.47,
-     "tested_from": "2016-11-01"
+     "net_base": 38.38,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -848,8 +848,8 @@
      "win_rate": 0.5128,
      "profit_factor": 1.184,
      "p_value": 0.9099,
-     "net_base": 506.31,
-     "tested_from": "2016-11-01"
+     "net_base": 503.87,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -859,8 +859,8 @@
      "win_rate": 0.5,
      "profit_factor": 0.948,
      "p_value": 1.0,
-     "net_base": -40.24,
-     "tested_from": "2016-11-01"
+     "net_base": -40.15,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -883,8 +883,8 @@
      "win_rate": 0.4833,
      "profit_factor": 1.1,
      "p_value": 0.8974,
-     "net_base": 241.2,
-     "tested_from": "2016-11-01"
+     "net_base": 240.64,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -894,8 +894,8 @@
      "win_rate": 0.4286,
      "profit_factor": 0.802,
      "p_value": 0.5716,
-     "net_base": -158.79,
-     "tested_from": "2016-11-01"
+     "net_base": -158.41,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -918,8 +918,8 @@
      "win_rate": 0.5233,
      "profit_factor": 1.16,
      "p_value": 0.7465,
-     "net_base": 447.32,
-     "tested_from": "2016-11-01"
+     "net_base": 443.85,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -929,8 +929,8 @@
      "win_rate": 0.4583,
      "profit_factor": 1.281,
      "p_value": 0.8388,
-     "net_base": 181.81,
-     "tested_from": "2016-11-01"
+     "net_base": 181.39,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -951,10 +951,10 @@
      "trades": 61,
      "wins": 31,
      "win_rate": 0.5082,
-     "profit_factor": 1.185,
+     "profit_factor": 1.186,
      "p_value": 1.0,
-     "net_base": 435.52,
-     "tested_from": "2016-11-01"
+     "net_base": 430.15,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -964,8 +964,8 @@
      "win_rate": 0.5135,
      "profit_factor": 1.241,
      "p_value": 1.0,
-     "net_base": 218.5,
-     "tested_from": "2016-11-01"
+     "net_base": 217.99,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -988,8 +988,8 @@
      "win_rate": 0.4091,
      "profit_factor": 0.978,
      "p_value": 0.1753,
-     "net_base": -64.51,
-     "tested_from": "2016-11-01"
+     "net_base": -64.35,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -999,8 +999,8 @@
      "win_rate": 0.4,
      "profit_factor": 0.514,
      "p_value": 0.5034,
-     "net_base": -355.6,
-     "tested_from": "2016-11-01"
+     "net_base": -354.77,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1019,12 +1019,12 @@
      "logic": "pullback",
      "verdict": "no_edge",
      "trades": 58,
-     "wins": 24,
-     "win_rate": 0.4138,
-     "profit_factor": 0.733,
-     "p_value": 0.237,
-     "net_base": -504.9,
-     "tested_from": "2016-11-01"
+     "wins": 25,
+     "win_rate": 0.431,
+     "profit_factor": 0.788,
+     "p_value": 0.3581,
+     "net_base": -386.17,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1034,8 +1034,8 @@
      "win_rate": 0.5161,
      "profit_factor": 1.417,
      "p_value": 1.0,
-     "net_base": 328.41,
-     "tested_from": "2016-11-01"
+     "net_base": 327.64,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1058,8 +1058,8 @@
      "win_rate": 0.4545,
      "profit_factor": 0.777,
      "p_value": 0.5386,
-     "net_base": -542.99,
-     "tested_from": "2016-11-01"
+     "net_base": -541.72,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1069,8 +1069,8 @@
      "win_rate": 0.4348,
      "profit_factor": 1.039,
      "p_value": 0.6776,
-     "net_base": 29.12,
-     "tested_from": "2016-11-01"
+     "net_base": 29.05,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1093,8 +1093,8 @@
      "win_rate": 0.5147,
      "profit_factor": 0.969,
      "p_value": 0.9036,
-     "net_base": -65.86,
-     "tested_from": "2016-11-01"
+     "net_base": -65.7,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1104,8 +1104,8 @@
      "win_rate": 0.7391,
      "profit_factor": 3.227,
      "p_value": 0.0347,
-     "net_base": 809.79,
-     "tested_from": "2016-11-01"
+     "net_base": 807.9,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1128,19 +1128,19 @@
      "win_rate": 0.4792,
      "profit_factor": 1.377,
      "p_value": 0.8854,
-     "net_base": 630.71,
-     "tested_from": "2021-12-15"
+     "net_base": 629.24,
+     "tested_from": "2021-12-20"
     },
     {
      "logic": "breakout",
      "verdict": "profitable_but_unproven",
-     "trades": 25,
-     "wins": 16,
-     "win_rate": 0.64,
-     "profit_factor": 3.115,
-     "p_value": 0.2295,
-     "net_base": 1237.31,
-     "tested_from": "2021-12-15"
+     "trades": 24,
+     "wins": 15,
+     "win_rate": 0.625,
+     "profit_factor": 2.972,
+     "p_value": 0.3075,
+     "net_base": 1151.21,
+     "tested_from": "2021-12-20"
     },
     {
      "logic": "momentum",
@@ -1163,8 +1163,8 @@
      "win_rate": 0.5139,
      "profit_factor": 0.949,
      "p_value": 0.9063,
-     "net_base": -136.02,
-     "tested_from": "2016-11-01"
+     "net_base": -135.7,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1174,8 +1174,8 @@
      "win_rate": 0.4848,
      "profit_factor": 1.183,
      "p_value": 1.0,
-     "net_base": 213.14,
-     "tested_from": "2016-11-01"
+     "net_base": 212.64,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1198,8 +1198,8 @@
      "win_rate": 0.5,
      "profit_factor": 1.304,
      "p_value": 1.0,
-     "net_base": 410.06,
-     "tested_from": "2022-02-24"
+     "net_base": 409.1,
+     "tested_from": "2022-02-28"
     },
     {
      "logic": "breakout",
@@ -1228,8 +1228,8 @@
      "win_rate": 0.5,
      "profit_factor": 0.999,
      "p_value": 1.0,
-     "net_base": -3.74,
-     "tested_from": "2016-11-01"
+     "net_base": -2.75,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1239,8 +1239,8 @@
      "win_rate": 0.3478,
      "profit_factor": 0.598,
      "p_value": 0.21,
-     "net_base": -280.03,
-     "tested_from": "2016-11-01"
+     "net_base": -279.37,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1257,14 +1257,14 @@
    "logics": [
     {
      "logic": "pullback",
-     "verdict": "no_edge",
-     "trades": 64,
+     "verdict": "profitable_but_unproven",
+     "trades": 63,
      "wins": 30,
-     "win_rate": 0.4688,
-     "profit_factor": 0.97,
-     "p_value": 0.708,
-     "net_base": -71.49,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.4762,
+     "profit_factor": 1.013,
+     "p_value": 0.8013,
+     "net_base": 29.23,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1274,8 +1274,8 @@
      "win_rate": 0.35,
      "profit_factor": 0.726,
      "p_value": 0.2632,
-     "net_base": -190.83,
-     "tested_from": "2016-11-01"
+     "net_base": -190.38,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1284,8 +1284,8 @@
      "needed": 20
     }
    ],
-   "best": null,
-   "best_verdict": "none"
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
   },
   "IN:COALINDIA": {
    "symbol": "COALINDIA",
@@ -1298,8 +1298,8 @@
      "win_rate": 0.3864,
      "profit_factor": 0.788,
      "p_value": 0.1742,
-     "net_base": -312.28,
-     "tested_from": "2018-11-02"
+     "net_base": -311.55,
+     "tested_from": "2018-11-06"
     },
     {
      "logic": "breakout",
@@ -1309,8 +1309,8 @@
      "win_rate": 0.2727,
      "profit_factor": 0.695,
      "p_value": 0.0525,
-     "net_base": -264.38,
-     "tested_from": "2018-11-02"
+     "net_base": -263.76,
+     "tested_from": "2018-11-06"
     },
     {
      "logic": "momentum",
@@ -1333,8 +1333,8 @@
      "win_rate": 0.5844,
      "profit_factor": 1.441,
      "p_value": 0.1711,
-     "net_base": 1276.16,
-     "tested_from": "2016-11-01"
+     "net_base": 1263.66,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1344,8 +1344,8 @@
      "win_rate": 0.4722,
      "profit_factor": 1.109,
      "p_value": 0.8679,
-     "net_base": 125.92,
-     "tested_from": "2016-11-01"
+     "net_base": 125.63,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1366,10 +1366,10 @@
      "trades": 59,
      "wins": 27,
      "win_rate": 0.4576,
-     "profit_factor": 0.851,
+     "profit_factor": 0.85,
      "p_value": 0.6029,
-     "net_base": -235.54,
-     "tested_from": "2016-11-01"
+     "net_base": -238.38,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1379,8 +1379,8 @@
      "win_rate": 0.5143,
      "profit_factor": 1.2,
      "p_value": 1.0,
-     "net_base": 218.52,
-     "tested_from": "2016-11-01"
+     "net_base": 218.01,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1403,8 +1403,8 @@
      "win_rate": 0.4107,
      "profit_factor": 0.732,
      "p_value": 0.2288,
-     "net_base": -522.42,
-     "tested_from": "2016-11-01"
+     "net_base": -521.19,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1458,8 +1458,8 @@
      "win_rate": 0.5,
      "profit_factor": 1.288,
      "p_value": 1.0,
-     "net_base": 553.08,
-     "tested_from": "2016-11-01"
+     "net_base": 551.79,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1469,8 +1469,8 @@
      "win_rate": 0.6154,
      "profit_factor": 1.734,
      "p_value": 0.1996,
-     "net_base": 714.16,
-     "tested_from": "2016-11-01"
+     "net_base": 712.49,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1491,10 +1491,10 @@
      "trades": 63,
      "wins": 27,
      "win_rate": 0.4286,
-     "profit_factor": 1.151,
+     "profit_factor": 1.15,
      "p_value": 0.3135,
-     "net_base": 339.61,
-     "tested_from": "2016-11-01"
+     "net_base": 337.41,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1523,8 +1523,8 @@
      "win_rate": 0.48,
      "profit_factor": 1.108,
      "p_value": 1.0,
-     "net_base": 123.29,
-     "tested_from": "2022-11-22"
+     "net_base": 123.0,
+     "tested_from": "2022-11-25"
     },
     {
      "logic": "breakout",
@@ -1553,8 +1553,8 @@
      "win_rate": 0.55,
      "profit_factor": 1.496,
      "p_value": 0.519,
-     "net_base": 953.0,
-     "tested_from": "2018-10-15"
+     "net_base": 950.78,
+     "tested_from": "2018-10-19"
     },
     {
      "logic": "breakout",
@@ -1564,8 +1564,8 @@
      "win_rate": 0.3077,
      "profit_factor": 0.512,
      "p_value": 0.0755,
-     "net_base": -515.32,
-     "tested_from": "2018-10-15"
+     "net_base": -514.12,
+     "tested_from": "2018-10-19"
     },
     {
      "logic": "momentum",
@@ -1586,10 +1586,10 @@
      "trades": 82,
      "wins": 49,
      "win_rate": 0.5976,
-     "profit_factor": 1.759,
+     "profit_factor": 1.763,
      "p_value": 0.097,
-     "net_base": 1759.95,
-     "tested_from": "2016-11-01"
+     "net_base": 1778.68,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1599,8 +1599,8 @@
      "win_rate": 0.4722,
      "profit_factor": 1.042,
      "p_value": 0.8679,
-     "net_base": 41.16,
-     "tested_from": "2016-11-01"
+     "net_base": 41.06,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1623,8 +1623,8 @@
      "win_rate": 0.6667,
      "profit_factor": 2.62,
      "p_value": 0.0801,
-     "net_base": 1444.36,
-     "tested_from": "2022-04-06"
+     "net_base": 1440.98,
+     "tested_from": "2022-04-08"
     },
     {
      "logic": "breakout",
@@ -1648,13 +1648,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 65,
-     "wins": 32,
-     "win_rate": 0.4923,
-     "profit_factor": 0.947,
+     "trades": 66,
+     "wins": 33,
+     "win_rate": 0.5,
+     "profit_factor": 0.963,
      "p_value": 1.0,
-     "net_base": -134.48,
-     "tested_from": "2017-03-06"
+     "net_base": -93.3,
+     "tested_from": "2017-03-09"
     },
     {
      "logic": "breakout",
@@ -1664,8 +1664,8 @@
      "win_rate": 0.4516,
      "profit_factor": 1.038,
      "p_value": 0.7201,
-     "net_base": 34.05,
-     "tested_from": "2017-03-06"
+     "net_base": 33.97,
+     "tested_from": "2017-03-09"
     },
     {
      "logic": "momentum",
@@ -1688,8 +1688,8 @@
      "win_rate": 0.1724,
      "profit_factor": 0.205,
      "p_value": 0.0005,
-     "net_base": -1334.82,
-     "tested_from": "2022-01-05"
+     "net_base": -1331.7,
+     "tested_from": "2022-01-10"
     },
     {
      "logic": "breakout",
@@ -1718,8 +1718,8 @@
      "win_rate": 0.4,
      "profit_factor": 0.643,
      "p_value": 0.136,
-     "net_base": -911.79,
-     "tested_from": "2016-11-01"
+     "net_base": -909.66,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1729,8 +1729,8 @@
      "win_rate": 0.3571,
      "profit_factor": 0.635,
      "p_value": 0.1849,
-     "net_base": -300.3,
-     "tested_from": "2016-11-01"
+     "net_base": -299.59,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1753,8 +1753,8 @@
      "win_rate": 0.4835,
      "profit_factor": 0.878,
      "p_value": 0.8341,
-     "net_base": -510.64,
-     "tested_from": "2016-11-01"
+     "net_base": -509.45,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1765,7 +1765,7 @@
      "profit_factor": 0.998,
      "p_value": 0.8388,
      "net_base": -1.26,
-     "tested_from": "2016-11-01"
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1788,8 +1788,8 @@
      "win_rate": 0.4568,
      "profit_factor": 0.983,
      "p_value": 0.5052,
-     "net_base": -58.75,
-     "tested_from": "2016-11-01"
+     "net_base": -58.62,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1799,8 +1799,8 @@
      "win_rate": 0.5676,
      "profit_factor": 1.844,
      "p_value": 0.5114,
-     "net_base": 758.13,
-     "tested_from": "2016-11-01"
+     "net_base": 756.36,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1818,13 +1818,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 21,
-     "wins": 13,
-     "win_rate": 0.619,
-     "profit_factor": 1.996,
-     "p_value": 0.3833,
-     "net_base": 658.36,
-     "tested_from": "2024-03-06"
+     "trades": 22,
+     "wins": 14,
+     "win_rate": 0.6364,
+     "profit_factor": 2.199,
+     "p_value": 0.2863,
+     "net_base": 790.8,
+     "tested_from": "2024-03-12"
     },
     {
      "logic": "breakout",
@@ -1853,8 +1853,8 @@
      "win_rate": 0.4634,
      "profit_factor": 1.012,
      "p_value": 0.5811,
-     "net_base": 42.97,
-     "tested_from": "2016-11-01"
+     "net_base": 42.86,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1864,8 +1864,8 @@
      "win_rate": 0.4571,
      "profit_factor": 0.967,
      "p_value": 0.7359,
-     "net_base": -35.42,
-     "tested_from": "2016-11-01"
+     "net_base": -35.34,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1888,8 +1888,8 @@
      "win_rate": 0.5714,
      "profit_factor": 1.252,
      "p_value": 0.3135,
-     "net_base": 460.24,
-     "tested_from": "2017-02-03"
+     "net_base": 459.17,
+     "tested_from": "2017-02-07"
     },
     {
      "logic": "breakout",
@@ -1899,8 +1899,8 @@
      "win_rate": 0.3667,
      "profit_factor": 0.745,
      "p_value": 0.2005,
-     "net_base": -236.53,
-     "tested_from": "2017-02-03"
+     "net_base": -235.98,
+     "tested_from": "2017-02-07"
     },
     {
      "logic": "momentum",
@@ -1923,19 +1923,19 @@
      "win_rate": 0.5312,
      "profit_factor": 1.611,
      "p_value": 0.708,
-     "net_base": 1024.39,
-     "tested_from": "2016-11-01"
+     "net_base": 1019.87,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
      "verdict": "no_edge",
-     "trades": 23,
+     "trades": 22,
      "wins": 4,
-     "win_rate": 0.1739,
-     "profit_factor": 0.311,
-     "p_value": 0.0026,
-     "net_base": -641.19,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.1818,
+     "profit_factor": 0.313,
+     "p_value": 0.0043,
+     "net_base": -632.05,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1958,8 +1958,8 @@
      "win_rate": 0.3906,
      "profit_factor": 0.681,
      "p_value": 0.1034,
-     "net_base": -842.32,
-     "tested_from": "2016-11-01"
+     "net_base": -840.35,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -1969,8 +1969,8 @@
      "win_rate": 0.4,
      "profit_factor": 0.994,
      "p_value": 0.4244,
-     "net_base": -5.43,
-     "tested_from": "2016-11-01"
+     "net_base": -5.42,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -1993,8 +1993,8 @@
      "win_rate": 0.5366,
      "profit_factor": 1.327,
      "p_value": 0.5811,
-     "net_base": 887.29,
-     "tested_from": "2016-11-01"
+     "net_base": 883.87,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2004,8 +2004,8 @@
      "win_rate": 0.3871,
      "profit_factor": 0.823,
      "p_value": 0.281,
-     "net_base": -195.21,
-     "tested_from": "2016-11-01"
+     "net_base": -194.75,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2028,8 +2028,8 @@
      "win_rate": 0.5082,
      "profit_factor": 1.088,
      "p_value": 1.0,
-     "net_base": 206.18,
-     "tested_from": "2016-11-01"
+     "net_base": 205.7,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2039,8 +2039,8 @@
      "win_rate": 0.4091,
      "profit_factor": 0.395,
      "p_value": 0.5235,
-     "net_base": -412.65,
-     "tested_from": "2016-11-01"
+     "net_base": -411.68,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2063,8 +2063,8 @@
      "win_rate": 0.48,
      "profit_factor": 1.206,
      "p_value": 0.8176,
-     "net_base": 531.55,
-     "tested_from": "2016-11-01"
+     "net_base": 533.26,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2074,8 +2074,8 @@
      "win_rate": 0.3714,
      "profit_factor": 0.702,
      "p_value": 0.1755,
-     "net_base": -395.91,
-     "tested_from": "2016-11-01"
+     "net_base": -394.98,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2098,8 +2098,8 @@
      "win_rate": 0.5091,
      "profit_factor": 1.289,
      "p_value": 1.0,
-     "net_base": 549.64,
-     "tested_from": "2018-05-30"
+     "net_base": 548.35,
+     "tested_from": "2018-06-01"
     },
     {
      "logic": "breakout",
@@ -2109,8 +2109,8 @@
      "win_rate": 0.5455,
      "profit_factor": 1.244,
      "p_value": 0.7283,
-     "net_base": 256.95,
-     "tested_from": "2018-05-30"
+     "net_base": 256.34,
+     "tested_from": "2018-06-01"
     },
     {
      "logic": "momentum",
@@ -2139,8 +2139,8 @@
      "win_rate": 0.4,
      "profit_factor": 0.94,
      "p_value": 0.3105,
-     "net_base": -88.09,
-     "tested_from": "2018-06-04"
+     "net_base": -87.88,
+     "tested_from": "2018-06-06"
     },
     {
      "logic": "momentum",
@@ -2158,13 +2158,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 74,
+     "trades": 72,
      "wins": 40,
-     "win_rate": 0.5405,
-     "profit_factor": 1.127,
-     "p_value": 0.5614,
-     "net_base": 299.08,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.5556,
+     "profit_factor": 1.212,
+     "p_value": 0.4096,
+     "net_base": 463.0,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2174,8 +2174,8 @@
      "win_rate": 0.5862,
      "profit_factor": 1.179,
      "p_value": 0.4583,
-     "net_base": 137.67,
-     "tested_from": "2016-11-01"
+     "net_base": 137.34,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2184,7 +2184,7 @@
      "needed": 20
     }
    ],
-   "best": "breakout",
+   "best": "pullback",
    "best_verdict": "profitable_but_unproven"
   },
   "IN:HAL": {
@@ -2198,8 +2198,8 @@
      "win_rate": 0.6,
      "profit_factor": 1.265,
      "p_value": 0.2682,
-     "net_base": 306.44,
-     "tested_from": "2022-07-12"
+     "net_base": 305.72,
+     "tested_from": "2022-07-14"
     },
     {
      "logic": "breakout",
@@ -2209,8 +2209,8 @@
      "win_rate": 0.5,
      "profit_factor": 1.77,
      "p_value": 1.0,
-     "net_base": 493.84,
-     "tested_from": "2022-07-12"
+     "net_base": 492.68,
+     "tested_from": "2022-07-14"
     },
     {
      "logic": "momentum",
@@ -2228,13 +2228,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 71,
+     "trades": 70,
      "wins": 38,
-     "win_rate": 0.5352,
-     "profit_factor": 0.889,
-     "p_value": 0.6353,
-     "net_base": -322.98,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.5429,
+     "profit_factor": 0.91,
+     "p_value": 0.5504,
+     "net_base": -257.68,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2244,8 +2244,8 @@
      "win_rate": 0.4583,
      "profit_factor": 0.87,
      "p_value": 0.8388,
-     "net_base": -109.28,
-     "tested_from": "2016-11-01"
+     "net_base": -109.02,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2268,8 +2268,8 @@
      "win_rate": 0.48,
      "profit_factor": 1.107,
      "p_value": 0.8176,
-     "net_base": 299.57,
-     "tested_from": "2016-11-01"
+     "net_base": 298.87,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2279,8 +2279,8 @@
      "win_rate": 0.5,
      "profit_factor": 0.7,
      "p_value": 1.0,
-     "net_base": -258.13,
-     "tested_from": "2016-11-01"
+     "net_base": -257.53,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2303,8 +2303,8 @@
      "win_rate": 0.5714,
      "profit_factor": 1.767,
      "p_value": 0.5716,
-     "net_base": 574.96,
-     "tested_from": "2022-09-15"
+     "net_base": 573.62,
+     "tested_from": "2022-09-20"
     },
     {
      "logic": "breakout",
@@ -2328,13 +2328,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 79,
+     "trades": 78,
      "wins": 41,
-     "win_rate": 0.519,
+     "win_rate": 0.5256,
      "profit_factor": 0.932,
-     "p_value": 0.8221,
-     "net_base": -195.15,
-     "tested_from": "2016-11-01"
+     "p_value": 0.7343,
+     "net_base": -192.13,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2344,8 +2344,8 @@
      "win_rate": 0.3636,
      "profit_factor": 0.601,
      "p_value": 0.2863,
-     "net_base": -313.22,
-     "tested_from": "2016-11-01"
+     "net_base": -312.49,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2368,8 +2368,8 @@
      "win_rate": 0.5,
      "profit_factor": 1.262,
      "p_value": 1.0,
-     "net_base": 159.54,
-     "tested_from": "2022-05-10"
+     "net_base": 159.16,
+     "tested_from": "2022-05-12"
     },
     {
      "logic": "breakout",
@@ -2393,13 +2393,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 52,
+     "trades": 51,
      "wins": 23,
-     "win_rate": 0.4423,
-     "profit_factor": 0.781,
-     "p_value": 0.4885,
-     "net_base": -456.28,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.451,
+     "profit_factor": 0.812,
+     "p_value": 0.5758,
+     "net_base": -375.82,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2409,13 +2409,13 @@
      "win_rate": 0.4348,
      "profit_factor": 0.988,
      "p_value": 0.6776,
-     "net_base": -5.96,
-     "tested_from": "2016-11-01"
+     "net_base": -5.95,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
      "verdict": "insufficient",
-     "trades": 11,
+     "trades": 10,
      "needed": 20
     }
    ],
@@ -2428,13 +2428,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 69,
-     "wins": 37,
-     "win_rate": 0.5362,
-     "profit_factor": 1.49,
-     "p_value": 0.6305,
-     "net_base": 1239.79,
-     "tested_from": "2016-11-01"
+     "trades": 68,
+     "wins": 36,
+     "win_rate": 0.5294,
+     "profit_factor": 1.477,
+     "p_value": 0.7163,
+     "net_base": 1205.2,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2444,8 +2444,8 @@
      "win_rate": 0.3824,
      "profit_factor": 0.51,
      "p_value": 0.2295,
-     "net_base": -746.92,
-     "tested_from": "2016-11-01"
+     "net_base": -745.18,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2468,8 +2468,8 @@
      "win_rate": 0.4107,
      "profit_factor": 0.841,
      "p_value": 0.2288,
-     "net_base": -313.88,
-     "tested_from": "2016-11-01"
+     "net_base": -313.15,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2479,8 +2479,8 @@
      "win_rate": 0.4545,
      "profit_factor": 0.665,
      "p_value": 0.7283,
-     "net_base": -360.14,
-     "tested_from": "2016-11-01"
+     "net_base": -359.3,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2503,19 +2503,19 @@
      "win_rate": 0.4242,
      "profit_factor": 0.969,
      "p_value": 0.2678,
-     "net_base": -68.27,
-     "tested_from": "2016-11-01"
+     "net_base": -68.65,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
      "verdict": "no_edge",
-     "trades": 26,
+     "trades": 25,
      "wins": 9,
-     "win_rate": 0.3462,
-     "profit_factor": 0.626,
-     "p_value": 0.1686,
-     "net_base": -432.77,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.36,
+     "profit_factor": 0.66,
+     "p_value": 0.2295,
+     "net_base": -371.48,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2538,8 +2538,8 @@
      "win_rate": 0.5122,
      "profit_factor": 1.254,
      "p_value": 0.9122,
-     "net_base": 768.84,
-     "tested_from": "2016-11-01"
+     "net_base": 767.05,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2549,8 +2549,8 @@
      "win_rate": 0.3333,
      "profit_factor": 0.594,
      "p_value": 0.1516,
-     "net_base": -302.55,
-     "tested_from": "2016-11-01"
+     "net_base": -301.84,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2573,13 +2573,13 @@
      "win_rate": 0.4,
      "profit_factor": 0.72,
      "p_value": 0.5034,
-     "net_base": -162.2,
-     "tested_from": "2022-04-11"
+     "net_base": -161.82,
+     "tested_from": "2022-04-18"
     },
     {
      "logic": "breakout",
      "verdict": "insufficient",
-     "trades": 7,
+     "trades": 8,
      "needed": 20
     },
     {
@@ -2597,26 +2597,18 @@
    "logics": [
     {
      "logic": "pullback",
-     "verdict": "no_edge",
-     "trades": 27,
-     "wins": 8,
-     "win_rate": 0.2963,
-     "profit_factor": 0.472,
-     "p_value": 0.0522,
-     "net_base": -699.1,
-     "tested_from": "2021-10-12"
+     "verdict": "no_history",
+     "trades": 0
     },
     {
      "logic": "breakout",
-     "verdict": "insufficient",
-     "trades": 11,
-     "needed": 20
+     "verdict": "no_history",
+     "trades": 0
     },
     {
      "logic": "momentum",
-     "verdict": "insufficient",
-     "trades": 6,
-     "needed": 20
+     "verdict": "no_history",
+     "trades": 0
     }
    ],
    "best": null,
@@ -2633,8 +2625,8 @@
      "win_rate": 0.5,
      "profit_factor": 1.241,
      "p_value": 1.0,
-     "net_base": 324.97,
-     "tested_from": "2017-01-05"
+     "net_base": 324.21,
+     "tested_from": "2017-01-10"
     },
     {
      "logic": "breakout",
@@ -2644,8 +2636,8 @@
      "win_rate": 0.3793,
      "profit_factor": 0.845,
      "p_value": 0.2649,
-     "net_base": -174.67,
-     "tested_from": "2017-01-05"
+     "net_base": -174.26,
+     "tested_from": "2017-01-10"
     },
     {
      "logic": "momentum",
@@ -2668,8 +2660,8 @@
      "win_rate": 0.5143,
      "profit_factor": 1.345,
      "p_value": 1.0,
-     "net_base": 428.95,
-     "tested_from": "2021-05-06"
+     "net_base": 427.95,
+     "tested_from": "2021-05-10"
     },
     {
      "logic": "breakout",
@@ -2698,8 +2690,8 @@
      "win_rate": 0.5077,
      "profit_factor": 1.097,
      "p_value": 1.0,
-     "net_base": 230.44,
-     "tested_from": "2016-11-01"
+     "net_base": 229.9,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2709,8 +2701,8 @@
      "win_rate": 0.3077,
      "profit_factor": 0.357,
      "p_value": 0.0755,
-     "net_base": -633.36,
-     "tested_from": "2016-11-01"
+     "net_base": -631.88,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2733,8 +2725,8 @@
      "win_rate": 0.5802,
      "profit_factor": 1.665,
      "p_value": 0.1821,
-     "net_base": 1393.76,
-     "tested_from": "2016-11-01"
+     "net_base": 1390.5,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2744,8 +2736,8 @@
      "win_rate": 0.4062,
      "profit_factor": 1.138,
      "p_value": 0.3771,
-     "net_base": 135.06,
-     "tested_from": "2016-11-01"
+     "net_base": 134.74,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2768,8 +2760,8 @@
      "win_rate": 0.4868,
      "profit_factor": 1.017,
      "p_value": 0.9088,
-     "net_base": 47.22,
-     "tested_from": "2017-01-02"
+     "net_base": 47.11,
+     "tested_from": "2017-01-04"
     },
     {
      "logic": "breakout",
@@ -2779,8 +2771,8 @@
      "win_rate": 0.5172,
      "profit_factor": 1.438,
      "p_value": 1.0,
-     "net_base": 451.3,
-     "tested_from": "2017-01-02"
+     "net_base": 450.24,
+     "tested_from": "2017-01-04"
     },
     {
      "logic": "momentum",
@@ -2803,8 +2795,8 @@
      "win_rate": 0.4889,
      "profit_factor": 1.23,
      "p_value": 1.0,
-     "net_base": 342.89,
-     "tested_from": "2021-05-07"
+     "net_base": 342.08,
+     "tested_from": "2021-05-11"
     },
     {
      "logic": "breakout",
@@ -2828,13 +2820,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 63,
-     "wins": 35,
-     "win_rate": 0.5556,
-     "profit_factor": 1.069,
-     "p_value": 0.45,
-     "net_base": 173.02,
-     "tested_from": "2016-11-01"
+     "trades": 62,
+     "wins": 34,
+     "win_rate": 0.5484,
+     "profit_factor": 1.032,
+     "p_value": 0.5258,
+     "net_base": 79.69,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2844,8 +2836,8 @@
      "win_rate": 0.4091,
      "profit_factor": 0.593,
      "p_value": 0.5235,
-     "net_base": -356.39,
-     "tested_from": "2016-11-01"
+     "net_base": -355.56,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2868,8 +2860,8 @@
      "win_rate": 0.4688,
      "profit_factor": 0.642,
      "p_value": 0.8601,
-     "net_base": -480.82,
-     "tested_from": "2019-12-05"
+     "net_base": -479.69,
+     "tested_from": "2019-12-09"
     },
     {
      "logic": "breakout",
@@ -2898,8 +2890,8 @@
      "win_rate": 0.4483,
      "profit_factor": 0.895,
      "p_value": 0.5118,
-     "net_base": -233.88,
-     "tested_from": "2016-11-01"
+     "net_base": -233.34,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2909,8 +2901,8 @@
      "win_rate": 0.4,
      "profit_factor": 0.793,
      "p_value": 0.4244,
-     "net_base": -208.66,
-     "tested_from": "2016-11-01"
+     "net_base": -208.17,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2927,14 +2919,14 @@
    "logics": [
     {
      "logic": "pullback",
-     "verdict": "no_edge",
-     "trades": 63,
+     "verdict": "profitable_but_unproven",
+     "trades": 62,
      "wins": 30,
-     "win_rate": 0.4762,
-     "profit_factor": 0.978,
-     "p_value": 0.8013,
-     "net_base": -44.77,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.4839,
+     "profit_factor": 1.039,
+     "p_value": 0.8991,
+     "net_base": 76.69,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2944,8 +2936,8 @@
      "win_rate": 0.5152,
      "profit_factor": 1.157,
      "p_value": 1.0,
-     "net_base": 165.77,
-     "tested_from": "2016-11-01"
+     "net_base": 165.38,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -2962,14 +2954,14 @@
    "logics": [
     {
      "logic": "pullback",
-     "verdict": "no_edge",
+     "verdict": "profitable_but_unproven",
      "trades": 73,
-     "wins": 33,
-     "win_rate": 0.4521,
-     "profit_factor": 0.905,
-     "p_value": 0.4828,
-     "net_base": -237.82,
-     "tested_from": "2016-11-01"
+     "wins": 34,
+     "win_rate": 0.4658,
+     "profit_factor": 1.006,
+     "p_value": 0.64,
+     "net_base": 13.82,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -2979,8 +2971,8 @@
      "win_rate": 0.4333,
      "profit_factor": 1.022,
      "p_value": 0.5847,
-     "net_base": 21.63,
-     "tested_from": "2016-11-01"
+     "net_base": 21.58,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -3003,8 +2995,8 @@
      "win_rate": 0.5472,
      "profit_factor": 1.211,
      "p_value": 0.5831,
-     "net_base": 379.07,
-     "tested_from": "2017-07-04"
+     "net_base": 378.18,
+     "tested_from": "2017-07-07"
     },
     {
      "logic": "breakout",
@@ -3014,8 +3006,8 @@
      "win_rate": 0.5,
      "profit_factor": 1.231,
      "p_value": 1.0,
-     "net_base": 204.04,
-     "tested_from": "2017-07-04"
+     "net_base": 203.56,
+     "tested_from": "2017-07-07"
     },
     {
      "logic": "momentum",
@@ -3058,7 +3050,7 @@
     {
      "logic": "pullback",
      "verdict": "insufficient",
-     "trades": 11,
+     "trades": 10,
      "needed": 20
     },
     {
@@ -3113,8 +3105,8 @@
      "win_rate": 0.4792,
      "profit_factor": 1.328,
      "p_value": 0.8854,
-     "net_base": 441.27,
-     "tested_from": "2016-11-01"
+     "net_base": 440.24,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3124,8 +3116,8 @@
      "win_rate": 0.5,
      "profit_factor": 0.536,
      "p_value": 1.0,
-     "net_base": -443.97,
-     "tested_from": "2016-11-01"
+     "net_base": -442.93,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -3143,13 +3135,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 81,
-     "wins": 37,
-     "win_rate": 0.4568,
-     "profit_factor": 0.966,
-     "p_value": 0.5052,
-     "net_base": -100.65,
-     "tested_from": "2016-11-01"
+     "trades": 80,
+     "wins": 36,
+     "win_rate": 0.45,
+     "profit_factor": 0.964,
+     "p_value": 0.434,
+     "net_base": -106.85,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3159,8 +3151,8 @@
      "win_rate": 0.6857,
      "profit_factor": 1.62,
      "p_value": 0.041,
-     "net_base": 435.49,
-     "tested_from": "2016-11-01"
+     "net_base": 434.47,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -3178,13 +3170,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 79,
+     "trades": 78,
      "wins": 42,
-     "win_rate": 0.5316,
-     "profit_factor": 1.168,
-     "p_value": 0.653,
-     "net_base": 387.83,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.5385,
+     "profit_factor": 1.21,
+     "p_value": 0.5716,
+     "net_base": 466.52,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3194,8 +3186,8 @@
      "win_rate": 0.5484,
      "profit_factor": 1.46,
      "p_value": 0.7201,
-     "net_base": 370.76,
-     "tested_from": "2016-11-01"
+     "net_base": 369.9,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -3218,8 +3210,8 @@
      "win_rate": 0.6458,
      "profit_factor": 1.659,
      "p_value": 0.0595,
-     "net_base": 918.01,
-     "tested_from": "2018-05-30"
+     "net_base": 915.86,
+     "tested_from": "2018-06-04"
     },
     {
      "logic": "breakout",
@@ -3229,8 +3221,8 @@
      "win_rate": 0.4074,
      "profit_factor": 1.026,
      "p_value": 0.4421,
-     "net_base": 25.05,
-     "tested_from": "2018-05-30"
+     "net_base": 24.99,
+     "tested_from": "2018-06-04"
     },
     {
      "logic": "momentum",
@@ -3251,10 +3243,10 @@
      "trades": 86,
      "wins": 46,
      "win_rate": 0.5349,
-     "profit_factor": 1.312,
+     "profit_factor": 1.311,
      "p_value": 0.59,
-     "net_base": 922.13,
-     "tested_from": "2016-11-01"
+     "net_base": 921.27,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3264,8 +3256,8 @@
      "win_rate": 0.4286,
      "profit_factor": 0.708,
      "p_value": 0.5716,
-     "net_base": -241.55,
-     "tested_from": "2016-11-01"
+     "net_base": -240.99,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -3288,8 +3280,8 @@
      "win_rate": 0.3617,
      "profit_factor": 0.664,
      "p_value": 0.0789,
-     "net_base": -650.3,
-     "tested_from": "2018-06-15"
+     "net_base": -648.78,
+     "tested_from": "2018-06-20"
     },
     {
      "logic": "breakout",
@@ -3299,8 +3291,8 @@
      "win_rate": 0.4286,
      "profit_factor": 0.781,
      "p_value": 0.6636,
-     "net_base": -126.79,
-     "tested_from": "2018-06-15"
+     "net_base": -126.49,
+     "tested_from": "2018-06-20"
     },
     {
      "logic": "momentum",
@@ -3323,8 +3315,8 @@
      "win_rate": 0.3509,
      "profit_factor": 0.316,
      "p_value": 0.0331,
-     "net_base": -1411.46,
-     "tested_from": "2018-06-01"
+     "net_base": -1408.16,
+     "tested_from": "2018-06-06"
     },
     {
      "logic": "breakout",
@@ -3353,8 +3345,8 @@
      "win_rate": 0.4906,
      "profit_factor": 0.868,
      "p_value": 1.0,
-     "net_base": -241.74,
-     "tested_from": "2016-10-28"
+     "net_base": -241.18,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3383,8 +3375,8 @@
      "win_rate": 0.4853,
      "profit_factor": 1.014,
      "p_value": 0.9036,
-     "net_base": 32.09,
-     "tested_from": "2016-11-01"
+     "net_base": 32.08,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3394,8 +3386,8 @@
      "win_rate": 0.48,
      "profit_factor": 0.872,
      "p_value": 1.0,
-     "net_base": -98.17,
-     "tested_from": "2016-11-01"
+     "net_base": -97.94,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -3413,13 +3405,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 52,
+     "trades": 51,
      "wins": 25,
-     "win_rate": 0.4808,
-     "profit_factor": 0.763,
-     "p_value": 0.8899,
-     "net_base": -579.67,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.4902,
+     "profit_factor": 0.785,
+     "p_value": 1.0,
+     "net_base": -505.9,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3429,13 +3421,13 @@
      "win_rate": 0.5357,
      "profit_factor": 1.628,
      "p_value": 0.8506,
-     "net_base": 404.37,
-     "tested_from": "2016-11-01"
+     "net_base": 403.42,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
      "verdict": "insufficient",
-     "trades": 8,
+     "trades": 7,
      "needed": 20
     }
    ],
@@ -3448,13 +3440,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 79,
+     "trades": 78,
      "wins": 36,
-     "win_rate": 0.4557,
-     "profit_factor": 1.041,
-     "p_value": 0.4999,
-     "net_base": 124.51,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.4615,
+     "profit_factor": 1.064,
+     "p_value": 0.5716,
+     "net_base": 185.76,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3464,8 +3456,8 @@
      "win_rate": 0.3235,
      "profit_factor": 0.369,
      "p_value": 0.0576,
-     "net_base": -791.29,
-     "tested_from": "2016-11-01"
+     "net_base": -789.44,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -3488,8 +3480,8 @@
      "win_rate": 0.625,
      "profit_factor": 1.317,
      "p_value": 0.1114,
-     "net_base": 466.72,
-     "tested_from": "2016-11-01"
+     "net_base": 465.63,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3499,8 +3491,8 @@
      "win_rate": 0.6,
      "profit_factor": 2.663,
      "p_value": 0.5034,
-     "net_base": 603.31,
-     "tested_from": "2016-11-01"
+     "net_base": 601.9,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -3523,8 +3515,8 @@
      "win_rate": 0.5915,
      "profit_factor": 1.868,
      "p_value": 0.1539,
-     "net_base": 1872.04,
-     "tested_from": "2016-11-01"
+     "net_base": 1867.67,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3534,13 +3526,13 @@
      "win_rate": 0.5385,
      "profit_factor": 1.726,
      "p_value": 0.845,
-     "net_base": 317.66,
-     "tested_from": "2016-11-01"
+     "net_base": 316.92,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
      "verdict": "insufficient",
-     "trades": 4,
+     "trades": 3,
      "needed": 20
     }
    ],
@@ -3553,13 +3545,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 71,
+     "trades": 70,
      "wins": 37,
-     "win_rate": 0.5211,
-     "profit_factor": 1.144,
-     "p_value": 0.8126,
-     "net_base": 351.86,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.5286,
+     "profit_factor": 1.149,
+     "p_value": 0.7202,
+     "net_base": 362.7,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3569,13 +3561,13 @@
      "win_rate": 0.3333,
      "profit_factor": 0.373,
      "p_value": 0.1516,
-     "net_base": -641.89,
-     "tested_from": "2016-11-01"
+     "net_base": -640.39,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
      "verdict": "insufficient",
-     "trades": 4,
+     "trades": 3,
      "needed": 20
     }
    ],
@@ -3593,19 +3585,19 @@
      "win_rate": 0.4458,
      "profit_factor": 0.826,
      "p_value": 0.38,
-     "net_base": -553.36,
-     "tested_from": "2016-11-01"
+     "net_base": -552.06,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
      "verdict": "no_edge",
-     "trades": 26,
+     "trades": 25,
      "wins": 9,
-     "win_rate": 0.3462,
-     "profit_factor": 0.508,
-     "p_value": 0.1686,
-     "net_base": -562.85,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.36,
+     "profit_factor": 0.551,
+     "p_value": 0.2295,
+     "net_base": -472.96,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -3628,8 +3620,8 @@
      "win_rate": 0.5556,
      "profit_factor": 1.278,
      "p_value": 0.7011,
-     "net_base": 177.64,
-     "tested_from": "2023-09-18"
+     "net_base": 177.23,
+     "tested_from": "2023-09-21"
     },
     {
      "logic": "breakout",
@@ -3658,8 +3650,8 @@
      "win_rate": 0.5846,
      "profit_factor": 1.408,
      "p_value": 0.2145,
-     "net_base": 848.34,
-     "tested_from": "2019-07-09"
+     "net_base": 846.35,
+     "tested_from": "2019-07-12"
     },
     {
      "logic": "breakout",
@@ -3669,8 +3661,8 @@
      "win_rate": 0.5385,
      "profit_factor": 1.091,
      "p_value": 0.845,
-     "net_base": 103.04,
-     "tested_from": "2019-07-09"
+     "net_base": 102.8,
+     "tested_from": "2019-07-12"
     },
     {
      "logic": "momentum",
@@ -3693,8 +3685,8 @@
      "win_rate": 0.4677,
      "profit_factor": 0.823,
      "p_value": 0.7035,
-     "net_base": -462.57,
-     "tested_from": "2016-11-01"
+     "net_base": -455.24,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3704,8 +3696,8 @@
      "win_rate": 0.3103,
      "profit_factor": 0.603,
      "p_value": 0.0614,
-     "net_base": -312.47,
-     "tested_from": "2016-11-01"
+     "net_base": -311.74,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -3723,13 +3715,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 61,
+     "trades": 60,
      "wins": 36,
-     "win_rate": 0.5902,
-     "profit_factor": 1.275,
-     "p_value": 0.2,
-     "net_base": 567.15,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.6,
+     "profit_factor": 1.35,
+     "p_value": 0.155,
+     "net_base": 680.94,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3739,8 +3731,8 @@
      "win_rate": 0.5556,
      "profit_factor": 1.764,
      "p_value": 0.7011,
-     "net_base": 499.03,
-     "tested_from": "2016-11-01"
+     "net_base": 497.86,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -3758,13 +3750,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 64,
-     "wins": 29,
-     "win_rate": 0.4531,
-     "profit_factor": 1.097,
-     "p_value": 0.5323,
-     "net_base": 138.86,
-     "tested_from": "2016-10-28"
+     "trades": 63,
+     "wins": 28,
+     "win_rate": 0.4444,
+     "profit_factor": 1.053,
+     "p_value": 0.45,
+     "net_base": 76.07,
+     "tested_from": "2016-11-04"
     },
     {
      "logic": "breakout",
@@ -3774,8 +3766,8 @@
      "win_rate": 0.4375,
      "profit_factor": 0.755,
      "p_value": 0.5966,
-     "net_base": -194.16,
-     "tested_from": "2016-10-28"
+     "net_base": -193.71,
+     "tested_from": "2016-11-04"
     },
     {
      "logic": "momentum",
@@ -3798,8 +3790,8 @@
      "win_rate": 0.6,
      "profit_factor": 1.46,
      "p_value": 0.136,
-     "net_base": 1035.94,
-     "tested_from": "2019-01-31"
+     "net_base": 1033.52,
+     "tested_from": "2019-02-05"
     },
     {
      "logic": "breakout",
@@ -3809,8 +3801,8 @@
      "win_rate": 0.3333,
      "profit_factor": 0.684,
      "p_value": 0.1892,
-     "net_base": -204.25,
-     "tested_from": "2019-01-31"
+     "net_base": -203.77,
+     "tested_from": "2019-02-05"
     },
     {
      "logic": "momentum",
@@ -3828,13 +3820,13 @@
     {
      "logic": "pullback",
      "verdict": "evidence",
-     "trades": 67,
-     "wins": 44,
-     "win_rate": 0.6567,
-     "profit_factor": 2.671,
-     "p_value": 0.0139,
-     "net_base": 2846.27,
-     "tested_from": "2016-11-01"
+     "trades": 66,
+     "wins": 43,
+     "win_rate": 0.6515,
+     "profit_factor": 2.602,
+     "p_value": 0.0187,
+     "net_base": 2723.13,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3844,8 +3836,8 @@
      "win_rate": 0.5,
      "profit_factor": 0.895,
      "p_value": 1.0,
-     "net_base": -86.93,
-     "tested_from": "2016-11-01"
+     "net_base": -86.73,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -3868,8 +3860,8 @@
      "win_rate": 0.5385,
      "profit_factor": 1.218,
      "p_value": 0.5716,
-     "net_base": 563.86,
-     "tested_from": "2016-11-16"
+     "net_base": 562.55,
+     "tested_from": "2016-11-18"
     },
     {
      "logic": "breakout",
@@ -3879,8 +3871,8 @@
      "win_rate": 0.375,
      "profit_factor": 0.772,
      "p_value": 0.2153,
-     "net_base": -241.81,
-     "tested_from": "2016-11-16"
+     "net_base": -241.25,
+     "tested_from": "2016-11-18"
     },
     {
      "logic": "momentum",
@@ -3903,8 +3895,8 @@
      "win_rate": 0.5,
      "profit_factor": 1.225,
      "p_value": 1.0,
-     "net_base": 373.18,
-     "tested_from": "2019-07-24"
+     "net_base": 372.31,
+     "tested_from": "2019-07-29"
     },
     {
      "logic": "breakout",
@@ -3914,8 +3906,8 @@
      "win_rate": 0.3929,
      "profit_factor": 0.766,
      "p_value": 0.3449,
-     "net_base": -292.88,
-     "tested_from": "2019-07-24"
+     "net_base": -292.2,
+     "tested_from": "2019-07-29"
     },
     {
      "logic": "momentum",
@@ -3938,8 +3930,8 @@
      "win_rate": 0.4198,
      "profit_factor": 0.649,
      "p_value": 0.1821,
-     "net_base": -1199.82,
-     "tested_from": "2016-11-01"
+     "net_base": -1197.01,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -3949,8 +3941,8 @@
      "win_rate": 0.5185,
      "profit_factor": 1.037,
      "p_value": 1.0,
-     "net_base": 22.02,
-     "tested_from": "2016-11-01"
+     "net_base": 21.97,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -3973,8 +3965,8 @@
      "win_rate": 0.5208,
      "profit_factor": 1.387,
      "p_value": 0.8854,
-     "net_base": 546.87,
-     "tested_from": "2018-04-03"
+     "net_base": 545.59,
+     "tested_from": "2018-04-05"
     },
     {
      "logic": "breakout",
@@ -3984,8 +3976,8 @@
      "win_rate": 0.2381,
      "profit_factor": 0.477,
      "p_value": 0.0266,
-     "net_base": -498.08,
-     "tested_from": "2018-04-03"
+     "net_base": -496.91,
+     "tested_from": "2018-04-05"
     },
     {
      "logic": "momentum",
@@ -4008,8 +4000,8 @@
      "win_rate": 0.3182,
      "profit_factor": 0.163,
      "p_value": 0.1338,
-     "net_base": -2950.71,
-     "tested_from": "2017-12-01"
+     "net_base": -2943.81,
+     "tested_from": "2017-12-06"
     },
     {
      "logic": "breakout",
@@ -4020,7 +4012,7 @@
     {
      "logic": "momentum",
      "verdict": "insufficient",
-     "trades": 5,
+     "trades": 4,
      "needed": 20
     }
    ],
@@ -4038,8 +4030,8 @@
      "win_rate": 0.4528,
      "profit_factor": 0.918,
      "p_value": 0.5831,
-     "net_base": -140.3,
-     "tested_from": "2017-07-07"
+     "net_base": -139.97,
+     "tested_from": "2017-07-11"
     },
     {
      "logic": "breakout",
@@ -4049,8 +4041,8 @@
      "win_rate": 0.4286,
      "profit_factor": 0.79,
      "p_value": 0.4996,
-     "net_base": -244.65,
-     "tested_from": "2017-07-07"
+     "net_base": -244.07,
+     "tested_from": "2017-07-11"
     },
     {
      "logic": "momentum",
@@ -4073,8 +4065,8 @@
      "win_rate": 0.6,
      "profit_factor": 2.052,
      "p_value": 0.1196,
-     "net_base": 1845.42,
-     "tested_from": "2016-11-01"
+     "net_base": 1841.11,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -4084,8 +4076,8 @@
      "win_rate": 0.3333,
      "profit_factor": 0.721,
      "p_value": 0.0987,
-     "net_base": -266.59,
-     "tested_from": "2016-11-01"
+     "net_base": -265.97,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -4102,9 +4094,14 @@
    "logics": [
     {
      "logic": "pullback",
-     "verdict": "insufficient",
-     "trades": 19,
-     "needed": 20
+     "verdict": "profitable_but_unproven",
+     "trades": 20,
+     "wins": 11,
+     "win_rate": 0.55,
+     "profit_factor": 1.479,
+     "p_value": 0.8238,
+     "net_base": 266.54,
+     "tested_from": "2024-05-09"
     },
     {
      "logic": "breakout",
@@ -4119,8 +4116,8 @@
      "needed": 20
     }
    ],
-   "best": null,
-   "best_verdict": "none"
+   "best": "pullback",
+   "best_verdict": "profitable_but_unproven"
   },
   "IN:OBEROIRLTY": {
    "symbol": "OBEROIRLTY",
@@ -4133,8 +4130,8 @@
      "win_rate": 0.5306,
      "profit_factor": 1.185,
      "p_value": 0.7754,
-     "net_base": 306.17,
-     "tested_from": "2018-10-25"
+     "net_base": 305.45,
+     "tested_from": "2018-10-29"
     },
     {
      "logic": "breakout",
@@ -4163,8 +4160,8 @@
      "win_rate": 0.569,
      "profit_factor": 1.312,
      "p_value": 0.3581,
-     "net_base": 523.69,
-     "tested_from": "2016-11-01"
+     "net_base": 522.47,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -4174,8 +4171,8 @@
      "win_rate": 0.4,
      "profit_factor": 0.703,
      "p_value": 0.3616,
-     "net_base": -337.95,
-     "tested_from": "2016-11-01"
+     "net_base": -337.17,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -4198,8 +4195,8 @@
      "win_rate": 0.5893,
      "profit_factor": 1.724,
      "p_value": 0.2288,
-     "net_base": 1259.62,
-     "tested_from": "2018-04-16"
+     "net_base": 1256.68,
+     "tested_from": "2018-04-18"
     },
     {
      "logic": "breakout",
@@ -4209,8 +4206,8 @@
      "win_rate": 0.4762,
      "profit_factor": 1.271,
      "p_value": 1.0,
-     "net_base": 206.81,
-     "tested_from": "2018-04-16"
+     "net_base": 206.32,
+     "tested_from": "2018-04-18"
     },
     {
      "logic": "momentum",
@@ -4233,19 +4230,19 @@
      "win_rate": 0.5455,
      "profit_factor": 1.473,
      "p_value": 0.5901,
-     "net_base": 931.16,
-     "tested_from": "2016-11-01"
+     "net_base": 928.99,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
      "verdict": "no_edge",
-     "trades": 32,
+     "trades": 31,
      "wins": 10,
-     "win_rate": 0.3125,
-     "profit_factor": 0.554,
-     "p_value": 0.0501,
-     "net_base": -665.14,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.3226,
+     "profit_factor": 0.6,
+     "p_value": 0.0708,
+     "net_base": -550.13,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -4268,8 +4265,8 @@
      "win_rate": 0.4262,
      "profit_factor": 0.791,
      "p_value": 0.3057,
-     "net_base": -405.24,
-     "tested_from": "2017-01-09"
+     "net_base": -404.29,
+     "tested_from": "2017-01-11"
     },
     {
      "logic": "breakout",
@@ -4279,8 +4276,8 @@
      "win_rate": 0.4231,
      "profit_factor": 0.909,
      "p_value": 0.5572,
-     "net_base": -62.63,
-     "tested_from": "2017-01-09"
+     "net_base": -62.49,
+     "tested_from": "2017-01-11"
     },
     {
      "logic": "momentum",
@@ -4303,8 +4300,8 @@
      "win_rate": 0.6667,
      "profit_factor": 2.672,
      "p_value": 0.1892,
-     "net_base": 689.47,
-     "tested_from": "2024-05-09"
+     "net_base": 687.85,
+     "tested_from": "2024-05-14"
     },
     {
      "logic": "breakout",
@@ -4328,13 +4325,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 49,
-     "wins": 24,
-     "win_rate": 0.4898,
-     "profit_factor": 1.399,
-     "p_value": 1.0,
-     "net_base": 638.69,
-     "tested_from": "2018-07-12"
+     "trades": 48,
+     "wins": 23,
+     "win_rate": 0.4792,
+     "profit_factor": 1.364,
+     "p_value": 0.8854,
+     "net_base": 582.13,
+     "tested_from": "2018-07-16"
     },
     {
      "logic": "breakout",
@@ -4344,8 +4341,8 @@
      "win_rate": 0.5641,
      "profit_factor": 1.305,
      "p_value": 0.5224,
-     "net_base": 387.7,
-     "tested_from": "2018-07-12"
+     "net_base": 386.8,
+     "tested_from": "2018-07-16"
     },
     {
      "logic": "momentum",
@@ -4363,13 +4360,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 57,
-     "wins": 32,
-     "win_rate": 0.5614,
-     "profit_factor": 1.666,
-     "p_value": 0.427,
-     "net_base": 1253.5,
-     "tested_from": "2016-11-01"
+     "trades": 58,
+     "wins": 33,
+     "win_rate": 0.569,
+     "profit_factor": 1.702,
+     "p_value": 0.3581,
+     "net_base": 1317.91,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -4398,8 +4395,8 @@
      "win_rate": 0.5185,
      "profit_factor": 1.422,
      "p_value": 0.8919,
-     "net_base": 775.01,
-     "tested_from": "2016-12-29"
+     "net_base": 773.2,
+     "tested_from": "2017-01-03"
     },
     {
      "logic": "breakout",
@@ -4409,8 +4406,8 @@
      "win_rate": 0.4839,
      "profit_factor": 1.682,
      "p_value": 1.0,
-     "net_base": 583.42,
-     "tested_from": "2016-12-29"
+     "net_base": 582.06,
+     "tested_from": "2017-01-03"
     },
     {
      "logic": "momentum",
@@ -4433,8 +4430,8 @@
      "win_rate": 0.5952,
      "profit_factor": 1.979,
      "p_value": 0.1011,
-     "net_base": 1862.26,
-     "tested_from": "2017-01-25"
+     "net_base": 1857.9,
+     "tested_from": "2017-01-31"
     },
     {
      "logic": "breakout",
@@ -4444,8 +4441,8 @@
      "win_rate": 0.3182,
      "profit_factor": 0.573,
      "p_value": 0.1338,
-     "net_base": -401.86,
-     "tested_from": "2017-01-25"
+     "net_base": -400.93,
+     "tested_from": "2017-01-31"
     },
     {
      "logic": "momentum",
@@ -4463,13 +4460,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 74,
+     "trades": 73,
      "wins": 34,
-     "win_rate": 0.4595,
-     "profit_factor": 0.837,
-     "p_value": 0.5614,
-     "net_base": -439.06,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.4658,
+     "profit_factor": 0.869,
+     "p_value": 0.64,
+     "net_base": -339.21,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -4479,8 +4476,8 @@
      "win_rate": 0.4167,
      "profit_factor": 0.791,
      "p_value": 0.405,
-     "net_base": -248.33,
-     "tested_from": "2016-11-01"
+     "net_base": -247.75,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -4503,8 +4500,8 @@
      "win_rate": 0.48,
      "profit_factor": 0.956,
      "p_value": 0.8877,
-     "net_base": -96.54,
-     "tested_from": "2019-02-21"
+     "net_base": -96.31,
+     "tested_from": "2019-02-25"
     },
     {
      "logic": "breakout",
@@ -4528,13 +4525,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 62,
+     "trades": 61,
      "wins": 28,
-     "win_rate": 0.4516,
-     "profit_factor": 1.083,
-     "p_value": 0.5258,
-     "net_base": 202.76,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.459,
+     "profit_factor": 1.124,
+     "p_value": 0.6089,
+     "net_base": 293.17,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -4544,8 +4541,8 @@
      "win_rate": 0.4571,
      "profit_factor": 0.973,
      "p_value": 0.7359,
-     "net_base": -35.71,
-     "tested_from": "2016-11-01"
+     "net_base": -35.63,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -4563,7 +4560,7 @@
     {
      "logic": "pullback",
      "verdict": "insufficient",
-     "trades": 17,
+     "trades": 16,
      "needed": 20
     },
     {
@@ -4593,8 +4590,8 @@
      "win_rate": 0.4516,
      "profit_factor": 0.79,
      "p_value": 0.7201,
-     "net_base": -302.73,
-     "tested_from": "2023-01-16"
+     "net_base": -302.02,
+     "tested_from": "2023-01-18"
     },
     {
      "logic": "breakout",
@@ -4623,8 +4620,8 @@
      "win_rate": 0.5714,
      "profit_factor": 1.871,
      "p_value": 0.3497,
-     "net_base": 1386.04,
-     "tested_from": "2017-04-24"
+     "net_base": 1382.8,
+     "tested_from": "2017-04-27"
     },
     {
      "logic": "breakout",
@@ -4634,8 +4631,8 @@
      "win_rate": 0.24,
      "profit_factor": 0.137,
      "p_value": 0.0146,
-     "net_base": -946.54,
-     "tested_from": "2017-04-24"
+     "net_base": -944.32,
+     "tested_from": "2017-04-27"
     },
     {
      "logic": "momentum",
@@ -4658,8 +4655,8 @@
      "win_rate": 0.5614,
      "profit_factor": 1.685,
      "p_value": 0.427,
-     "net_base": 1180.85,
-     "tested_from": "2018-10-29"
+     "net_base": 1178.09,
+     "tested_from": "2018-11-01"
     },
     {
      "logic": "breakout",
@@ -4669,8 +4666,8 @@
      "win_rate": 0.4516,
      "profit_factor": 0.805,
      "p_value": 0.7201,
-     "net_base": -220.48,
-     "tested_from": "2018-10-29"
+     "net_base": -219.96,
+     "tested_from": "2018-11-01"
     },
     {
      "logic": "momentum",
@@ -4693,14 +4690,19 @@
      "win_rate": 0.4925,
      "profit_factor": 0.908,
      "p_value": 1.0,
-     "net_base": -243.52,
-     "tested_from": "2016-10-28"
+     "net_base": -242.95,
+     "tested_from": "2016-11-04"
     },
     {
      "logic": "breakout",
-     "verdict": "insufficient",
-     "trades": 19,
-     "needed": 20
+     "verdict": "no_edge",
+     "trades": 20,
+     "wins": 8,
+     "win_rate": 0.4,
+     "profit_factor": 0.419,
+     "p_value": 0.5034,
+     "net_base": -421.77,
+     "tested_from": "2016-11-04"
     },
     {
      "logic": "momentum",
@@ -4723,8 +4725,8 @@
      "win_rate": 0.4186,
      "profit_factor": 0.989,
      "p_value": 0.3604,
-     "net_base": -17.76,
-     "tested_from": "2017-07-12"
+     "net_base": -17.72,
+     "tested_from": "2017-07-14"
     },
     {
      "logic": "breakout",
@@ -4734,8 +4736,8 @@
      "win_rate": 0.52,
      "profit_factor": 1.5,
      "p_value": 1.0,
-     "net_base": 544.08,
-     "tested_from": "2017-07-12"
+     "net_base": 542.81,
+     "tested_from": "2017-07-14"
     },
     {
      "logic": "momentum",
@@ -4756,10 +4758,10 @@
      "trades": 88,
      "wins": 42,
      "win_rate": 0.4773,
-     "profit_factor": 1.253,
+     "profit_factor": 1.252,
      "p_value": 0.7493,
-     "net_base": 730.86,
-     "tested_from": "2016-11-01"
+     "net_base": 723.77,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -4769,8 +4771,8 @@
      "win_rate": 0.5357,
      "profit_factor": 1.131,
      "p_value": 0.8506,
-     "net_base": 83.46,
-     "tested_from": "2016-11-01"
+     "net_base": 83.27,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -4793,8 +4795,8 @@
      "win_rate": 0.6,
      "profit_factor": 1.937,
      "p_value": 0.4244,
-     "net_base": 823.0,
-     "tested_from": "2023-01-13"
+     "net_base": 821.07,
+     "tested_from": "2023-01-17"
     },
     {
      "logic": "breakout",
@@ -4823,8 +4825,8 @@
      "win_rate": 0.4462,
      "profit_factor": 0.789,
      "p_value": 0.457,
-     "net_base": -520.7,
-     "tested_from": "2016-11-01"
+     "net_base": -516.48,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -4834,8 +4836,8 @@
      "win_rate": 0.56,
      "profit_factor": 1.346,
      "p_value": 0.69,
-     "net_base": 270.18,
-     "tested_from": "2016-11-01"
+     "net_base": 269.55,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -4858,8 +4860,8 @@
      "win_rate": 0.4231,
      "profit_factor": 0.765,
      "p_value": 0.5572,
-     "net_base": -181.25,
-     "tested_from": "2022-04-13"
+     "net_base": -180.83,
+     "tested_from": "2022-04-19"
     },
     {
      "logic": "breakout",
@@ -4888,8 +4890,8 @@
      "win_rate": 0.4231,
      "profit_factor": 0.934,
      "p_value": 0.2127,
-     "net_base": -210.49,
-     "tested_from": "2016-11-01"
+     "net_base": -209.34,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -4899,8 +4901,8 @@
      "win_rate": 0.2857,
      "profit_factor": 0.463,
      "p_value": 0.0167,
-     "net_base": -807.27,
-     "tested_from": "2016-11-01"
+     "net_base": -805.39,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -4918,13 +4920,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 68,
+     "trades": 67,
      "wins": 25,
-     "win_rate": 0.3676,
-     "profit_factor": 0.663,
-     "p_value": 0.0385,
-     "net_base": -881.94,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.3731,
+     "profit_factor": 0.675,
+     "p_value": 0.0498,
+     "net_base": -834.63,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -4953,8 +4955,8 @@
      "win_rate": 0.5147,
      "profit_factor": 1.385,
      "p_value": 0.9036,
-     "net_base": 936.2,
-     "tested_from": "2016-11-01"
+     "net_base": 940.02,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -4964,8 +4966,8 @@
      "win_rate": 0.5556,
      "profit_factor": 1.8,
      "p_value": 0.7011,
-     "net_base": 438.43,
-     "tested_from": "2016-11-01"
+     "net_base": 437.41,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -4983,13 +4985,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 78,
+     "trades": 77,
      "wins": 43,
-     "win_rate": 0.5513,
-     "profit_factor": 1.369,
-     "p_value": 0.4282,
-     "net_base": 861.53,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.5584,
+     "profit_factor": 1.412,
+     "p_value": 0.362,
+     "net_base": 930.02,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -4999,8 +5001,8 @@
      "win_rate": 0.5312,
      "profit_factor": 1.45,
      "p_value": 0.8601,
-     "net_base": 369.22,
-     "tested_from": "2016-11-01"
+     "net_base": 368.35,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5018,13 +5020,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 74,
+     "trades": 73,
      "wins": 32,
-     "win_rate": 0.4324,
-     "profit_factor": 0.754,
-     "p_value": 0.2954,
-     "net_base": -752.32,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.4384,
+     "profit_factor": 0.778,
+     "p_value": 0.3492,
+     "net_base": -655.94,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5034,8 +5036,8 @@
      "win_rate": 0.4722,
      "profit_factor": 1.175,
      "p_value": 0.8679,
-     "net_base": 207.37,
-     "tested_from": "2016-11-01"
+     "net_base": 206.89,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5058,8 +5060,8 @@
      "win_rate": 0.55,
      "profit_factor": 1.166,
      "p_value": 0.519,
-     "net_base": 302.73,
-     "tested_from": "2016-11-01"
+     "net_base": 302.02,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5069,8 +5071,8 @@
      "win_rate": 0.3913,
      "profit_factor": 1.225,
      "p_value": 0.4049,
-     "net_base": 101.79,
-     "tested_from": "2016-11-01"
+     "net_base": 101.55,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5093,8 +5095,8 @@
      "win_rate": 0.4444,
      "profit_factor": 0.734,
      "p_value": 0.4966,
-     "net_base": -573.34,
-     "tested_from": "2016-11-01"
+     "net_base": -572.0,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5104,8 +5106,8 @@
      "win_rate": 0.2917,
      "profit_factor": 0.654,
      "p_value": 0.0639,
-     "net_base": -275.24,
-     "tested_from": "2016-11-01"
+     "net_base": -274.6,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5128,8 +5130,8 @@
      "win_rate": 0.4595,
      "profit_factor": 1.09,
      "p_value": 0.5614,
-     "net_base": 237.0,
-     "tested_from": "2016-11-01"
+     "net_base": 235.2,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5139,13 +5141,13 @@
      "win_rate": 0.4231,
      "profit_factor": 0.851,
      "p_value": 0.5572,
-     "net_base": -114.78,
-     "tested_from": "2016-11-01"
+     "net_base": -114.51,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
      "verdict": "insufficient",
-     "trades": 8,
+     "trades": 7,
      "needed": 20
     }
    ],
@@ -5161,10 +5163,10 @@
      "trades": 65,
      "wins": 28,
      "win_rate": 0.4308,
-     "profit_factor": 0.701,
+     "profit_factor": 0.702,
      "p_value": 0.3211,
-     "net_base": -860.37,
-     "tested_from": "2016-11-01"
+     "net_base": -854.54,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5174,8 +5176,8 @@
      "win_rate": 0.4483,
      "profit_factor": 1.404,
      "p_value": 0.7111,
-     "net_base": 354.45,
-     "tested_from": "2016-11-01"
+     "net_base": 353.63,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5193,13 +5195,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 72,
+     "trades": 71,
      "wins": 40,
-     "win_rate": 0.5556,
-     "profit_factor": 1.489,
-     "p_value": 0.4096,
-     "net_base": 1209.11,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.5634,
+     "profit_factor": 1.513,
+     "p_value": 0.3425,
+     "net_base": 1245.7,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5209,8 +5211,8 @@
      "win_rate": 0.4872,
      "profit_factor": 0.926,
      "p_value": 1.0,
-     "net_base": -78.06,
-     "tested_from": "2016-11-01"
+     "net_base": -77.88,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5231,21 +5233,21 @@
      "trades": 62,
      "wins": 28,
      "win_rate": 0.4516,
-     "profit_factor": 0.72,
+     "profit_factor": 0.724,
      "p_value": 0.5258,
-     "net_base": -748.78,
-     "tested_from": "2016-11-01"
+     "net_base": -729.49,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
      "verdict": "no_edge",
-     "trades": 40,
-     "wins": 13,
-     "win_rate": 0.325,
-     "profit_factor": 0.64,
-     "p_value": 0.0385,
-     "net_base": -662.43,
-     "tested_from": "2016-11-01"
+     "trades": 41,
+     "wins": 14,
+     "win_rate": 0.3415,
+     "profit_factor": 0.662,
+     "p_value": 0.0596,
+     "net_base": -619.52,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5263,13 +5265,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 65,
+     "trades": 64,
      "wins": 34,
-     "win_rate": 0.5231,
-     "profit_factor": 1.213,
-     "p_value": 0.8043,
-     "net_base": 396.72,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.5312,
+     "profit_factor": 1.265,
+     "p_value": 0.708,
+     "net_base": 472.25,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5279,8 +5281,8 @@
      "win_rate": 0.3793,
      "profit_factor": 0.848,
      "p_value": 0.2649,
-     "net_base": -167.66,
-     "tested_from": "2016-11-01"
+     "net_base": -167.27,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5298,13 +5300,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 80,
-     "wins": 40,
-     "win_rate": 0.5,
-     "profit_factor": 0.963,
+     "trades": 79,
+     "wins": 39,
+     "win_rate": 0.4937,
+     "profit_factor": 0.94,
      "p_value": 1.0,
-     "net_base": -119.35,
-     "tested_from": "2016-11-01"
+     "net_base": -189.13,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5314,8 +5316,8 @@
      "win_rate": 0.4545,
      "profit_factor": 0.904,
      "p_value": 0.7283,
-     "net_base": -110.91,
-     "tested_from": "2016-11-01"
+     "net_base": -110.65,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5338,8 +5340,8 @@
      "win_rate": 0.4493,
      "profit_factor": 0.838,
      "p_value": 0.4704,
-     "net_base": -473.52,
-     "tested_from": "2016-11-01"
+     "net_base": -472.41,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5349,8 +5351,8 @@
      "win_rate": 0.28,
      "profit_factor": 0.389,
      "p_value": 0.0433,
-     "net_base": -530.22,
-     "tested_from": "2016-11-01"
+     "net_base": -528.98,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5373,8 +5375,8 @@
      "win_rate": 0.5075,
      "profit_factor": 1.039,
      "p_value": 1.0,
-     "net_base": 99.59,
-     "tested_from": "2016-11-01"
+     "net_base": 99.36,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5384,8 +5386,8 @@
      "win_rate": 0.3478,
      "profit_factor": 0.641,
      "p_value": 0.21,
-     "net_base": -296.84,
-     "tested_from": "2016-11-01"
+     "net_base": -296.14,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5408,8 +5410,8 @@
      "win_rate": 0.5,
      "profit_factor": 1.221,
      "p_value": 1.0,
-     "net_base": 405.33,
-     "tested_from": "2016-10-28"
+     "net_base": 404.38,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5419,8 +5421,8 @@
      "win_rate": 0.3,
      "profit_factor": 0.471,
      "p_value": 0.0428,
-     "net_base": -716.06,
-     "tested_from": "2016-10-28"
+     "net_base": -714.39,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5443,8 +5445,8 @@
      "win_rate": 0.5233,
      "profit_factor": 1.138,
      "p_value": 0.7465,
-     "net_base": 502.92,
-     "tested_from": "2016-11-01"
+     "net_base": 501.74,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5454,8 +5456,8 @@
      "win_rate": 0.6136,
      "profit_factor": 1.733,
      "p_value": 0.1742,
-     "net_base": 778.23,
-     "tested_from": "2016-11-01"
+     "net_base": 776.41,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5478,8 +5480,8 @@
      "win_rate": 0.5556,
      "profit_factor": 1.375,
      "p_value": 0.5515,
-     "net_base": 550.75,
-     "tested_from": "2016-11-01"
+     "net_base": 549.46,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5489,8 +5491,8 @@
      "win_rate": 0.4857,
      "profit_factor": 1.289,
      "p_value": 1.0,
-     "net_base": 305.56,
-     "tested_from": "2016-11-01"
+     "net_base": 304.84,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5513,8 +5515,8 @@
      "win_rate": 0.6119,
      "profit_factor": 1.801,
      "p_value": 0.0864,
-     "net_base": 1316.39,
-     "tested_from": "2016-11-01"
+     "net_base": 1313.31,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5524,8 +5526,8 @@
      "win_rate": 0.3571,
      "profit_factor": 0.455,
      "p_value": 0.1849,
-     "net_base": -495.05,
-     "tested_from": "2016-11-01"
+     "net_base": -493.9,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5548,8 +5550,8 @@
      "win_rate": 0.425,
      "profit_factor": 0.659,
      "p_value": 0.2185,
-     "net_base": -1067.11,
-     "tested_from": "2016-11-18"
+     "net_base": -1064.61,
+     "tested_from": "2016-11-22"
     },
     {
      "logic": "breakout",
@@ -5559,8 +5561,8 @@
      "win_rate": 0.4483,
      "profit_factor": 0.82,
      "p_value": 0.7111,
-     "net_base": -159.76,
-     "tested_from": "2016-11-18"
+     "net_base": -159.38,
+     "tested_from": "2016-11-22"
     },
     {
      "logic": "momentum",
@@ -5578,13 +5580,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 82,
+     "trades": 81,
      "wins": 46,
-     "win_rate": 0.561,
-     "profit_factor": 1.195,
-     "p_value": 0.3203,
-     "net_base": 552.75,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.5679,
+     "profit_factor": 1.237,
+     "p_value": 0.2664,
+     "net_base": 648.64,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5594,8 +5596,8 @@
      "win_rate": 0.375,
      "profit_factor": 0.751,
      "p_value": 0.1539,
-     "net_base": -422.46,
-     "tested_from": "2016-11-01"
+     "net_base": -421.47,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5618,19 +5620,19 @@
      "win_rate": 0.5122,
      "profit_factor": 1.27,
      "p_value": 0.9122,
-     "net_base": 888.51,
-     "tested_from": "2016-11-01"
+     "net_base": 886.43,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
      "verdict": "no_edge",
-     "trades": 37,
+     "trades": 36,
      "wins": 18,
-     "win_rate": 0.4865,
-     "profit_factor": 0.817,
+     "win_rate": 0.5,
+     "profit_factor": 0.912,
      "p_value": 1.0,
-     "net_base": -215.81,
-     "tested_from": "2016-11-01"
+     "net_base": -92.41,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5653,8 +5655,8 @@
      "win_rate": 0.5147,
      "profit_factor": 1.434,
      "p_value": 0.9036,
-     "net_base": 833.7,
-     "tested_from": "2016-11-01"
+     "net_base": 831.75,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5664,8 +5666,8 @@
      "win_rate": 0.5,
      "profit_factor": 0.837,
      "p_value": 1.0,
-     "net_base": -134.54,
-     "tested_from": "2016-11-01"
+     "net_base": -134.22,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5688,8 +5690,8 @@
      "win_rate": 0.3939,
      "profit_factor": 0.993,
      "p_value": 0.1089,
-     "net_base": -19.98,
-     "tested_from": "2016-11-01"
+     "net_base": -19.69,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5699,8 +5701,8 @@
      "win_rate": 0.4571,
      "profit_factor": 0.99,
      "p_value": 0.7359,
-     "net_base": -14.34,
-     "tested_from": "2016-11-01"
+     "net_base": -14.31,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5723,8 +5725,8 @@
      "win_rate": 0.4667,
      "profit_factor": 0.932,
      "p_value": 0.6989,
-     "net_base": -155.82,
-     "tested_from": "2016-11-01"
+     "net_base": -154.62,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5734,8 +5736,8 @@
      "win_rate": 0.3,
      "profit_factor": 0.54,
      "p_value": 0.1153,
-     "net_base": -242.25,
-     "tested_from": "2016-11-01"
+     "net_base": -241.68,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5758,8 +5760,8 @@
      "win_rate": 0.5082,
      "profit_factor": 0.698,
      "p_value": 1.0,
-     "net_base": -976.5,
-     "tested_from": "2016-11-01"
+     "net_base": -969.03,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5769,8 +5771,8 @@
      "win_rate": 0.5185,
      "profit_factor": 1.821,
      "p_value": 1.0,
-     "net_base": 597.08,
-     "tested_from": "2016-11-01"
+     "net_base": 595.68,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5791,10 +5793,10 @@
      "trades": 67,
      "wins": 34,
      "win_rate": 0.5075,
-     "profit_factor": 0.989,
+     "profit_factor": 0.99,
      "p_value": 1.0,
-     "net_base": -28.45,
-     "tested_from": "2016-11-01"
+     "net_base": -26.53,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5804,8 +5806,8 @@
      "win_rate": 0.4138,
      "profit_factor": 0.853,
      "p_value": 0.4583,
-     "net_base": -146.36,
-     "tested_from": "2016-11-01"
+     "net_base": -146.01,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5828,8 +5830,8 @@
      "win_rate": 0.4138,
      "profit_factor": 0.807,
      "p_value": 0.237,
-     "net_base": -470.46,
-     "tested_from": "2016-11-01"
+     "net_base": -469.36,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5839,8 +5841,8 @@
      "win_rate": 0.3333,
      "profit_factor": 0.546,
      "p_value": 0.1221,
-     "net_base": -427.97,
-     "tested_from": "2016-11-01"
+     "net_base": -426.97,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5863,8 +5865,8 @@
      "win_rate": 0.4038,
      "profit_factor": 0.921,
      "p_value": 0.2116,
-     "net_base": -140.82,
-     "tested_from": "2016-11-01"
+     "net_base": -140.49,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5874,8 +5876,8 @@
      "win_rate": 0.4375,
      "profit_factor": 0.734,
      "p_value": 0.5966,
-     "net_base": -358.26,
-     "tested_from": "2016-11-01"
+     "net_base": -357.42,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5893,13 +5895,13 @@
     {
      "logic": "pullback",
      "verdict": "no_edge",
-     "trades": 59,
+     "trades": 58,
      "wins": 27,
-     "win_rate": 0.4576,
-     "profit_factor": 0.646,
-     "p_value": 0.6029,
-     "net_base": -974.54,
-     "tested_from": "2016-11-01"
+     "win_rate": 0.4655,
+     "profit_factor": 0.679,
+     "p_value": 0.694,
+     "net_base": -846.52,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5909,8 +5911,8 @@
      "win_rate": 0.25,
      "profit_factor": 0.469,
      "p_value": 0.0039,
-     "net_base": -863.21,
-     "tested_from": "2016-11-01"
+     "net_base": -861.19,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5928,13 +5930,13 @@
     {
      "logic": "pullback",
      "verdict": "profitable_but_unproven",
-     "trades": 44,
+     "trades": 43,
      "wins": 22,
-     "win_rate": 0.5,
-     "profit_factor": 1.121,
+     "win_rate": 0.5116,
+     "profit_factor": 1.163,
      "p_value": 1.0,
-     "net_base": 181.83,
-     "tested_from": "2016-11-01"
+     "net_base": 233.85,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5944,8 +5946,8 @@
      "win_rate": 0.45,
      "profit_factor": 0.719,
      "p_value": 0.8238,
-     "net_base": -169.89,
-     "tested_from": "2016-11-01"
+     "net_base": -169.49,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
@@ -5968,8 +5970,8 @@
      "win_rate": 0.537,
      "profit_factor": 1.168,
      "p_value": 0.6835,
-     "net_base": 276.89,
-     "tested_from": "2016-11-01"
+     "net_base": 276.25,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "breakout",
@@ -5979,8 +5981,8 @@
      "win_rate": 0.3667,
      "profit_factor": 0.591,
      "p_value": 0.2005,
-     "net_base": -406.25,
-     "tested_from": "2016-11-01"
+     "net_base": -405.3,
+     "tested_from": "2016-11-07"
     },
     {
      "logic": "momentum",
