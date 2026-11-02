@@ -493,7 +493,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000320193&type=10-K"
   },
   "US:MSFT": {
-   "entity": "MICROSOFT CORPORATION",
+   "entity": "MICROSOFT CORP",
    "series": {
     "revenue": [
      {
@@ -3732,7 +3732,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001730168&type=10-K"
   },
   "US:ORCL": {
-   "entity": "Oracle Corporation",
+   "entity": "ORACLE CORP",
    "series": {
     "revenue": [
      {
@@ -30909,7 +30909,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001613103&type=10-K"
   },
   "US:XOM": {
-   "entity": "ExxonMobil Holdings Corp",
+   "entity": "ExxonMobil Holdings Corporation",
    "series": {},
    "cik": 2115436,
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0002115436&type=10-K"
