@@ -1,7 +1,7 @@
 """Data-quality checks: freshness and sanity of the live cache."""
 
 import unittest
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 
 from autotrader.core.instrument import AssetClass, Instrument
@@ -10,9 +10,11 @@ from autotrader.data.bars import Bar, BarSeries, MarketDataSet
 from autotrader.data.livefeed import LiveFeed
 from autotrader.data.quality import (
     DEFAULT_DEAD_AFTER_SESSIONS,
+    DEFAULT_MIN_HISTORY_BARS,
     HARD_FAILURE_KINDS,
     QualityIssue,
     check_freshness,
+    check_history,
     check_sanity,
     format_issues,
     hard_failures,
@@ -106,6 +108,52 @@ class TestCheckSanity(unittest.TestCase):
         entry = _entry()
         series = _series(entry, [(date(2026, 8, 18), 100, 1000)])
         self.assertEqual(check_sanity(entry, series), [])
+
+
+class TestShortHistory(unittest.TestCase):
+    """An instrument too new to screen must say so rather than vanish.
+
+    IN:ICICIPRULI held 71 bars against a universe median of 495. The screener
+    needs 201 before it will score anything, so the name was quietly absent
+    from the screener's "All 324" and from the evidence study, while the
+    freshness and sanity checks both passed it: the bars it did have were
+    current and sane. Nothing in the product said a name was missing.
+    """
+
+    def _series(self, n: int) -> BarSeries:
+        start = date(2026, 1, 5)
+        bars = [
+            Bar(
+                day=start + timedelta(days=i),
+                open=Decimal("100"), high=Decimal("101"),
+                low=Decimal("99"), close=Decimal("100"), volume=10_000,
+            )
+            for i in range(n)
+        ]
+        return BarSeries(key="IN:TESTCO", bars=tuple(bars))
+
+    def test_a_thin_series_is_reported(self):
+        issue = check_history(_entry(), self._series(71))
+        self.assertIsNotNone(issue)
+        self.assertEqual(issue.kind, "short_history")
+        self.assertIn("71", issue.detail)
+
+    def test_enough_history_is_silent(self):
+        self.assertIsNone(check_history(_entry(), self._series(DEFAULT_MIN_HISTORY_BARS)))
+
+    def test_one_bar_short_is_still_reported(self):
+        self.assertIsNotNone(
+            check_history(_entry(), self._series(DEFAULT_MIN_HISTORY_BARS - 1)))
+
+    def test_no_series_is_left_to_the_freshness_check(self):
+        """Otherwise an uncached instrument would be reported twice, once as
+        missing and once as thin, for the same single cause."""
+        self.assertIsNone(check_history(_entry(), None))
+
+    def test_it_never_fails_the_run_on_its_own(self):
+        """A recent listing is a fact about the listing, not a broken fetch."""
+        issues = [QualityIssue("IN:NEW", "short_history", "only 71 bar(s)")]
+        self.assertEqual(hard_failures(issues, universe_size=325), [])
 
 
 class TestWhichIssuesFailTheRun(unittest.TestCase):
@@ -204,7 +252,9 @@ class TestVerifyLivefeed(unittest.TestCase):
             fx=FXRates("INR", {}),
             as_of={"india": as_of},
         )
-        issues = verify_livefeed(feed, as_of=as_of)
+        # This test is about freshness aggregation, so the history threshold is
+        # held at 1: these fixtures carry a single bar each by design.
+        issues = verify_livefeed(feed, as_of=as_of, min_history_bars=1)
         kinds_by_key: dict[str, set[str]] = {}
         for issue in issues:
             kinds_by_key.setdefault(issue.key, set()).add(issue.kind)

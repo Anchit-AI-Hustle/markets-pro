@@ -63,14 +63,39 @@ class StreakBreakerTest(unittest.TestCase):
         self.assertTrue(m.entries_halted, "three tiny losses must still halt")
         self.assertEqual(m.state.halt_reason, "max_consecutive_losses")
 
-    def test_a_new_day_clears_the_halt_and_the_count(self):
+    def test_a_new_day_lifts_the_halt_but_not_the_losing_run(self):
+        """The account gets another go each morning; the run is not forgiven.
+
+        Clearing the count overnight let a losing run continue across days
+        without ever tripping again. On the live cache the breaker fired 12
+        times, was wiped 8 times, and the longest run of losing round trips
+        still reached 17 -- with the breaker enabled the whole time.
+        """
         m = _mgr(3)
         for _ in range(3):
             m.record_round_trip(Decimal("-10"))
         self.assertTrue(m.entries_halted)
         m.start_day(Decimal("99970"))
-        self.assertFalse(m.entries_halted)
+        self.assertFalse(m.entries_halted, "the day's cool-off is over")
+        self.assertEqual(m.state.consecutive_losses, 3, "the run was forgiven")
+
+    def test_the_next_loss_after_that_halts_again_immediately(self):
+        m = _mgr(3)
+        for _ in range(3):
+            m.record_round_trip(Decimal("-10"))
+        m.start_day(Decimal("99970"))
+        m.record_round_trip(Decimal("-10"))
+        self.assertTrue(m.entries_halted, "a continuing run must re-halt at once")
+        self.assertEqual(m.state.halt_reason, "max_consecutive_losses")
+
+    def test_only_a_win_ends_the_run(self):
+        m = _mgr(3)
+        for _ in range(3):
+            m.record_round_trip(Decimal("-10"))
+        m.start_day(Decimal("99970"))
+        m.record_round_trip(Decimal("25"))
         self.assertEqual(m.state.consecutive_losses, 0)
+        self.assertFalse(m.entries_halted)
 
     def test_it_never_downgrades_a_drawdown_halt(self):
         """A drawdown halt outlives the day; a streak halt does not. Letting

@@ -121,7 +121,14 @@ class RiskManager:
         if self.state.halt_reason in ("daily_loss_limit", "max_consecutive_losses"):
             self.state.halted = False
             self.state.halt_reason = ""
-        self.state.consecutive_losses = 0
+        # The losing run itself is NOT cleared. Clearing it used to forgive
+        # the run overnight, which let one continue indefinitely across days:
+        # on the live cache the breaker tripped 12 times, was wiped 8 times,
+        # and the longest run of losing round trips still reached 17. Only a
+        # winning trade is evidence that the run is over, so only a win
+        # resets the count. The halt still lifts at the open -- the account
+        # gets another go each day -- but if that go loses, the count is
+        # already at the limit and it halts again at once.
 
     def update_equity(self, equity: Decimal) -> None:
         """Mark equity and trip the kill-switches if a threshold is breached."""

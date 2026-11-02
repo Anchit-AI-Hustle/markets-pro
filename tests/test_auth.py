@@ -294,14 +294,15 @@ class SidecarRoutingTest(unittest.TestCase):
     """
 
     def setUp(self):
-        from autotrader.web.build import SIDECARS, STATIC_PAGES
+        from autotrader.web.build import SHARE_ASSETS, SIDECARS, STATIC_PAGES
 
         root = Path(__file__).resolve().parent.parent
         # Legal pages and robots/sitemap need routing for the same reason the
         # data sidecars do: the subdomain serves the app at "/", so anything
         # under /markets-pro/ is unreachable from where the page appears to
         # live. A 404 on /disclosures.html would be worse than on stocks.json.
-        self.sidecars = (*SIDECARS, *STATIC_PAGES, "robots.txt", "sitemap.xml")
+        self.sidecars = (*SIDECARS, *STATIC_PAGES, *SHARE_ASSETS,
+                         "robots.txt", "sitemap.xml")
         self.rewrites = json.loads((root / "vercel.json").read_text())["rewrites"]
 
     def test_every_sidecar_resolves_from_the_site_root(self):

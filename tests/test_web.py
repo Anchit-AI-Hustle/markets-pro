@@ -56,16 +56,33 @@ class TestDashboardRendering(unittest.TestCase):
         self.assertIn("<title>Markets Pro</title>", self.html)
         self.assertIn('name="viewport"', self.html)
 
+    #: Elements that make the browser fetch something. A URL anywhere else --
+    #: in a <meta> for a link-preview crawler, in an <a> the reader may click,
+    #: in an SVG xmlns -- costs the page nothing to render.
+    FETCHING_TAGS = ("link", "script", "img", "iframe", "source", "video",
+                     "audio", "embed", "object", "track")
+
     def test_is_self_contained_with_no_external_requests(self):
-        # A CSP-hardened static host must be able to serve this offline. The
-        # chart-zoom script is inline, so `<script>` is expected — what must not
-        # appear is any reference that would trigger a network fetch.
-        for pattern in ("http://", "https://", "src=", "@import", "<link"):
-            self.assertNotIn(pattern, self.html, f"found external reference: {pattern}")
+        """A CSP-hardened static host must be able to serve this offline.
+
+        Checked by what each element would actually load, not by searching the
+        document for "https://". The page publishes og:image and og:url, which
+        have to be absolute because a sharing platform resolves them on its own
+        server, and which the browser never requests. A substring test cannot
+        tell those apart from a stylesheet on a CDN; this can.
+        """
+        self.assertNotIn("@import", self.html)
+        pattern = r"<(" + "|".join(self.FETCHING_TAGS) + r")\b[^>]*>"
+        for tag in re.findall(pattern, self.html, re.I):
+            for attr, value in re.findall(r'\b(src|href|srcset|data)="([^"]*)"', tag):
+                self.assertTrue(
+                    value.startswith(("data:", "#")) or not value,
+                    f"{tag[:60]} would fetch {attr}={value[:60]!r}",
+                )
 
     def test_styles_are_inlined(self):
         self.assertIn("<style>", self.html)
-        self.assertNotIn("<link", self.html)
+        self.assertNotIn("stylesheet", self.html)
 
     def test_script_is_inline_only(self):
         self.assertIn("<script>", self.html)

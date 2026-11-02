@@ -45,6 +45,18 @@
       "destination": "/markets-pro/sitemap.xml"
     },
     {
+      "source": "/og-card.png",
+      "destination": "/markets-pro/og-card.png"
+    },
+    {
+      "source": "/favicon.svg",
+      "destination": "/markets-pro/favicon.svg"
+    },
+    {
+      "source": "/favicon.ico",
+      "destination": "/markets-pro/favicon.svg"
+    },
+    {
       "source": "/",
       "destination": "/markets-pro/index.html"
     }

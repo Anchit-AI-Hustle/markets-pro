@@ -52,7 +52,7 @@ class QualityIssue:
     """One finding against one instrument's cached series."""
 
     key: str
-    kind: str  # "no_data" | "stale" | "outlier" | "zero_volume"
+    kind: str  # "no_data" | "stale" | "short_history" | "outlier" | "zero_volume"
     detail: str
     #: Completed sessions missing, on a "stale" issue. The extent of a gap
     #: decides whether it is a dead symbol or a broken fetch, and parsing it
@@ -62,6 +62,14 @@ class QualityIssue:
 
 #: Kinds that mean the pipeline itself failed, not just an unusual session.
 HARD_FAILURE_KINDS = frozenset({"no_data", "stale"})
+
+#: Bars an instrument needs before the screener will look at it at all. Below
+#: this it is excluded from the screener and from the evidence study, and
+#: every other check still passes it: the data is current and non-empty, so
+#: nothing said so. IN:ICICIPRULI sat in the universe with 71 bars against a
+#: median of 495, absent from the screener's 324 of 325, and the only way to
+#: notice was to count rows by hand.
+DEFAULT_MIN_HISTORY_BARS = 201
 
 #: Share of the universe that has to be stale before the fetch itself is
 #: judged broken. Below it, a stale symbol is a universe-maintenance item --
@@ -104,6 +112,31 @@ def check_freshness(
     return None
 
 
+def check_history(
+    entry: UniverseEntry,
+    series: BarSeries | None,
+    *,
+    min_bars: int = DEFAULT_MIN_HISTORY_BARS,
+) -> QualityIssue | None:
+    """``None`` when there is enough history to act on this instrument.
+
+    A warning, not a hard failure: a recent listing legitimately has little
+    history, and the screener excluding it is correct behaviour. What was
+    wrong was that the exclusion was silent.
+    """
+    if series is None:
+        return None                    # absence of data is check_freshness's
+    count = len(series)
+    if count >= min_bars:
+        return None
+    return QualityIssue(
+        entry.key,
+        "short_history",
+        f"only {count} bar(s) cached, below the {min_bars} needed to screen "
+        f"or study this instrument",
+    )
+
+
 def check_sanity(
     entry: UniverseEntry,
     series: BarSeries | None,
@@ -139,6 +172,7 @@ def verify_livefeed(
     as_of: date,
     max_stale_sessions: int = DEFAULT_MAX_STALE_SESSIONS,
     max_daily_move: float = DEFAULT_MAX_DAILY_MOVE,
+    min_history_bars: int = DEFAULT_MIN_HISTORY_BARS,
 ) -> list[QualityIssue]:
     """Every finding across every instrument the feed says it loaded.
 
@@ -156,6 +190,9 @@ def verify_livefeed(
         )
         if fresh_issue is not None:
             issues.append(fresh_issue)
+        thin = check_history(entry, series, min_bars=min_history_bars)
+        if thin is not None:
+            issues.append(thin)
         issues.extend(check_sanity(entry, series, max_daily_move=max_daily_move))
     return issues
 
@@ -220,6 +257,9 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--max-stale-sessions", type=int, default=DEFAULT_MAX_STALE_SESSIONS)
     parser.add_argument("--max-daily-move", type=float, default=DEFAULT_MAX_DAILY_MOVE)
+    parser.add_argument(
+        "--min-history-bars", type=int, default=DEFAULT_MIN_HISTORY_BARS,
+        help="bars below which an instrument cannot be screened or studied")
     args = parser.parse_args(argv)
 
     feed = load_livefeed(Path(args.data), args.regions)
@@ -229,6 +269,7 @@ def main(argv: list[str] | None = None) -> int:
         as_of=today,
         max_stale_sessions=args.max_stale_sessions,
         max_daily_move=args.max_daily_move,
+        min_history_bars=args.min_history_bars,
     )
     for line in format_issues(issues):
         print(line, file=sys.stderr)
