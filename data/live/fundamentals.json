@@ -4635,7 +4635,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001108524&type=10-K"
   },
   "US:AMD": {
-   "entity": "ADVANCED MICRO DEVICES INC",
+   "entity": "ADVANCED MICRO DEVICES, INC",
    "series": {
     "revenue": [
      {
@@ -28577,7 +28577,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000882095&type=10-K"
   },
   "US:CVS": {
-   "entity": "CVS HEALTH CORPORATION",
+   "entity": "CVS HEALTH Corp",
    "series": {
     "revenue": [
      {
