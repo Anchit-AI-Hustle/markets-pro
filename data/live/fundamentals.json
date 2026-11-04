@@ -21067,7 +21067,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001633917&type=10-K"
   },
   "US:COF": {
-   "entity": "CAPITAL ONE FINANCIAL CORP",
+   "entity": "CAPITAL\u00a0ONE\u00a0FINANCIAL\u00a0CORP",
    "series": {
     "revenue": [
      {
