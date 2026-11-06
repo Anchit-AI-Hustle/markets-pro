@@ -59319,7 +59319,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001101239&type=10-K"
   },
   "US:SPG": {
-   "entity": "SIMON PROPERTY GROUP, INC.",
+   "entity": "SIMON PROPERTY GROUP,\u00a0INC.",
    "series": {
     "revenue": [
      {
