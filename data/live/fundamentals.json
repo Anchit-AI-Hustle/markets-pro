@@ -57406,7 +57406,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001164727&type=10-K"
   },
   "US:NUE": {
-   "entity": "NUCOR CORP",
+   "entity": "NUCOR CORPORATION",
    "series": {
     "revenue": [
      {
