@@ -37244,7 +37244,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000077476&type=10-K"
   },
   "US:MCD": {
-   "entity": "McDONALD\u2019S CORPORATION",
+   "entity": "MCDONALDS CORP",
    "series": {
     "revenue": [
      {
@@ -57853,7 +57853,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000073309&type=10-K"
   },
   "US:AMT": {
-   "entity": "AMERICAN TOWER CORPORATION",
+   "entity": "AMERICAN TOWER CORP /MA/",
    "series": {
     "revenue": [
      {
