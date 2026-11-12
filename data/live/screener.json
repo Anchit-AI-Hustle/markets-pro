@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generated_at": "2026-11-11T20:19:22+00:00",
+ "generated_at": "2026-11-12T02:40:39+00:00",
  "count": 324,
  "top_stocks": [
   {
@@ -52,8 +52,8 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": 0.2195,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": 0.2191,
    "score": 1.0,
    "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; +15.4% over ~63d; ATR 2.8% of price",
    "reading": {
@@ -120,8 +120,8 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.2361,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.2355,
    "score": 1.0,
    "rationale": "ADX 43 (trending) -> weighting supertrend, macd, sma_cross; +22.0% over ~63d; ATR 2.4% of price",
    "reading": {
@@ -188,8 +188,8 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": 0.066,
-   "relative_momentum_long": 0.3093,
+   "sector_momentum_long": 0.0673,
+   "relative_momentum_long": 0.308,
    "score": 1.0,
    "rationale": "ADX 53 (trending) -> weighting supertrend, macd, sma_cross; +37.5% over ~63d; ATR 3.6% of price",
    "reading": {
@@ -426,22 +426,22 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.1784,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.178,
    "score": 1.0,
    "rationale": "ADX 41 (trending) -> weighting supertrend, macd, sma_cross; +16.2% over ~63d; ATR 2.0% of price",
    "reading": {
-    "price": 167.6401,
-    "rsi": 65.2,
-    "macd_hist": 0.2923,
+    "price": 167.67,
+    "rsi": 65.27,
+    "macd_hist": 0.2942,
     "supertrend_direction": 1,
-    "sma_fast": 153.3918,
-    "sma_slow": 149.6734,
-    "bollinger_pct_b": 0.8386,
+    "sma_fast": 153.3924,
+    "sma_slow": 149.6736,
+    "bollinger_pct_b": 0.8402,
     "adx": 40.54,
     "atr_pct": 0.0198,
-    "momentum_short": 0.0954,
-    "momentum_long": 0.1621,
+    "momentum_short": 0.0956,
+    "momentum_long": 0.1623,
     "annualised_volatility": 0.211
    }
   },
@@ -460,23 +460,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0655,
-   "relative_momentum_long": 0.1772,
+   "sector_momentum_long": -0.0647,
+   "relative_momentum_long": 0.1791,
    "score": 1.0,
-   "rationale": "ADX 41 (trending) -> weighting supertrend, macd, sma_cross; +11.2% over ~63d; ATR 2.2% of price",
+   "rationale": "ADX 41 (trending) -> weighting supertrend, macd, sma_cross; +11.4% over ~63d; ATR 2.2% of price",
    "reading": {
-    "price": 307.1,
-    "rsi": 61.87,
-    "macd_hist": 0.393,
+    "price": 307.86,
+    "rsi": 62.42,
+    "macd_hist": 0.4415,
     "supertrend_direction": 1,
-    "sma_fast": 285.3552,
-    "sma_slow": 277.0255,
-    "bollinger_pct_b": 0.77,
+    "sma_fast": 285.3704,
+    "sma_slow": 277.0293,
+    "bollinger_pct_b": 0.7893,
     "adx": 40.88,
-    "atr_pct": 0.0223,
-    "momentum_short": 0.0751,
-    "momentum_long": 0.1116,
-    "annualised_volatility": 0.1954
+    "atr_pct": 0.0224,
+    "momentum_short": 0.0777,
+    "momentum_long": 0.1144,
+    "annualised_volatility": 0.1955
    }
   },
   {
@@ -528,23 +528,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.1307,
-   "score": 0.9549,
-   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +11.4% over ~63d; ATR 1.8% of price",
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.1319,
+   "score": 0.9577,
+   "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; +11.6% over ~63d; ATR 1.8% of price",
    "reading": {
-    "price": 97.415,
-    "rsi": 69.24,
-    "macd_hist": 0.2073,
+    "price": 97.57,
+    "rsi": 69.64,
+    "macd_hist": 0.2171,
     "supertrend_direction": 1,
-    "sma_fast": 90.4241,
-    "sma_slow": 83.0994,
-    "bollinger_pct_b": 0.9535,
-    "adx": 30.35,
-    "atr_pct": 0.018,
-    "momentum_short": 0.0811,
-    "momentum_long": 0.1143,
-    "annualised_volatility": 0.1746
+    "sma_fast": 90.4272,
+    "sma_slow": 83.1002,
+    "bollinger_pct_b": 0.9705,
+    "adx": 30.53,
+    "atr_pct": 0.0183,
+    "momentum_short": 0.0828,
+    "momentum_long": 0.1161,
+    "annualised_volatility": 0.1747
    }
   },
   {
@@ -664,9 +664,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": 0.066,
-   "relative_momentum_long": 0.1176,
-   "score": 0.9243,
+   "sector_momentum_long": 0.0673,
+   "relative_momentum_long": 0.1163,
+   "score": 0.9213,
    "rationale": "ADX 45 (trending) -> weighting supertrend, macd, sma_cross; +18.4% over ~63d; ATR 0.9% of price",
    "reading": {
     "price": 30.95,
@@ -734,8 +734,8 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": 0.2195,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": 0.2191,
    "score": 1.0,
    "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; +15.4% over ~63d; ATR 2.8% of price",
    "reading": {
@@ -802,8 +802,8 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.2361,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.2355,
    "score": 1.0,
    "rationale": "ADX 43 (trending) -> weighting supertrend, macd, sma_cross; +22.0% over ~63d; ATR 2.4% of price",
    "reading": {
@@ -870,8 +870,8 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": 0.066,
-   "relative_momentum_long": 0.3093,
+   "sector_momentum_long": 0.0673,
+   "relative_momentum_long": 0.308,
    "score": 1.0,
    "rationale": "ADX 53 (trending) -> weighting supertrend, macd, sma_cross; +37.5% over ~63d; ATR 3.6% of price",
    "reading": {
@@ -1108,22 +1108,22 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.1784,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.178,
    "score": 1.0,
    "rationale": "ADX 41 (trending) -> weighting supertrend, macd, sma_cross; +16.2% over ~63d; ATR 2.0% of price",
    "reading": {
-    "price": 167.6401,
-    "rsi": 65.2,
-    "macd_hist": 0.2923,
+    "price": 167.67,
+    "rsi": 65.27,
+    "macd_hist": 0.2942,
     "supertrend_direction": 1,
-    "sma_fast": 153.3918,
-    "sma_slow": 149.6734,
-    "bollinger_pct_b": 0.8386,
+    "sma_fast": 153.3924,
+    "sma_slow": 149.6736,
+    "bollinger_pct_b": 0.8402,
     "adx": 40.54,
     "atr_pct": 0.0198,
-    "momentum_short": 0.0954,
-    "momentum_long": 0.1621,
+    "momentum_short": 0.0956,
+    "momentum_long": 0.1623,
     "annualised_volatility": 0.211
    }
   },
@@ -1142,23 +1142,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0655,
-   "relative_momentum_long": 0.1772,
+   "sector_momentum_long": -0.0647,
+   "relative_momentum_long": 0.1791,
    "score": 1.0,
-   "rationale": "ADX 41 (trending) -> weighting supertrend, macd, sma_cross; +11.2% over ~63d; ATR 2.2% of price",
+   "rationale": "ADX 41 (trending) -> weighting supertrend, macd, sma_cross; +11.4% over ~63d; ATR 2.2% of price",
    "reading": {
-    "price": 307.1,
-    "rsi": 61.87,
-    "macd_hist": 0.393,
+    "price": 307.86,
+    "rsi": 62.42,
+    "macd_hist": 0.4415,
     "supertrend_direction": 1,
-    "sma_fast": 285.3552,
-    "sma_slow": 277.0255,
-    "bollinger_pct_b": 0.77,
+    "sma_fast": 285.3704,
+    "sma_slow": 277.0293,
+    "bollinger_pct_b": 0.7893,
     "adx": 40.88,
-    "atr_pct": 0.0223,
-    "momentum_short": 0.0751,
-    "momentum_long": 0.1116,
-    "annualised_volatility": 0.1954
+    "atr_pct": 0.0224,
+    "momentum_short": 0.0777,
+    "momentum_long": 0.1144,
+    "annualised_volatility": 0.1955
    }
   },
   {
@@ -1210,23 +1210,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.1307,
-   "score": 0.9549,
-   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +11.4% over ~63d; ATR 1.8% of price",
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.1319,
+   "score": 0.9577,
+   "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; +11.6% over ~63d; ATR 1.8% of price",
    "reading": {
-    "price": 97.415,
-    "rsi": 69.24,
-    "macd_hist": 0.2073,
+    "price": 97.57,
+    "rsi": 69.64,
+    "macd_hist": 0.2171,
     "supertrend_direction": 1,
-    "sma_fast": 90.4241,
-    "sma_slow": 83.0994,
-    "bollinger_pct_b": 0.9535,
-    "adx": 30.35,
-    "atr_pct": 0.018,
-    "momentum_short": 0.0811,
-    "momentum_long": 0.1143,
-    "annualised_volatility": 0.1746
+    "sma_fast": 90.4272,
+    "sma_slow": 83.1002,
+    "bollinger_pct_b": 0.9705,
+    "adx": 30.53,
+    "atr_pct": 0.0183,
+    "momentum_short": 0.0828,
+    "momentum_long": 0.1161,
+    "annualised_volatility": 0.1747
    }
   },
   {
@@ -1346,9 +1346,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": 0.066,
-   "relative_momentum_long": 0.1176,
-   "score": 0.9243,
+   "sector_momentum_long": 0.0673,
+   "relative_momentum_long": 0.1163,
+   "score": 0.9213,
    "rationale": "ADX 45 (trending) -> weighting supertrend, macd, sma_cross; +18.4% over ~63d; ATR 0.9% of price",
    "reading": {
     "price": 30.95,
@@ -1448,22 +1448,22 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.1049,
-   "score": 0.8948,
-   "rationale": "ADX 36 (trending) -> weighting supertrend, macd, sma_cross; +3.8% over ~63d; ATR 2.6% of price",
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.1004,
+   "score": 0.8842,
+   "rationale": "ADX 36 (trending) -> weighting supertrend, macd, sma_cross; +3.4% over ~63d; ATR 2.6% of price",
    "reading": {
-    "price": 189.68,
-    "rsi": 65.74,
-    "macd_hist": 1.454,
+    "price": 188.88,
+    "rsi": 64.74,
+    "macd_hist": 1.4029,
     "supertrend_direction": 1,
-    "sma_fast": 170.0128,
-    "sma_slow": 162.0707,
-    "bollinger_pct_b": 0.8511,
+    "sma_fast": 169.9968,
+    "sma_slow": 162.0667,
+    "bollinger_pct_b": 0.8316,
     "adx": 36.39,
-    "atr_pct": 0.0261,
-    "momentum_short": 0.1653,
-    "momentum_long": 0.0385,
+    "atr_pct": 0.0262,
+    "momentum_short": 0.1604,
+    "momentum_long": 0.0341,
     "annualised_volatility": 0.3031
    }
   },
@@ -1482,23 +1482,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": 0.0925,
-   "score": 0.8658,
-   "rationale": "ADX 27 (trending) -> weighting supertrend, macd, sma_cross; +2.7% over ~63d; ATR 3.2% of price",
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": 0.0945,
+   "score": 0.8704,
+   "rationale": "ADX 27 (trending) -> weighting supertrend, macd, sma_cross; +2.9% over ~63d; ATR 3.2% of price",
    "reading": {
-    "price": 88.69,
-    "rsi": 57.16,
-    "macd_hist": 0.6202,
+    "price": 88.9,
+    "rsi": 57.48,
+    "macd_hist": 0.6336,
     "supertrend_direction": 1,
-    "sma_fast": 83.537,
-    "sma_slow": 80.9012,
-    "bollinger_pct_b": 0.7189,
+    "sma_fast": 83.5412,
+    "sma_slow": 80.9023,
+    "bollinger_pct_b": 0.7281,
     "adx": 26.65,
-    "atr_pct": 0.0323,
-    "momentum_short": 0.0558,
-    "momentum_long": 0.0266,
-    "annualised_volatility": 0.3824
+    "atr_pct": 0.0322,
+    "momentum_short": 0.0583,
+    "momentum_long": 0.0291,
+    "annualised_volatility": 0.3825
    }
   },
   {
@@ -1516,9 +1516,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.0846,
-   "score": 0.8475,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.0845,
+   "score": 0.8471,
    "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; +1.8% over ~63d; ATR 2.6% of price",
    "reading": {
     "price": 5430.0,
@@ -1550,9 +1550,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": 0.0805,
-   "score": 0.8379,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": 0.0801,
+   "score": 0.8368,
    "rationale": "ADX 25 (trending) -> weighting supertrend, macd, sma_cross; +1.5% over ~63d; ATR 2.6% of price",
    "reading": {
     "price": 4505.8999,
@@ -1584,22 +1584,22 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": 0.066,
-   "relative_momentum_long": 0.0735,
-   "score": 0.8214,
-   "rationale": "ADX 35 (trending) -> weighting supertrend, macd, sma_cross; +13.9% over ~63d; ATR 2.0% of price",
+   "sector_momentum_long": 0.0673,
+   "relative_momentum_long": 0.0744,
+   "score": 0.8236,
+   "rationale": "ADX 35 (trending) -> weighting supertrend, macd, sma_cross; +14.2% over ~63d; ATR 2.0% of price",
    "reading": {
-    "price": 119.415,
-    "rsi": 70.91,
-    "macd_hist": 0.6166,
+    "price": 119.65,
+    "rsi": 71.3,
+    "macd_hist": 0.6316,
     "supertrend_direction": 1,
-    "sma_fast": 108.7545,
-    "sma_slow": 103.6744,
-    "bollinger_pct_b": 0.9232,
-    "adx": 35.18,
-    "atr_pct": 0.0203,
-    "momentum_short": 0.0998,
-    "momentum_long": 0.1395,
+    "sma_fast": 108.7592,
+    "sma_slow": 103.6756,
+    "bollinger_pct_b": 0.9366,
+    "adx": 35.22,
+    "atr_pct": 0.0204,
+    "momentum_short": 0.102,
+    "momentum_long": 0.1417,
     "annualised_volatility": 0.2372
    }
   },
@@ -1618,23 +1618,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.0674,
-   "score": 0.8072,
-   "rationale": "ADX 39 (trending) -> weighting supertrend, macd, sma_cross; +5.1% over ~63d; ATR 2.2% of price",
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.0703,
+   "score": 0.8141,
+   "rationale": "ADX 39 (trending) -> weighting supertrend, macd, sma_cross; +5.5% over ~63d; ATR 2.2% of price",
    "reading": {
-    "price": 97.67,
-    "rsi": 60.43,
-    "macd_hist": 0.1489,
+    "price": 98.0,
+    "rsi": 61.57,
+    "macd_hist": 0.17,
     "supertrend_direction": 1,
-    "sma_fast": 90.6072,
-    "sma_slow": 90.1745,
-    "bollinger_pct_b": 0.7609,
+    "sma_fast": 90.6138,
+    "sma_slow": 90.1762,
+    "bollinger_pct_b": 0.7928,
     "adx": 38.95,
-    "atr_pct": 0.0224,
-    "momentum_short": 0.0858,
-    "momentum_long": 0.051,
-    "annualised_volatility": 0.2284
+    "atr_pct": 0.0223,
+    "momentum_short": 0.0895,
+    "momentum_long": 0.0546,
+    "annualised_volatility": 0.2281
    }
   },
   {
@@ -1652,23 +1652,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.0645,
-   "score": 0.8005,
-   "rationale": "ADX 29 (trending) -> weighting supertrend, macd, sma_cross; +4.8% over ~63d; ATR 2.3% of price",
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.0657,
+   "score": 0.8032,
+   "rationale": "ADX 29 (trending) -> weighting supertrend, macd, sma_cross; +5.0% over ~63d; ATR 2.3% of price",
    "reading": {
-    "price": 66.59,
-    "rsi": 61.09,
-    "macd_hist": 0.1912,
+    "price": 66.7,
+    "rsi": 61.44,
+    "macd_hist": 0.1983,
     "supertrend_direction": 1,
-    "sma_fast": 62.3466,
-    "sma_slow": 60.7284,
-    "bollinger_pct_b": 0.7922,
-    "adx": 28.86,
+    "sma_fast": 62.3488,
+    "sma_slow": 60.729,
+    "bollinger_pct_b": 0.8063,
+    "adx": 29.04,
     "atr_pct": 0.0227,
-    "momentum_short": 0.0828,
-    "momentum_long": 0.0482,
-    "annualised_volatility": 0.2328
+    "momentum_short": 0.0846,
+    "momentum_long": 0.0499,
+    "annualised_volatility": 0.2329
    }
   },
   {
@@ -1686,9 +1686,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.0628,
-   "score": 0.7964,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.0622,
+   "score": 0.7951,
    "rationale": "ADX 33 (trending) -> weighting supertrend, macd, sma_cross; +4.6% over ~63d; ATR 2.3% of price",
    "reading": {
     "price": 902.0,
@@ -1754,9 +1754,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": 0.0433,
-   "score": 0.7511,
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": 0.0419,
+   "score": 0.7478,
    "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; +8.3% over ~63d; ATR 2.3% of price",
    "reading": {
     "price": 188.0,
@@ -1789,21 +1789,21 @@
     "sma_cross"
    ],
    "sector_momentum_long": 0.0207,
-   "relative_momentum_long": 0.0388,
-   "score": 0.7404,
-   "rationale": "ADX 47 (trending) -> weighting supertrend, macd, sma_cross; +5.9% over ~63d; ATR 1.8% of price",
+   "relative_momentum_long": 0.0392,
+   "score": 0.7416,
+   "rationale": "ADX 47 (trending) -> weighting supertrend, macd, sma_cross; +6.0% over ~63d; ATR 1.8% of price",
    "reading": {
-    "price": 234.645,
-    "rsi": 79.52,
-    "macd_hist": 2.1244,
+    "price": 234.75,
+    "rsi": 79.59,
+    "macd_hist": 2.1311,
     "supertrend_direction": 1,
-    "sma_fast": 209.2391,
-    "sma_slow": 207.6656,
-    "bollinger_pct_b": 0.9162,
-    "adx": 46.92,
-    "atr_pct": 0.0177,
-    "momentum_short": 0.1694,
-    "momentum_long": 0.0595,
+    "sma_fast": 209.2412,
+    "sma_slow": 207.6661,
+    "bollinger_pct_b": 0.9182,
+    "adx": 46.95,
+    "atr_pct": 0.0178,
+    "momentum_short": 0.1699,
+    "momentum_long": 0.06,
     "annualised_volatility": 0.1868
    }
   },
@@ -1856,9 +1856,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.0293,
-   "score": 0.7184,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.0287,
+   "score": 0.717,
    "rationale": "ADX 39 (trending) -> weighting supertrend, macd, sma_cross; +1.3% over ~63d; ATR 2.4% of price",
    "reading": {
     "price": 5005.0,
@@ -1876,40 +1876,6 @@
    }
   },
   {
-   "key": "IN:IDEA",
-   "symbol": "IDEA",
-   "name": "Vodafone Idea",
-   "region": "india",
-   "sector": "telecom",
-   "regime": "trending",
-   "signal": "bullish",
-   "signal_strength": 1.0,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0267,
-   "relative_momentum_long": 0.022,
-   "score": 0.7013,
-   "rationale": "ADX 27 (trending) -> weighting supertrend, macd, sma_cross; -0.5% over ~63d; ATR 3.4% of price",
-   "reading": {
-    "price": 12.67,
-    "rsi": 50.75,
-    "macd_hist": 0.1622,
-    "supertrend_direction": 1,
-    "sma_fast": 13.384,
-    "sma_slow": 12.3501,
-    "bollinger_pct_b": 0.7286,
-    "adx": 27.15,
-    "atr_pct": 0.0339,
-    "momentum_short": -0.0102,
-    "momentum_long": -0.0047,
-    "annualised_volatility": 0.4217
-   }
-  },
-  {
    "key": "IN:PIDILITIND",
    "symbol": "PIDILITIND",
    "name": "Pidilite Industries",
@@ -1924,9 +1890,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0655,
-   "relative_momentum_long": 0.0219,
-   "score": 0.701,
+   "sector_momentum_long": -0.0647,
+   "relative_momentum_long": 0.021,
+   "score": 0.6991,
    "rationale": "ADX 27 (trending) -> weighting supertrend, macd, sma_cross; -4.4% over ~63d; ATR 2.5% of price",
    "reading": {
     "price": 1587.5,
@@ -1944,6 +1910,40 @@
    }
   },
   {
+   "key": "IN:IDEA",
+   "symbol": "IDEA",
+   "name": "Vodafone Idea",
+   "region": "india",
+   "sector": "telecom",
+   "regime": "trending",
+   "signal": "bullish",
+   "signal_strength": 1.0,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0238,
+   "relative_momentum_long": 0.0191,
+   "score": 0.6946,
+   "rationale": "ADX 27 (trending) -> weighting supertrend, macd, sma_cross; -0.5% over ~63d; ATR 3.4% of price",
+   "reading": {
+    "price": 12.67,
+    "rsi": 50.75,
+    "macd_hist": 0.1622,
+    "supertrend_direction": 1,
+    "sma_fast": 13.384,
+    "sma_slow": 12.3501,
+    "bollinger_pct_b": 0.7286,
+    "adx": 27.15,
+    "atr_pct": 0.0339,
+    "momentum_short": -0.0102,
+    "momentum_long": -0.0047,
+    "annualised_volatility": 0.4217
+   }
+  },
+  {
    "key": "IN:BAJAJ-AUTO",
    "symbol": "BAJAJ-AUTO",
    "name": "Bajaj Auto",
@@ -1958,9 +1958,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": 0.0073,
-   "score": 0.6671,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": 0.0069,
+   "score": 0.666,
    "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -5.9% over ~63d; ATR 2.4% of price",
    "reading": {
     "price": 10979.0,
@@ -1992,9 +1992,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0259,
-   "relative_momentum_long": 0.0055,
-   "score": 0.6629,
+   "sector_momentum_long": -0.0261,
+   "relative_momentum_long": 0.0057,
+   "score": 0.6634,
    "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -2.0% over ~63d; ATR 1.9% of price",
    "reading": {
     "price": 792.5,
@@ -2026,9 +2026,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.0059,
-   "score": 0.6362,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": -0.0061,
+   "score": 0.6358,
    "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; -7.2% over ~63d; ATR 3.4% of price",
    "reading": {
     "price": 3655.0,
@@ -2127,8 +2127,8 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": 0.066,
-   "relative_momentum_long": 0.1873,
+   "sector_momentum_long": 0.0673,
+   "relative_momentum_long": 0.186,
    "score": 0.5667,
    "rationale": "ADX 35 (trending) -> weighting supertrend, macd, sma_cross; +25.3% over ~63d; ATR 4.4% of price",
    "reading": {
@@ -2195,23 +2195,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.2048,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.2049,
    "score": 0.5667,
-   "rationale": "ADX 27 (trending) -> weighting supertrend, macd, sma_cross; +18.8% over ~63d; ATR 2.2% of price",
+   "rationale": "ADX 27 (trending) -> weighting supertrend, macd, sma_cross; +18.9% over ~63d; ATR 2.2% of price",
    "reading": {
-    "price": 77.345,
-    "rsi": 61.77,
-    "macd_hist": -0.0972,
+    "price": 77.39,
+    "rsi": 61.91,
+    "macd_hist": -0.0943,
     "supertrend_direction": 1,
-    "sma_fast": 71.8431,
-    "sma_slow": 69.4794,
-    "bollinger_pct_b": 0.7702,
-    "adx": 26.85,
-    "atr_pct": 0.0222,
-    "momentum_short": 0.0808,
-    "momentum_long": 0.1885,
-    "annualised_volatility": 0.2335
+    "sma_fast": 71.844,
+    "sma_slow": 69.4796,
+    "bollinger_pct_b": 0.7765,
+    "adx": 26.88,
+    "atr_pct": 0.0223,
+    "momentum_short": 0.0815,
+    "momentum_long": 0.1892,
+    "annualised_volatility": 0.2336
    }
   },
   {
@@ -2229,23 +2229,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0655,
-   "relative_momentum_long": 0.1659,
+   "sector_momentum_long": -0.0647,
+   "relative_momentum_long": 0.1658,
    "score": 0.5667,
-   "rationale": "ADX 32 (trending) -> weighting supertrend, macd, sma_cross; +10.0% over ~63d; ATR 1.8% of price",
+   "rationale": "ADX 32 (trending) -> weighting supertrend, macd, sma_cross; +10.1% over ~63d; ATR 1.8% of price",
    "reading": {
-    "price": 526.22,
-    "rsi": 66.45,
-    "macd_hist": 0.4653,
+    "price": 526.55,
+    "rsi": 66.62,
+    "macd_hist": 0.4863,
     "supertrend_direction": 1,
-    "sma_fast": 488.6158,
-    "sma_slow": 495.9609,
-    "bollinger_pct_b": 0.92,
-    "adx": 31.73,
+    "sma_fast": 488.6224,
+    "sma_slow": 495.9626,
+    "bollinger_pct_b": 0.9274,
+    "adx": 31.77,
     "atr_pct": 0.0176,
-    "momentum_short": 0.0693,
-    "momentum_long": 0.1004,
-    "annualised_volatility": 0.1563
+    "momentum_short": 0.07,
+    "momentum_long": 0.1011,
+    "annualised_volatility": 0.1565
    }
   },
   {
@@ -2283,6 +2283,40 @@
    }
   },
   {
+   "key": "US:COST",
+   "symbol": "COST",
+   "name": "Costco Wholesale",
+   "region": "us",
+   "sector": "consumer",
+   "regime": "trending",
+   "signal": "bullish",
+   "signal_strength": 0.3333,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.1465,
+   "score": 0.5585,
+   "rationale": "ADX 49 (trending) -> weighting supertrend, macd, sma_cross; +13.1% over ~63d; ATR 1.8% of price",
+   "reading": {
+    "price": 1087.61,
+    "rsi": 73.21,
+    "macd_hist": 5.1112,
+    "supertrend_direction": 1,
+    "sma_fast": 960.2256,
+    "sma_slow": 974.2608,
+    "bollinger_pct_b": 1.0189,
+    "adx": 48.9,
+    "atr_pct": 0.0185,
+    "momentum_short": 0.1393,
+    "momentum_long": 0.1307,
+    "annualised_volatility": 0.2042
+   }
+  },
+  {
    "key": "IN:CHOLAFIN",
    "symbol": "CHOLAFIN",
    "name": "Cholamandalam Investment",
@@ -2317,40 +2351,6 @@
    }
   },
   {
-   "key": "US:COST",
-   "symbol": "COST",
-   "name": "Costco Wholesale",
-   "region": "us",
-   "sector": "consumer",
-   "regime": "trending",
-   "signal": "bullish",
-   "signal_strength": 0.3333,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.1405,
-   "score": 0.5445,
-   "rationale": "ADX 49 (trending) -> weighting supertrend, macd, sma_cross; +12.4% over ~63d; ATR 1.9% of price",
-   "reading": {
-    "price": 1081.25,
-    "rsi": 72.22,
-    "macd_hist": 4.7053,
-    "supertrend_direction": 1,
-    "sma_fast": 960.0984,
-    "sma_slow": 974.229,
-    "bollinger_pct_b": 0.9816,
-    "adx": 48.9,
-    "atr_pct": 0.0186,
-    "momentum_short": 0.1326,
-    "momentum_long": 0.1241,
-    "annualised_volatility": 0.2024
-   }
-  },
-  {
    "key": "IN:DIXON",
    "symbol": "DIXON",
    "name": "Dixon Technologies",
@@ -2365,9 +2365,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.046,
-   "score": 0.5426,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": -0.0462,
+   "score": 0.5422,
    "rationale": "ADX 29 (trending) -> weighting supertrend, macd, sma_cross; -11.2% over ~63d; ATR 3.3% of price",
    "reading": {
     "price": 12603.0,
@@ -2399,23 +2399,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.1332,
-   "score": 0.5275,
-   "rationale": "ADX 50 (trending) -> weighting supertrend, macd, sma_cross; +6.7% over ~63d; ATR 2.3% of price",
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.1317,
+   "score": 0.5241,
+   "rationale": "ADX 50 (trending) -> weighting supertrend, macd, sma_cross; +6.5% over ~63d; ATR 2.3% of price",
    "reading": {
-    "price": 112.585,
-    "rsi": 67.77,
-    "macd_hist": 0.5699,
+    "price": 112.45,
+    "rsi": 67.58,
+    "macd_hist": 0.5613,
     "supertrend_direction": 1,
-    "sma_fast": 100.2773,
-    "sma_slow": 104.7102,
-    "bollinger_pct_b": 0.8266,
+    "sma_fast": 100.2746,
+    "sma_slow": 104.7095,
+    "bollinger_pct_b": 0.8213,
     "adx": 50.26,
-    "atr_pct": 0.023,
-    "momentum_short": 0.1877,
-    "momentum_long": 0.0668,
-    "annualised_volatility": 0.276
+    "atr_pct": 0.0231,
+    "momentum_short": 0.1863,
+    "momentum_long": 0.0655,
+    "annualised_volatility": 0.2758
    }
   },
   {
@@ -2603,9 +2603,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.0982,
-   "score": 0.4459,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.0981,
+   "score": 0.4455,
    "rationale": "ADX 40 (trending) -> weighting supertrend, macd, sma_cross; +3.2% over ~63d; ATR 2.1% of price",
    "reading": {
     "price": 4185.0,
@@ -2637,23 +2637,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0655,
-   "relative_momentum_long": 0.0924,
-   "score": 0.4323,
-   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +2.7% over ~63d; ATR 2.0% of price",
+   "sector_momentum_long": -0.0647,
+   "relative_momentum_long": 0.0963,
+   "score": 0.4414,
+   "rationale": "ADX 29 (trending) -> weighting supertrend, macd, sma_cross; +3.2% over ~63d; ATR 1.9% of price",
    "reading": {
-    "price": 312.25,
-    "rsi": 59.59,
-    "macd_hist": -0.2549,
+    "price": 315.18,
+    "rsi": 62.09,
+    "macd_hist": -0.1668,
     "supertrend_direction": 1,
-    "sma_fast": 295.0746,
-    "sma_slow": 291.7916,
-    "bollinger_pct_b": 0.6916,
-    "adx": 29.67,
-    "atr_pct": 0.0197,
-    "momentum_short": 0.1,
-    "momentum_long": 0.0269,
-    "annualised_volatility": 0.1941
+    "sma_fast": 295.2718,
+    "sma_slow": 292.072,
+    "bollinger_pct_b": 0.7868,
+    "adx": 29.18,
+    "atr_pct": 0.019,
+    "momentum_short": 0.0907,
+    "momentum_long": 0.0316,
+    "annualised_volatility": 0.1947
    }
   },
   {
@@ -2772,9 +2772,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0267,
-   "relative_momentum_long": 0.0839,
-   "score": 0.4125,
+   "sector_momentum_long": -0.0238,
+   "relative_momentum_long": 0.0811,
+   "score": 0.4058,
    "rationale": "ADX 39 (trending) -> weighting supertrend, macd, sma_cross; +5.7% over ~63d; ATR 2.3% of price",
    "reading": {
     "price": 2072.1001,
@@ -2789,6 +2789,40 @@
     "momentum_short": 0.1482,
     "momentum_long": 0.0572,
     "annualised_volatility": 0.262
+   }
+  },
+  {
+   "key": "US:UNP",
+   "symbol": "UNP",
+   "name": "Union Pacific",
+   "region": "us",
+   "sector": "industrials",
+   "regime": "trending",
+   "signal": "bullish",
+   "signal_strength": 0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.0808,
+   "score": 0.4051,
+   "rationale": "ADX 37 (trending) -> weighting supertrend, macd, sma_cross; +1.5% over ~63d; ATR 2.1% of price",
+   "reading": {
+    "price": 302.11,
+    "rsi": 57.63,
+    "macd_hist": -0.3218,
+    "supertrend_direction": 1,
+    "sma_fast": 286.7212,
+    "sma_slow": 273.2405,
+    "bollinger_pct_b": 0.6969,
+    "adx": 36.6,
+    "atr_pct": 0.0211,
+    "momentum_short": 0.0699,
+    "momentum_long": 0.0145,
+    "annualised_volatility": 0.2142
    }
   },
   {
@@ -2860,11 +2894,11 @@
    }
   },
   {
-   "key": "US:UNP",
-   "symbol": "UNP",
-   "name": "Union Pacific",
+   "key": "US:LOW",
+   "symbol": "LOW",
+   "name": "Lowes",
    "region": "us",
-   "sector": "industrials",
+   "sector": "consumer",
    "regime": "trending",
    "signal": "bullish",
    "signal_strength": 0.3333,
@@ -2874,23 +2908,57 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.0781,
-   "score": 0.3988,
-   "rationale": "ADX 37 (trending) -> weighting supertrend, macd, sma_cross; +1.2% over ~63d; ATR 2.1% of price",
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.0771,
+   "score": 0.3965,
+   "rationale": "ADX 45 (trending) -> weighting supertrend, macd, sma_cross; +6.1% over ~63d; ATR 2.7% of price",
    "reading": {
-    "price": 301.25,
-    "rsi": 56.94,
-    "macd_hist": -0.3767,
+    "price": 231.6,
+    "rsi": 71.9,
+    "macd_hist": 2.762,
     "supertrend_direction": 1,
-    "sma_fast": 286.704,
-    "sma_slow": 273.2362,
-    "bollinger_pct_b": 0.6667,
-    "adx": 36.57,
-    "atr_pct": 0.0211,
-    "momentum_short": 0.0669,
-    "momentum_long": 0.0116,
-    "annualised_volatility": 0.2141
+    "sma_fast": 198.798,
+    "sma_slow": 223.9753,
+    "bollinger_pct_b": 0.8834,
+    "adx": 44.51,
+    "atr_pct": 0.0273,
+    "momentum_short": 0.2271,
+    "momentum_long": 0.0613,
+    "annualised_volatility": 0.3142
+   }
+  },
+  {
+   "key": "IN:JINDALSTEL",
+   "symbol": "JINDALSTEL",
+   "name": "Jindal Steel & Power",
+   "region": "india",
+   "sector": "metals",
+   "regime": "trending",
+   "signal": "bullish",
+   "signal_strength": 0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0337,
+   "relative_momentum_long": 0.0727,
+   "score": 0.3862,
+   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +3.9% over ~63d; ATR 2.6% of price",
+   "reading": {
+    "price": 1146.0,
+    "rsi": 63.2,
+    "macd_hist": 15.7542,
+    "supertrend_direction": 1,
+    "sma_fast": 1104.168,
+    "sma_slow": 1140.9215,
+    "bollinger_pct_b": 0.9052,
+    "adx": 29.66,
+    "atr_pct": 0.0264,
+    "momentum_short": 0.1347,
+    "momentum_long": 0.039,
+    "annualised_volatility": 0.2719
    }
   },
   {
@@ -2909,90 +2977,22 @@
     "sma_cross"
    ],
    "sector_momentum_long": 0.0207,
-   "relative_momentum_long": 0.0761,
-   "score": 0.3943,
-   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; +9.7% over ~63d; ATR 2.7% of price",
+   "relative_momentum_long": 0.0714,
+   "score": 0.3833,
+   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; +9.2% over ~63d; ATR 2.8% of price",
    "reading": {
-    "price": 191.06,
-    "rsi": 60.57,
-    "macd_hist": -0.0046,
+    "price": 190.24,
+    "rsi": 59.51,
+    "macd_hist": -0.057,
     "supertrend_direction": 1,
-    "sma_fast": 178.1298,
-    "sma_slow": 177.8502,
-    "bollinger_pct_b": 0.7576,
-    "adx": 25.53,
-    "atr_pct": 0.0274,
-    "momentum_short": 0.0648,
-    "momentum_long": 0.0968,
+    "sma_fast": 178.1134,
+    "sma_slow": 177.8461,
+    "bollinger_pct_b": 0.7132,
+    "adx": 25.54,
+    "atr_pct": 0.0275,
+    "momentum_short": 0.0602,
+    "momentum_long": 0.0921,
     "annualised_volatility": 0.2998
-   }
-  },
-  {
-   "key": "US:LOW",
-   "symbol": "LOW",
-   "name": "Lowes",
-   "region": "us",
-   "sector": "consumer",
-   "regime": "trending",
-   "signal": "bullish",
-   "signal_strength": 0.3333,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.0738,
-   "score": 0.3889,
-   "rationale": "ADX 45 (trending) -> weighting supertrend, macd, sma_cross; +5.7% over ~63d; ATR 2.7% of price",
-   "reading": {
-    "price": 230.765,
-    "rsi": 70.78,
-    "macd_hist": 2.7087,
-    "supertrend_direction": 1,
-    "sma_fast": 198.7813,
-    "sma_slow": 223.9711,
-    "bollinger_pct_b": 0.8708,
-    "adx": 44.51,
-    "atr_pct": 0.0274,
-    "momentum_short": 0.2227,
-    "momentum_long": 0.0575,
-    "annualised_volatility": 0.3143
-   }
-  },
-  {
-   "key": "IN:JINDALSTEL",
-   "symbol": "JINDALSTEL",
-   "name": "Jindal Steel & Power",
-   "region": "india",
-   "sector": "metals",
-   "regime": "trending",
-   "signal": "bullish",
-   "signal_strength": 0.3333,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0332,
-   "relative_momentum_long": 0.0722,
-   "score": 0.385,
-   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +3.9% over ~63d; ATR 2.6% of price",
-   "reading": {
-    "price": 1146.0,
-    "rsi": 63.2,
-    "macd_hist": 15.7542,
-    "supertrend_direction": 1,
-    "sma_fast": 1104.168,
-    "sma_slow": 1140.9215,
-    "bollinger_pct_b": 0.9052,
-    "adx": 29.66,
-    "atr_pct": 0.0264,
-    "momentum_short": 0.1347,
-    "momentum_long": 0.039,
-    "annualised_volatility": 0.2719
    }
   },
   {
@@ -3003,29 +3003,29 @@
    "sector": "energy",
    "regime": "ranging",
    "signal": "bullish",
-   "signal_strength": 0.3202,
+   "signal_strength": 0.2953,
    "volatility_bucket": "medium",
    "indicators_used": [
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": 0.0676,
-   "score": 0.3659,
-   "rationale": "ADX 24 (ranging) -> weighting rsi, bollinger_pct_b; +10.7% over ~63d; ATR 4.1% of price",
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": 0.0712,
+   "score": 0.3582,
+   "rationale": "ADX 24 (ranging) -> weighting rsi, bollinger_pct_b; +11.2% over ~63d; ATR 4.1% of price",
    "reading": {
-    "price": 257.515,
-    "rsi": 43.42,
-    "macd_hist": -3.7512,
+    "price": 258.68,
+    "rsi": 44.24,
+    "macd_hist": -3.6769,
     "supertrend_direction": -1,
-    "sma_fast": 268.5333,
-    "sma_slow": 203.6044,
-    "bollinger_pct_b": 0.2456,
-    "adx": 23.95,
-    "atr_pct": 0.0407,
-    "momentum_short": -0.1203,
-    "momentum_long": 0.1071,
-    "annualised_volatility": 0.3424
+    "sma_fast": 268.5566,
+    "sma_slow": 203.6102,
+    "bollinger_pct_b": 0.2623,
+    "adx": 23.8,
+    "atr_pct": 0.0408,
+    "momentum_short": -0.1163,
+    "momentum_long": 0.1121,
+    "annualised_volatility": 0.3439
    }
   },
   {
@@ -3043,9 +3043,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0151,
-   "relative_momentum_long": 0.0602,
-   "score": 0.3571,
+   "sector_momentum_long": -0.0145,
+   "relative_momentum_long": 0.0597,
+   "score": 0.3559,
    "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +4.5% over ~63d; ATR 2.7% of price",
    "reading": {
     "price": 80.39,
@@ -3103,29 +3103,29 @@
    "sector": "consumer",
    "regime": "ranging",
    "signal": "bullish",
-   "signal_strength": 0.338,
+   "signal_strength": 0.3316,
    "volatility_bucket": "medium",
    "indicators_used": [
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0163,
+   "sector_momentum_long": -0.0158,
    "relative_momentum_long": 0.0551,
-   "score": 0.3484,
+   "score": 0.3442,
    "rationale": "ADX 16 (ranging) -> weighting rsi, bollinger_pct_b; +3.9% over ~63d; ATR 2.8% of price",
    "reading": {
-    "price": 196.24,
-    "rsi": 45.29,
-    "macd_hist": -1.6772,
+    "price": 196.35,
+    "rsi": 45.45,
+    "macd_hist": -1.6701,
     "supertrend_direction": -1,
-    "sma_fast": 195.865,
-    "sma_slow": 183.0359,
-    "bollinger_pct_b": 0.209,
+    "sma_fast": 195.8672,
+    "sma_slow": 183.0365,
+    "bollinger_pct_b": 0.214,
     "adx": 15.54,
-    "atr_pct": 0.0277,
-    "momentum_short": -0.0153,
-    "momentum_long": 0.0388,
-    "annualised_volatility": 0.258
+    "atr_pct": 0.0279,
+    "momentum_short": -0.0148,
+    "momentum_long": 0.0394,
+    "annualised_volatility": 0.2581
    }
   },
   {
@@ -3177,9 +3177,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": 0.051,
-   "score": 0.3357,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": 0.0505,
+   "score": 0.3346,
    "rationale": "ADX 39 (trending) -> weighting supertrend, macd, sma_cross; -1.5% over ~63d; ATR 3.1% of price",
    "reading": {
     "price": 174.86,
@@ -3211,9 +3211,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.0504,
-   "score": 0.3342,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.0502,
+   "score": 0.3338,
    "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -1.6% over ~63d; ATR 2.3% of price",
    "reading": {
     "price": 394.55,
@@ -3245,57 +3245,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0151,
-   "relative_momentum_long": 0.048,
-   "score": 0.3287,
-   "rationale": "ADX 47 (trending) -> weighting supertrend, macd, sma_cross; +3.3% over ~63d; ATR 1.7% of price",
+   "sector_momentum_long": -0.0145,
+   "relative_momentum_long": 0.0489,
+   "score": 0.3308,
+   "rationale": "ADX 47 (trending) -> weighting supertrend, macd, sma_cross; +3.4% over ~63d; ATR 1.7% of price",
    "reading": {
-    "price": 128.59,
-    "rsi": 63.2,
-    "macd_hist": 0.1597,
+    "price": 128.77,
+    "rsi": 63.87,
+    "macd_hist": 0.1712,
     "supertrend_direction": 1,
-    "sma_fast": 120.3328,
-    "sma_slow": 124.7444,
-    "bollinger_pct_b": 0.7431,
+    "sma_fast": 120.3364,
+    "sma_slow": 124.7453,
+    "bollinger_pct_b": 0.755,
     "adx": 46.71,
     "atr_pct": 0.0172,
-    "momentum_short": 0.088,
-    "momentum_long": 0.0329,
-    "annualised_volatility": 0.1737
-   }
-  },
-  {
-   "key": "IN:NIFTYBEES",
-   "symbol": "NIFTYBEES",
-   "name": "Nippon Nifty 50 ETF",
-   "region": "india",
-   "sector": "index",
-   "regime": "trending",
-   "signal": "bullish",
-   "signal_strength": 0.3333,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0259,
-   "relative_momentum_long": 0.0476,
-   "score": 0.3277,
-   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; +2.2% over ~63d; ATR 1.6% of price",
-   "reading": {
-    "price": 286.54,
-    "rsi": 79.94,
-    "macd_hist": 3.1772,
-    "supertrend_direction": 1,
-    "sma_fast": 265.585,
-    "sma_slow": 272.5739,
-    "bollinger_pct_b": 1.0271,
-    "adx": 26.21,
-    "atr_pct": 0.016,
-    "momentum_short": 0.1134,
-    "momentum_long": 0.0217,
-    "annualised_volatility": 0.1277
+    "momentum_short": 0.0895,
+    "momentum_long": 0.0344,
+    "annualised_volatility": 0.1736
    }
   },
   {
@@ -3313,23 +3279,57 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0655,
-   "relative_momentum_long": 0.0469,
-   "score": 0.3262,
-   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -1.9% over ~63d; ATR 3.2% of price",
+   "sector_momentum_long": -0.0647,
+   "relative_momentum_long": 0.0487,
+   "score": 0.3303,
+   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -1.6% over ~63d; ATR 3.2% of price",
    "reading": {
-    "price": 354.83,
-    "rsi": 57.95,
-    "macd_hist": 1.9035,
+    "price": 355.76,
+    "rsi": 58.42,
+    "macd_hist": 1.9628,
     "supertrend_direction": 1,
-    "sma_fast": 330.683,
-    "sma_slow": 332.7718,
-    "bollinger_pct_b": 0.8089,
+    "sma_fast": 330.7016,
+    "sma_slow": 332.7764,
+    "bollinger_pct_b": 0.8271,
     "adx": 26.06,
-    "atr_pct": 0.0317,
-    "momentum_short": 0.0948,
-    "momentum_long": -0.0186,
+    "atr_pct": 0.0316,
+    "momentum_short": 0.0977,
+    "momentum_long": -0.016,
     "annualised_volatility": 0.3195
+   }
+  },
+  {
+   "key": "IN:NIFTYBEES",
+   "symbol": "NIFTYBEES",
+   "name": "Nippon Nifty 50 ETF",
+   "region": "india",
+   "sector": "index",
+   "regime": "trending",
+   "signal": "bullish",
+   "signal_strength": 0.3333,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0261,
+   "relative_momentum_long": 0.0478,
+   "score": 0.3282,
+   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; +2.2% over ~63d; ATR 1.6% of price",
+   "reading": {
+    "price": 286.54,
+    "rsi": 79.94,
+    "macd_hist": 3.1772,
+    "supertrend_direction": 1,
+    "sma_fast": 265.585,
+    "sma_slow": 272.5739,
+    "bollinger_pct_b": 1.0271,
+    "adx": 26.21,
+    "atr_pct": 0.016,
+    "momentum_short": 0.1134,
+    "momentum_long": 0.0217,
+    "annualised_volatility": 0.1277
    }
   },
   {
@@ -3347,9 +3347,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.0465,
-   "score": 0.3253,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.046,
+   "score": 0.3239,
    "rationale": "ADX 25 (trending) -> weighting supertrend, macd, sma_cross; +3.0% over ~63d; ATR 4.0% of price",
    "reading": {
     "price": 837.7,
@@ -3381,22 +3381,22 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.043,
-   "score": 0.3169,
-   "rationale": "ADX 45 (trending) -> weighting supertrend, macd, sma_cross; +2.7% over ~63d; ATR 2.6% of price",
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.0439,
+   "score": 0.3191,
+   "rationale": "ADX 45 (trending) -> weighting supertrend, macd, sma_cross; +2.8% over ~63d; ATR 2.6% of price",
    "reading": {
-    "price": 350.8,
-    "rsi": 66.08,
-    "macd_hist": 2.3588,
+    "price": 351.31,
+    "rsi": 66.38,
+    "macd_hist": 2.3913,
     "supertrend_direction": 1,
-    "sma_fast": 310.9366,
-    "sma_slow": 332.9413,
-    "bollinger_pct_b": 0.8292,
+    "sma_fast": 310.9468,
+    "sma_slow": 332.9438,
+    "bollinger_pct_b": 0.8361,
     "adx": 44.64,
-    "atr_pct": 0.0262,
-    "momentum_short": 0.1935,
-    "momentum_long": 0.0266,
+    "atr_pct": 0.0263,
+    "momentum_short": 0.1953,
+    "momentum_long": 0.0281,
     "annualised_volatility": 0.2972
    }
   },
@@ -3468,6 +3468,40 @@
    }
   },
   {
+   "key": "US:PEP",
+   "symbol": "PEP",
+   "name": "PepsiCo",
+   "region": "us",
+   "sector": "consumer",
+   "regime": "trending",
+   "signal": "bullish",
+   "signal_strength": 0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.0394,
+   "score": 0.3085,
+   "rationale": "ADX 37 (trending) -> weighting supertrend, macd, sma_cross; +2.4% over ~63d; ATR 2.3% of price",
+   "reading": {
+    "price": 143.94,
+    "rsi": 66.17,
+    "macd_hist": 0.8246,
+    "supertrend_direction": 1,
+    "sma_fast": 133.4946,
+    "sma_slow": 145.801,
+    "bollinger_pct_b": 0.8855,
+    "adx": 36.73,
+    "atr_pct": 0.0228,
+    "momentum_short": 0.1307,
+    "momentum_long": 0.0236,
+    "annualised_volatility": 0.2241
+   }
+  },
+  {
    "key": "IN:ASTRAL",
    "symbol": "ASTRAL",
    "name": "Astral",
@@ -3481,9 +3515,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.0521,
-   "score": 0.2997,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": -0.0523,
+   "score": 0.2993,
    "rationale": "ADX 21 (ranging) -> weighting rsi, bollinger_pct_b; -11.9% over ~63d; ATR 3.7% of price",
    "reading": {
     "price": 1272.8,
@@ -3498,40 +3532,6 @@
     "momentum_short": -0.0963,
     "momentum_long": -0.1186,
     "annualised_volatility": 0.3454
-   }
-  },
-  {
-   "key": "US:MCD",
-   "symbol": "MCD",
-   "name": "McDonalds",
-   "region": "us",
-   "sector": "consumer",
-   "regime": "trending",
-   "signal": "bullish",
-   "signal_strength": 0.3333,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.0338,
-   "score": 0.2955,
-   "rationale": "ADX 44 (trending) -> weighting supertrend, macd, sma_cross; +1.7% over ~63d; ATR 2.3% of price",
-   "reading": {
-    "price": 276.9964,
-    "rsi": 68.46,
-    "macd_hist": 2.6351,
-    "supertrend_direction": 1,
-    "sma_fast": 249.7927,
-    "sma_slow": 281.8696,
-    "bollinger_pct_b": 0.8058,
-    "adx": 44.05,
-    "atr_pct": 0.0228,
-    "momentum_short": 0.1747,
-    "momentum_long": 0.0174,
-    "annualised_volatility": 0.2527
    }
   },
   {
@@ -3569,9 +3569,9 @@
    }
   },
   {
-   "key": "US:PEP",
-   "symbol": "PEP",
-   "name": "PepsiCo",
+   "key": "US:SBUX",
+   "symbol": "SBUX",
+   "name": "Starbucks",
    "region": "us",
    "sector": "consumer",
    "regime": "trending",
@@ -3583,23 +3583,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.0336,
-   "score": 0.295,
-   "rationale": "ADX 37 (trending) -> weighting supertrend, macd, sma_cross; +1.7% over ~63d; ATR 2.3% of price",
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.0281,
+   "score": 0.2823,
+   "rationale": "ADX 37 (trending) -> weighting supertrend, macd, sma_cross; +1.2% over ~63d; ATR 2.7% of price",
    "reading": {
-    "price": 143.04,
-    "rsi": 64.14,
-    "macd_hist": 0.7672,
+    "price": 109.89,
+    "rsi": 67.43,
+    "macd_hist": 0.687,
     "supertrend_direction": 1,
-    "sma_fast": 133.4766,
-    "sma_slow": 145.7965,
-    "bollinger_pct_b": 0.842,
-    "adx": 36.55,
-    "atr_pct": 0.0228,
-    "momentum_short": 0.1236,
-    "momentum_long": 0.0172,
-    "annualised_volatility": 0.2243
+    "sma_fast": 99.326,
+    "sma_slow": 100.3368,
+    "bollinger_pct_b": 0.8883,
+    "adx": 36.99,
+    "atr_pct": 0.0266,
+    "momentum_short": 0.1945,
+    "momentum_long": 0.0123,
+    "annualised_volatility": 0.2598
    }
   },
   {
@@ -3637,9 +3637,9 @@
    }
   },
   {
-   "key": "US:SBUX",
-   "symbol": "SBUX",
-   "name": "Starbucks",
+   "key": "US:MCD",
+   "symbol": "MCD",
+   "name": "McDonalds",
    "region": "us",
    "sector": "consumer",
    "regime": "trending",
@@ -3651,23 +3651,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.0246,
-   "score": 0.2742,
-   "rationale": "ADX 37 (trending) -> weighting supertrend, macd, sma_cross; +0.8% over ~63d; ATR 2.7% of price",
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.0251,
+   "score": 0.2753,
+   "rationale": "ADX 44 (trending) -> weighting supertrend, macd, sma_cross; +0.9% over ~63d; ATR 2.3% of price",
    "reading": {
-    "price": 109.45,
-    "rsi": 66.05,
-    "macd_hist": 0.659,
+    "price": 274.8,
+    "rsi": 65.56,
+    "macd_hist": 2.4949,
     "supertrend_direction": 1,
-    "sma_fast": 99.3172,
-    "sma_slow": 100.3346,
-    "bollinger_pct_b": 0.8656,
-    "adx": 36.99,
-    "atr_pct": 0.0267,
-    "momentum_short": 0.1897,
-    "momentum_long": 0.0083,
-    "annualised_volatility": 0.26
+    "sma_fast": 249.7488,
+    "sma_slow": 281.8586,
+    "bollinger_pct_b": 0.7715,
+    "adx": 44.05,
+    "atr_pct": 0.023,
+    "momentum_short": 0.1653,
+    "momentum_long": 0.0094,
+    "annualised_volatility": 0.2555
    }
   },
   {
@@ -3685,9 +3685,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.0178,
-   "score": 0.2583,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.0172,
+   "score": 0.2569,
    "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +0.1% over ~63d; ATR 2.3% of price",
    "reading": {
     "price": 1083.9,
@@ -3705,6 +3705,40 @@
    }
   },
   {
+   "key": "US:FDX",
+   "symbol": "FDX",
+   "name": "FedEx",
+   "region": "us",
+   "sector": "industrials",
+   "regime": "trending",
+   "signal": "bullish",
+   "signal_strength": 0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.017,
+   "score": 0.2563,
+   "rationale": "ADX 36 (trending) -> weighting supertrend, macd, sma_cross; -4.9% over ~63d; ATR 2.6% of price",
+   "reading": {
+    "price": 322.63,
+    "rsi": 61.52,
+    "macd_hist": 1.4335,
+    "supertrend_direction": 1,
+    "sma_fast": 302.4596,
+    "sma_slow": 307.5921,
+    "bollinger_pct_b": 0.8441,
+    "adx": 36.14,
+    "atr_pct": 0.0256,
+    "momentum_short": 0.1103,
+    "momentum_long": -0.0493,
+    "annualised_volatility": 0.2528
+   }
+  },
+  {
    "key": "IN:EICHERMOT",
    "symbol": "EICHERMOT",
    "name": "Eicher Motors",
@@ -3719,9 +3753,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": 0.0171,
-   "score": 0.2566,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": 0.0167,
+   "score": 0.2556,
    "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -4.9% over ~63d; ATR 2.2% of price",
    "reading": {
     "price": 7629.0,
@@ -3739,40 +3773,6 @@
    }
   },
   {
-   "key": "US:FDX",
-   "symbol": "FDX",
-   "name": "FedEx",
-   "region": "us",
-   "sector": "industrials",
-   "regime": "trending",
-   "signal": "bullish",
-   "signal_strength": 0.3333,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.0162,
-   "score": 0.2545,
-   "rationale": "ADX 36 (trending) -> weighting supertrend, macd, sma_cross; -5.0% over ~63d; ATR 2.6% of price",
-   "reading": {
-    "price": 322.3,
-    "rsi": 61.33,
-    "macd_hist": 1.4124,
-    "supertrend_direction": 1,
-    "sma_fast": 302.453,
-    "sma_slow": 307.5905,
-    "bollinger_pct_b": 0.8372,
-    "adx": 36.12,
-    "atr_pct": 0.0256,
-    "momentum_short": 0.1091,
-    "momentum_long": -0.0502,
-    "annualised_volatility": 0.2526
-   }
-  },
-  {
    "key": "IN:BALKRISIND",
    "symbol": "BALKRISIND",
    "name": "Balkrishna Industries",
@@ -3787,9 +3787,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": 0.0161,
-   "score": 0.2543,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": 0.0157,
+   "score": 0.2532,
    "rationale": "ADX 28 (trending) -> weighting supertrend, macd, sma_cross; -5.0% over ~63d; ATR 3.0% of price",
    "reading": {
     "price": 2343.6001,
@@ -3821,22 +3821,22 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0151,
-   "relative_momentum_long": 0.0151,
-   "score": 0.2518,
-   "rationale": "ADX 34 (trending) -> weighting supertrend, macd, sma_cross; +0.0% over ~63d; ATR 2.0% of price",
+   "sector_momentum_long": -0.0145,
+   "relative_momentum_long": 0.0143,
+   "score": 0.2501,
+   "rationale": "ADX 34 (trending) -> weighting supertrend, macd, sma_cross; -0.0% over ~63d; ATR 2.0% of price",
    "reading": {
-    "price": 86.01,
-    "rsi": 62.25,
-    "macd_hist": 0.3679,
+    "price": 85.99,
+    "rsi": 62.15,
+    "macd_hist": 0.3666,
     "supertrend_direction": 1,
-    "sma_fast": 80.7434,
-    "sma_slow": 87.3961,
-    "bollinger_pct_b": 0.7257,
+    "sma_fast": 80.743,
+    "sma_slow": 87.3959,
+    "bollinger_pct_b": 0.7243,
     "adx": 33.95,
     "atr_pct": 0.0196,
-    "momentum_short": 0.0996,
-    "momentum_long": 0.0,
+    "momentum_short": 0.0993,
+    "momentum_long": -0.0002,
     "annualised_volatility": 0.2101
    }
   },
@@ -3887,8 +3887,8 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": 0.2162,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": 0.2157,
    "score": 0.2379,
    "rationale": "ADX 15 (ranging) -> weighting rsi, bollinger_pct_b; +15.0% over ~63d; ATR 4.2% of price",
    "reading": {
@@ -3904,6 +3904,40 @@
     "momentum_short": 0.0422,
     "momentum_long": 0.1503,
     "annualised_volatility": 0.4721
+   }
+  },
+  {
+   "key": "US:D",
+   "symbol": "D",
+   "name": "Dominion Energy",
+   "region": "us",
+   "sector": "utilities",
+   "regime": "trending",
+   "signal": "bullish",
+   "signal_strength": 0.3333,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0145,
+   "relative_momentum_long": 0.0075,
+   "score": 0.2343,
+   "rationale": "ADX 33 (trending) -> weighting supertrend, macd, sma_cross; -0.7% over ~63d; ATR 2.0% of price",
+   "reading": {
+    "price": 68.06,
+    "rsi": 61.29,
+    "macd_hist": 0.2558,
+    "supertrend_direction": 1,
+    "sma_fast": 64.0732,
+    "sma_slow": 65.1149,
+    "bollinger_pct_b": 0.7277,
+    "adx": 33.18,
+    "atr_pct": 0.0199,
+    "momentum_short": 0.0925,
+    "momentum_long": -0.007,
+    "annualised_volatility": 0.2047
    }
   },
   {
@@ -3941,40 +3975,6 @@
    }
   },
   {
-   "key": "US:D",
-   "symbol": "D",
-   "name": "Dominion Energy",
-   "region": "us",
-   "sector": "utilities",
-   "regime": "trending",
-   "signal": "bullish",
-   "signal_strength": 0.3333,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0151,
-   "relative_momentum_long": 0.0062,
-   "score": 0.2311,
-   "rationale": "ADX 33 (trending) -> weighting supertrend, macd, sma_cross; -0.9% over ~63d; ATR 2.0% of price",
-   "reading": {
-    "price": 67.93,
-    "rsi": 60.54,
-    "macd_hist": 0.2475,
-    "supertrend_direction": 1,
-    "sma_fast": 64.0706,
-    "sma_slow": 65.1142,
-    "bollinger_pct_b": 0.7152,
-    "adx": 33.18,
-    "atr_pct": 0.02,
-    "momentum_short": 0.0904,
-    "momentum_long": -0.0089,
-    "annualised_volatility": 0.2049
-   }
-  },
-  {
    "key": "IN:M&M",
    "symbol": "M&M",
    "name": "Mahindra & Mahindra",
@@ -3989,9 +3989,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": 0.0055,
-   "score": 0.2295,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": 0.0051,
+   "score": 0.2285,
    "rationale": "ADX 39 (trending) -> weighting supertrend, macd, sma_cross; -6.0% over ~63d; ATR 2.3% of price",
    "reading": {
     "price": 3290.6001,
@@ -4022,9 +4022,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": -0.048,
-   "score": 0.2247,
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": -0.0494,
+   "score": 0.2214,
    "rationale": "ADX 18 (ranging) -> weighting rsi, bollinger_pct_b; -0.9% over ~63d; ATR 2.6% of price",
    "reading": {
     "price": 439.0,
@@ -4056,9 +4056,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": -0.0018,
-   "score": 0.2124,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": -0.0023,
+   "score": 0.2113,
    "rationale": "ADX 46 (trending) -> weighting supertrend, macd, sma_cross; -6.8% over ~63d; ATR 1.8% of price",
    "reading": {
     "price": 125105.0,
@@ -4122,9 +4122,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0332,
-   "relative_momentum_long": 0.1404,
-   "score": 0.2013,
+   "sector_momentum_long": -0.0337,
+   "relative_momentum_long": 0.141,
+   "score": 0.2025,
    "rationale": "ADX 15 (ranging) -> weighting rsi, bollinger_pct_b; +10.7% over ~63d; ATR 2.7% of price",
    "reading": {
     "price": 2181.3,
@@ -4190,9 +4190,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0332,
-   "relative_momentum_long": -0.0117,
-   "score": 0.1894,
+   "sector_momentum_long": -0.0337,
+   "relative_momentum_long": -0.0112,
+   "score": 0.1906,
    "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -4.5% over ~63d; ATR 3.1% of price",
    "reading": {
     "price": 575.95,
@@ -4224,9 +4224,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": -0.0131,
-   "score": 0.186,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": -0.0136,
+   "score": 0.185,
    "rationale": "ADX 39 (trending) -> weighting supertrend, macd, sma_cross; -7.9% over ~63d; ATR 2.2% of price",
    "reading": {
     "price": 12928.0,
@@ -4391,9 +4391,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": -0.0152,
-   "score": 0.1811,
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": -0.0166,
+   "score": 0.1778,
    "rationale": "ADX 28 (trending) -> weighting supertrend, macd, sma_cross; +2.4% over ~63d; ATR 2.3% of price",
    "reading": {
     "price": 146.85,
@@ -4408,39 +4408,6 @@
     "momentum_short": 0.1632,
     "momentum_long": 0.0242,
     "annualised_volatility": 0.2165
-   }
-  },
-  {
-   "key": "US:EOG",
-   "symbol": "EOG",
-   "name": "EOG Resources",
-   "region": "us",
-   "sector": "energy",
-   "regime": "ranging",
-   "signal": "neutral",
-   "signal_strength": 0.1107,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": 0.0451,
-   "score": 0.1773,
-   "rationale": "ADX 23 (ranging) -> weighting rsi, bollinger_pct_b; +8.5% over ~63d; ATR 3.0% of price",
-   "reading": {
-    "price": 153.37,
-    "rsi": 50.99,
-    "macd_hist": -1.3652,
-    "supertrend_direction": -1,
-    "sma_fast": 149.6396,
-    "sma_slow": 138.7936,
-    "bollinger_pct_b": 0.3794,
-    "adx": 23.33,
-    "atr_pct": 0.0297,
-    "momentum_short": 0.0013,
-    "momentum_long": 0.0846,
-    "annualised_volatility": 0.2967
    }
   },
   {
@@ -4490,9 +4457,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.1103,
-   "score": 0.1744,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.1101,
+   "score": 0.174,
    "rationale": "ADX 15 (ranging) -> weighting rsi, bollinger_pct_b; +4.4% over ~63d; ATR 3.6% of price",
    "reading": {
     "price": 422.95,
@@ -4523,9 +4490,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.0242,
-   "score": 0.1671,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.024,
+   "score": 0.1667,
    "rationale": "ADX 22 (ranging) -> weighting rsi, bollinger_pct_b; -4.2% over ~63d; ATR 3.5% of price",
    "reading": {
     "price": 3296.6001,
@@ -4543,6 +4510,39 @@
    }
   },
   {
+   "key": "US:EOG",
+   "symbol": "EOG",
+   "name": "EOG Resources",
+   "region": "us",
+   "sector": "energy",
+   "regime": "ranging",
+   "signal": "neutral",
+   "signal_strength": 0.0891,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": 0.0466,
+   "score": 0.1666,
+   "rationale": "ADX 23 (ranging) -> weighting rsi, bollinger_pct_b; +8.7% over ~63d; ATR 3.0% of price",
+   "reading": {
+    "price": 153.77,
+    "rsi": 51.54,
+    "macd_hist": -1.3397,
+    "supertrend_direction": -1,
+    "sma_fast": 149.6476,
+    "sma_slow": 138.7956,
+    "bollinger_pct_b": 0.3954,
+    "adx": 23.32,
+    "atr_pct": 0.0296,
+    "momentum_short": 0.0039,
+    "momentum_long": 0.0874,
+    "annualised_volatility": 0.2972
+   }
+  },
+  {
    "key": "IN:ABB",
    "symbol": "ABB",
    "name": "ABB India",
@@ -4557,9 +4557,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.0237,
-   "score": 0.1614,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": -0.0239,
+   "score": 0.161,
    "rationale": "ADX 27 (trending) -> weighting supertrend, macd, sma_cross; -9.0% over ~63d; ATR 3.4% of price",
    "reading": {
     "price": 6915.0,
@@ -4591,9 +4591,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0151,
-   "relative_momentum_long": -0.0251,
-   "score": 0.1582,
+   "sector_momentum_long": -0.0145,
+   "relative_momentum_long": -0.0256,
+   "score": 0.1569,
    "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; -4.0% over ~63d; ATR 2.4% of price",
    "reading": {
     "price": 328.75,
@@ -4659,9 +4659,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.0341,
-   "score": 0.1371,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.0347,
+   "score": 0.1358,
    "rationale": "ADX 28 (trending) -> weighting supertrend, macd, sma_cross; -5.0% over ~63d; ATR 2.2% of price",
    "reading": {
     "price": 1990.3,
@@ -4778,40 +4778,6 @@
    }
   },
   {
-   "key": "IN:RELIANCE",
-   "symbol": "RELIANCE",
-   "name": "Reliance Industries",
-   "region": "india",
-   "sector": "energy",
-   "regime": "trending",
-   "signal": "bullish",
-   "signal_strength": 0.3333,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": -0.0472,
-   "score": 0.1065,
-   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; -0.8% over ~63d; ATR 2.4% of price",
-   "reading": {
-    "price": 1324.4,
-    "rsi": 68.78,
-    "macd_hist": 17.7523,
-    "supertrend_direction": 1,
-    "sma_fast": 1236.118,
-    "sma_slow": 1324.711,
-    "bollinger_pct_b": 0.9143,
-    "adx": 30.12,
-    "atr_pct": 0.0236,
-    "momentum_short": 0.1243,
-    "momentum_long": -0.0078,
-    "annualised_volatility": 0.3059
-   }
-  },
-  {
    "key": "IN:GOLDBEES",
    "symbol": "GOLDBEES",
    "name": "Nippon Gold ETF",
@@ -4826,9 +4792,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0259,
-   "relative_momentum_long": -0.0485,
-   "score": 0.1035,
+   "sector_momentum_long": -0.0261,
+   "relative_momentum_long": -0.0483,
+   "score": 0.104,
    "rationale": "ADX 28 (trending) -> weighting supertrend, macd, sma_cross; -7.4% over ~63d; ATR 1.5% of price",
    "reading": {
     "price": 115.31,
@@ -4843,6 +4809,40 @@
     "momentum_short": -0.0606,
     "momentum_long": -0.0744,
     "annualised_volatility": 0.1896
+   }
+  },
+  {
+   "key": "IN:RELIANCE",
+   "symbol": "RELIANCE",
+   "name": "Reliance Industries",
+   "region": "india",
+   "sector": "energy",
+   "regime": "trending",
+   "signal": "bullish",
+   "signal_strength": 0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": -0.0486,
+   "score": 0.1032,
+   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; -0.8% over ~63d; ATR 2.4% of price",
+   "reading": {
+    "price": 1324.4,
+    "rsi": 68.78,
+    "macd_hist": 17.7523,
+    "supertrend_direction": 1,
+    "sma_fast": 1236.118,
+    "sma_slow": 1324.711,
+    "bollinger_pct_b": 0.9143,
+    "adx": 30.12,
+    "atr_pct": 0.0236,
+    "momentum_short": 0.1243,
+    "momentum_long": -0.0078,
+    "annualised_volatility": 0.3059
    }
   },
   {
@@ -4893,9 +4893,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.0507,
-   "score": 0.0983,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": -0.0509,
+   "score": 0.0979,
    "rationale": "ADX 32 (trending) -> weighting supertrend, macd, sma_cross; -11.7% over ~63d; ATR 2.8% of price",
    "reading": {
     "price": 446.0,
@@ -4910,40 +4910,6 @@
     "momentum_short": 0.0276,
     "momentum_long": -0.1172,
     "annualised_volatility": 0.2937
-   }
-  },
-  {
-   "key": "US:NKE",
-   "symbol": "NKE",
-   "name": "Nike",
-   "region": "us",
-   "sector": "consumer",
-   "regime": "trending",
-   "signal": "bullish",
-   "signal_strength": 0.3333,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.0527,
-   "score": 0.0938,
-   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -6.9% over ~63d; ATR 3.3% of price",
-   "reading": {
-    "price": 38.385,
-    "rsi": 52.22,
-    "macd_hist": 0.0324,
-    "supertrend_direction": 1,
-    "sma_fast": 36.9119,
-    "sma_slow": 45.0327,
-    "bollinger_pct_b": 0.5307,
-    "adx": 26.1,
-    "atr_pct": 0.0327,
-    "momentum_short": 0.0865,
-    "momentum_long": -0.069,
-    "annualised_volatility": 0.3186
    }
   },
   {
@@ -4981,11 +4947,11 @@
    }
   },
   {
-   "key": "IN:BPCL",
-   "symbol": "BPCL",
-   "name": "Bharat Petroleum",
-   "region": "india",
-   "sector": "energy",
+   "key": "US:NKE",
+   "symbol": "NKE",
+   "name": "Nike",
+   "region": "us",
+   "sector": "consumer",
    "regime": "trending",
    "signal": "bullish",
    "signal_strength": 0.3333,
@@ -4995,23 +4961,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": -0.055,
-   "score": 0.0883,
-   "rationale": "ADX 25 (trending) -> weighting supertrend, macd, sma_cross; -1.6% over ~63d; ATR 2.7% of price",
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.0548,
+   "score": 0.0888,
+   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -7.1% over ~63d; ATR 3.3% of price",
    "reading": {
-    "price": 316.0,
-    "rsi": 62.91,
-    "macd_hist": 4.11,
+    "price": 38.32,
+    "rsi": 51.89,
+    "macd_hist": 0.0283,
     "supertrend_direction": 1,
-    "sma_fast": 302.215,
-    "sma_slow": 315.634,
-    "bollinger_pct_b": 0.9898,
-    "adx": 25.32,
-    "atr_pct": 0.0272,
-    "momentum_short": 0.1039,
-    "momentum_long": -0.0156,
-    "annualised_volatility": 0.2462
+    "sma_fast": 36.9106,
+    "sma_slow": 45.0323,
+    "bollinger_pct_b": 0.5142,
+    "adx": 26.1,
+    "atr_pct": 0.0327,
+    "momentum_short": 0.0846,
+    "momentum_long": -0.0706,
+    "annualised_volatility": 0.3188
    }
   },
   {
@@ -5046,6 +5012,73 @@
     "momentum_short": 0.064,
     "momentum_long": 0.0072,
     "annualised_volatility": 0.2368
+   }
+  },
+  {
+   "key": "IN:BPCL",
+   "symbol": "BPCL",
+   "name": "Bharat Petroleum",
+   "region": "india",
+   "sector": "energy",
+   "regime": "trending",
+   "signal": "bullish",
+   "signal_strength": 0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": -0.0564,
+   "score": 0.085,
+   "rationale": "ADX 25 (trending) -> weighting supertrend, macd, sma_cross; -1.6% over ~63d; ATR 2.7% of price",
+   "reading": {
+    "price": 316.0,
+    "rsi": 62.91,
+    "macd_hist": 4.11,
+    "supertrend_direction": 1,
+    "sma_fast": 302.215,
+    "sma_slow": 315.634,
+    "bollinger_pct_b": 0.9898,
+    "adx": 25.32,
+    "atr_pct": 0.0272,
+    "momentum_short": 0.1039,
+    "momentum_long": -0.0156,
+    "annualised_volatility": 0.2462
+   }
+  },
+  {
+   "key": "US:FCX",
+   "symbol": "FCX",
+   "name": "Freeport-McMoRan",
+   "region": "us",
+   "sector": "metals",
+   "regime": "ranging",
+   "signal": "bullish",
+   "signal_strength": 0.2566,
+   "volatility_bucket": "high",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0337,
+   "relative_momentum_long": -0.0368,
+   "score": 0.081,
+   "rationale": "ADX 25 (ranging) -> weighting rsi, bollinger_pct_b; -7.0% over ~63d; ATR 4.7% of price",
+   "reading": {
+    "price": 62.12,
+    "rsi": 42.21,
+    "macd_hist": -0.1948,
+    "supertrend_direction": -1,
+    "sma_fast": 69.0412,
+    "sma_slow": 65.2448,
+    "bollinger_pct_b": 0.3213,
+    "adx": 24.67,
+    "atr_pct": 0.0467,
+    "momentum_short": -0.1422,
+    "momentum_long": -0.0705,
+    "annualised_volatility": 0.4463
    }
   },
   {
@@ -5096,9 +5129,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0332,
-   "relative_momentum_long": -0.0608,
-   "score": 0.0747,
+   "sector_momentum_long": -0.0337,
+   "relative_momentum_long": -0.0603,
+   "score": 0.076,
    "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -9.4% over ~63d; ATR 2.8% of price",
    "reading": {
     "price": 960.0,
@@ -5150,39 +5183,6 @@
    }
   },
   {
-   "key": "US:FCX",
-   "symbol": "FCX",
-   "name": "Freeport-McMoRan",
-   "region": "us",
-   "sector": "metals",
-   "regime": "ranging",
-   "signal": "bullish",
-   "signal_strength": 0.2368,
-   "volatility_bucket": "high",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0332,
-   "relative_momentum_long": -0.0341,
-   "score": 0.0744,
-   "rationale": "ADX 25 (ranging) -> weighting rsi, bollinger_pct_b; -6.7% over ~63d; ATR 4.7% of price",
-   "reading": {
-    "price": 62.335,
-    "rsi": 42.78,
-    "macd_hist": -0.1811,
-    "supertrend_direction": -1,
-    "sma_fast": 69.0455,
-    "sma_slow": 65.2458,
-    "bollinger_pct_b": 0.3355,
-    "adx": 24.67,
-    "atr_pct": 0.0466,
-    "momentum_short": -0.1393,
-    "momentum_long": -0.0673,
-    "annualised_volatility": 0.4474
-   }
-  },
-  {
    "key": "IN:IRFC",
    "symbol": "IRFC",
    "name": "Indian Railway Finance",
@@ -5231,9 +5231,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.0662,
-   "score": 0.0623,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.0668,
+   "score": 0.0609,
    "rationale": "ADX 36 (trending) -> weighting supertrend, macd, sma_cross; -8.3% over ~63d; ATR 2.6% of price",
    "reading": {
     "price": 2509.3,
@@ -5284,39 +5284,6 @@
    }
   },
   {
-   "key": "US:CSX",
-   "symbol": "CSX",
-   "name": "CSX",
-   "region": "us",
-   "sector": "industrials",
-   "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.286,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.0994,
-   "score": 0.0459,
-   "rationale": "ADX 24 (ranging) -> weighting rsi, bollinger_pct_b; +3.3% over ~63d; ATR 2.3% of price",
-   "reading": {
-    "price": 51.79,
-    "rsi": 58.26,
-    "macd_hist": -0.0679,
-    "supertrend_direction": 1,
-    "sma_fast": 48.847,
-    "sma_slow": 46.1812,
-    "bollinger_pct_b": 0.7034,
-    "adx": 24.32,
-    "atr_pct": 0.0234,
-    "momentum_short": 0.0844,
-    "momentum_long": 0.0329,
-    "annualised_volatility": 0.2437
-   }
-  },
-  {
    "key": "US:GLD",
    "symbol": "GLD",
    "name": "SPDR Gold Shares",
@@ -5324,62 +5291,62 @@
    "sector": "index",
    "regime": "ranging",
    "signal": "bullish",
-   "signal_strength": 0.2804,
+   "signal_strength": 0.2841,
    "volatility_bucket": "low",
    "indicators_used": [
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0259,
-   "relative_momentum_long": -0.0585,
-   "score": 0.0457,
-   "rationale": "ADX 18 (ranging) -> weighting rsi, bollinger_pct_b; -8.4% over ~63d; ATR 1.9% of price",
+   "sector_momentum_long": -0.0261,
+   "relative_momentum_long": -0.0586,
+   "score": 0.048,
+   "rationale": "ADX 18 (ranging) -> weighting rsi, bollinger_pct_b; -8.5% over ~63d; ATR 1.9% of price",
    "reading": {
-    "price": 365.27,
-    "rsi": 43.25,
-    "macd_hist": 0.9245,
+    "price": 365.17,
+    "rsi": 43.19,
+    "macd_hist": 0.9181,
     "supertrend_direction": 1,
-    "sma_fast": 382.9612,
-    "sma_slow": 409.8178,
-    "bollinger_pct_b": 0.2871,
+    "sma_fast": 382.9592,
+    "sma_slow": 409.8173,
+    "bollinger_pct_b": 0.284,
     "adx": 18.21,
     "atr_pct": 0.0188,
-    "momentum_short": -0.043,
-    "momentum_long": -0.0844,
+    "momentum_short": -0.0432,
+    "momentum_long": -0.0847,
     "annualised_volatility": 0.2484
    }
   },
   {
-   "key": "US:KMI",
-   "symbol": "KMI",
-   "name": "Kinder Morgan",
+   "key": "US:EMR",
+   "symbol": "EMR",
+   "name": "Emerson Electric",
    "region": "us",
-   "sector": "energy",
+   "sector": "industrials",
    "regime": "ranging",
-   "signal": "bullish",
-   "signal_strength": 0.2669,
+   "signal": "bearish",
+   "signal_strength": -0.233,
    "volatility_bucket": "medium",
    "indicators_used": [
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": -0.0555,
-   "score": 0.044,
-   "rationale": "ADX 21 (ranging) -> weighting rsi, bollinger_pct_b; -1.6% over ~63d; ATR 3.0% of price",
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.0836,
+   "score": 0.0437,
+   "rationale": "ADX 10 (ranging) -> weighting rsi, bollinger_pct_b; +1.7% over ~63d; ATR 3.1% of price",
    "reading": {
-    "price": 31.565,
-    "rsi": 45.33,
-    "macd_hist": -0.3316,
-    "supertrend_direction": -1,
-    "sma_fast": 32.0165,
-    "sma_slow": 32.1763,
-    "bollinger_pct_b": 0.2798,
-    "adx": 21.42,
-    "atr_pct": 0.0297,
-    "momentum_short": -0.0558,
-    "momentum_long": -0.0161,
-    "annualised_volatility": 0.2698
+    "price": 167.06,
+    "rsi": 55.27,
+    "macd_hist": -0.121,
+    "supertrend_direction": 1,
+    "sma_fast": 158.8802,
+    "sma_slow": 147.7566,
+    "bollinger_pct_b": 0.6802,
+    "adx": 10.2,
+    "atr_pct": 0.0307,
+    "momentum_short": 0.0218,
+    "momentum_long": 0.0174,
+    "annualised_volatility": 0.2635
    }
   },
   {
@@ -5398,22 +5365,121 @@
     "sma_cross"
    ],
    "sector_momentum_long": 0.0207,
-   "relative_momentum_long": -0.0759,
-   "score": 0.0397,
-   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -5.5% over ~63d; ATR 1.6% of price",
+   "relative_momentum_long": -0.0744,
+   "score": 0.043,
+   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -5.4% over ~63d; ATR 1.6% of price",
    "reading": {
-    "price": 59.48,
-    "rsi": 64.79,
-    "macd_hist": 0.3499,
+    "price": 59.57,
+    "rsi": 65.51,
+    "macd_hist": 0.3556,
     "supertrend_direction": 1,
-    "sma_fast": 56.981,
-    "sma_slow": 61.5469,
-    "bollinger_pct_b": 0.8625,
+    "sma_fast": 56.9828,
+    "sma_slow": 61.5473,
+    "bollinger_pct_b": 0.8758,
     "adx": 26.09,
-    "atr_pct": 0.0163,
-    "momentum_short": 0.0817,
-    "momentum_long": -0.0551,
-    "annualised_volatility": 0.1688
+    "atr_pct": 0.0164,
+    "momentum_short": 0.0833,
+    "momentum_long": -0.0537,
+    "annualised_volatility": 0.1689
+   }
+  },
+  {
+   "key": "US:KMI",
+   "symbol": "KMI",
+   "name": "Kinder Morgan",
+   "region": "us",
+   "sector": "energy",
+   "regime": "ranging",
+   "signal": "bullish",
+   "signal_strength": 0.261,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": -0.0561,
+   "score": 0.0387,
+   "rationale": "ADX 21 (ranging) -> weighting rsi, bollinger_pct_b; -1.5% over ~63d; ATR 3.0% of price",
+   "reading": {
+    "price": 31.59,
+    "rsi": 45.52,
+    "macd_hist": -0.33,
+    "supertrend_direction": -1,
+    "sma_fast": 32.017,
+    "sma_slow": 32.1764,
+    "bollinger_pct_b": 0.2839,
+    "adx": 21.42,
+    "atr_pct": 0.0297,
+    "momentum_short": -0.055,
+    "momentum_long": -0.0153,
+    "annualised_volatility": 0.2699
+   }
+  },
+  {
+   "key": "US:NEM",
+   "symbol": "NEM",
+   "name": "Newmont",
+   "region": "us",
+   "sector": "metals",
+   "regime": "ranging",
+   "signal": "bearish",
+   "signal_strength": -0.1963,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0337,
+   "relative_momentum_long": 0.0712,
+   "score": 0.0385,
+   "rationale": "ADX 18 (ranging) -> weighting rsi, bollinger_pct_b; +3.7% over ~63d; ATR 3.9% of price",
+   "reading": {
+    "price": 118.47,
+    "rsi": 52.76,
+    "macd_hist": 1.2345,
+    "supertrend_direction": 1,
+    "sma_fast": 118.632,
+    "sma_slow": 112.3118,
+    "bollinger_pct_b": 0.6687,
+    "adx": 17.64,
+    "atr_pct": 0.0395,
+    "momentum_short": 0.0249,
+    "momentum_long": 0.0375,
+    "annualised_volatility": 0.443
+   }
+  },
+  {
+   "key": "US:CSX",
+   "symbol": "CSX",
+   "name": "CSX",
+   "region": "us",
+   "sector": "industrials",
+   "regime": "ranging",
+   "signal": "bearish",
+   "signal_strength": -0.3072,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.1014,
+   "score": 0.0368,
+   "rationale": "ADX 24 (ranging) -> weighting rsi, bollinger_pct_b; +3.5% over ~63d; ATR 2.3% of price",
+   "reading": {
+    "price": 51.9,
+    "rsi": 58.69,
+    "macd_hist": -0.0608,
+    "supertrend_direction": 1,
+    "sma_fast": 48.8492,
+    "sma_slow": 46.1818,
+    "bollinger_pct_b": 0.7203,
+    "adx": 24.34,
+    "atr_pct": 0.0234,
+    "momentum_short": 0.0867,
+    "momentum_long": 0.0351,
+    "annualised_volatility": 0.2442
    }
   },
   {
@@ -5431,9 +5497,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": -0.0782,
-   "score": 0.0341,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": -0.0787,
+   "score": 0.033,
    "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; -14.4% over ~63d; ATR 4.9% of price",
    "reading": {
     "price": 13.54,
@@ -5448,39 +5514,6 @@
     "momentum_short": 0.0127,
     "momentum_long": -0.1441,
     "annualised_volatility": 0.4578
-   }
-  },
-  {
-   "key": "US:NEM",
-   "symbol": "NEM",
-   "name": "Newmont",
-   "region": "us",
-   "sector": "metals",
-   "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.212,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0332,
-   "relative_momentum_long": 0.0729,
-   "score": 0.0323,
-   "rationale": "ADX 18 (ranging) -> weighting rsi, bollinger_pct_b; +4.0% over ~63d; ATR 3.9% of price",
-   "reading": {
-    "price": 118.73,
-    "rsi": 53.1,
-    "macd_hist": 1.2511,
-    "supertrend_direction": 1,
-    "sma_fast": 118.6372,
-    "sma_slow": 112.3131,
-    "bollinger_pct_b": 0.681,
-    "adx": 17.64,
-    "atr_pct": 0.0394,
-    "momentum_short": 0.0272,
-    "momentum_long": 0.0398,
-    "annualised_volatility": 0.4428
    }
   },
   {
@@ -5551,6 +5584,40 @@
    }
   },
   {
+   "key": "US:WMT",
+   "symbol": "WMT",
+   "name": "Walmart",
+   "region": "us",
+   "sector": "consumer",
+   "regime": "trending",
+   "signal": "bearish",
+   "signal_strength": -0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.1017,
+   "score": 0.0207,
+   "rationale": "ADX 47 (trending) -> weighting supertrend, macd, sma_cross; +8.6% over ~63d; ATR 2.3% of price",
+   "reading": {
+    "price": 125.67,
+    "rsi": 63.68,
+    "macd_hist": -0.0621,
+    "supertrend_direction": 1,
+    "sma_fast": 113.7422,
+    "sma_slow": 118.8325,
+    "bollinger_pct_b": 0.7235,
+    "adx": 47.08,
+    "atr_pct": 0.023,
+    "momentum_short": 0.1193,
+    "momentum_long": 0.086,
+    "annualised_volatility": 0.2983
+   }
+  },
+  {
    "key": "IN:TMPV",
    "symbol": "TMPV",
    "name": "Tata Motors Passenger Vehicles",
@@ -5565,9 +5632,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": -0.084,
-   "score": 0.0207,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": -0.0844,
+   "score": 0.0196,
    "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -15.0% over ~63d; ATR 2.6% of price",
    "reading": {
     "price": 295.0,
@@ -5585,37 +5652,36 @@
    }
   },
   {
-   "key": "US:WMT",
-   "symbol": "WMT",
-   "name": "Walmart",
+   "key": "US:SPY",
+   "symbol": "SPY",
+   "name": "SPDR S&P 500 ETF",
    "region": "us",
-   "sector": "consumer",
-   "regime": "trending",
-   "signal": "bearish",
-   "signal_strength": -0.3333,
-   "volatility_bucket": "medium",
+   "sector": "index",
+   "regime": "ranging",
+   "signal": "neutral",
+   "signal_strength": 0.0102,
+   "volatility_bucket": "low",
    "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
+    "rsi",
+    "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.0984,
-   "score": 0.013,
-   "rationale": "ADX 47 (trending) -> weighting supertrend, macd, sma_cross; +8.2% over ~63d; ATR 2.3% of price",
+   "sector_momentum_long": -0.0261,
+   "relative_momentum_long": 0.0029,
+   "score": 0.0134,
+   "rationale": "ADX 16 (ranging) -> weighting rsi, bollinger_pct_b; -2.3% over ~63d; ATR 1.5% of price",
    "reading": {
-    "price": 125.22,
-    "rsi": 62.49,
-    "macd_hist": -0.0908,
-    "supertrend_direction": 1,
-    "sma_fast": 113.7332,
-    "sma_slow": 118.8303,
-    "bollinger_pct_b": 0.6957,
-    "adx": 47.08,
-    "atr_pct": 0.0231,
-    "momentum_short": 0.1152,
-    "momentum_long": 0.0821,
-    "annualised_volatility": 0.2984
+    "price": 759.81,
+    "rsi": 49.86,
+    "macd_hist": -0.8946,
+    "supertrend_direction": -1,
+    "sma_fast": 764.9646,
+    "sma_slow": 731.3074,
+    "bollinger_pct_b": 0.4913,
+    "adx": 15.88,
+    "atr_pct": 0.0146,
+    "momentum_short": -0.0234,
+    "momentum_long": -0.0232,
+    "annualised_volatility": 0.1461
    }
   },
   {
@@ -5650,39 +5716,6 @@
     "momentum_short": 0.0755,
     "momentum_long": -0.0856,
     "annualised_volatility": 0.2187
-   }
-  },
-  {
-   "key": "US:SPY",
-   "symbol": "SPY",
-   "name": "SPDR S&P 500 ETF",
-   "region": "us",
-   "sector": "index",
-   "regime": "ranging",
-   "signal": "neutral",
-   "signal_strength": -0.0013,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0259,
-   "relative_momentum_long": 0.0033,
-   "score": 0.0067,
-   "rationale": "ADX 16 (ranging) -> weighting rsi, bollinger_pct_b; -2.3% over ~63d; ATR 1.5% of price",
-   "reading": {
-    "price": 760.25,
-    "rsi": 50.07,
-    "macd_hist": -0.8666,
-    "supertrend_direction": -1,
-    "sma_fast": 764.9734,
-    "sma_slow": 731.3096,
-    "bollinger_pct_b": 0.5007,
-    "adx": 15.88,
-    "atr_pct": 0.0146,
-    "momentum_short": -0.0228,
-    "momentum_long": -0.0227,
-    "annualised_volatility": 0.1463
    }
   },
   {
@@ -5787,72 +5820,6 @@
    }
   },
   {
-   "key": "IN:TATACHEM",
-   "symbol": "TATACHEM",
-   "name": "Tata Chemicals",
-   "region": "india",
-   "sector": "chemicals",
-   "regime": "ranging",
-   "signal": "neutral",
-   "signal_strength": 0.1338,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0655,
-   "relative_momentum_long": -0.0366,
-   "score": 0.0015,
-   "rationale": "ADX 9 (ranging) -> weighting rsi, bollinger_pct_b; -10.2% over ~63d; ATR 3.6% of price",
-   "reading": {
-    "price": 604.75,
-    "rsi": 46.14,
-    "macd_hist": 2.1274,
-    "supertrend_direction": -1,
-    "sma_fast": 630.346,
-    "sma_slow": 686.134,
-    "bollinger_pct_b": 0.4048,
-    "adx": 9.41,
-    "atr_pct": 0.0359,
-    "momentum_short": 0.0199,
-    "momentum_long": -0.1021,
-    "annualised_volatility": 0.5639
-   }
-  },
-  {
-   "key": "US:DE",
-   "symbol": "DE",
-   "name": "Deere & Company",
-   "region": "us",
-   "sector": "industrials",
-   "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.5374,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.1942,
-   "score": 0.0007,
-   "rationale": "ADX 21 (ranging) -> weighting rsi, bollinger_pct_b; +12.8% over ~63d; ATR 2.8% of price",
-   "reading": {
-    "price": 690.64,
-    "rsi": 61.58,
-    "macd_hist": 4.8943,
-    "supertrend_direction": 1,
-    "sma_fast": 669.1796,
-    "sma_slow": 611.194,
-    "bollinger_pct_b": 0.9216,
-    "adx": 21.24,
-    "atr_pct": 0.0282,
-    "momentum_short": 0.0625,
-    "momentum_long": 0.1278,
-    "annualised_volatility": 0.3221
-   }
-  },
-  {
    "key": "US:COF",
    "symbol": "COF",
    "name": "Capital One",
@@ -5886,36 +5853,36 @@
    }
   },
   {
-   "key": "US:EMR",
-   "symbol": "EMR",
-   "name": "Emerson Electric",
-   "region": "us",
-   "sector": "industrials",
+   "key": "IN:TATACHEM",
+   "symbol": "TATACHEM",
+   "name": "Tata Chemicals",
+   "region": "india",
+   "sector": "chemicals",
    "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.3291,
+   "signal": "neutral",
+   "signal_strength": 0.1338,
    "volatility_bucket": "medium",
    "indicators_used": [
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.091,
-   "score": -0.0016,
-   "rationale": "ADX 10 (ranging) -> weighting rsi, bollinger_pct_b; +2.5% over ~63d; ATR 3.0% of price",
+   "sector_momentum_long": -0.0647,
+   "relative_momentum_long": -0.0374,
+   "score": -0.0004,
+   "rationale": "ADX 9 (ranging) -> weighting rsi, bollinger_pct_b; -10.2% over ~63d; ATR 3.6% of price",
    "reading": {
-    "price": 168.24,
-    "rsi": 56.93,
-    "macd_hist": -0.0457,
-    "supertrend_direction": 1,
-    "sma_fast": 158.9038,
-    "sma_slow": 147.7625,
-    "bollinger_pct_b": 0.7597,
-    "adx": 10.19,
-    "atr_pct": 0.0302,
-    "momentum_short": 0.029,
-    "momentum_long": 0.0245,
-    "annualised_volatility": 0.2635
+    "price": 604.75,
+    "rsi": 46.14,
+    "macd_hist": 2.1274,
+    "supertrend_direction": -1,
+    "sma_fast": 630.346,
+    "sma_slow": 686.134,
+    "bollinger_pct_b": 0.4048,
+    "adx": 9.41,
+    "atr_pct": 0.0359,
+    "momentum_short": 0.0199,
+    "momentum_long": -0.1021,
+    "annualised_volatility": 0.5639
    }
   },
   {
@@ -5933,9 +5900,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.0947,
-   "score": -0.0043,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.0953,
+   "score": -0.0057,
    "rationale": "ADX 36 (trending) -> weighting supertrend, macd, sma_cross; -11.1% over ~63d; ATR 2.2% of price",
    "reading": {
     "price": 3466.8999,
@@ -5950,6 +5917,73 @@
     "momentum_short": -0.0329,
     "momentum_long": -0.1111,
     "annualised_volatility": 0.2598
+   }
+  },
+  {
+   "key": "US:MPC",
+   "symbol": "MPC",
+   "name": "Marathon Petroleum",
+   "region": "us",
+   "sector": "energy",
+   "regime": "trending",
+   "signal": "bearish",
+   "signal_strength": -0.3333,
+   "volatility_bucket": "high",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": 0.0896,
+   "score": -0.0077,
+   "rationale": "ADX 32 (trending) -> weighting supertrend, macd, sma_cross; +13.0% over ~63d; ATR 4.8% of price",
+   "reading": {
+    "price": 402.84,
+    "rsi": 43.32,
+    "macd_hist": -7.6828,
+    "supertrend_direction": -1,
+    "sma_fast": 422.885,
+    "sma_slow": 299.3939,
+    "bollinger_pct_b": 0.2719,
+    "adx": 31.59,
+    "atr_pct": 0.0478,
+    "momentum_short": -0.1554,
+    "momentum_long": 0.1304,
+    "annualised_volatility": 0.4047
+   }
+  },
+  {
+   "key": "US:DE",
+   "symbol": "DE",
+   "name": "Deere & Company",
+   "region": "us",
+   "sector": "industrials",
+   "regime": "ranging",
+   "signal": "bearish",
+   "signal_strength": -0.5522,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.1959,
+   "score": -0.0089,
+   "rationale": "ADX 21 (ranging) -> weighting rsi, bollinger_pct_b; +13.0% over ~63d; ATR 2.8% of price",
+   "reading": {
+    "price": 691.75,
+    "rsi": 61.92,
+    "macd_hist": 4.9651,
+    "supertrend_direction": 1,
+    "sma_fast": 669.2018,
+    "sma_slow": 611.1996,
+    "bollinger_pct_b": 0.933,
+    "adx": 21.24,
+    "atr_pct": 0.0282,
+    "momentum_short": 0.0642,
+    "momentum_long": 0.1296,
+    "annualised_volatility": 0.3221
    }
   },
   {
@@ -6087,6 +6121,39 @@
    }
   },
   {
+   "key": "US:NUE",
+   "symbol": "NUE",
+   "name": "Nucor",
+   "region": "us",
+   "sector": "metals",
+   "regime": "ranging",
+   "signal": "neutral",
+   "signal_strength": -0.0055,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0337,
+   "relative_momentum_long": -0.0063,
+   "score": -0.0184,
+   "rationale": "ADX 13 (ranging) -> weighting rsi, bollinger_pct_b; -4.0% over ~63d; ATR 3.9% of price",
+   "reading": {
+    "price": 261.39,
+    "rsi": 52.14,
+    "macd_hist": -1.7405,
+    "supertrend_direction": -1,
+    "sma_fast": 255.4688,
+    "sma_slow": 227.2935,
+    "bollinger_pct_b": 0.4841,
+    "adx": 13.48,
+    "atr_pct": 0.0386,
+    "momentum_short": 0.0299,
+    "momentum_long": -0.04,
+    "annualised_volatility": 0.3703
+   }
+  },
+  {
    "key": "IN:INFY",
    "symbol": "INFY",
    "name": "Infosys",
@@ -6117,106 +6184,6 @@
     "momentum_short": 0.1576,
     "momentum_long": -0.0179,
     "annualised_volatility": 0.3222
-   }
-  },
-  {
-   "key": "US:NUE",
-   "symbol": "NUE",
-   "name": "Nucor",
-   "region": "us",
-   "sector": "metals",
-   "regime": "ranging",
-   "signal": "neutral",
-   "signal_strength": -0.0164,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0332,
-   "relative_momentum_long": -0.0056,
-   "score": -0.0238,
-   "rationale": "ADX 14 (ranging) -> weighting rsi, bollinger_pct_b; -3.9% over ~63d; ATR 3.8% of price",
-   "reading": {
-    "price": 261.73,
-    "rsi": 52.38,
-    "macd_hist": -1.7188,
-    "supertrend_direction": -1,
-    "sma_fast": 255.4756,
-    "sma_slow": 227.2953,
-    "bollinger_pct_b": 0.4926,
-    "adx": 13.53,
-    "atr_pct": 0.0384,
-    "momentum_short": 0.0312,
-    "momentum_long": -0.0388,
-    "annualised_volatility": 0.3706
-   }
-  },
-  {
-   "key": "IN:INDUSTOWER",
-   "symbol": "INDUSTOWER",
-   "name": "Indus Towers",
-   "region": "india",
-   "sector": "telecom",
-   "regime": "ranging",
-   "signal": "neutral",
-   "signal_strength": -0.1116,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0267,
-   "relative_momentum_long": 0.0203,
-   "score": -0.0251,
-   "rationale": "ADX 10 (ranging) -> weighting rsi, bollinger_pct_b; -0.6% over ~63d; ATR 2.6% of price",
-   "reading": {
-    "price": 383.55,
-    "rsi": 51.49,
-    "macd_hist": 0.1384,
-    "supertrend_direction": -1,
-    "sma_fast": 379.452,
-    "sma_slow": 408.4602,
-    "bollinger_pct_b": 0.5967,
-    "adx": 9.68,
-    "atr_pct": 0.0258,
-    "momentum_short": 0.0283,
-    "momentum_long": -0.0063,
-    "annualised_volatility": 0.2894
-   }
-  },
-  {
-   "key": "US:MPC",
-   "symbol": "MPC",
-   "name": "Marathon Petroleum",
-   "region": "us",
-   "sector": "energy",
-   "regime": "trending",
-   "signal": "bearish",
-   "signal_strength": -0.3333,
-   "volatility_bucket": "high",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": 0.0819,
-   "score": -0.0256,
-   "rationale": "ADX 32 (trending) -> weighting supertrend, macd, sma_cross; +12.1% over ~63d; ATR 4.8% of price",
-   "reading": {
-    "price": 399.61,
-    "rsi": 42.06,
-    "macd_hist": -7.8889,
-    "supertrend_direction": -1,
-    "sma_fast": 422.8204,
-    "sma_slow": 299.3777,
-    "bollinger_pct_b": 0.251,
-    "adx": 31.82,
-    "atr_pct": 0.0476,
-    "momentum_short": -0.1622,
-    "momentum_long": 0.1213,
-    "annualised_volatility": 0.4024
    }
   },
   {
@@ -6253,6 +6220,39 @@
    }
   },
   {
+   "key": "US:VTI",
+   "symbol": "VTI",
+   "name": "Vanguard Total Stock Market ETF",
+   "region": "us",
+   "sector": "index",
+   "regime": "ranging",
+   "signal": "neutral",
+   "signal_strength": -0.0433,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0261,
+   "relative_momentum_long": -0.0,
+   "score": -0.0282,
+   "rationale": "ADX 18 (ranging) -> weighting rsi, bollinger_pct_b; -2.6% over ~63d; ATR 1.4% of price",
+   "reading": {
+    "price": 374.25,
+    "rsi": 50.61,
+    "macd_hist": -0.2683,
+    "supertrend_direction": -1,
+    "sma_fast": 376.043,
+    "sma_slow": 360.4998,
+    "bollinger_pct_b": 0.5372,
+    "adx": 17.52,
+    "atr_pct": 0.0141,
+    "momentum_short": -0.0185,
+    "momentum_long": -0.0262,
+    "annualised_volatility": 0.1472
+   }
+  },
+  {
    "key": "IN:HAL",
    "symbol": "HAL",
    "name": "Hindustan Aeronautics",
@@ -6266,9 +6266,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.0846,
-   "score": -0.0311,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.0844,
+   "score": -0.0315,
    "rationale": "ADX 12 (ranging) -> weighting rsi, bollinger_pct_b; +1.8% over ~63d; ATR 2.6% of price",
    "reading": {
     "price": 4999.0,
@@ -6286,36 +6286,36 @@
    }
   },
   {
-   "key": "US:VTI",
-   "symbol": "VTI",
-   "name": "Vanguard Total Stock Market ETF",
-   "region": "us",
-   "sector": "index",
+   "key": "IN:INDUSTOWER",
+   "symbol": "INDUSTOWER",
+   "name": "Indus Towers",
+   "region": "india",
+   "sector": "telecom",
    "regime": "ranging",
    "signal": "neutral",
-   "signal_strength": -0.054,
-   "volatility_bucket": "low",
+   "signal_strength": -0.1116,
+   "volatility_bucket": "medium",
    "indicators_used": [
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0259,
-   "relative_momentum_long": 0.0003,
-   "score": -0.0345,
-   "rationale": "ADX 18 (ranging) -> weighting rsi, bollinger_pct_b; -2.6% over ~63d; ATR 1.4% of price",
+   "sector_momentum_long": -0.0238,
+   "relative_momentum_long": 0.0175,
+   "score": -0.0317,
+   "rationale": "ADX 10 (ranging) -> weighting rsi, bollinger_pct_b; -0.6% over ~63d; ATR 2.6% of price",
    "reading": {
-    "price": 374.44,
-    "rsi": 50.79,
-    "macd_hist": -0.2562,
+    "price": 383.55,
+    "rsi": 51.49,
+    "macd_hist": 0.1384,
     "supertrend_direction": -1,
-    "sma_fast": 376.0468,
-    "sma_slow": 360.5007,
-    "bollinger_pct_b": 0.5461,
-    "adx": 17.52,
-    "atr_pct": 0.0141,
-    "momentum_short": -0.018,
-    "momentum_long": -0.0257,
-    "annualised_volatility": 0.1474
+    "sma_fast": 379.452,
+    "sma_slow": 408.4602,
+    "bollinger_pct_b": 0.5967,
+    "adx": 9.68,
+    "atr_pct": 0.0258,
+    "momentum_short": 0.0283,
+    "momentum_long": -0.0063,
+    "annualised_volatility": 0.2894
    }
   },
   {
@@ -6333,9 +6333,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.1079,
-   "score": -0.035,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.1085,
+   "score": -0.0364,
    "rationale": "ADX 35 (trending) -> weighting supertrend, macd, sma_cross; -12.4% over ~63d; ATR 3.7% of price",
    "reading": {
     "price": 218.9,
@@ -6419,6 +6419,40 @@
    }
   },
   {
+   "key": "US:CMCSA",
+   "symbol": "CMCSA",
+   "name": "Comcast",
+   "region": "us",
+   "sector": "media",
+   "regime": "trending",
+   "signal": "bullish",
+   "signal_strength": 0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": 0.0673,
+   "relative_momentum_long": -0.1116,
+   "score": -0.0437,
+   "rationale": "ADX 29 (trending) -> weighting supertrend, macd, sma_cross; -4.4% over ~63d; ATR 3.0% of price",
+   "reading": {
+    "price": 25.02,
+    "rsi": 66.81,
+    "macd_hist": 0.2938,
+    "supertrend_direction": 1,
+    "sma_fast": 23.0266,
+    "sma_slow": 25.9086,
+    "bollinger_pct_b": 0.889,
+    "adx": 29.4,
+    "atr_pct": 0.0298,
+    "momentum_short": 0.1983,
+    "momentum_long": -0.0443,
+    "annualised_volatility": 0.3229
+   }
+  },
+  {
    "key": "IN:BRITANNIA",
    "symbol": "BRITANNIA",
    "name": "Britannia Industries",
@@ -6433,9 +6467,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.1143,
-   "score": -0.0501,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.1149,
+   "score": -0.0514,
    "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; -13.1% over ~63d; ATR 2.6% of price",
    "reading": {
     "price": 4790.0,
@@ -6466,9 +6500,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0332,
-   "relative_momentum_long": -0.0064,
-   "score": -0.0555,
+   "sector_momentum_long": -0.0337,
+   "relative_momentum_long": -0.0059,
+   "score": -0.0543,
    "rationale": "ADX 20 (ranging) -> weighting rsi, bollinger_pct_b; -4.0% over ~63d; ATR 3.5% of price",
    "reading": {
     "price": 169.59,
@@ -6483,40 +6517,6 @@
     "momentum_short": 0.0201,
     "momentum_long": -0.0396,
     "annualised_volatility": 0.3627
-   }
-  },
-  {
-   "key": "US:CMCSA",
-   "symbol": "CMCSA",
-   "name": "Comcast",
-   "region": "us",
-   "sector": "media",
-   "regime": "trending",
-   "signal": "bullish",
-   "signal_strength": 0.3333,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": 0.066,
-   "relative_momentum_long": -0.117,
-   "score": -0.0563,
-   "rationale": "ADX 29 (trending) -> weighting supertrend, macd, sma_cross; -5.1% over ~63d; ATR 2.9% of price",
-   "reading": {
-    "price": 24.845,
-    "rsi": 65.71,
-    "macd_hist": 0.2826,
-    "supertrend_direction": 1,
-    "sma_fast": 23.0231,
-    "sma_slow": 25.9077,
-    "bollinger_pct_b": 0.8588,
-    "adx": 29.4,
-    "atr_pct": 0.0295,
-    "momentum_short": 0.1899,
-    "momentum_long": -0.051,
-    "annualised_volatility": 0.3222
    }
   },
   {
@@ -6587,40 +6587,6 @@
    }
   },
   {
-   "key": "US:COP",
-   "symbol": "COP",
-   "name": "ConocoPhillips",
-   "region": "us",
-   "sector": "energy",
-   "regime": "trending",
-   "signal": "bearish",
-   "signal_strength": -0.3333,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": 0.0656,
-   "score": -0.0636,
-   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +10.5% over ~63d; ATR 3.0% of price",
-   "reading": {
-    "price": 137.6,
-    "rsi": 45.96,
-    "macd_hist": -1.9055,
-    "supertrend_direction": -1,
-    "sma_fast": 137.0958,
-    "sma_slow": 122.9314,
-    "bollinger_pct_b": 0.2251,
-    "adx": 29.76,
-    "atr_pct": 0.0298,
-    "momentum_short": -0.0234,
-    "momentum_long": 0.105,
-    "annualised_volatility": 0.309
-   }
-  },
-  {
    "key": "US:PANW",
    "symbol": "PANW",
    "name": "Palo Alto Networks",
@@ -6654,6 +6620,40 @@
    }
   },
   {
+   "key": "US:COP",
+   "symbol": "COP",
+   "name": "ConocoPhillips",
+   "region": "us",
+   "sector": "energy",
+   "regime": "trending",
+   "signal": "bearish",
+   "signal_strength": -0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": 0.0642,
+   "score": -0.0669,
+   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +10.5% over ~63d; ATR 3.0% of price",
+   "reading": {
+    "price": 137.6,
+    "rsi": 45.96,
+    "macd_hist": -1.9055,
+    "supertrend_direction": -1,
+    "sma_fast": 137.0958,
+    "sma_slow": 122.9314,
+    "bollinger_pct_b": 0.2251,
+    "adx": 29.76,
+    "atr_pct": 0.0298,
+    "momentum_short": -0.0234,
+    "momentum_long": 0.105,
+    "annualised_volatility": 0.309
+   }
+  },
+  {
    "key": "IN:AARTIIND",
    "symbol": "AARTIIND",
    "name": "Aarti Industries",
@@ -6667,9 +6667,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0655,
-   "relative_momentum_long": -0.0187,
-   "score": -0.0714,
+   "sector_momentum_long": -0.0647,
+   "relative_momentum_long": -0.0195,
+   "score": -0.0733,
    "rationale": "ADX 16 (ranging) -> weighting rsi, bollinger_pct_b; -8.4% over ~63d; ATR 4.4% of price",
    "reading": {
     "price": 459.8,
@@ -6788,39 +6788,6 @@
    }
   },
   {
-   "key": "US:SLB",
-   "symbol": "SLB",
-   "name": "SLB",
-   "region": "us",
-   "sector": "energy",
-   "regime": "ranging",
-   "signal": "neutral",
-   "signal_strength": 0.0851,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": -0.0635,
-   "score": -0.0927,
-   "rationale": "ADX 17 (ranging) -> weighting rsi, bollinger_pct_b; -2.4% over ~63d; ATR 3.4% of price",
-   "reading": {
-    "price": 50.81,
-    "rsi": 48.21,
-    "macd_hist": -0.1977,
-    "supertrend_direction": 1,
-    "sma_fast": 51.7294,
-    "sma_slow": 51.5583,
-    "bollinger_pct_b": 0.4328,
-    "adx": 16.74,
-    "atr_pct": 0.0336,
-    "momentum_short": 0.0418,
-    "momentum_long": -0.024,
-    "annualised_volatility": 0.3456
-   }
-  },
-  {
    "key": "IN:LICHSGFIN",
    "symbol": "LICHSGFIN",
    "name": "LIC Housing Finance",
@@ -6854,40 +6821,6 @@
    }
   },
   {
-   "key": "IN:VOLTAS",
-   "symbol": "VOLTAS",
-   "name": "Voltas",
-   "region": "india",
-   "sector": "consumer",
-   "regime": "trending",
-   "signal": "bullish",
-   "signal_strength": 0.3333,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.1353,
-   "score": -0.0991,
-   "rationale": "ADX 32 (trending) -> weighting supertrend, macd, sma_cross; -15.2% over ~63d; ATR 3.5% of price",
-   "reading": {
-    "price": 1090.1,
-    "rsi": 56.77,
-    "macd_hist": 17.2848,
-    "supertrend_direction": 1,
-    "sma_fast": 1087.618,
-    "sma_slow": 1285.3565,
-    "bollinger_pct_b": 0.8398,
-    "adx": 31.73,
-    "atr_pct": 0.0353,
-    "momentum_short": 0.0563,
-    "momentum_long": -0.1517,
-    "annualised_volatility": 0.3274
-   }
-  },
-  {
    "key": "IN:ANGELONE",
    "symbol": "ANGELONE",
    "name": "Angel One",
@@ -6918,6 +6851,40 @@
     "momentum_short": 0.1458,
     "momentum_long": 0.1575,
     "annualised_volatility": 0.3717
+   }
+  },
+  {
+   "key": "IN:VOLTAS",
+   "symbol": "VOLTAS",
+   "name": "Voltas",
+   "region": "india",
+   "sector": "consumer",
+   "regime": "trending",
+   "signal": "bullish",
+   "signal_strength": 0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.1359,
+   "score": -0.1005,
+   "rationale": "ADX 32 (trending) -> weighting supertrend, macd, sma_cross; -15.2% over ~63d; ATR 3.5% of price",
+   "reading": {
+    "price": 1090.1,
+    "rsi": 56.77,
+    "macd_hist": 17.2848,
+    "supertrend_direction": 1,
+    "sma_fast": 1087.618,
+    "sma_slow": 1285.3565,
+    "bollinger_pct_b": 0.8398,
+    "adx": 31.73,
+    "atr_pct": 0.0353,
+    "momentum_short": 0.0563,
+    "momentum_long": -0.1517,
+    "annualised_volatility": 0.3274
    }
   },
   {
@@ -6955,6 +6922,39 @@
    }
   },
   {
+   "key": "US:SLB",
+   "symbol": "SLB",
+   "name": "SLB",
+   "region": "us",
+   "sector": "energy",
+   "regime": "ranging",
+   "signal": "neutral",
+   "signal_strength": 0.0579,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": -0.062,
+   "score": -0.107,
+   "rationale": "ADX 17 (ranging) -> weighting rsi, bollinger_pct_b; -2.1% over ~63d; ATR 3.3% of price",
+   "reading": {
+    "price": 50.96,
+    "rsi": 48.93,
+    "macd_hist": -0.1881,
+    "supertrend_direction": 1,
+    "sma_fast": 51.7324,
+    "sma_slow": 51.5591,
+    "bollinger_pct_b": 0.4528,
+    "adx": 16.74,
+    "atr_pct": 0.0335,
+    "momentum_short": 0.0449,
+    "momentum_long": -0.0211,
+    "annualised_volatility": 0.3463
+   }
+  },
+  {
    "key": "US:DIA",
    "symbol": "DIA",
    "name": "SPDR Dow Jones Industrial ETF",
@@ -6962,62 +6962,29 @@
    "sector": "index",
    "regime": "ranging",
    "signal": "bearish",
-   "signal_strength": -0.1674,
+   "signal_strength": -0.1703,
    "volatility_bucket": "low",
    "indicators_used": [
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0259,
-   "relative_momentum_long": 0.0008,
-   "score": -0.107,
+   "sector_momentum_long": -0.0261,
+   "relative_momentum_long": 0.0011,
+   "score": -0.1082,
    "rationale": "ADX 14 (ranging) -> weighting rsi, bollinger_pct_b; -2.5% over ~63d; ATR 1.4% of price",
    "reading": {
-    "price": 524.39,
-    "rsi": 53.19,
-    "macd_hist": 0.0913,
+    "price": 524.44,
+    "rsi": 53.23,
+    "macd_hist": 0.0945,
     "supertrend_direction": 1,
-    "sma_fast": 519.6964,
-    "sma_slow": 507.1176,
-    "bollinger_pct_b": 0.6355,
+    "sma_fast": 519.6974,
+    "sma_slow": 507.1179,
+    "bollinger_pct_b": 0.638,
     "adx": 14.0,
     "atr_pct": 0.0136,
-    "momentum_short": 0.0158,
-    "momentum_long": -0.0251,
+    "momentum_short": 0.0159,
+    "momentum_long": -0.025,
     "annualised_volatility": 0.1431
-   }
-  },
-  {
-   "key": "IN:COALINDIA",
-   "symbol": "COALINDIA",
-   "name": "Coal India",
-   "region": "india",
-   "sector": "energy",
-   "regime": "ranging",
-   "signal": "neutral",
-   "signal_strength": 0.095,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": -0.0726,
-   "score": -0.1076,
-   "rationale": "ADX 24 (ranging) -> weighting rsi, bollinger_pct_b; -3.3% over ~63d; ATR 2.4% of price",
-   "reading": {
-    "price": 401.5,
-    "rsi": 47.04,
-    "macd_hist": 0.2904,
-    "supertrend_direction": -1,
-    "sma_fast": 412.183,
-    "sma_slow": 432.6715,
-    "bollinger_pct_b": 0.4346,
-    "adx": 23.72,
-    "atr_pct": 0.0237,
-    "momentum_short": -0.0192,
-    "momentum_long": -0.0331,
-    "annualised_volatility": 0.2285
    }
   },
   {
@@ -7054,6 +7021,39 @@
    }
   },
   {
+   "key": "IN:COALINDIA",
+   "symbol": "COALINDIA",
+   "name": "Coal India",
+   "region": "india",
+   "sector": "energy",
+   "regime": "ranging",
+   "signal": "neutral",
+   "signal_strength": 0.095,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": -0.074,
+   "score": -0.1108,
+   "rationale": "ADX 24 (ranging) -> weighting rsi, bollinger_pct_b; -3.3% over ~63d; ATR 2.4% of price",
+   "reading": {
+    "price": 401.5,
+    "rsi": 47.04,
+    "macd_hist": 0.2904,
+    "supertrend_direction": -1,
+    "sma_fast": 412.183,
+    "sma_slow": 432.6715,
+    "bollinger_pct_b": 0.4346,
+    "adx": 23.72,
+    "atr_pct": 0.0237,
+    "momentum_short": -0.0192,
+    "momentum_long": -0.0331,
+    "annualised_volatility": 0.2285
+   }
+  },
+  {
    "key": "US:AEP",
    "symbol": "AEP",
    "name": "American Electric Power",
@@ -7068,57 +7068,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0151,
-   "relative_momentum_long": 0.0452,
-   "score": -0.1112,
-   "rationale": "ADX 27 (trending) -> weighting supertrend, macd, sma_cross; +3.0% over ~63d; ATR 2.1% of price",
+   "sector_momentum_long": -0.0145,
+   "relative_momentum_long": 0.0451,
+   "score": -0.1115,
+   "rationale": "ADX 27 (trending) -> weighting supertrend, macd, sma_cross; +3.1% over ~63d; ATR 2.1% of price",
    "reading": {
-    "price": 129.16,
-    "rsi": 57.18,
-    "macd_hist": -0.3057,
+    "price": 129.21,
+    "rsi": 57.31,
+    "macd_hist": -0.3025,
     "supertrend_direction": 1,
-    "sma_fast": 124.3188,
-    "sma_slow": 128.51,
-    "bollinger_pct_b": 0.6181,
-    "adx": 26.98,
-    "atr_pct": 0.0211,
-    "momentum_short": 0.0279,
-    "momentum_long": 0.0301,
-    "annualised_volatility": 0.1688
-   }
-  },
-  {
-   "key": "IN:NESTLEIND",
-   "symbol": "NESTLEIND",
-   "name": "Nestle India",
-   "region": "india",
-   "sector": "consumer",
-   "regime": "trending",
-   "signal": "bullish",
-   "signal_strength": 0.3333,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.1409,
-   "score": -0.1122,
-   "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; -15.7% over ~63d; ATR 2.8% of price",
-   "reading": {
-    "price": 1297.8,
-    "rsi": 55.97,
-    "macd_hist": 16.3131,
-    "supertrend_direction": 1,
-    "sma_fast": 1322.736,
-    "sma_slow": 1359.095,
-    "bollinger_pct_b": 0.7328,
-    "adx": 30.69,
-    "atr_pct": 0.0281,
-    "momentum_short": -0.0161,
-    "momentum_long": -0.1573,
-    "annualised_volatility": 0.2938
+    "sma_fast": 124.3198,
+    "sma_slow": 128.5102,
+    "bollinger_pct_b": 0.6247,
+    "adx": 27.02,
+    "atr_pct": 0.0212,
+    "momentum_short": 0.0283,
+    "momentum_long": 0.0305,
+    "annualised_volatility": 0.1689
    }
   },
   {
@@ -7136,9 +7102,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0259,
-   "relative_momentum_long": 0.0444,
-   "score": -0.113,
+   "sector_momentum_long": -0.0261,
+   "relative_momentum_long": 0.0446,
+   "score": -0.1125,
    "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +1.9% over ~63d; ATR 3.7% of price",
    "reading": {
     "price": 35.76,
@@ -7156,6 +7122,40 @@
    }
   },
   {
+   "key": "IN:NESTLEIND",
+   "symbol": "NESTLEIND",
+   "name": "Nestle India",
+   "region": "india",
+   "sector": "consumer",
+   "regime": "trending",
+   "signal": "bullish",
+   "signal_strength": 0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.1415,
+   "score": -0.1135,
+   "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; -15.7% over ~63d; ATR 2.8% of price",
+   "reading": {
+    "price": 1297.8,
+    "rsi": 55.97,
+    "macd_hist": 16.3131,
+    "supertrend_direction": 1,
+    "sma_fast": 1322.736,
+    "sma_slow": 1359.095,
+    "bollinger_pct_b": 0.7328,
+    "adx": 30.69,
+    "atr_pct": 0.0281,
+    "momentum_short": -0.0161,
+    "momentum_long": -0.1573,
+    "annualised_volatility": 0.2938
+   }
+  },
+  {
    "key": "IN:MOTHERSON",
    "symbol": "MOTHERSON",
    "name": "Samvardhana Motherson",
@@ -7169,9 +7169,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": 0.0268,
-   "score": -0.1156,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": 0.0263,
+   "score": -0.1167,
    "rationale": "ADX 15 (ranging) -> weighting rsi, bollinger_pct_b; -3.9% over ~63d; ATR 3.5% of price",
    "reading": {
     "price": 161.91,
@@ -7223,70 +7223,36 @@
    }
   },
   {
-   "key": "US:F",
-   "symbol": "F",
-   "name": "Ford Motor",
+   "key": "US:TGT",
+   "symbol": "TGT",
+   "name": "Target",
    "region": "us",
-   "sector": "auto",
+   "sector": "consumer",
    "regime": "ranging",
-   "signal": "neutral",
-   "signal_strength": -0.0137,
+   "signal": "bearish",
+   "signal_strength": -0.4271,
    "volatility_bucket": "medium",
    "indicators_used": [
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": -0.0526,
-   "score": -0.1316,
-   "rationale": "ADX 19 (ranging) -> weighting rsi, bollinger_pct_b; -11.8% over ~63d; ATR 2.9% of price",
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.062,
+   "score": -0.133,
+   "rationale": "ADX 18 (ranging) -> weighting rsi, bollinger_pct_b; +4.6% over ~63d; ATR 3.3% of price",
    "reading": {
-    "price": 12.245,
-    "rsi": 47.61,
-    "macd_hist": 0.0627,
+    "price": 162.7,
+    "rsi": 57.28,
+    "macd_hist": 1.1993,
     "supertrend_direction": 1,
-    "sma_fast": 12.6541,
-    "sma_slow": 13.2956,
-    "bollinger_pct_b": 0.5376,
-    "adx": 18.98,
-    "atr_pct": 0.0285,
-    "momentum_short": 0.012,
-    "momentum_long": -0.1184,
-    "annualised_volatility": 0.314
-   }
-  },
-  {
-   "key": "US:CVX",
-   "symbol": "CVX",
-   "name": "Chevron",
-   "region": "us",
-   "sector": "energy",
-   "regime": "trending",
-   "signal": "bearish",
-   "signal_strength": -0.3333,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": 0.036,
-   "score": -0.1327,
-   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +7.5% over ~63d; ATR 2.4% of price",
-   "reading": {
-    "price": 212.615,
-    "rsi": 41.74,
-    "macd_hist": -2.6936,
-    "supertrend_direction": -1,
-    "sma_fast": 215.2053,
-    "sma_slow": 195.3166,
-    "bollinger_pct_b": 0.1526,
-    "adx": 30.21,
-    "atr_pct": 0.0242,
-    "momentum_short": -0.0235,
-    "momentum_long": 0.0754,
-    "annualised_volatility": 0.2308
+    "sma_fast": 156.471,
+    "sma_slow": 136.1294,
+    "bollinger_pct_b": 0.8543,
+    "adx": 18.28,
+    "atr_pct": 0.0325,
+    "momentum_short": 0.0705,
+    "momentum_long": 0.0462,
+    "annualised_volatility": 0.3309
    }
   },
   {
@@ -7493,36 +7459,70 @@
    }
   },
   {
-   "key": "US:TGT",
-   "symbol": "TGT",
-   "name": "Target",
+   "key": "US:F",
+   "symbol": "F",
+   "name": "Ford Motor",
    "region": "us",
-   "sector": "consumer",
+   "sector": "auto",
    "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.4385,
+   "signal": "neutral",
+   "signal_strength": -0.0185,
    "volatility_bucket": "medium",
    "indicators_used": [
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.064,
-   "score": -0.1358,
-   "rationale": "ADX 18 (ranging) -> weighting rsi, bollinger_pct_b; +4.8% over ~63d; ATR 3.2% of price",
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": -0.0527,
+   "score": -0.1349,
+   "rationale": "ADX 19 (ranging) -> weighting rsi, bollinger_pct_b; -11.8% over ~63d; ATR 2.8% of price",
    "reading": {
-    "price": 162.915,
-    "rsi": 57.49,
-    "macd_hist": 1.213,
+    "price": 12.25,
+    "rsi": 47.7,
+    "macd_hist": 0.0631,
     "supertrend_direction": 1,
-    "sma_fast": 156.4753,
-    "sma_slow": 136.1305,
-    "bollinger_pct_b": 0.8636,
-    "adx": 18.28,
-    "atr_pct": 0.0325,
-    "momentum_short": 0.0719,
-    "momentum_long": 0.0476,
-    "annualised_volatility": 0.331
+    "sma_fast": 12.6542,
+    "sma_slow": 13.2956,
+    "bollinger_pct_b": 0.5414,
+    "adx": 18.98,
+    "atr_pct": 0.0285,
+    "momentum_short": 0.0124,
+    "momentum_long": -0.1181,
+    "annualised_volatility": 0.314
+   }
+  },
+  {
+   "key": "US:CVX",
+   "symbol": "CVX",
+   "name": "Chevron",
+   "region": "us",
+   "sector": "energy",
+   "regime": "trending",
+   "signal": "bearish",
+   "signal_strength": -0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": 0.0346,
+   "score": -0.1359,
+   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +7.5% over ~63d; ATR 2.4% of price",
+   "reading": {
+    "price": 212.615,
+    "rsi": 41.74,
+    "macd_hist": -2.6936,
+    "supertrend_direction": -1,
+    "sma_fast": 215.2053,
+    "sma_slow": 195.3166,
+    "bollinger_pct_b": 0.1526,
+    "adx": 30.21,
+    "atr_pct": 0.0242,
+    "momentum_short": -0.0235,
+    "momentum_long": 0.0754,
+    "annualised_volatility": 0.2308
    }
   },
   {
@@ -7572,9 +7572,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.0684,
-   "score": -0.1513,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.069,
+   "score": -0.1527,
    "rationale": "ADX 20 (ranging) -> weighting rsi, bollinger_pct_b; -8.5% over ~63d; ATR 2.6% of price",
    "reading": {
     "price": 375.25,
@@ -7589,6 +7589,74 @@
     "momentum_short": -0.0041,
     "momentum_long": -0.0848,
     "annualised_volatility": 0.2346
+   }
+  },
+  {
+   "key": "US:SO",
+   "symbol": "SO",
+   "name": "Southern Company",
+   "region": "us",
+   "sector": "utilities",
+   "regime": "trending",
+   "signal": "bearish",
+   "signal_strength": -0.3333,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0145,
+   "relative_momentum_long": 0.0259,
+   "score": -0.1563,
+   "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; +1.1% over ~63d; ATR 1.9% of price",
+   "reading": {
+    "price": 93.84,
+    "rsi": 61.93,
+    "macd_hist": -0.0752,
+    "supertrend_direction": 1,
+    "sma_fast": 88.505,
+    "sma_slow": 92.6363,
+    "bollinger_pct_b": 0.7264,
+    "adx": 30.59,
+    "atr_pct": 0.0192,
+    "momentum_short": 0.065,
+    "momentum_long": 0.0113,
+    "annualised_volatility": 0.1729
+   }
+  },
+  {
+   "key": "US:NOC",
+   "symbol": "NOC",
+   "name": "Northrop Grumman",
+   "region": "us",
+   "sector": "industrials",
+   "regime": "trending",
+   "signal": "bearish",
+   "signal_strength": -0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.0249,
+   "score": -0.1586,
+   "rationale": "ADX 29 (trending) -> weighting supertrend, macd, sma_cross; -4.1% over ~63d; ATR 2.8% of price",
+   "reading": {
+    "price": 550.96,
+    "rsi": 58.76,
+    "macd_hist": -0.7267,
+    "supertrend_direction": 1,
+    "sma_fast": 519.6124,
+    "sma_slow": 586.0266,
+    "bollinger_pct_b": 0.6447,
+    "adx": 28.89,
+    "atr_pct": 0.0283,
+    "momentum_short": 0.1445,
+    "momentum_long": -0.0414,
+    "annualised_volatility": 0.2939
    }
   },
   {
@@ -7625,37 +7693,37 @@
    }
   },
   {
-   "key": "US:SO",
-   "symbol": "SO",
-   "name": "Southern Company",
+   "key": "US:VLO",
+   "symbol": "VLO",
+   "name": "Valero Energy",
    "region": "us",
-   "sector": "utilities",
+   "sector": "energy",
    "regime": "trending",
    "signal": "bearish",
    "signal_strength": -0.3333,
-   "volatility_bucket": "low",
+   "volatility_bucket": "high",
    "indicators_used": [
     "supertrend",
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0151,
-   "relative_momentum_long": 0.023,
-   "score": -0.1629,
-   "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; +0.8% over ~63d; ATR 1.9% of price",
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": 0.0198,
+   "score": -0.1705,
+   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +6.1% over ~63d; ATR 5.0% of price",
    "reading": {
-    "price": 93.53,
-    "rsi": 60.59,
-    "macd_hist": -0.095,
-    "supertrend_direction": 1,
-    "sma_fast": 88.4988,
-    "sma_slow": 92.6347,
-    "bollinger_pct_b": 0.6797,
-    "adx": 30.59,
-    "atr_pct": 0.0191,
-    "momentum_short": 0.0615,
-    "momentum_long": 0.008,
-    "annualised_volatility": 0.1729
+    "price": 363.71,
+    "rsi": 40.59,
+    "macd_hist": -6.1546,
+    "supertrend_direction": -1,
+    "sma_fast": 399.6108,
+    "sma_slow": 292.8225,
+    "bollinger_pct_b": 0.2543,
+    "adx": 30.24,
+    "atr_pct": 0.05,
+    "momentum_short": -0.2032,
+    "momentum_long": 0.0606,
+    "annualised_volatility": 0.4211
    }
   },
   {
@@ -7672,9 +7740,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0151,
-   "relative_momentum_long": -0.0352,
-   "score": -0.1737,
+   "sector_momentum_long": -0.0145,
+   "relative_momentum_long": -0.0357,
+   "score": -0.1749,
    "rationale": "ADX 22 (ranging) -> weighting rsi, bollinger_pct_b; -5.0% over ~63d; ATR 2.5% of price",
    "reading": {
     "price": 257.95,
@@ -7689,74 +7757,6 @@
     "momentum_short": 0.0544,
     "momentum_long": -0.0503,
     "annualised_volatility": 0.2146
-   }
-  },
-  {
-   "key": "US:VLO",
-   "symbol": "VLO",
-   "name": "Valero Energy",
-   "region": "us",
-   "sector": "energy",
-   "regime": "trending",
-   "signal": "bearish",
-   "signal_strength": -0.3333,
-   "volatility_bucket": "high",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": 0.0175,
-   "score": -0.1757,
-   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +5.7% over ~63d; ATR 5.0% of price",
-   "reading": {
-    "price": 362.46,
-    "rsi": 40.07,
-    "macd_hist": -6.2344,
-    "supertrend_direction": -1,
-    "sma_fast": 399.5858,
-    "sma_slow": 292.8163,
-    "bollinger_pct_b": 0.2459,
-    "adx": 30.44,
-    "atr_pct": 0.0498,
-    "momentum_short": -0.2059,
-    "momentum_long": 0.057,
-    "annualised_volatility": 0.4199
-   }
-  },
-  {
-   "key": "US:NOC",
-   "symbol": "NOC",
-   "name": "Northrop Grumman",
-   "region": "us",
-   "sector": "industrials",
-   "regime": "trending",
-   "signal": "bearish",
-   "signal_strength": -0.3333,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.0167,
-   "score": -0.1777,
-   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; -5.0% over ~63d; ATR 2.9% of price",
-   "reading": {
-    "price": 548.61,
-    "rsi": 57.85,
-    "macd_hist": -1.3383,
-    "supertrend_direction": 1,
-    "sma_fast": 519.2514,
-    "sma_slow": 586.6655,
-    "bollinger_pct_b": 0.6326,
-    "adx": 29.93,
-    "atr_pct": 0.0294,
-    "momentum_short": 0.1312,
-    "momentum_long": -0.0497,
-    "annualised_volatility": 0.2939
    }
   },
   {
@@ -7806,9 +7806,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0332,
-   "relative_momentum_long": 0.0697,
-   "score": -0.1809,
+   "sector_momentum_long": -0.0337,
+   "relative_momentum_long": 0.0702,
+   "score": -0.1797,
    "rationale": "ADX 25 (ranging) -> weighting rsi, bollinger_pct_b; +3.7% over ~63d; ATR 2.4% of price",
    "reading": {
     "price": 1347.0,
@@ -7857,39 +7857,6 @@
     "momentum_short": -0.1726,
     "momentum_long": -0.0355,
     "annualised_volatility": 0.4936
-   }
-  },
-  {
-   "key": "IN:BERGEPAINT",
-   "symbol": "BERGEPAINT",
-   "name": "Berger Paints India",
-   "region": "india",
-   "sector": "consumer",
-   "regime": "ranging",
-   "signal": "neutral",
-   "signal_strength": 0.0559,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.0955,
-   "score": -0.1865,
-   "rationale": "ADX 19 (ranging) -> weighting rsi, bollinger_pct_b; -11.2% over ~63d; ATR 2.8% of price",
-   "reading": {
-    "price": 471.2,
-    "rsi": 48.94,
-    "macd_hist": 1.7188,
-    "supertrend_direction": 1,
-    "sma_fast": 469.599,
-    "sma_slow": 482.5185,
-    "bollinger_pct_b": 0.4547,
-    "adx": 18.55,
-    "atr_pct": 0.0279,
-    "momentum_short": 0.0069,
-    "momentum_long": -0.1119,
-    "annualised_volatility": 0.2623
    }
   },
   {
@@ -7960,6 +7927,39 @@
    }
   },
   {
+   "key": "IN:BERGEPAINT",
+   "symbol": "BERGEPAINT",
+   "name": "Berger Paints India",
+   "region": "india",
+   "sector": "consumer",
+   "regime": "ranging",
+   "signal": "neutral",
+   "signal_strength": 0.0559,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.0961,
+   "score": -0.1879,
+   "rationale": "ADX 19 (ranging) -> weighting rsi, bollinger_pct_b; -11.2% over ~63d; ATR 2.8% of price",
+   "reading": {
+    "price": 471.2,
+    "rsi": 48.94,
+    "macd_hist": 1.7188,
+    "supertrend_direction": 1,
+    "sma_fast": 469.599,
+    "sma_slow": 482.5185,
+    "bollinger_pct_b": 0.4547,
+    "adx": 18.55,
+    "atr_pct": 0.0279,
+    "momentum_short": 0.0069,
+    "momentum_long": -0.1119,
+    "annualised_volatility": 0.2623
+   }
+  },
+  {
    "key": "IN:DEEPAKNTR",
    "symbol": "DEEPAKNTR",
    "name": "Deepak Nitrite",
@@ -7973,9 +7973,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0655,
-   "relative_momentum_long": -0.0773,
-   "score": -0.1917,
+   "sector_momentum_long": -0.0647,
+   "relative_momentum_long": -0.0781,
+   "score": -0.1936,
    "rationale": "ADX 22 (ranging) -> weighting rsi, bollinger_pct_b; -14.3% over ~63d; ATR 3.5% of price",
    "reading": {
     "price": 1540.0,
@@ -7993,37 +7993,36 @@
    }
   },
   {
-   "key": "US:XOM",
-   "symbol": "XOM",
-   "name": "Exxon Mobil",
+   "key": "US:HON",
+   "symbol": "HON",
+   "name": "Honeywell International",
    "region": "us",
-   "sector": "energy",
-   "regime": "trending",
+   "sector": "industrials",
+   "regime": "ranging",
    "signal": "bearish",
-   "signal_strength": -0.3333,
+   "signal_strength": -0.4434,
    "volatility_bucket": "medium",
    "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
+    "rsi",
+    "bollinger_pct_b"
    ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": 0.0075,
-   "score": -0.1991,
-   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +4.7% over ~63d; ATR 2.7% of price",
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.0391,
+   "score": -0.1969,
+   "rationale": "ADX 14 (ranging) -> weighting rsi, bollinger_pct_b; -2.7% over ~63d; ATR 2.7% of price",
    "reading": {
-    "price": 166.06,
-    "rsi": 40.78,
-    "macd_hist": -2.4004,
-    "supertrend_direction": -1,
-    "sma_fast": 169.0854,
-    "sma_slow": 156.0463,
-    "bollinger_pct_b": 0.1537,
-    "adx": 29.87,
+    "price": 227.64,
+    "rsi": 60.25,
+    "macd_hist": 0.7866,
+    "supertrend_direction": 1,
+    "sma_fast": 213.0052,
+    "sma_slow": 230.5238,
+    "bollinger_pct_b": 0.8409,
+    "adx": 14.26,
     "atr_pct": 0.0269,
-    "momentum_short": -0.0461,
-    "momentum_long": 0.047,
-    "annualised_volatility": 0.2608
+    "momentum_short": 0.0982,
+    "momentum_long": -0.0271,
+    "annualised_volatility": 0.2378
    }
   },
   {
@@ -8060,6 +8059,40 @@
    }
   },
   {
+   "key": "US:XOM",
+   "symbol": "XOM",
+   "name": "Exxon Mobil",
+   "region": "us",
+   "sector": "energy",
+   "regime": "trending",
+   "signal": "bearish",
+   "signal_strength": -0.3333,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": 0.0061,
+   "score": -0.2024,
+   "rationale": "ADX 30 (trending) -> weighting supertrend, macd, sma_cross; +4.7% over ~63d; ATR 2.7% of price",
+   "reading": {
+    "price": 166.06,
+    "rsi": 40.78,
+    "macd_hist": -2.4004,
+    "supertrend_direction": -1,
+    "sma_fast": 169.0854,
+    "sma_slow": 156.0463,
+    "bollinger_pct_b": 0.1537,
+    "adx": 29.87,
+    "atr_pct": 0.0269,
+    "momentum_short": -0.0461,
+    "momentum_long": 0.047,
+    "annualised_volatility": 0.2608
+   }
+  },
+  {
    "key": "US:AMZN",
    "symbol": "AMZN",
    "name": "Amazon",
@@ -8073,9 +8106,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.0211,
-   "score": -0.2021,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.0205,
+   "score": -0.2034,
    "rationale": "ADX 13 (ranging) -> weighting rsi, bollinger_pct_b; +0.5% over ~63d; ATR 3.5% of price",
    "reading": {
     "price": 266.39,
@@ -8107,9 +8140,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0655,
-   "relative_momentum_long": 0.0061,
-   "score": -0.2023,
+   "sector_momentum_long": -0.0647,
+   "relative_momentum_long": 0.0053,
+   "score": -0.2043,
    "rationale": "ADX 25 (trending) -> weighting supertrend, macd, sma_cross; -5.9% over ~63d; ATR 2.5% of price",
    "reading": {
     "price": 2459.7,
@@ -8127,39 +8160,6 @@
    }
   },
   {
-   "key": "US:HON",
-   "symbol": "HON",
-   "name": "Honeywell International",
-   "region": "us",
-   "sector": "industrials",
-   "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.4616,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.0408,
-   "score": -0.2047,
-   "rationale": "ADX 14 (ranging) -> weighting rsi, bollinger_pct_b; -2.6% over ~63d; ATR 2.7% of price",
-   "reading": {
-    "price": 228.0,
-    "rsi": 60.75,
-    "macd_hist": 0.8096,
-    "supertrend_direction": 1,
-    "sma_fast": 213.0124,
-    "sma_slow": 230.5256,
-    "bollinger_pct_b": 0.8541,
-    "adx": 14.26,
-    "atr_pct": 0.0269,
-    "momentum_short": 0.0999,
-    "momentum_long": -0.0256,
-    "annualised_volatility": 0.2378
-   }
-  },
-  {
    "key": "US:ABNB",
    "symbol": "ABNB",
    "name": "Airbnb",
@@ -8173,9 +8173,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.0017,
-   "score": -0.2097,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.0023,
+   "score": -0.2111,
    "rationale": "ADX 21 (ranging) -> weighting rsi, bollinger_pct_b; -1.8% over ~63d; ATR 3.8% of price",
    "reading": {
     "price": 181.78,
@@ -8207,22 +8207,22 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.0007,
-   "score": -0.2184,
-   "rationale": "ADX 34 (trending) -> weighting supertrend, macd, sma_cross; -6.7% over ~63d; ATR 2.2% of price",
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.0008,
+   "score": -0.2149,
+   "rationale": "ADX 34 (trending) -> weighting supertrend, macd, sma_cross; -6.6% over ~63d; ATR 2.2% of price",
    "reading": {
-    "price": 366.56,
-    "rsi": 59.59,
-    "macd_hist": 0.6129,
+    "price": 367.22,
+    "rsi": 60.27,
+    "macd_hist": 0.655,
     "supertrend_direction": -1,
-    "sma_fast": 349.2458,
-    "sma_slow": 354.8653,
-    "bollinger_pct_b": 0.7114,
+    "sma_fast": 349.259,
+    "sma_slow": 354.8686,
+    "bollinger_pct_b": 0.7248,
     "adx": 34.23,
     "atr_pct": 0.0223,
-    "momentum_short": 0.1027,
-    "momentum_long": -0.0672,
+    "momentum_short": 0.1047,
+    "momentum_long": -0.0655,
     "annualised_volatility": 0.2046
    }
   },
@@ -8240,8 +8240,8 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0655,
-   "relative_momentum_long": -0.2086,
+   "sector_momentum_long": -0.0647,
+   "relative_momentum_long": -0.2095,
    "score": -0.2228,
    "rationale": "ADX 21 (ranging) -> weighting rsi, bollinger_pct_b; -27.4% over ~63d; ATR 4.0% of price",
    "reading": {
@@ -8257,39 +8257,6 @@
     "momentum_short": -0.0503,
     "momentum_long": -0.2742,
     "annualised_volatility": 0.2858
-   }
-  },
-  {
-   "key": "IN:PETRONET",
-   "symbol": "PETRONET",
-   "name": "Petronet LNG",
-   "region": "india",
-   "sector": "energy",
-   "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.7127,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": 0.1026,
-   "score": -0.2239,
-   "rationale": "ADX 23 (ranging) -> weighting rsi, bollinger_pct_b; +14.2% over ~63d; ATR 2.4% of price",
-   "reading": {
-    "price": 320.45,
-    "rsi": 71.27,
-    "macd_hist": 3.0495,
-    "supertrend_direction": 1,
-    "sma_fast": 292.13,
-    "sma_slow": 283.2425,
-    "bollinger_pct_b": 1.0514,
-    "adx": 22.66,
-    "atr_pct": 0.0245,
-    "momentum_short": 0.1107,
-    "momentum_long": 0.142,
-    "annualised_volatility": 0.2361
    }
   },
   {
@@ -8326,6 +8293,39 @@
    }
   },
   {
+   "key": "IN:PETRONET",
+   "symbol": "PETRONET",
+   "name": "Petronet LNG",
+   "region": "india",
+   "sector": "energy",
+   "regime": "ranging",
+   "signal": "bearish",
+   "signal_strength": -0.7127,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": 0.1012,
+   "score": -0.2272,
+   "rationale": "ADX 23 (ranging) -> weighting rsi, bollinger_pct_b; +14.2% over ~63d; ATR 2.4% of price",
+   "reading": {
+    "price": 320.45,
+    "rsi": 71.27,
+    "macd_hist": 3.0495,
+    "supertrend_direction": 1,
+    "sma_fast": 292.13,
+    "sma_slow": 283.2425,
+    "bollinger_pct_b": 1.0514,
+    "adx": 22.66,
+    "atr_pct": 0.0245,
+    "momentum_short": 0.1107,
+    "momentum_long": 0.142,
+    "annualised_volatility": 0.2361
+   }
+  },
+  {
    "key": "IN:UPL",
    "symbol": "UPL",
    "name": "UPL",
@@ -8339,9 +8339,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0655,
-   "relative_momentum_long": 0.0106,
-   "score": -0.2252,
+   "sector_momentum_long": -0.0647,
+   "relative_momentum_long": 0.0097,
+   "score": -0.2272,
    "rationale": "ADX 16 (ranging) -> weighting rsi, bollinger_pct_b; -5.5% over ~63d; ATR 3.4% of price",
    "reading": {
     "price": 541.5,
@@ -8372,9 +8372,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": 0.0109,
-   "score": -0.2273,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": 0.0105,
+   "score": -0.2284,
    "rationale": "ADX 19 (ranging) -> weighting rsi, bollinger_pct_b; -5.5% over ~63d; ATR 2.7% of price",
    "reading": {
     "price": 5410.5,
@@ -8439,9 +8439,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.049,
-   "score": -0.2337,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": -0.0491,
+   "score": -0.2341,
    "rationale": "ADX 18 (ranging) -> weighting rsi, bollinger_pct_b; -11.5% over ~63d; ATR 2.4% of price",
    "reading": {
     "price": 459.95,
@@ -8472,9 +8472,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": 0.0571,
-   "score": -0.2387,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": 0.0565,
+   "score": -0.2401,
    "rationale": "ADX 24 (ranging) -> weighting rsi, bollinger_pct_b; +4.1% over ~63d; ATR 2.7% of price",
    "reading": {
     "price": 3119.2,
@@ -8505,9 +8505,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0151,
-   "relative_momentum_long": -0.0414,
-   "score": -0.2401,
+   "sector_momentum_long": -0.0145,
+   "relative_momentum_long": -0.0419,
+   "score": -0.2414,
    "rationale": "ADX 21 (ranging) -> weighting rsi, bollinger_pct_b; -5.6% over ~63d; ATR 3.0% of price",
    "reading": {
     "price": 143.36,
@@ -8598,28 +8598,28 @@
    "sector": "consumer",
    "regime": "ranging",
    "signal": "neutral",
-   "signal_strength": -0.0142,
+   "signal_strength": -0.0155,
    "volatility_bucket": "medium",
    "indicators_used": [
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.1046,
-   "score": -0.2532,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.105,
+   "score": -0.2551,
    "rationale": "ADX 22 (ranging) -> weighting rsi, bollinger_pct_b; -12.1% over ~63d; ATR 3.3% of price",
    "reading": {
-    "price": 34.205,
-    "rsi": 49.34,
-    "macd_hist": 0.1392,
+    "price": 34.21,
+    "rsi": 49.36,
+    "macd_hist": 0.1395,
     "supertrend_direction": 1,
-    "sma_fast": 34.5087,
+    "sma_fast": 34.5088,
     "sma_slow": 37.1207,
-    "bollinger_pct_b": 0.5208,
+    "bollinger_pct_b": 0.5219,
     "adx": 22.39,
     "atr_pct": 0.0331,
-    "momentum_short": 0.0746,
-    "momentum_long": -0.1209,
+    "momentum_short": 0.0748,
+    "momentum_long": -0.1208,
     "annualised_volatility": 0.3644
    }
   },
@@ -8736,9 +8736,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.1029,
-   "score": -0.2723,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.1035,
+   "score": -0.2737,
    "rationale": "ADX 21 (ranging) -> weighting rsi, bollinger_pct_b; -11.9% over ~63d; ATR 3.4% of price",
    "reading": {
     "price": 428.5,
@@ -8802,9 +8802,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0151,
-   "relative_momentum_long": 0.0708,
-   "score": -0.2781,
+   "sector_momentum_long": -0.0145,
+   "relative_momentum_long": 0.0703,
+   "score": -0.2793,
    "rationale": "ADX 17 (ranging) -> weighting rsi, bollinger_pct_b; +5.6% over ~63d; ATR 3.0% of price",
    "reading": {
     "price": 1448.9,
@@ -8836,56 +8836,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.0273,
-   "score": -0.2803,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.028,
+   "score": -0.2819,
    "rationale": "ADX 28 (trending) -> weighting supertrend, macd, sma_cross; -4.4% over ~63d; ATR 2.9% of price",
    "reading": {
-    "price": 24.2725,
-    "rsi": 51.09,
-    "macd_hist": -0.0057,
+    "price": 24.27,
+    "rsi": 51.06,
+    "macd_hist": -0.0059,
     "supertrend_direction": 1,
     "sma_fast": 23.9224,
     "sma_slow": 23.9273,
-    "bollinger_pct_b": 0.4892,
+    "bollinger_pct_b": 0.4883,
     "adx": 27.59,
-    "atr_pct": 0.0288,
-    "momentum_short": 0.0821,
-    "momentum_long": -0.0436,
+    "atr_pct": 0.0289,
+    "momentum_short": 0.082,
+    "momentum_long": -0.0437,
     "annualised_volatility": 0.2891
-   }
-  },
-  {
-   "key": "IN:BATAINDIA",
-   "symbol": "BATAINDIA",
-   "name": "Bata India",
-   "region": "india",
-   "sector": "consumer",
-   "regime": "ranging",
-   "signal": "neutral",
-   "signal_strength": -0.089,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.0964,
-   "score": -0.2828,
-   "rationale": "ADX 16 (ranging) -> weighting rsi, bollinger_pct_b; -11.3% over ~63d; ATR 3.1% of price",
-   "reading": {
-    "price": 639.25,
-    "rsi": 50.79,
-    "macd_hist": 1.0008,
-    "supertrend_direction": 1,
-    "sma_fast": 639.647,
-    "sma_slow": 708.0427,
-    "bollinger_pct_b": 0.5811,
-    "adx": 15.61,
-    "atr_pct": 0.031,
-    "momentum_short": 0.0595,
-    "momentum_long": -0.1128,
-    "annualised_volatility": 0.256
    }
   },
   {
@@ -8922,6 +8889,39 @@
    }
   },
   {
+   "key": "IN:BATAINDIA",
+   "symbol": "BATAINDIA",
+   "name": "Bata India",
+   "region": "india",
+   "sector": "consumer",
+   "regime": "ranging",
+   "signal": "neutral",
+   "signal_strength": -0.089,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.097,
+   "score": -0.2842,
+   "rationale": "ADX 16 (ranging) -> weighting rsi, bollinger_pct_b; -11.3% over ~63d; ATR 3.1% of price",
+   "reading": {
+    "price": 639.25,
+    "rsi": 50.79,
+    "macd_hist": 1.0008,
+    "supertrend_direction": 1,
+    "sma_fast": 639.647,
+    "sma_slow": 708.0427,
+    "bollinger_pct_b": 0.5811,
+    "adx": 15.61,
+    "atr_pct": 0.031,
+    "momentum_short": 0.0595,
+    "momentum_long": -0.1128,
+    "annualised_volatility": 0.256
+   }
+  },
+  {
    "key": "US:QQQ",
    "symbol": "QQQ",
    "name": "Invesco QQQ",
@@ -8936,56 +8936,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0259,
-   "relative_momentum_long": -0.0297,
-   "score": -0.2859,
-   "rationale": "ADX 32 (trending) -> weighting supertrend, macd, sma_cross; -5.6% over ~63d; ATR 2.4% of price",
+   "sector_momentum_long": -0.0261,
+   "relative_momentum_long": -0.0308,
+   "score": -0.2886,
+   "rationale": "ADX 32 (trending) -> weighting supertrend, macd, sma_cross; -5.7% over ~63d; ATR 2.4% of price",
    "reading": {
-    "price": 691.39,
-    "rsi": 46.41,
-    "macd_hist": -1.8024,
+    "price": 690.38,
+    "rsi": 46.06,
+    "macd_hist": -1.8668,
     "supertrend_direction": -1,
-    "sma_fast": 719.0644,
-    "sma_slow": 681.7169,
-    "bollinger_pct_b": 0.4162,
+    "sma_fast": 719.0442,
+    "sma_slow": 681.7119,
+    "bollinger_pct_b": 0.4057,
     "adx": 31.63,
-    "atr_pct": 0.0237,
-    "momentum_short": -0.0702,
-    "momentum_long": -0.0556,
-    "annualised_volatility": 0.2353
-   }
-  },
-  {
-   "key": "US:RTX",
-   "symbol": "RTX",
-   "name": "RTX",
-   "region": "us",
-   "sector": "industrials",
-   "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.3697,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.0219,
-   "score": -0.2913,
-   "rationale": "ADX 22 (ranging) -> weighting rsi, bollinger_pct_b; -8.8% over ~63d; ATR 2.6% of price",
-   "reading": {
-    "price": 201.01,
-    "rsi": 57.46,
-    "macd_hist": 0.3824,
-    "supertrend_direction": 1,
-    "sma_fast": 192.9132,
-    "sma_slow": 195.3101,
-    "bollinger_pct_b": 0.7951,
-    "adx": 22.04,
-    "atr_pct": 0.0262,
-    "momentum_short": 0.0983,
-    "momentum_long": -0.0883,
-    "annualised_volatility": 0.2426
+    "atr_pct": 0.0238,
+    "momentum_short": -0.0715,
+    "momentum_long": -0.0569,
+    "annualised_volatility": 0.2347
    }
   },
   {
@@ -9053,6 +9020,39 @@
     "momentum_short": 0.1486,
     "momentum_long": 0.073,
     "annualised_volatility": 0.2759
+   }
+  },
+  {
+   "key": "US:RTX",
+   "symbol": "RTX",
+   "name": "RTX",
+   "region": "us",
+   "sector": "industrials",
+   "regime": "ranging",
+   "signal": "bearish",
+   "signal_strength": -0.3863,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": -0.0208,
+   "score": -0.2996,
+   "rationale": "ADX 22 (ranging) -> weighting rsi, bollinger_pct_b; -8.7% over ~63d; ATR 2.7% of price",
+   "reading": {
+    "price": 201.29,
+    "rsi": 57.75,
+    "macd_hist": 0.4003,
+    "supertrend_direction": 1,
+    "sma_fast": 192.9188,
+    "sma_slow": 195.3115,
+    "bollinger_pct_b": 0.8088,
+    "adx": 22.23,
+    "atr_pct": 0.0265,
+    "momentum_short": 0.0998,
+    "momentum_long": -0.087,
+    "annualised_volatility": 0.2427
    }
   },
   {
@@ -9155,39 +9155,6 @@
    }
   },
   {
-   "key": "US:IWM",
-   "symbol": "IWM",
-   "name": "iShares Russell 2000 ETF",
-   "region": "us",
-   "sector": "index",
-   "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.3533,
-   "volatility_bucket": "low",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0259,
-   "relative_momentum_long": -0.0417,
-   "score": -0.327,
-   "rationale": "ADX 21 (ranging) -> weighting rsi, bollinger_pct_b; -6.8% over ~63d; ATR 1.7% of price",
-   "reading": {
-    "price": 282.98,
-    "rsi": 54.19,
-    "macd_hist": 0.733,
-    "supertrend_direction": -1,
-    "sma_fast": 281.4252,
-    "sma_slow": 279.264,
-    "bollinger_pct_b": 0.8114,
-    "adx": 21.11,
-    "atr_pct": 0.0173,
-    "momentum_short": 0.0227,
-    "momentum_long": -0.0676,
-    "annualised_volatility": 0.1764
-   }
-  },
-  {
    "key": "IN:TORNTPOWER",
    "symbol": "TORNTPOWER",
    "name": "Torrent Power",
@@ -9201,9 +9168,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0151,
-   "relative_momentum_long": -0.0699,
-   "score": -0.3289,
+   "sector_momentum_long": -0.0145,
+   "relative_momentum_long": -0.0704,
+   "score": -0.3301,
    "rationale": "ADX 20 (ranging) -> weighting rsi, bollinger_pct_b; -8.5% over ~63d; ATR 3.1% of price",
    "reading": {
     "price": 1236.0,
@@ -9221,6 +9188,39 @@
    }
   },
   {
+   "key": "US:IWM",
+   "symbol": "IWM",
+   "name": "iShares Russell 2000 ETF",
+   "region": "us",
+   "sector": "index",
+   "regime": "ranging",
+   "signal": "bearish",
+   "signal_strength": -0.3603,
+   "volatility_bucket": "low",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0261,
+   "relative_momentum_long": -0.0411,
+   "score": -0.3302,
+   "rationale": "ADX 21 (ranging) -> weighting rsi, bollinger_pct_b; -6.7% over ~63d; ATR 1.7% of price",
+   "reading": {
+    "price": 283.09,
+    "rsi": 54.3,
+    "macd_hist": 0.74,
+    "supertrend_direction": -1,
+    "sma_fast": 281.4274,
+    "sma_slow": 279.2645,
+    "bollinger_pct_b": 0.8172,
+    "adx": 21.11,
+    "atr_pct": 0.0173,
+    "momentum_short": 0.0231,
+    "momentum_long": -0.0672,
+    "annualised_volatility": 0.1765
+   }
+  },
+  {
    "key": "US:OXY",
    "symbol": "OXY",
    "name": "Occidental Petroleum",
@@ -9235,22 +9235,22 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": -0.0484,
-   "score": -0.3295,
-   "rationale": "ADX 28 (trending) -> weighting supertrend, macd, sma_cross; -0.9% over ~63d; ATR 3.2% of price",
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": -0.0488,
+   "score": -0.3306,
+   "rationale": "ADX 28 (trending) -> weighting supertrend, macd, sma_cross; -0.8% over ~63d; ATR 3.2% of price",
    "reading": {
-    "price": 57.185,
-    "rsi": 39.29,
-    "macd_hist": -0.7579,
+    "price": 57.24,
+    "rsi": 39.56,
+    "macd_hist": -0.7544,
     "supertrend_direction": -1,
-    "sma_fast": 59.8451,
-    "sma_slow": 56.6361,
-    "bollinger_pct_b": 0.1885,
+    "sma_fast": 59.8462,
+    "sma_slow": 56.6364,
+    "bollinger_pct_b": 0.1927,
     "adx": 28.45,
-    "atr_pct": 0.0319,
-    "momentum_short": -0.0724,
-    "momentum_long": -0.0089,
+    "atr_pct": 0.0318,
+    "momentum_short": -0.0715,
+    "momentum_long": -0.008,
     "annualised_volatility": 0.3072
    }
   },
@@ -9269,9 +9269,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0655,
-   "relative_momentum_long": 0.1373,
-   "score": -0.3296,
+   "sector_momentum_long": -0.0647,
+   "relative_momentum_long": 0.1365,
+   "score": -0.3315,
    "rationale": "ADX 25 (trending) -> weighting supertrend, macd, sma_cross; +7.2% over ~63d; ATR 3.5% of price",
    "reading": {
     "price": 32.54,
@@ -9286,39 +9286,6 @@
     "momentum_short": 0.1414,
     "momentum_long": 0.0718,
     "annualised_volatility": 0.3167
-   }
-  },
-  {
-   "key": "US:VZ",
-   "symbol": "VZ",
-   "name": "Verizon Communications",
-   "region": "us",
-   "sector": "telecom",
-   "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.4771,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0267,
-   "relative_momentum_long": -0.0084,
-   "score": -0.3296,
-   "rationale": "ADX 16 (ranging) -> weighting rsi, bollinger_pct_b; -3.5% over ~63d; ATR 2.5% of price",
-   "reading": {
-    "price": 46.53,
-    "rsi": 57.21,
-    "macd_hist": 0.367,
-    "supertrend_direction": 1,
-    "sma_fast": 46.3896,
-    "sma_slow": 47.0819,
-    "bollinger_pct_b": 0.9051,
-    "adx": 16.06,
-    "atr_pct": 0.0251,
-    "momentum_short": 0.0689,
-    "momentum_long": -0.035,
-    "annualised_volatility": 0.3047
    }
   },
   {
@@ -9368,9 +9335,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0259,
-   "relative_momentum_long": 0.0765,
-   "score": -0.3367,
+   "sector_momentum_long": -0.0261,
+   "relative_momentum_long": 0.0767,
+   "score": -0.3362,
    "rationale": "ADX 25 (ranging) -> weighting rsi, bollinger_pct_b; +5.1% over ~63d; ATR 1.7% of price",
    "reading": {
     "price": 626.98,
@@ -9401,9 +9368,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0151,
-   "relative_momentum_long": -0.0389,
-   "score": -0.3372,
+   "sector_momentum_long": -0.0145,
+   "relative_momentum_long": -0.0395,
+   "score": -0.3385,
    "rationale": "ADX 17 (ranging) -> weighting rsi, bollinger_pct_b; -5.4% over ~63d; ATR 2.5% of price",
    "reading": {
     "price": 360.0,
@@ -9454,6 +9421,39 @@
    }
   },
   {
+   "key": "US:VZ",
+   "symbol": "VZ",
+   "name": "Verizon Communications",
+   "region": "us",
+   "sector": "telecom",
+   "regime": "ranging",
+   "signal": "bearish",
+   "signal_strength": -0.4944,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0238,
+   "relative_momentum_long": -0.0098,
+   "score": -0.3442,
+   "rationale": "ADX 16 (ranging) -> weighting rsi, bollinger_pct_b; -3.4% over ~63d; ATR 2.5% of price",
+   "reading": {
+    "price": 46.6,
+    "rsi": 57.57,
+    "macd_hist": 0.3715,
+    "supertrend_direction": 1,
+    "sma_fast": 46.391,
+    "sma_slow": 47.0823,
+    "bollinger_pct_b": 0.9188,
+    "adx": 16.11,
+    "atr_pct": 0.0252,
+    "momentum_short": 0.0705,
+    "momentum_long": -0.0336,
+    "annualised_volatility": 0.3048
+   }
+  },
+  {
    "key": "IN:TATASTEEL",
    "symbol": "TATASTEEL",
    "name": "Tata Steel",
@@ -9467,9 +9467,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0332,
-   "relative_momentum_long": 0.0188,
-   "score": -0.3469,
+   "sector_momentum_long": -0.0337,
+   "relative_momentum_long": 0.0193,
+   "score": -0.3457,
    "rationale": "ADX 24 (ranging) -> weighting rsi, bollinger_pct_b; -1.4% over ~63d; ATR 2.8% of price",
    "reading": {
     "price": 184.85,
@@ -9500,9 +9500,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0332,
-   "relative_momentum_long": -0.0273,
-   "score": -0.3485,
+   "sector_momentum_long": -0.0337,
+   "relative_momentum_long": -0.0267,
+   "score": -0.3473,
    "rationale": "ADX 21 (ranging) -> weighting rsi, bollinger_pct_b; -6.0% over ~63d; ATR 3.0% of price",
    "reading": {
     "price": 262.0,
@@ -9798,9 +9798,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.1487,
-   "score": -0.3632,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.1493,
+   "score": -0.3646,
    "rationale": "ADX 23 (ranging) -> weighting rsi, bollinger_pct_b; -16.5% over ~63d; ATR 2.8% of price",
    "reading": {
     "price": 1695.0,
@@ -9831,9 +9831,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.0092,
-   "score": -0.3636,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.0097,
+   "score": -0.3649,
    "rationale": "ADX 24 (ranging) -> weighting rsi, bollinger_pct_b; -2.6% over ~63d; ATR 2.3% of price",
    "reading": {
     "price": 278.8,
@@ -9864,9 +9864,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.0719,
-   "score": -0.3655,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.0725,
+   "score": -0.3668,
    "rationale": "ADX 20 (ranging) -> weighting rsi, bollinger_pct_b; -8.8% over ~63d; ATR 2.5% of price",
    "reading": {
     "price": 36380.0,
@@ -9891,29 +9891,29 @@
    "sector": "industrials",
    "regime": "ranging",
    "signal": "bearish",
-   "signal_strength": -0.6092,
+   "signal_strength": -0.6336,
    "volatility_bucket": "medium",
    "indicators_used": [
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.0126,
-   "score": -0.3666,
-   "rationale": "ADX 23 (ranging) -> weighting rsi, bollinger_pct_b; -5.4% over ~63d; ATR 3.1% of price",
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.0167,
+   "score": -0.3729,
+   "rationale": "ADX 23 (ranging) -> weighting rsi, bollinger_pct_b; -5.0% over ~63d; ATR 3.1% of price",
    "reading": {
-    "price": 341.22,
-    "rsi": 64.31,
-    "macd_hist": 4.8032,
+    "price": 342.75,
+    "rsi": 64.89,
+    "macd_hist": 4.9008,
     "supertrend_direction": 1,
-    "sma_fast": 314.7574,
-    "sma_slow": 323.5249,
-    "bollinger_pct_b": 0.9662,
+    "sma_fast": 314.788,
+    "sma_slow": 323.5325,
+    "bollinger_pct_b": 0.9846,
     "adx": 23.13,
-    "atr_pct": 0.0314,
-    "momentum_short": 0.1092,
-    "momentum_long": -0.0538,
-    "annualised_volatility": 0.3306
+    "atr_pct": 0.0312,
+    "momentum_short": 0.1142,
+    "momentum_long": -0.0496,
+    "annualised_volatility": 0.3313
    }
   },
   {
@@ -9931,23 +9931,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0267,
-   "relative_momentum_long": -0.0716,
-   "score": -0.3837,
-   "rationale": "ADX 28 (trending) -> weighting supertrend, macd, sma_cross; -9.8% over ~63d; ATR 2.7% of price",
+   "sector_momentum_long": -0.0238,
+   "relative_momentum_long": -0.0706,
+   "score": -0.3813,
+   "rationale": "ADX 27 (trending) -> weighting supertrend, macd, sma_cross; -9.4% over ~63d; ATR 2.8% of price",
    "reading": {
-    "price": 22.165,
-    "rsi": 47.68,
-    "macd_hist": 0.1834,
+    "price": 22.26,
+    "rsi": 48.75,
+    "macd_hist": 0.1894,
     "supertrend_direction": -1,
-    "sma_fast": 23.7135,
-    "sma_slow": 24.9167,
-    "bollinger_pct_b": 0.5747,
-    "adx": 27.62,
-    "atr_pct": 0.0274,
-    "momentum_short": -0.03,
-    "momentum_long": -0.0983,
-    "annualised_volatility": 0.3616
+    "sma_fast": 23.7154,
+    "sma_slow": 24.9172,
+    "bollinger_pct_b": 0.5998,
+    "adx": 27.45,
+    "atr_pct": 0.0276,
+    "momentum_short": -0.0258,
+    "momentum_long": -0.0944,
+    "annualised_volatility": 0.3623
    }
   },
   {
@@ -10031,9 +10031,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.0839,
-   "score": -0.4123,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": -0.084,
+   "score": -0.4127,
    "rationale": "ADX 33 (trending) -> weighting supertrend, macd, sma_cross; -15.0% over ~63d; ATR 3.1% of price",
    "reading": {
     "price": 7832.5,
@@ -10064,9 +10064,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": 0.0394,
-   "relative_momentum_long": -0.0618,
-   "score": -0.4198,
+   "sector_momentum_long": 0.0408,
+   "relative_momentum_long": -0.0632,
+   "score": -0.423,
    "rationale": "ADX 20 (ranging) -> weighting rsi, bollinger_pct_b; -2.2% over ~63d; ATR 2.1% of price",
    "reading": {
     "price": 233.5,
@@ -10081,39 +10081,6 @@
     "momentum_short": 0.0623,
     "momentum_long": -0.0224,
     "annualised_volatility": 0.185
-   }
-  },
-  {
-   "key": "US:EQIX",
-   "symbol": "EQIX",
-   "name": "Equinix",
-   "region": "us",
-   "sector": "realty",
-   "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.5436,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": 0.0207,
-   "relative_momentum_long": -0.0301,
-   "score": -0.4237,
-   "rationale": "ADX 19 (ranging) -> weighting rsi, bollinger_pct_b; -0.9% over ~63d; ATR 3.4% of price",
-   "reading": {
-    "price": 1063.67,
-    "rsi": 58.64,
-    "macd_hist": 8.0769,
-    "supertrend_direction": 1,
-    "sma_fast": 1017.7036,
-    "sma_slow": 1020.0205,
-    "bollinger_pct_b": 0.9572,
-    "adx": 19.19,
-    "atr_pct": 0.0338,
-    "momentum_short": 0.0434,
-    "momentum_long": -0.0094,
-    "annualised_volatility": 0.3026
    }
   },
   {
@@ -10148,6 +10115,72 @@
     "momentum_short": -0.1438,
     "momentum_long": -0.1407,
     "annualised_volatility": 0.7149
+   }
+  },
+  {
+   "key": "US:EQIX",
+   "symbol": "EQIX",
+   "name": "Equinix",
+   "region": "us",
+   "sector": "realty",
+   "regime": "ranging",
+   "signal": "bearish",
+   "signal_strength": -0.5765,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": 0.0207,
+   "relative_momentum_long": -0.0261,
+   "score": -0.4355,
+   "rationale": "ADX 19 (ranging) -> weighting rsi, bollinger_pct_b; -0.5% over ~63d; ATR 3.4% of price",
+   "reading": {
+    "price": 1068.0601,
+    "rsi": 59.27,
+    "macd_hist": 8.357,
+    "supertrend_direction": 1,
+    "sma_fast": 1017.7914,
+    "sma_slow": 1020.0425,
+    "bollinger_pct_b": 0.9838,
+    "adx": 19.19,
+    "atr_pct": 0.0337,
+    "momentum_short": 0.0477,
+    "momentum_long": -0.0053,
+    "annualised_volatility": 0.3034
+   }
+  },
+  {
+   "key": "US:PLD",
+   "symbol": "PLD",
+   "name": "Prologis",
+   "region": "us",
+   "sector": "realty",
+   "regime": "ranging",
+   "signal": "bearish",
+   "signal_strength": -0.3228,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": 0.0207,
+   "relative_momentum_long": -0.0999,
+   "score": -0.4429,
+   "rationale": "ADX 20 (ranging) -> weighting rsi, bollinger_pct_b; -7.9% over ~63d; ATR 2.1% of price",
+   "reading": {
+    "price": 130.03,
+    "rsi": 51.87,
+    "macd_hist": 0.5719,
+    "supertrend_direction": -1,
+    "sma_fast": 131.0088,
+    "sma_slow": 137.8511,
+    "bollinger_pct_b": 0.8042,
+    "adx": 20.2,
+    "atr_pct": 0.0207,
+    "momentum_short": -0.0264,
+    "momentum_long": -0.0792,
+    "annualised_volatility": 0.1909
    }
   },
   {
@@ -10217,6 +10250,40 @@
    }
   },
   {
+   "key": "US:LMT",
+   "symbol": "LMT",
+   "name": "Lockheed Martin",
+   "region": "us",
+   "sector": "industrials",
+   "regime": "trending",
+   "signal": "bearish",
+   "signal_strength": -1.0,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": 0.0864,
+   "score": -0.4484,
+   "rationale": "ADX 33 (trending) -> weighting supertrend, macd, sma_cross; +2.0% over ~63d; ATR 3.2% of price",
+   "reading": {
+    "price": 610.05,
+    "rsi": 58.27,
+    "macd_hist": -3.5988,
+    "supertrend_direction": -1,
+    "sma_fast": 550.8306,
+    "sma_slow": 569.099,
+    "bollinger_pct_b": 0.5992,
+    "adx": 32.74,
+    "atr_pct": 0.0315,
+    "momentum_short": 0.2104,
+    "momentum_long": 0.0201,
+    "annualised_volatility": 0.3464
+   }
+  },
+  {
    "key": "IN:BAJFINANCE",
    "symbol": "BAJFINANCE",
    "name": "Bajaj Finance",
@@ -10250,40 +10317,6 @@
    }
   },
   {
-   "key": "US:LMT",
-   "symbol": "LMT",
-   "name": "Lockheed Martin",
-   "region": "us",
-   "sector": "industrials",
-   "regime": "trending",
-   "signal": "bearish",
-   "signal_strength": -1.0,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": 0.0841,
-   "score": -0.4539,
-   "rationale": "ADX 33 (trending) -> weighting supertrend, macd, sma_cross; +1.8% over ~63d; ATR 3.1% of price",
-   "reading": {
-    "price": 608.545,
-    "rsi": 57.91,
-    "macd_hist": -3.6948,
-    "supertrend_direction": -1,
-    "sma_fast": 550.8005,
-    "sma_slow": 569.0914,
-    "bollinger_pct_b": 0.5893,
-    "adx": 32.69,
-    "atr_pct": 0.0314,
-    "momentum_short": 0.2074,
-    "momentum_long": 0.0176,
-    "annualised_volatility": 0.3461
-   }
-  },
-  {
    "key": "IN:JSWENERGY",
    "symbol": "JSWENERGY",
    "name": "JSW Energy",
@@ -10297,9 +10330,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0151,
-   "relative_momentum_long": -0.058,
-   "score": -0.4542,
+   "sector_momentum_long": -0.0145,
+   "relative_momentum_long": -0.0585,
+   "score": -0.4554,
    "rationale": "ADX 24 (ranging) -> weighting rsi, bollinger_pct_b; -7.3% over ~63d; ATR 2.9% of price",
    "reading": {
     "price": 523.15,
@@ -10317,39 +10350,6 @@
    }
   },
   {
-   "key": "US:PLD",
-   "symbol": "PLD",
-   "name": "Prologis",
-   "region": "us",
-   "sector": "realty",
-   "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.3497,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": 0.0207,
-   "relative_momentum_long": -0.0986,
-   "score": -0.4573,
-   "rationale": "ADX 20 (ranging) -> weighting rsi, bollinger_pct_b; -7.8% over ~63d; ATR 2.1% of price",
-   "reading": {
-    "price": 130.22,
-    "rsi": 52.35,
-    "macd_hist": 0.5841,
-    "supertrend_direction": -1,
-    "sma_fast": 131.0126,
-    "sma_slow": 137.852,
-    "bollinger_pct_b": 0.8263,
-    "adx": 20.14,
-    "atr_pct": 0.0206,
-    "momentum_short": -0.0249,
-    "momentum_long": -0.0778,
-    "annualised_volatility": 0.1909
-   }
-  },
-  {
    "key": "IN:NATIONALUM",
    "symbol": "NATIONALUM",
    "name": "National Aluminium",
@@ -10363,9 +10363,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0332,
-   "relative_momentum_long": -0.1033,
-   "score": -0.4599,
+   "sector_momentum_long": -0.0337,
+   "relative_momentum_long": -0.1028,
+   "score": -0.4587,
    "rationale": "ADX 16 (ranging) -> weighting rsi, bollinger_pct_b; -13.6% over ~63d; ATR 3.4% of price",
    "reading": {
     "price": 329.0,
@@ -10380,39 +10380,6 @@
     "momentum_short": 0.0508,
     "momentum_long": -0.1365,
     "annualised_volatility": 0.3998
-   }
-  },
-  {
-   "key": "US:TMUS",
-   "symbol": "TMUS",
-   "name": "T-Mobile US",
-   "region": "us",
-   "sector": "telecom",
-   "regime": "ranging",
-   "signal": "bearish",
-   "signal_strength": -0.5689,
-   "volatility_bucket": "medium",
-   "indicators_used": [
-    "rsi",
-    "bollinger_pct_b"
-   ],
-   "sector_momentum_long": -0.0267,
-   "relative_momentum_long": -0.0463,
-   "score": -0.4778,
-   "rationale": "ADX 16 (ranging) -> weighting rsi, bollinger_pct_b; -7.3% over ~63d; ATR 3.5% of price",
-   "reading": {
-    "price": 170.0,
-    "rsi": 61.14,
-    "macd_hist": 2.6561,
-    "supertrend_direction": 1,
-    "sma_fast": 164.2372,
-    "sma_slow": 186.0416,
-    "bollinger_pct_b": 0.9575,
-    "adx": 16.48,
-    "atr_pct": 0.0346,
-    "momentum_short": 0.1058,
-    "momentum_long": -0.073,
-    "annualised_volatility": 0.4371
    }
   },
   {
@@ -10462,9 +10429,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.0372,
-   "score": -0.4926,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.0378,
+   "score": -0.494,
    "rationale": "ADX 25 (ranging) -> weighting rsi, bollinger_pct_b; -5.4% over ~63d; ATR 3.5% of price",
    "reading": {
     "price": 200.98,
@@ -10482,6 +10449,39 @@
    }
   },
   {
+   "key": "US:TMUS",
+   "symbol": "TMUS",
+   "name": "T-Mobile US",
+   "region": "us",
+   "sector": "telecom",
+   "regime": "ranging",
+   "signal": "bearish",
+   "signal_strength": -0.6289,
+   "volatility_bucket": "medium",
+   "indicators_used": [
+    "rsi",
+    "bollinger_pct_b"
+   ],
+   "sector_momentum_long": -0.0238,
+   "relative_momentum_long": -0.0374,
+   "score": -0.4959,
+   "rationale": "ADX 17 (ranging) -> weighting rsi, bollinger_pct_b; -6.1% over ~63d; ATR 3.5% of price",
+   "reading": {
+    "price": 172.16,
+    "rsi": 62.89,
+    "macd_hist": 2.7939,
+    "supertrend_direction": 1,
+    "sma_fast": 164.2804,
+    "sma_slow": 186.0524,
+    "bollinger_pct_b": 1.0142,
+    "adx": 16.79,
+    "atr_pct": 0.035,
+    "momentum_short": 0.1199,
+    "momentum_long": -0.0612,
+    "annualised_volatility": 0.4386
+   }
+  },
+  {
    "key": "IN:NMDC",
    "symbol": "NMDC",
    "name": "NMDC",
@@ -10496,9 +10496,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0332,
-   "relative_momentum_long": -0.1249,
-   "score": -0.508,
+   "sector_momentum_long": -0.0337,
+   "relative_momentum_long": -0.1243,
+   "score": -0.5068,
    "rationale": "ADX 39 (trending) -> weighting supertrend, macd, sma_cross; -15.8% over ~63d; ATR 2.4% of price",
    "reading": {
     "price": 71.5,
@@ -10529,9 +10529,9 @@
     "rsi",
     "bollinger_pct_b"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.0333,
-   "score": -0.5102,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": -0.0335,
+   "score": -0.5106,
    "rationale": "ADX 24 (ranging) -> weighting rsi, bollinger_pct_b; -10.0% over ~63d; ATR 2.9% of price",
    "reading": {
     "price": 1159.5,
@@ -10616,40 +10616,6 @@
    }
   },
   {
-   "key": "US:ETN",
-   "symbol": "ETN",
-   "name": "Eaton",
-   "region": "us",
-   "sector": "industrials",
-   "regime": "trending",
-   "signal": "bearish",
-   "signal_strength": -0.3333,
-   "volatility_bucket": "high",
-   "indicators_used": [
-    "supertrend",
-    "macd",
-    "sma_cross"
-   ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.1336,
-   "score": -0.5284,
-   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -20.0% over ~63d; ATR 5.3% of price",
-   "reading": {
-    "price": 362.65,
-    "rsi": 44.44,
-    "macd_hist": -0.831,
-    "supertrend_direction": -1,
-    "sma_fast": 402.889,
-    "sma_slow": 397.7557,
-    "bollinger_pct_b": 0.3644,
-    "adx": 25.99,
-    "atr_pct": 0.0528,
-    "momentum_short": -0.1533,
-    "momentum_long": -0.2,
-    "annualised_volatility": 0.5044
-   }
-  },
-  {
    "key": "US:NOW",
    "symbol": "NOW",
    "name": "ServiceNow",
@@ -10681,6 +10647,40 @@
     "momentum_short": -0.2545,
     "momentum_long": -0.188,
     "annualised_volatility": 0.7419
+   }
+  },
+  {
+   "key": "US:ETN",
+   "symbol": "ETN",
+   "name": "Eaton",
+   "region": "us",
+   "sector": "industrials",
+   "regime": "trending",
+   "signal": "bearish",
+   "signal_strength": -0.3333,
+   "volatility_bucket": "high",
+   "indicators_used": [
+    "supertrend",
+    "macd",
+    "sma_cross"
+   ],
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": -0.1382,
+   "score": -0.5392,
+   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -20.5% over ~63d; ATR 5.3% of price",
+   "reading": {
+    "price": 360.62,
+    "rsi": 43.8,
+    "macd_hist": -0.9606,
+    "supertrend_direction": -1,
+    "sma_fast": 402.8484,
+    "sma_slow": 397.7455,
+    "bollinger_pct_b": 0.3402,
+    "adx": 25.99,
+    "atr_pct": 0.053,
+    "momentum_short": -0.158,
+    "momentum_long": -0.2045,
+    "annualised_volatility": 0.5033
    }
   },
   {
@@ -10797,8 +10797,8 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0163,
-   "relative_momentum_long": -0.1735,
+   "sector_momentum_long": -0.0158,
+   "relative_momentum_long": -0.1741,
    "score": -0.5667,
    "rationale": "ADX 29 (trending) -> weighting supertrend, macd, sma_cross; -19.0% over ~63d; ATR 2.8% of price",
    "reading": {
@@ -10967,8 +10967,8 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": 0.066,
-   "relative_momentum_long": -0.3253,
+   "sector_momentum_long": 0.0673,
+   "relative_momentum_long": -0.3265,
    "score": -0.5667,
    "rationale": "ADX 35 (trending) -> weighting supertrend, macd, sma_cross; -25.9% over ~63d; ATR 5.5% of price",
    "reading": {
@@ -11035,8 +11035,8 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": 0.066,
-   "relative_momentum_long": -0.2453,
+   "sector_momentum_long": 0.0673,
+   "relative_momentum_long": -0.2465,
    "score": -0.5667,
    "rationale": "ADX 25 (trending) -> weighting supertrend, macd, sma_cross; -17.9% over ~63d; ATR 3.0% of price",
    "reading": {
@@ -11273,23 +11273,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.1767,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": -0.1759,
    "score": -0.5667,
-   "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; -24.3% over ~63d; ATR 3.2% of price",
+   "rationale": "ADX 31 (trending) -> weighting supertrend, macd, sma_cross; -24.2% over ~63d; ATR 3.2% of price",
    "reading": {
-    "price": 174.32,
-    "rsi": 40.59,
-    "macd_hist": 0.3651,
+    "price": 174.54,
+    "rsi": 40.92,
+    "macd_hist": 0.3791,
     "supertrend_direction": -1,
-    "sma_fast": 190.3388,
-    "sma_slow": 213.9917,
-    "bollinger_pct_b": 0.3526,
-    "adx": 30.68,
-    "atr_pct": 0.0321,
-    "momentum_short": -0.0653,
-    "momentum_long": -0.2432,
-    "annualised_volatility": 0.3433
+    "sma_fast": 190.3432,
+    "sma_slow": 213.9928,
+    "bollinger_pct_b": 0.3585,
+    "adx": 30.59,
+    "atr_pct": 0.0322,
+    "momentum_short": -0.0641,
+    "momentum_long": -0.2422,
+    "annualised_volatility": 0.3435
    }
   },
   {
@@ -11307,23 +11307,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": -0.3697,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": -0.3647,
    "score": -0.5667,
-   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -43.6% over ~63d; ATR 8.9% of price",
+   "rationale": "ADX 26 (trending) -> weighting supertrend, macd, sma_cross; -43.0% over ~63d; ATR 8.8% of price",
    "reading": {
-    "price": 3.635,
-    "rsi": 52.52,
-    "macd_hist": 0.1018,
+    "price": 3.67,
+    "rsi": 53.28,
+    "macd_hist": 0.104,
     "supertrend_direction": -1,
-    "sma_fast": 3.7888,
-    "sma_slow": 6.5691,
-    "bollinger_pct_b": 0.8636,
+    "sma_fast": 3.7895,
+    "sma_slow": 6.5693,
+    "bollinger_pct_b": 0.8961,
     "adx": 26.47,
-    "atr_pct": 0.0892,
-    "momentum_short": 0.0835,
-    "momentum_long": -0.4356,
-    "annualised_volatility": 0.7702
+    "atr_pct": 0.0884,
+    "momentum_short": 0.0939,
+    "momentum_long": -0.4301,
+    "annualised_volatility": 0.7691
    }
   },
   {
@@ -11408,9 +11408,9 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0659,
-   "relative_momentum_long": -0.1441,
-   "score": -0.9862,
+   "sector_momentum_long": -0.0654,
+   "relative_momentum_long": -0.1445,
+   "score": -0.9873,
    "rationale": "ADX 28 (trending) -> weighting supertrend, macd, sma_cross; -21.0% over ~63d; ATR 3.3% of price",
    "reading": {
     "price": 2433.3,
@@ -11442,8 +11442,8 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.1714,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": -0.1716,
    "score": -1.0,
    "rationale": "ADX 33 (trending) -> weighting supertrend, macd, sma_cross; -23.8% over ~63d; ATR 4.1% of price",
    "reading": {
@@ -11476,8 +11476,8 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0655,
-   "relative_momentum_long": -0.3171,
+   "sector_momentum_long": -0.0647,
+   "relative_momentum_long": -0.3179,
    "score": -1.0,
    "rationale": "ADX 32 (trending) -> weighting supertrend, macd, sma_cross; -38.3% over ~63d; ATR 5.0% of price",
    "reading": {
@@ -11510,8 +11510,8 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.2474,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": -0.2475,
    "score": -1.0,
    "rationale": "ADX 36 (trending) -> weighting supertrend, macd, sma_cross; -31.4% over ~63d; ATR 5.3% of price",
    "reading": {
@@ -11544,23 +11544,23 @@
     "macd",
     "sma_cross"
    ],
-   "sector_momentum_long": -0.0664,
-   "relative_momentum_long": -0.2271,
+   "sector_momentum_long": -0.0663,
+   "relative_momentum_long": -0.2298,
    "score": -1.0,
-   "rationale": "ADX 41 (trending) -> weighting supertrend, macd, sma_cross; -29.4% over ~63d; ATR 5.0% of price",
+   "rationale": "ADX 41 (trending) -> weighting supertrend, macd, sma_cross; -29.6% over ~63d; ATR 5.0% of price",
    "reading": {
-    "price": 603.71,
-    "rsi": 35.82,
-    "macd_hist": -3.4751,
+    "price": 601.61,
+    "rsi": 35.32,
+    "macd_hist": -3.6091,
     "supertrend_direction": -1,
-    "sma_fast": 748.5486,
-    "sma_slow": 807.9579,
-    "bollinger_pct_b": 0.2828,
+    "sma_fast": 748.5066,
+    "sma_slow": 807.9474,
+    "bollinger_pct_b": 0.2752,
     "adx": 40.59,
-    "atr_pct": 0.05,
-    "momentum_short": -0.2188,
-    "momentum_long": -0.2936,
-    "annualised_volatility": 0.4274
+    "atr_pct": 0.0502,
+    "momentum_short": -0.2215,
+    "momentum_long": -0.296,
+    "annualised_volatility": 0.4262
    }
   }
  ],
@@ -11568,8 +11568,8 @@
   {
    "sector": "media",
    "count": 7,
-   "avg_momentum_long": 0.066,
-   "avg_score": 0.3032
+   "avg_momentum_long": 0.0673,
+   "avg_score": 0.3049
   },
   {
    "sector": "pharma",
@@ -11580,14 +11580,14 @@
   {
    "sector": "energy",
    "count": 18,
-   "avg_momentum_long": 0.0394,
-   "avg_score": 0.0094
+   "avg_momentum_long": 0.0408,
+   "avg_score": 0.0065
   },
   {
    "sector": "realty",
    "count": 10,
    "avg_momentum_long": 0.0207,
-   "avg_score": 0.0069
+   "avg_score": 0.0065
   },
   {
    "sector": "financials",
@@ -11598,32 +11598,32 @@
   {
    "sector": "utilities",
    "count": 13,
-   "avg_momentum_long": -0.0151,
+   "avg_momentum_long": -0.0145,
    "avg_score": -0.0584
   },
   {
    "sector": "consumer",
    "count": 41,
-   "avg_momentum_long": -0.0163,
-   "avg_score": 0.13
-  },
-  {
-   "sector": "index",
-   "count": 11,
-   "avg_momentum_long": -0.0259,
-   "avg_score": -0.0052
+   "avg_momentum_long": -0.0158,
+   "avg_score": 0.1302
   },
   {
    "sector": "telecom",
    "count": 6,
-   "avg_momentum_long": -0.0267,
-   "avg_score": -0.0171
+   "avg_momentum_long": -0.0238,
+   "avg_score": -0.0254
+  },
+  {
+   "sector": "index",
+   "count": 11,
+   "avg_momentum_long": -0.0261,
+   "avg_score": -0.0043
   },
   {
    "sector": "metals",
    "count": 13,
-   "avg_momentum_long": -0.0332,
-   "avg_score": -0.0743
+   "avg_momentum_long": -0.0337,
+   "avg_score": -0.072
   },
   {
    "sector": "tech",
@@ -11634,8 +11634,14 @@
   {
    "sector": "chemicals",
    "count": 13,
-   "avg_momentum_long": -0.0655,
-   "avg_score": 0.0604
+   "avg_momentum_long": -0.0647,
+   "avg_score": 0.0603
+  },
+  {
+   "sector": "auto",
+   "count": 18,
+   "avg_momentum_long": -0.0654,
+   "avg_score": 0.1721
   },
   {
    "sector": "infra",
@@ -11644,16 +11650,10 @@
    "avg_score": 0.1427
   },
   {
-   "sector": "auto",
-   "count": 18,
-   "avg_momentum_long": -0.0659,
-   "avg_score": 0.1728
-  },
-  {
    "sector": "industrials",
    "count": 32,
-   "avg_momentum_long": -0.0664,
-   "avg_score": -0.0365
+   "avg_momentum_long": -0.0663,
+   "avg_score": -0.0357
   },
   {
    "sector": "cement",
