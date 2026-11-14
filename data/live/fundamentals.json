@@ -18296,7 +18296,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000895421&type=10-K"
   },
   "US:C": {
-   "entity": "Citigroup Inc.",
+   "entity": "Citigroup Inc",
    "series": {
     "revenue": [
      {
