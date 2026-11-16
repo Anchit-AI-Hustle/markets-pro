@@ -7949,7 +7949,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000097476&type=10-K"
   },
   "US:IBM": {
-   "entity": "INTERNATIONAL BUSINESS MACHINES CORPORATION",
+   "entity": "INTERNATIONAL BUSINESS MACHINES CORP",
    "series": {
     "revenue": [
      {
