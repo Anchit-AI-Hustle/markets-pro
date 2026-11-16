@@ -34,3 +34,5 @@ data/executions/
 # evidence study. The study's output (fitness.json) is committed; the bars
 # behind it are refetched rather than stored.
 data/research/*/
+
+.env.local
