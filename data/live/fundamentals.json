@@ -38997,7 +38997,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000027419&type=10-K"
   },
   "US:HD": {
-   "entity": "The Home Depot, Inc.",
+   "entity": "HOME DEPOT,\u00a0INC.",
    "series": {
     "revenue": [
      {
@@ -54794,7 +54794,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001707925&type=10-K"
   },
   "US:APD": {
-   "entity": "AIR PRODUCTS AND CHEMICALS, INC.",
+   "entity": "Air Products & Chemicals, Inc.",
    "series": {
     "revenue": [
      {
