@@ -38592,7 +38592,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000829224&type=10-K"
   },
   "US:TGT": {
-   "entity": "Target Corporation",
+   "entity": "TARGET CORPORATION",
    "series": {
     "revenue": [
      {
@@ -39460,7 +39460,7 @@
    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000354950&type=10-K"
   },
   "US:LOW": {
-   "entity": "LOWES COMPANIES INC",
+   "entity": "LOWE\u2019S COMPANIES,\u00a0INC.",
    "series": {
     "revenue": [
      {
